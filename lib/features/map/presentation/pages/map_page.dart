@@ -10,11 +10,14 @@ import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
 import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_journey/features/map/presentation/widgets/ar_building_picker.dart';
 import 'package:mq_journey/features/map/presentation/widgets/building_actions_sheet.dart';
 import 'package:mq_journey/features/map/presentation/widgets/building_search_sheet.dart';
 import 'package:mq_journey/features/map/presentation/widgets/campus/campus_map_view.dart';
+import 'package:mq_journey/features/map/presentation/widgets/map_mode_toggle.dart';
 import 'package:mq_journey/features/map/presentation/widgets/map_shell.dart';
 import 'package:mq_journey/features/map/presentation/widgets/overlay_picker_sheet.dart';
+import 'package:mq_journey/features/scan/presentation/pages/indoor_preview_page.dart';
 import 'package:mq_journey/shared/extensions/context_extensions.dart';
 import 'package:mq_journey/shared/widgets/mq_button.dart';
 
@@ -37,6 +40,26 @@ class MapPage extends ConsumerStatefulWidget {
 }
 
 class _MapPageState extends ConsumerState<MapPage> {
+  MapMode _mapMode = MapMode.campusMap;
+
+  Widget? _buildArContent() {
+    if (_mapMode != MapMode.ar) return null;
+    final state = ref.read(mapControllerProvider).value;
+    final selected = state?.selectedBuilding;
+    final buildingCode = selected?.code;
+
+    if (buildingCode != null) {
+      return IndoorPreviewPage(buildingId: buildingCode);
+    }
+
+    return ArBuildingPicker(
+      onSelect: (buildingId) {
+        ref.read(mapControllerProvider.notifier).selectBuildingById(buildingId);
+        setState(() {});
+      },
+    );
+  }
+
   Future<void> _openSearchSheet() async {
     final building = await showModalBottomSheet<Building>(
       context: context,
@@ -547,6 +570,9 @@ class _MapPageState extends ConsumerState<MapPage> {
                     onClear: controller.clearCategoryBrowse,
                   )
                 : null,
+            mapMode: _mapMode,
+            onMapModeChanged: (mode) => setState(() => _mapMode = mode),
+            arContent: _buildArContent(),
           );
         },
         error: (error, _) => Center(

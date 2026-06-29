@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
+import 'package:mq_journey/features/map/presentation/widgets/map_mode_toggle.dart';
 import 'package:mq_journey/shared/widgets/glass_pane.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
 
@@ -16,6 +17,9 @@ class MapShell extends StatelessWidget {
     this.banner,
     this.footer,
     this.filterChips,
+    this.mapMode,
+    this.onMapModeChanged,
+    this.arContent,
   });
 
   final Widget mapView;
@@ -25,6 +29,9 @@ class MapShell extends StatelessWidget {
   final Widget? banner;
   final Widget? footer;
   final Widget? filterChips;
+  final MapMode? mapMode;
+  final ValueChanged<MapMode>? onMapModeChanged;
+  final Widget? arContent;
 
   static const double _bottomControlsReservedHeight = 80;
   static const double _topOverlayHeight = 180;
@@ -37,124 +44,132 @@ class MapShell extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bannerWidget = banner;
     final footerWidget = footer;
+    final isCampusMap = mapMode == null || mapMode == MapMode.campusMap;
 
     return Stack(
       children: [
-        Positioned.fill(child: mapView),
+        Positioned.fill(child: isCampusMap ? mapView : (arContent ?? mapView)),
 
-        Positioned(
-          top: safeTop + MqSpacing.space4,
-          left: MqSpacing.space4,
-          right: MqSpacing.space4,
-          child: Column(
-            children: [
-              Semantics(
-                button: true,
-                label: l10n.searchBuildingsPlaceholder,
-                child: GestureDetector(
-                  onTap: onOpenSearch,
-                  child: _GlassPane(
-                    isDark: isDark,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.symmetric(
-                        horizontal: MqSpacing.space4,
-                        vertical: MqSpacing.space4,
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.search,
-                            color: isDark
-                                ? Colors.white.withValues(alpha: 0.5)
-                                : MqColors.charcoal800.withValues(alpha: 0.4),
-                            size: 20,
-                          ),
-                          const SizedBox(width: MqSpacing.space3),
-                          Expanded(
-                            child: Text(
-                              l10n.searchBuildingsPlaceholder,
-                              style: TextStyle(
-                                color: isDark
-                                    ? Colors.white.withValues(alpha: 0.5)
-                                    : MqColors.charcoal800.withValues(
-                                        alpha: 0.4,
-                                      ),
-                                fontSize: 14,
+        if (isCampusMap) ...[
+          Positioned(
+            top: safeTop + MqSpacing.space4,
+            left: MqSpacing.space4,
+            right: MqSpacing.space4,
+            child: Column(
+              children: [
+                Semantics(
+                  button: true,
+                  label: l10n.searchBuildingsPlaceholder,
+                  child: GestureDetector(
+                    onTap: onOpenSearch,
+                    child: _GlassPane(
+                      isDark: isDark,
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          horizontal: MqSpacing.space4,
+                          vertical: MqSpacing.space4,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.search,
+                              color: isDark
+                                  ? Colors.white.withValues(alpha: 0.5)
+                                  : MqColors.charcoal800.withValues(alpha: 0.4),
+                              size: 20,
+                            ),
+                            const SizedBox(width: MqSpacing.space3),
+                            Expanded(
+                              child: Text(
+                                l10n.searchBuildingsPlaceholder,
+                                style: TextStyle(
+                                  color: isDark
+                                      ? Colors.white.withValues(alpha: 0.5)
+                                      : MqColors.charcoal800.withValues(
+                                          alpha: 0.4,
+                                        ),
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              if (filterChips != null) ...[
+                if (mapMode != null && onMapModeChanged != null) ...[
+                  const SizedBox(height: MqSpacing.space3),
+                  MapModeToggle(value: mapMode!, onChanged: onMapModeChanged!),
+                ],
+
+                if (filterChips != null) ...[
+                  const SizedBox(height: MqSpacing.space3),
+                  filterChips!,
+                ],
+
                 const SizedBox(height: MqSpacing.space3),
-                filterChips!,
-              ],
 
-              const SizedBox(height: MqSpacing.space3),
-
-              if (bannerWidget != null) ...[
-                const SizedBox(height: MqSpacing.space3),
-                bannerWidget,
+                if (bannerWidget != null) ...[
+                  const SizedBox(height: MqSpacing.space3),
+                  bannerWidget,
+                ],
               ],
-            ],
+            ),
           ),
-        ),
 
-        if (footerWidget != null)
-          Positioned(
-            bottom: safeBottom + _bottomControlsReservedHeight,
-            left: 0,
-            right: 0,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(
-                MqSpacing.space4,
-                0,
-                MqSpacing.space4,
-                MqSpacing.space2,
-              ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight:
-                      MediaQuery.of(context).size.height -
-                      safeTop -
-                      safeBottom -
-                      _bottomControlsReservedHeight -
-                      _topOverlayHeight -
-                      MqSpacing.space4 -
-                      MqSpacing.space3 -
-                      MqSpacing.space2,
+          if (footerWidget != null)
+            Positioned(
+              bottom: safeBottom + _bottomControlsReservedHeight,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                  MqSpacing.space4,
+                  0,
+                  MqSpacing.space4,
+                  MqSpacing.space2,
                 ),
-                child: footerWidget,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight:
+                        MediaQuery.of(context).size.height -
+                        safeTop -
+                        safeBottom -
+                        _bottomControlsReservedHeight -
+                        _topOverlayHeight -
+                        MqSpacing.space4 -
+                        MqSpacing.space3 -
+                        MqSpacing.space2,
+                  ),
+                  child: footerWidget,
+                ),
               ),
             ),
-          ),
 
-        if (onOpenOverlayPicker != null)
+          if (onOpenOverlayPicker != null)
+            PositionedDirectional(
+              start: MqSpacing.space4,
+              bottom: safeBottom + MqSpacing.space4,
+              child: _GlassIconButton(
+                isDark: isDark,
+                icon: Icons.layers_outlined,
+                tooltip: l10n.mapLayers,
+                onPressed: onOpenOverlayPicker!,
+              ),
+            ),
+
           PositionedDirectional(
-            start: MqSpacing.space4,
+            end: MqSpacing.space4,
             bottom: safeBottom + MqSpacing.space4,
-            child: _GlassIconButton(
-              isDark: isDark,
-              icon: Icons.layers_outlined,
-              tooltip: l10n.mapLayers,
-              onPressed: onOpenOverlayPicker!,
+            child: _BrandCircleButton(
+              icon: Icons.my_location,
+              tooltip: l10n.centerOnLocation,
+              onPressed: onCenterOnLocation,
             ),
           ),
-
-        PositionedDirectional(
-          end: MqSpacing.space4,
-          bottom: safeBottom + MqSpacing.space4,
-          child: _BrandCircleButton(
-            icon: Icons.my_location,
-            tooltip: l10n.centerOnLocation,
-            onPressed: onCenterOnLocation,
-          ),
-        ),
+        ],
       ],
     );
   }

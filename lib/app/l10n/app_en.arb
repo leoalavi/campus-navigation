@@ -2532,5 +2532,18 @@
   "scan_addedToYourDay": "Added to Your Day",
   "scan_visited": "Visited",
   "scan_badgeEarned": "Badge earned!",
-  "scan_noIndoorPreview": "No indoor preview available"
+  "scan_noIndoorPreview": "No indoor preview available",
+  "scanQrCta": "Scan",
+  "scanPermissionDenied": "Camera permission denied",
+  "scanPermissionDeniedDesc": "Enable camera access in Settings to scan QR codes",
+  "scanOpenSettings": "Open Settings",
+  "scanDecodeError": "Could not read QR code",
+  "scanNotOnTrail": "Not part of the trail",
+  "scanNotOnTrailDesc": "This QR code is not part of the Open Day trail",
+  "scanDecoding": "Decoding…",
+  "mapModeCampus": "Campus Map",
+  "mapModeAr": "AR",
+  "arNoBuildingSelected": "Select a building to view indoors",
+  "arComingSoon": "Indoor preview coming soon",
+  "arListView": "List view"
 }
