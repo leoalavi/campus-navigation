@@ -67,6 +67,7 @@ flutter:
     - assets/data/indoor/
     - assets/maps/
     - assets/images/
+    - assets/photos/
     - assets/web/
     - assets/web/pannellum/
 

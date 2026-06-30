@@ -5414,5 +5414,248 @@
     "campusHubGroups": [
       "smoking"
     ]
+  },
+  {
+    "id": "hadenfeld-10",
+    "code": "hadenfeld-10",
+    "name": "10 Hadenfeld Avenue",
+    "description": "Open Day venue.",
+    "address": "10 Hadenfeld Avenue",
+    "category": "teaching",
+    "latitude": -33.7745,
+    "longitude": 151.113,
+    "entranceLatitude": -33.7745,
+    "entranceLongitude": 151.113,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "hadenfeld-10",
+      "10 hadenfeld avenue"
+    ],
+    "gridRef": "P6",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
+  },
+  {
+    "id": "wallys-29",
+    "code": "wallys-29",
+    "name": "29 Wally's Walk",
+    "description": "Open Day venue.",
+    "address": "29 Wally's Walk",
+    "category": "teaching",
+    "latitude": -33.774,
+    "longitude": 151.1135,
+    "entranceLatitude": -33.774,
+    "entranceLongitude": 151.1135,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "wallys-29",
+      "29 wally's walk"
+    ],
+    "gridRef": "L11",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
+  },
+  {
+    "id": "wallys-27",
+    "code": "wallys-27",
+    "name": "27 Wally's Walk",
+    "description": "Open Day venue.",
+    "address": "27 Wally's Walk",
+    "category": "teaching",
+    "latitude": -33.7741,
+    "longitude": 151.1136,
+    "entranceLatitude": -33.7741,
+    "entranceLongitude": 151.1136,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "wallys-27",
+      "27 wally's walk"
+    ],
+    "gridRef": "L12",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
+  },
+  {
+    "id": "wallys-23",
+    "code": "wallys-23",
+    "name": "23 Wally's Walk",
+    "description": "Open Day venue.",
+    "address": "23 Wally's Walk",
+    "category": "teaching",
+    "latitude": -33.7742,
+    "longitude": 151.1137,
+    "entranceLatitude": -33.7742,
+    "entranceLongitude": 151.1137,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "wallys-23",
+      "23 wally's walk"
+    ],
+    "gridRef": "L14",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
+  },
+  {
+    "id": "wallys-21",
+    "code": "wallys-21",
+    "name": "21 Wally's Walk",
+    "description": "Open Day venue.",
+    "address": "21 Wally's Walk",
+    "category": "teaching",
+    "latitude": -33.7743,
+    "longitude": 151.1138,
+    "entranceLatitude": -33.7743,
+    "entranceLongitude": 151.1138,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "wallys-21",
+      "21 wally's walk"
+    ],
+    "gridRef": "L15",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
+  },
+  {
+    "id": "wallys-17",
+    "code": "wallys-17",
+    "name": "17 Wally's Walk",
+    "description": "Open Day venue.",
+    "address": "17 Wally's Walk",
+    "category": "teaching",
+    "latitude": -33.7744,
+    "longitude": 151.1139,
+    "entranceLatitude": -33.7744,
+    "entranceLongitude": 151.1139,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "wallys-17",
+      "17 wally's walk"
+    ],
+    "gridRef": "L17",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
+  },
+  {
+    "id": "ondaatje-14",
+    "code": "ondaatje-14",
+    "name": "14 Sir Christopher Ondaatje Avenue",
+    "description": "Open Day venue.",
+    "address": "14 Sir Christopher Ondaatje Avenue",
+    "category": "teaching",
+    "latitude": -33.7746,
+    "longitude": 151.1141,
+    "entranceLatitude": -33.7746,
+    "entranceLongitude": 151.1141,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "ondaatje-14",
+      "14 sir christopher ondaatje avenue"
+    ],
+    "gridRef": "J20",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
+  },
+  {
+    "id": "wallys-1",
+    "code": "wallys-1",
+    "name": "1 Wally's Walk",
+    "description": "Open Day venue.",
+    "address": "1 Wally's Walk",
+    "category": "teaching",
+    "latitude": -33.7747,
+    "longitude": 151.1142,
+    "entranceLatitude": -33.7747,
+    "entranceLongitude": 151.1142,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "wallys-1",
+      "1 wally's walk"
+    ],
+    "gridRef": "K27",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
+  },
+  {
+    "id": "wallys-25",
+    "code": "wallys-25",
+    "name": "25 Wally's Walk",
+    "description": "Open Day venue.",
+    "address": "25 Wally's Walk",
+    "category": "teaching",
+    "latitude": -33.7748,
+    "longitude": 151.1143,
+    "entranceLatitude": -33.7748,
+    "entranceLongitude": 151.1143,
+    "campusX": 0,
+    "campusY": 0,
+    "aliases": [],
+    "tags": [
+      "open day"
+    ],
+    "searchTokens": [
+      "wallys-25",
+      "25 wally's walk"
+    ],
+    "gridRef": "N12",
+    "levels": [],
+    "wheelchair": true,
+    "studentServicesGroups": [],
+    "campusHubGroups": []
   }
 ]
