@@ -21,8 +21,12 @@ Future<void> _ensureIndoorServer() =>
     _indoorServerStart ??= _indoorAssetServer.start();
 
 class IndoorWebView extends StatefulWidget {
-  const IndoorWebView({super.key, required this.manifest});
+  const IndoorWebView({super.key, required this.manifest, this.firstSceneId});
   final IndoorManifest manifest;
+
+  /// Scene id Pannellum should open on first. When null (or not a known node)
+  /// the viewer opens the manifest's first node.
+  final String? firstSceneId;
 
   @override
   State<IndoorWebView> createState() => _IndoorWebViewState();
@@ -64,6 +68,7 @@ class _IndoorWebViewState extends State<IndoorWebView> {
         // `assets/data/indoor/...`, so the base is `/data`.
         final config = widget.manifest.buildPannellumConfig(
           assetBaseUrl: '$_indoorServerBase/data',
+          firstSceneId: widget.firstSceneId,
         );
         await controller.evaluateJavascript(
           source: 'loadTour(${jsonEncode(config)});',

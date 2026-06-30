@@ -61,7 +61,10 @@ class IndoorManifest {
     return IndoorManifest(nodes: nodeList);
   }
 
-  Map<String, dynamic> buildPannellumConfig({required String assetBaseUrl}) {
+  Map<String, dynamic> buildPannellumConfig({
+    required String assetBaseUrl,
+    String? firstSceneId,
+  }) {
     final scenes = <String, dynamic>{};
     for (final node in nodes) {
       scenes[node.id] = {
@@ -78,9 +81,12 @@ class IndoorManifest {
         ],
       };
     }
+    final hasRequested =
+        firstSceneId != null && nodes.any((n) => n.id == firstSceneId);
     return {
       'default': {
-        if (nodes.isNotEmpty) 'firstScene': nodes.first.id,
+        if (nodes.isNotEmpty)
+          'firstScene': hasRequested ? firstSceneId : nodes.first.id,
         'sceneFadeDuration': 600,
       },
       'scenes': scenes,
