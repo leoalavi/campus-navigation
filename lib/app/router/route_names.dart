@@ -23,5 +23,6 @@ abstract final class RouteNames {
   // QR scan
   static const String scan = 'scan';
   static const String locationDetail = 'location-detail';
+  static const String locationAr = 'location-ar';
   static const String indoorPreview = 'indoor-preview';
 }
