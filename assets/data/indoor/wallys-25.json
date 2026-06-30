@@ -1,0 +1,1 @@
+{"nodes":[{"id":"entrance","image":"indoor/_placeholder.jpg","description":"Entrance — 25 Wally's Walk","neighbours":[{"targetId":"c122","heading":0,"label":"C122 Exhibition Space"}]},{"id":"c122","image":"indoor/_placeholder.jpg","description":"C122 Exhibition Space","neighbours":[{"targetId":"entrance","heading":180,"label":"Entrance"}]}]}

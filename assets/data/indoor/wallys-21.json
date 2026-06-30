@@ -1,0 +1,1 @@
+{"nodes":[{"id":"entrance","image":"indoor/_placeholder.jpg","description":"Entrance — 21 Wally's Walk","neighbours":[{"targetId":"macquarie","heading":0,"label":"Macquarie Theatre"}]},{"id":"macquarie","image":"indoor/_placeholder.jpg","description":"Macquarie Theatre","neighbours":[{"targetId":"entrance","heading":180,"label":"Entrance"}]}]}

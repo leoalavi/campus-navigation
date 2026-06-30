@@ -2545,5 +2545,28 @@
   "mapModeAr": "AR",
   "arNoBuildingSelected": "Select a building to view indoors",
   "arComingSoon": "Indoor preview coming soon",
-  "arListView": "List view"
+  "arListView": "List view",
+  "cardViewOnCampusMap": "View on Campus Map",
+  "cardViewArMap": "View AR map",
+  "cardAddToYourDayCta": "Add to Your Day",
+  "cardAddToYourDay": "Added to Your Day",
+  "cardFullSchedule": "Full schedule",
+  "cardArPreviewTitle": "AR preview",
+  "cardNoArPreview": "No AR preview available",
+  "stopLiveNow": "Live now: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Up next: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

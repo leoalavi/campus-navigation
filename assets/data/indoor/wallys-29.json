@@ -1,0 +1,1 @@
+{"nodes":[{"id":"entrance","image":"indoor/_placeholder.jpg","description":"Entrance — 29 Wally's Walk","neighbours":[{"targetId":"theatre-1","heading":0,"label":"Theatre 1"}]},{"id":"theatre-1","image":"indoor/_placeholder.jpg","description":"Theatre 1","neighbours":[{"targetId":"entrance","heading":180,"label":"Entrance"}]}]}

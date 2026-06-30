@@ -17,6 +17,7 @@ import 'package:mq_journey/features/settings/presentation/controllers/settings_c
 import 'package:mq_journey/features/settings/presentation/pages/settings_page.dart';
 import 'package:mq_journey/features/scan/presentation/pages/scan_page.dart';
 import 'package:mq_journey/features/scan/presentation/pages/location_card_page.dart';
+import 'package:mq_journey/features/scan/presentation/pages/location_ar_page.dart';
 import 'package:mq_journey/features/scan/presentation/pages/indoor_preview_page.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -139,6 +140,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => LocationCardPage(
           locationId: state.pathParameters['locationId'] ?? '',
         ),
+        routes: [
+          GoRoute(
+            path: 'ar',
+            name: RouteNames.locationAr,
+            builder: (context, state) => LocationArPage(
+              locationId: state.pathParameters['locationId'] ?? '',
+              stopId: state.uri.queryParameters['stop'],
+            ),
+          ),
+        ],
       ),
       // The shell route handles the bottom navigation bar and nested routing.
       StatefulShellRoute.indexedStack(

@@ -45,9 +45,12 @@ class IndoorManifest {
             neighbours: ((m['neighbours'] as List?) ?? [])
                 .map((n) {
                   final nm = n as Map<String, dynamic>;
+                  // Manifest assets use `targetId`/`heading`; older fixtures
+                  // use `id`/`bearing`. Accept both schemas.
                   return NodeNeighbour(
-                    id: nm['id'] as String,
-                    bearing: (nm['bearing'] as num).toDouble(),
+                    id: (nm['targetId'] ?? nm['id']) as String,
+                    bearing: ((nm['heading'] ?? nm['bearing']) as num)
+                        .toDouble(),
                     label: nm['label'] as String?,
                   );
                 })
@@ -58,7 +61,10 @@ class IndoorManifest {
     return IndoorManifest(nodes: nodeList);
   }
 
-  Map<String, dynamic> buildPannellumConfig({required String assetBaseUrl}) {
+  Map<String, dynamic> buildPannellumConfig({
+    required String assetBaseUrl,
+    String? firstSceneId,
+  }) {
     final scenes = <String, dynamic>{};
     for (final node in nodes) {
       scenes[node.id] = {
@@ -75,9 +81,12 @@ class IndoorManifest {
         ],
       };
     }
+    final hasRequested =
+        firstSceneId != null && nodes.any((n) => n.id == firstSceneId);
     return {
       'default': {
-        if (nodes.isNotEmpty) 'firstScene': nodes.first.id,
+        if (nodes.isNotEmpty)
+          'firstScene': hasRequested ? firstSceneId : nodes.first.id,
         'sceneFadeDuration': 600,
       },
       'scenes': scenes,

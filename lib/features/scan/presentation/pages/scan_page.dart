@@ -9,14 +9,7 @@ import 'package:mq_journey/features/scan/presentation/widgets/scanner_view.dart'
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum _ScanState {
-  permissionRequired,
-  scanning,
-  decoding,
-  denied,
-  notOnTrail,
-  decodeError,
-}
+enum _ScanState { scanning, decoding, denied, notOnTrail, decodeError }
 
 class ScanPage extends ConsumerStatefulWidget {
   const ScanPage({super.key});
@@ -28,7 +21,6 @@ class ScanPage extends ConsumerStatefulWidget {
 class _ScanPageState extends ConsumerState<ScanPage> {
   late final MobileScannerController _scannerController;
   _ScanState _currentScanState = _ScanState.scanning;
-  bool _torchOn = false;
   int _lastProcessed = 0;
   AppLifecycleListener? _lifecycleListener;
 
@@ -50,33 +42,38 @@ class _ScanPageState extends ConsumerState<ScanPage> {
   }
 
   void _onAppPause() {
+    // Permission dialogs trigger lifecycle changes before the camera is ready;
+    // don't drive the controller until permission has been granted.
+    if (!_scannerController.value.hasCameraPermission) return;
     _scannerController.pause();
   }
 
   void _onAppResume() {
+    if (!_scannerController.value.hasCameraPermission) return;
     _scannerController.start();
   }
 
   void _toggleTorch() {
-    setState(() => _torchOn = !_torchOn);
     _scannerController.toggleTorch();
   }
 
   String? _parseLocationId(String raw) {
     final uri = Uri.tryParse(raw);
     if (uri == null) return null;
-    if (uri.host == 'mq.edu.au' || uri.scheme == 'io.mqjourney') {
+    final host = uri.host.toLowerCase();
+    final isMqHost = host == 'mq.edu.au' || host.endsWith('.mq.edu.au');
+    if (isMqHost || uri.scheme == 'io.mqjourney') {
       return uri.queryParameters['locationId'];
     }
     return null;
   }
 
   Future<void> _onDetectBarcode(String raw) async {
-    setState(() => _currentScanState = _ScanState.decoding);
-
     final now = DateTime.now().millisecondsSinceEpoch;
     if (now - _lastProcessed < 1500) return;
     _lastProcessed = now;
+
+    setState(() => _currentScanState = _ScanState.decoding);
 
     final locationId = _parseLocationId(raw);
     if (locationId == null) {
@@ -85,12 +82,19 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     }
 
     final manifest = await ref.read(trailManifestProvider.future);
-    if (!manifest.contains(locationId)) {
+    final location = manifest.byId(locationId);
+    if (location == null) {
       setState(() => _currentScanState = _ScanState.notOnTrail);
       return;
     }
 
-    final visit = VisitEvent(locationId: locationId, scannedAt: DateTime.now());
+    // Carry the building code so the visit is recorded against the building
+    // (the local visited-badge tracking is keyed by building code).
+    final visit = VisitEvent(
+      locationId: locationId,
+      buildingId: location.buildingId,
+      scannedAt: DateTime.now(),
+    );
     await ref.read(progressApiProvider).recordVisit(visit);
 
     if (!mounted) return;
@@ -112,9 +116,15 @@ class _ScanPageState extends ConsumerState<ScanPage> {
           title: Text(l10n.scanQrCta),
           actions: [
             if (_currentScanState == _ScanState.scanning)
-              IconButton(
-                icon: Icon(_torchOn ? Icons.flash_on : Icons.flash_off),
-                onPressed: _toggleTorch,
+              ValueListenableBuilder<MobileScannerState>(
+                valueListenable: _scannerController,
+                builder: (context, state, _) {
+                  final torchOn = state.torchState == TorchState.on;
+                  return IconButton(
+                    icon: Icon(torchOn ? Icons.flash_on : Icons.flash_off),
+                    onPressed: _toggleTorch,
+                  );
+                },
               ),
           ],
         ),
@@ -187,7 +197,6 @@ class _ScanPageState extends ConsumerState<ScanPage> {
         );
       case _ScanState.decoding:
         return const Center(child: CircularProgressIndicator());
-      case _ScanState.permissionRequired:
       case _ScanState.scanning:
         return Stack(
           children: [
