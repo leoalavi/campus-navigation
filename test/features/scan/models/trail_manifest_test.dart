@@ -36,5 +36,32 @@ void main() {
     test('rejects malformed JSON gracefully', () {
       expect(() => TrailManifest.fromJson('not json'), throwsFormatException);
     });
+
+    test('parses photos, arSceneId and stops', () {
+      const raw = '''
+      {"locations":[{
+        "locationId":"wallys-1","buildingId":"wallys-1","title":"1 Wally's Walk",
+        "photos":["assets/photos/_placeholder.jpg"],
+        "arSceneId":"entrance",
+        "stops":[
+          {"stopId":"wallys-1-g03","title":"Theatre G03","arSceneId":"theatre-g03","scheduleLocationId":"wallys-1-g03"}
+        ]
+      }]}''';
+      final m = TrailManifest.fromJson(raw);
+      final loc = m.byId('wallys-1')!;
+      expect(loc.photos, ['assets/photos/_placeholder.jpg']);
+      expect(loc.arSceneId, 'entrance');
+      expect(loc.stops.single.stopId, 'wallys-1-g03');
+      expect(loc.stops.single.arSceneId, 'theatre-g03');
+      expect(loc.stops.single.scheduleLocationId, 'wallys-1-g03');
+    });
+
+    test('defaults photos/stops to empty and arSceneId to null when absent', () {
+      const raw = '{"locations":[{"locationId":"x","title":"X"}]}';
+      final loc = TrailManifest.fromJson(raw).byId('x')!;
+      expect(loc.photos, isEmpty);
+      expect(loc.stops, isEmpty);
+      expect(loc.arSceneId, isNull);
+    });
   });
 }
