@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
 import 'package:mq_journey/features/scan/domain/contracts/my_day_entry.dart';
@@ -105,6 +106,7 @@ class _PrimaryButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
@@ -116,7 +118,7 @@ class _PrimaryButtons extends StatelessWidget {
                     )
                 : null,
             icon: const Icon(Icons.map),
-            label: const Text('View on Campus Map'),
+            label: Text(l10n.cardViewOnCampusMap),
           ),
         ),
         if (arEnabled(loc)) ...[
@@ -128,7 +130,7 @@ class _PrimaryButtons extends StatelessWidget {
                 pathParameters: {'locationId': content.locationId},
               ),
               icon: const Icon(Icons.view_in_ar),
-              label: const Text('View AR map'),
+              label: Text(l10n.cardViewArMap),
             ),
           ),
         ],
@@ -143,24 +145,25 @@ class _SecondaryActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final scheduleUrl = content.fullScheduleUrl;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         OutlinedButton.icon(
           onPressed: () async {
+            final messenger = ScaffoldMessenger.of(context);
+            final addedMsg = l10n.cardAddToYourDay;
             final api = ref.read(myDayApiProvider);
             await api.addToDay(
               MyDayEntry(locationId: content.locationId, when: DateTime.now()),
             );
             if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Added to Your Day')),
-              );
+              messenger.showSnackBar(SnackBar(content: Text(addedMsg)));
             }
           },
           icon: const Icon(Icons.calendar_today),
-          label: const Text('Add to Your Day'),
+          label: Text(l10n.cardAddToYourDayCta),
         ),
         // Full schedule link — spec §3/§4; hidden when fullScheduleUrl is null.
         if (scheduleUrl != null && scheduleUrl.isNotEmpty) ...[
@@ -171,7 +174,7 @@ class _SecondaryActions extends ConsumerWidget {
               mode: LaunchMode.externalApplication,
             ),
             icon: const Icon(Icons.open_in_new),
-            label: const Text('Full schedule'),
+            label: Text(l10n.cardFullSchedule),
           ),
         ],
       ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/indoor_webview.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/indoor_stop_list.dart';
@@ -26,9 +27,10 @@ class LocationArPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final trailAsync = ref.watch(trailManifestProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('AR preview')),
+      appBar: AppBar(title: Text(l10n.cardArPreviewTitle)),
       body: trailAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Could not load AR: $e')),
@@ -36,7 +38,7 @@ class LocationArPage extends ConsumerWidget {
           final loc = trail.byId(locationId);
           final buildingId = loc?.buildingId;
           if (loc == null || buildingId == null) {
-            return const Center(child: Text('No AR preview available'));
+            return Center(child: Text(l10n.cardNoArPreview));
           }
           final manifestAsync = ref.watch(indoorManifestProvider(buildingId));
           return manifestAsync.when(
@@ -44,7 +46,7 @@ class LocationArPage extends ConsumerWidget {
             error: (e, _) => Center(child: Text('Could not load AR: $e')),
             data: (manifest) {
               if (manifest == null || manifest.isEmpty) {
-                return const Center(child: Text('No AR preview available'));
+                return Center(child: Text(l10n.cardNoArPreview));
               }
               String? stopScene;
               for (final s in loc.stops) {
