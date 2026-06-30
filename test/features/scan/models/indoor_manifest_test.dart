@@ -57,14 +57,16 @@ void main() {
       expect((cfg['default'] as Map)['firstScene'], 'stairs');
     });
 
-    test('buildPannellumConfig falls back to first node for unknown firstSceneId',
-        () {
-      final m = IndoorManifest.fromJson(json);
-      final cfg = m.buildPannellumConfig(
-        assetBaseUrl: '/data',
-        firstSceneId: 'missing',
-      );
-      expect((cfg['default'] as Map)['firstScene'], 'lobby');
-    });
+    test(
+      'buildPannellumConfig falls back to first node for unknown firstSceneId',
+      () {
+        final m = IndoorManifest.fromJson(json);
+        final cfg = m.buildPannellumConfig(
+          assetBaseUrl: '/data',
+          firstSceneId: 'missing',
+        );
+        expect((cfg['default'] as Map)['firstScene'], 'lobby');
+      },
+    );
   });
 }

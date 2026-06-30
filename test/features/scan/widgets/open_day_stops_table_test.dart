@@ -19,15 +19,17 @@ void main() {
       OpenDayStop(stopId: 'a', title: 'Theatre G03', arSceneId: 'g03'),
       OpenDayStop(stopId: 'b', title: 'Theatre 102', arSceneId: '102'),
     ];
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: OpenDayStopsTable(
-          stops: stops,
-          schedule: _NoSchedule(),
-          onTapStop: (s) => tapped = s,
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: OpenDayStopsTable(
+            stops: stops,
+            schedule: _NoSchedule(),
+            onTapStop: (s) => tapped = s,
+          ),
         ),
       ),
-    ));
+    );
     expect(find.text('Theatre G03'), findsOneWidget);
     expect(find.text('Theatre 102'), findsOneWidget);
     await tester.tap(find.text('Theatre G03'));
@@ -35,15 +37,17 @@ void main() {
   });
 
   testWidgets('collapses to nothing when empty', (tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: OpenDayStopsTable(
-          stops: const [],
-          schedule: _NoSchedule(),
-          onTapStop: (_) {},
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: OpenDayStopsTable(
+            stops: const [],
+            schedule: _NoSchedule(),
+            onTapStop: (_) {},
+          ),
         ),
       ),
-    ));
+    );
     expect(find.byType(ListTile), findsNothing);
   });
 }

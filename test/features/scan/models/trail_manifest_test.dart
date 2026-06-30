@@ -56,12 +56,15 @@ void main() {
       expect(loc.stops.single.scheduleLocationId, 'wallys-1-g03');
     });
 
-    test('defaults photos/stops to empty and arSceneId to null when absent', () {
-      const raw = '{"locations":[{"locationId":"x","title":"X"}]}';
-      final loc = TrailManifest.fromJson(raw).byId('x')!;
-      expect(loc.photos, isEmpty);
-      expect(loc.stops, isEmpty);
-      expect(loc.arSceneId, isNull);
-    });
+    test(
+      'defaults photos/stops to empty and arSceneId to null when absent',
+      () {
+        const raw = '{"locations":[{"locationId":"x","title":"X"}]}';
+        final loc = TrailManifest.fromJson(raw).byId('x')!;
+        expect(loc.photos, isEmpty);
+        expect(loc.stops, isEmpty);
+        expect(loc.arSceneId, isNull);
+      },
+    );
   });
 }

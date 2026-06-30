@@ -19,7 +19,8 @@ class OpenDayStop {
 @immutable
 class TrailLocation {
   final String locationId;
-  final String? buildingId; // stable address slug, e.g. "wallys-23" — NOT a map grid ref
+  final String?
+  buildingId; // stable address slug, e.g. "wallys-23" — NOT a map grid ref
   final String title;
   final List<String> photos;
   final String? arSceneId; // this location's own entrance scene (a node id)

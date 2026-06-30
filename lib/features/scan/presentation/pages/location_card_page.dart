@@ -38,11 +38,14 @@ class LocationCardPage extends ConsumerWidget {
     // Campus-Map button is enabled only when the building resolves to a real
     // entry in buildings.json (spec §5: "a building with entrance coords"),
     // never just because a buildingId string is present.
-    final mapEnabled = content.buildingId != null &&
+    final mapEnabled =
+        content.buildingId != null &&
         registry?.byCode(content.buildingId!) != null;
-    final visitedAsync =
-        ref.watch(visitedStateProvider(content.buildingId ?? locationId));
-    final visited = visitedAsync.asData?.value ??
+    final visitedAsync = ref.watch(
+      visitedStateProvider(content.buildingId ?? locationId),
+    );
+    final visited =
+        visitedAsync.asData?.value ??
         const VisitedState(visited: false, rewardEarned: false);
     // Card-level Live/Next chips are keyed by locationId (existing behaviour);
     // they collapse to nothing when the partner schedule has no match. If the
@@ -62,11 +65,15 @@ class LocationCardPage extends ConsumerWidget {
               fallbackAsset: content.heroImageAsset,
             ),
             const SizedBox(height: 16),
-            Text(content.title,
-                style: Theme.of(context).textTheme.headlineSmall),
+            Text(
+              content.title,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
             const SizedBox(height: 8),
-            Text(content.shortDescription,
-                style: Theme.of(context).textTheme.bodyMedium),
+            Text(
+              content.shortDescription,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
             const SizedBox(height: 16),
             _PrimaryButtons(content: content, loc: loc, mapEnabled: mapEnabled),
             const SizedBox(height: 16),
@@ -113,9 +120,9 @@ class _PrimaryButtons extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: mapEnabled
                 ? () => context.goNamed(
-                      RouteNames.map,
-                      queryParameters: {'building': content.buildingId!},
-                    )
+                    RouteNames.map,
+                    queryParameters: {'building': content.buildingId!},
+                  )
                 : null,
             icon: const Icon(Icons.map),
             label: Text(l10n.cardViewOnCampusMap),

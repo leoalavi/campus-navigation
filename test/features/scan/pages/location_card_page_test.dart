@@ -48,53 +48,66 @@ Widget _app() {
 }
 
 void main() {
-  final trail = TrailManifest(locations: const [
-    TrailLocation(
-      locationId: 'wallys-1',
-      buildingId: 'wallys-1',
-      title: '1 Wally\'s Walk',
-      photos: ['assets/photos/_placeholder.jpg'],
-      arSceneId: 'entrance',
-      stops: [
-        OpenDayStop(
-            stopId: 'wallys-1-g03', title: 'Theatre G03', arSceneId: 'theatre-g03'),
-      ],
-    ),
-  ]);
+  final trail = TrailManifest(
+    locations: const [
+      TrailLocation(
+        locationId: 'wallys-1',
+        buildingId: 'wallys-1',
+        title: '1 Wally\'s Walk',
+        photos: ['assets/photos/_placeholder.jpg'],
+        arSceneId: 'entrance',
+        stops: [
+          OpenDayStop(
+            stopId: 'wallys-1-g03',
+            title: 'Theatre G03',
+            arSceneId: 'theatre-g03',
+          ),
+        ],
+      ),
+    ],
+  );
 
-  const registry = BuildingsRegistry(buildings: [
-    BuildingEntry(
-      code: 'wallys-1',
-      name: '1 Wally\'s Walk',
-      campusX: 0,
-      campusY: 0,
-      entranceLatitude: -33.7747,
-      entranceLongitude: 151.1142,
-    ),
-  ]);
+  const registry = BuildingsRegistry(
+    buildings: [
+      BuildingEntry(
+        code: 'wallys-1',
+        name: '1 Wally\'s Walk',
+        campusX: 0,
+        campusY: 0,
+        entranceLatitude: -33.7747,
+        entranceLongitude: 151.1142,
+      ),
+    ],
+  );
 
   // Inferred return type is List<Override> — never named explicitly.
   baseOverrides({String? scheduleUrl}) => [
-        trailManifestProvider.overrideWith((ref) async => trail),
-        buildingsRegistryProvider.overrideWith((ref) async => registry),
-        locationContentProvider.overrideWith((ref, id) => LocationContent(
-              locationId: id,
-              title: '1 Wally\'s Walk',
-              heroImageAsset: 'assets/images/placeholder_hero.png',
-              shortDescription: 'One. Two. Three.',
-              buildingId: 'wallys-1',
-              fullScheduleUrl: scheduleUrl,
-            )),
-        scheduleProvider.overrideWith((ref) => _NoSchedule()),
-        visitedStateProvider.overrideWith((ref, id) => Stream.value(
-            const VisitedState(visited: false, rewardEarned: false))),
-        myDayApiProvider.overrideWith((ref) => FakeMyDayApi()),
-      ];
+    trailManifestProvider.overrideWith((ref) async => trail),
+    buildingsRegistryProvider.overrideWith((ref) async => registry),
+    locationContentProvider.overrideWith(
+      (ref, id) => LocationContent(
+        locationId: id,
+        title: '1 Wally\'s Walk',
+        heroImageAsset: 'assets/images/placeholder_hero.png',
+        shortDescription: 'One. Two. Three.',
+        buildingId: 'wallys-1',
+        fullScheduleUrl: scheduleUrl,
+      ),
+    ),
+    scheduleProvider.overrideWith((ref) => _NoSchedule()),
+    visitedStateProvider.overrideWith(
+      (ref, id) =>
+          Stream.value(const VisitedState(visited: false, rewardEarned: false)),
+    ),
+    myDayApiProvider.overrideWith((ref) => FakeMyDayApi()),
+  ];
 
-  testWidgets('renders gallery, 3-sentence read, both buttons and stops',
-      (tester) async {
+  testWidgets('renders gallery, 3-sentence read, both buttons and stops', (
+    tester,
+  ) async {
     await tester.pumpWidget(
-        ProviderScope(overrides: baseOverrides(), child: _app()));
+      ProviderScope(overrides: baseOverrides(), child: _app()),
+    );
     await tester.pumpAndSettle();
     expect(find.byType(PhotoGallery), findsOneWidget);
     expect(find.text('One. Two. Three.'), findsOneWidget);
@@ -106,40 +119,56 @@ void main() {
   });
 
   testWidgets('hides AR button when no scene anywhere', (tester) async {
-    final t = TrailManifest(locations: const [
-      TrailLocation(locationId: 'wallys-1', buildingId: 'wallys-1', title: 'x'),
-    ]);
-    await tester.pumpWidget(ProviderScope(
-      overrides: [
-        trailManifestProvider.overrideWith((ref) async => t),
-        ...baseOverrides().skip(1),
+    final t = TrailManifest(
+      locations: const [
+        TrailLocation(
+          locationId: 'wallys-1',
+          buildingId: 'wallys-1',
+          title: 'x',
+        ),
       ],
-      child: _app(),
-    ));
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          trailManifestProvider.overrideWith((ref) async => t),
+          ...baseOverrides().skip(1),
+        ],
+        child: _app(),
+      ),
+    );
     await tester.pumpAndSettle();
     expect(find.text('View AR map'), findsNothing);
   });
 
-  testWidgets('Campus Map button disabled when building not in registry',
-      (tester) async {
-    await tester.pumpWidget(ProviderScope(
-      overrides: [
-        trailManifestProvider.overrideWith((ref) async => trail),
-        buildingsRegistryProvider.overrideWith((ref) async => registry),
-        locationContentProvider.overrideWith((ref, id) => LocationContent(
+  testWidgets('Campus Map button disabled when building not in registry', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          trailManifestProvider.overrideWith((ref) async => trail),
+          buildingsRegistryProvider.overrideWith((ref) async => registry),
+          locationContentProvider.overrideWith(
+            (ref, id) => LocationContent(
               locationId: id,
               title: 'x',
               heroImageAsset: 'assets/images/placeholder_hero.png',
               shortDescription: 'One. Two. Three.',
               buildingId: 'not-in-registry', // absent from registry
-            )),
-        scheduleProvider.overrideWith((ref) => _NoSchedule()),
-        visitedStateProvider.overrideWith((ref, id) => Stream.value(
-            const VisitedState(visited: false, rewardEarned: false))),
-        myDayApiProvider.overrideWith((ref) => FakeMyDayApi()),
-      ],
-      child: _app(),
-    ));
+            ),
+          ),
+          scheduleProvider.overrideWith((ref) => _NoSchedule()),
+          visitedStateProvider.overrideWith(
+            (ref, id) => Stream.value(
+              const VisitedState(visited: false, rewardEarned: false),
+            ),
+          ),
+          myDayApiProvider.overrideWith((ref) => FakeMyDayApi()),
+        ],
+        child: _app(),
+      ),
+    );
     await tester.pumpAndSettle();
     final button = tester.widget<OutlinedButton>(
       find.widgetWithText(OutlinedButton, 'View on Campus Map'),
@@ -147,12 +176,15 @@ void main() {
     expect(button.onPressed, isNull); // disabled — never opens an empty map
   });
 
-  testWidgets('Full schedule link shows when fullScheduleUrl is set',
-      (tester) async {
-    await tester.pumpWidget(ProviderScope(
-      overrides: baseOverrides(scheduleUrl: 'https://mq.edu.au/openday'),
-      child: _app(),
-    ));
+  testWidgets('Full schedule link shows when fullScheduleUrl is set', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: baseOverrides(scheduleUrl: 'https://mq.edu.au/openday'),
+        child: _app(),
+      ),
+    );
     await tester.pumpAndSettle();
     expect(find.text('Full schedule'), findsOneWidget);
   });

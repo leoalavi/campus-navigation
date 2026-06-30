@@ -11,7 +11,10 @@ void main() {
   test('resolves a valid stop scene', () {
     expect(
       resolveArFirstScene(
-          manifest: manifest, stopSceneId: 'theatre-g03', entranceSceneId: 'entrance'),
+        manifest: manifest,
+        stopSceneId: 'theatre-g03',
+        entranceSceneId: 'entrance',
+      ),
       'theatre-g03',
     );
   });
@@ -19,7 +22,10 @@ void main() {
   test('falls back to entrance when stop scene missing', () {
     expect(
       resolveArFirstScene(
-          manifest: manifest, stopSceneId: 'nope', entranceSceneId: 'entrance'),
+        manifest: manifest,
+        stopSceneId: 'nope',
+        entranceSceneId: 'entrance',
+      ),
       'entrance',
     );
   });
@@ -27,7 +33,10 @@ void main() {
   test('returns null when neither resolves', () {
     expect(
       resolveArFirstScene(
-          manifest: manifest, stopSceneId: 'nope', entranceSceneId: 'also-nope'),
+        manifest: manifest,
+        stopSceneId: 'nope',
+        entranceSceneId: 'also-nope',
+      ),
       isNull,
     );
   });
