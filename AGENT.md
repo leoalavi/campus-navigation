@@ -44,6 +44,13 @@ lib/
 ```
 
 
+### Raouf: 2026-07-01 (Australia/Sydney) — Open Day Stamps celebration + passport
+**Scope:** Scan feature — celebration on confirmed first visit, new `/stamps` passport screen, Settings entry point
+**Summary:** Implemented the reward layer on top of the existing QR visit-tracking pipeline per the brainstormed spec via a 12-task TDD plan. Amended `ProgressApi.recordVisit` to return `Future<bool>` (isNewVisit) instead of discarding the signal. Added a bundled 9-entry stamp catalogue (`StampCatalogEntry`/`StampCatalogRepository`) and a pure `computeStampAward` derivation — never reads `OpenDayGamification` (the existing flat-XP service, left untouched as tech debt). New `StampEarnedSheet` celebration (confetti + reduce-motion gating + assertive screen-reader announcement) wired directly into `ScanPage._onDetectBarcode`; new `/stamps` route + `StampsPassportPage` grid; new "My Stamps" tile in Settings. Two documented deviations from the design doc: deferred `lottie` (no reveal asset authored yet, uses a built-in scale/fade instead) and a direct function-call trigger instead of the sketched stream-based `StampCelebrationController` (isNewVisit already guarantees exactly-once firing).
+**Files Changed:** see CHANGELOG.md entry of same date.
+**Verification:** `flutter analyze --no-fatal-infos` — 0 errors/warnings; `flutter test` — 399/399 passed (was 381); `scripts/check.sh --quick` all 11 gates green.
+**Follow-ups:** Real stamp artwork + Lottie reveal asset pending (placeholders/icons in use); `OpenDayGamification` cleanup is a future partner-owned migration; a full data wipe can cause one duplicate celebration (no duplicate row) — accepted trade-off, see design spec §9/§13.
+
 ### Raouf: 2026-07-01 (Australia/Sydney) — Expand test coverage + add a coverage gate to check.sh
 **Scope:** Repo-wide test coverage audit; `scripts/check.sh`; `.github/workflows/ci.yml`
 **Summary:** Triaged `lib/` vs `test/` to find real gaps (not coverage theatre) and added 16 new test files across two tiers. Tier 1 (previously zero coverage anywhere): the whole `timetable` feature, `HomePage`/`OnboardingPage`, `AppShell`, `ConnectivityService`, `SessionGuard`, `MqHaptics`, and `tfnswMetroProvider`'s no-commute-mode path. Tier 2 (widget polish): `RoutePanel`, `BuildingActionsSheet`, `OverlayPickerSheet`, `NotificationTile`, `OpenDayHomeCard`, `EventActionsSheet`, `ScheduleChips`, `CardVisitBadge`. Coverage (excl. generated code) rose 43.79% → 54.37%. Added a `scripts/check.sh` coverage gate (50% floor) and collapsed `.github/workflows/ci.yml`'s duplicated pub-get/format/analyze/test steps into a single `./scripts/check.sh --quick` call.

@@ -22,15 +22,20 @@ class SettingsProgressApiAdapter implements ProgressApi {
       _supabaseClientOverride ?? Supabase.instance.client;
 
   @override
-  Future<void> recordVisit(VisitEvent event) async {
+  Future<bool> recordVisit(VisitEvent event) async {
     await ensureAnonSession(supabaseClient: _supabaseClient);
+    var isNewVisit = false;
     if (event.buildingId != null) {
-      await _ref
+      isNewVisit = await _ref
           .read(settingsControllerProvider.notifier)
           .recordLocationVisit(event.buildingId!);
     }
 
-    await _enqueueStampUpsert(event.locationId);
+    if (isNewVisit) {
+      await _enqueueStampUpsert(event.locationId);
+    }
+
+    return isNewVisit;
   }
 
   Future<void> _enqueueStampUpsert(String locationId) async {

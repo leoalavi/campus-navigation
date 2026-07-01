@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
+import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/core/utils/haptics.dart';
@@ -482,6 +484,28 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   // notification schedule (see OpenDayReminderScheduler).
                   _SectionHeader(title: l10n.openDay_section),
                   _OpenDaySection(preferences: preferences),
+                  const SizedBox(height: MqSpacing.space6),
+
+                  // ── Open Day Stamps section ───────────────────
+                  //
+                  // Single entry point into the collectible passport
+                  // (/stamps). Kept as its own minimal section rather
+                  // than folded into Open Day above so it reads as a
+                  // distinct, persistent feature rather than an Open
+                  // Day sub-setting.
+                  _SectionHeader(title: l10n.stampsPassportTitle),
+                  _SettingsCard(
+                    children: [
+                      _TapRow(
+                        icon: Icons.local_activity_outlined,
+                        label: l10n.settingsMyStampsTile,
+                        value: l10n.settingsMyStampsSubtitle,
+                        semanticLabel: l10n.settingsMyStampsTile,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onTap: () => context.pushNamed(RouteNames.stamps),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: MqSpacing.space6),
 
                   // ── Accessibility & Data section ────────────

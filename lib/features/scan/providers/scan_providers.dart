@@ -6,9 +6,11 @@ import 'package:mq_journey/features/scan/data/adapters/settings_my_day_api_adapt
 import 'package:mq_journey/features/scan/data/repositories/trail_repository.dart';
 import 'package:mq_journey/features/scan/data/repositories/indoor_repository.dart';
 import 'package:mq_journey/features/scan/data/repositories/buildings_repository.dart';
+import 'package:mq_journey/features/scan/data/repositories/stamp_catalog_repository.dart';
 import 'package:mq_journey/features/scan/domain/contracts/my_day_api.dart';
 import 'package:mq_journey/features/scan/domain/contracts/schedule_provider.dart';
 import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
+import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
 import 'package:mq_journey/features/scan/domain/fakes/fake_schedule_provider.dart';
 import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
@@ -64,4 +66,12 @@ final visitedStateProvider = StreamProvider.family<VisitedState, String>((
   locationId,
 ) {
   return ref.watch(progressApiProvider).watch(locationId);
+});
+
+final stampCatalogRepositoryProvider = Provider<StampCatalogRepository>(
+  (ref) => StampCatalogRepository(),
+);
+
+final stampCatalogProvider = FutureProvider<List<StampCatalogEntry>>((ref) {
+  return ref.watch(stampCatalogRepositoryProvider).load();
 });

@@ -25,4 +25,7 @@ abstract final class RouteNames {
   static const String locationDetail = 'location-detail';
   static const String locationAr = 'location-ar';
   static const String indoorPreview = 'indoor-preview';
+
+  // Open Day stamps passport
+  static const String stamps = 'stamps';
 }
