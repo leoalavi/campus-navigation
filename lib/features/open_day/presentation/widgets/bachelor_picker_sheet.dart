@@ -309,25 +309,28 @@ class _BachelorRow extends StatelessWidget {
       button: true,
       selected: selected,
       label: bachelor.name,
-      child: ListTile(
-        dense: true,
-        title: Text(
-          bachelor.name,
-          style: context.textTheme.bodyLarge?.copyWith(
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            color: selected
-                ? (dark ? MqColors.charcoal800 : MqColors.red)
-                : (dark ? Colors.white : MqColors.contentPrimary),
+      child: Material(
+        type: MaterialType.transparency,
+        child: ListTile(
+          dense: true,
+          title: Text(
+            bachelor.name,
+            style: context.textTheme.bodyLarge?.copyWith(
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+              color: selected
+                  ? (dark ? MqColors.charcoal800 : MqColors.red)
+                  : (dark ? Colors.white : MqColors.contentPrimary),
+            ),
           ),
+          trailing: selected
+              ? Icon(
+                  Icons.check_rounded,
+                  color: dark ? MqColors.charcoal800 : MqColors.red,
+                  size: 20,
+                )
+              : null,
+          onTap: () => onSelect(bachelor),
         ),
-        trailing: selected
-            ? Icon(
-                Icons.check_rounded,
-                color: dark ? MqColors.charcoal800 : MqColors.red,
-                size: 20,
-              )
-            : null,
-        onTap: () => onSelect(bachelor),
       ),
     );
   }

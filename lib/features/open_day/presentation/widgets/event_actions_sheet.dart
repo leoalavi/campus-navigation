@@ -88,19 +88,22 @@ class EventActionsSheet extends ConsumerWidget {
               Semantics(
                 button: true,
                 label: l10n.openDay_viewInCampusMapSemantic(event.venueName),
-                child: ListTile(
-                  leading: Icon(
-                    Icons.location_on_rounded,
-                    color: dark ? MqColors.brightRed : MqColors.red,
-                  ),
-                  title: Text(
-                    l10n.openDay_viewInCampusMap,
-                    style: context.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.location_on_rounded,
+                      color: dark ? MqColors.brightRed : MqColors.red,
                     ),
+                    title: Text(
+                      l10n.openDay_viewInCampusMap,
+                      style: context.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    subtitle: Text(l10n.openDay_openInsideMqNav),
+                    onTap: () => Navigator.pop(context),
                   ),
-                  subtitle: Text(l10n.openDay_openInsideMqNav),
-                  onTap: () => Navigator.pop(context),
                 ),
               ),
             ] else
