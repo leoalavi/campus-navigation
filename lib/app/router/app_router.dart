@@ -19,6 +19,7 @@ import 'package:mq_journey/features/scan/presentation/pages/scan_page.dart';
 import 'package:mq_journey/features/scan/presentation/pages/location_card_page.dart';
 import 'package:mq_journey/features/scan/presentation/pages/location_ar_page.dart';
 import 'package:mq_journey/features/scan/presentation/pages/indoor_preview_page.dart';
+import 'package:mq_journey/features/scan/presentation/pages/stamps_passport_page.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -126,6 +127,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/favorites',
         name: RouteNames.favorites,
         builder: (context, state) => const FavoritesPage(),
+      ),
+      // Stamps passport — Open Day collectible progress screen.
+      GoRoute(
+        path: '/stamps',
+        name: RouteNames.stamps,
+        builder: (context, state) => const StampsPassportPage(),
       ),
       // QR scanner — camera surface for scanning Open Day QR codes.
       GoRoute(
