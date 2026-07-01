@@ -95,7 +95,8 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       buildingId: location.buildingId,
       scannedAt: DateTime.now(),
     );
-    await ref.read(progressApiProvider).recordVisit(visit);
+    // ignore: unused_local_variable
+    final isNewVisit = await ref.read(progressApiProvider).recordVisit(visit);
 
     if (!mounted) return;
     context.go('/location/$locationId');

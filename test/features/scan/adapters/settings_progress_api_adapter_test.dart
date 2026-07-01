@@ -46,7 +46,7 @@ void main() {
       expect(api, isA<SettingsProgressApiAdapter>());
     });
 
-    test('recordVisit updates local state via settings controller', () async {
+    test('recordVisit returns true and updates local state on first visit', () async {
       final container = ProviderContainer(
         overrides: [
           progressApiProvider.overrideWith((ref) {
@@ -69,11 +69,42 @@ void main() {
         scannedAt: DateTime(2026, 6, 29, 10, 0),
       );
 
-      await api.recordVisit(event);
+      final isNewVisit = await api.recordVisit(event);
 
+      expect(isNewVisit, isTrue);
       final prefs = container.read(settingsControllerProvider).value;
       expect(prefs, isNotNull);
       expect(prefs!.visitedLocationCodes, contains('C3A'));
+    });
+
+    test('recordVisit returns false on a repeat visit to the same building', () async {
+      final container = ProviderContainer(
+        overrides: [
+          progressApiProvider.overrideWith((ref) {
+            return SettingsProgressApiAdapter(
+              ref,
+              supabaseClient: mockSupabaseClient,
+            );
+          }),
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
+      );
+      addTearDown(() => container.dispose());
+
+      final api = container.read(progressApiProvider);
+      final event = VisitEvent(
+        locationId: 'lib-01',
+        buildingId: 'C3A',
+        scannedAt: DateTime(2026, 6, 29, 10, 0),
+      );
+
+      final first = await api.recordVisit(event);
+      final second = await api.recordVisit(event);
+
+      expect(first, isTrue);
+      expect(second, isFalse);
     });
 
     test('recordVisit does not silently no-op when session is missing', () {

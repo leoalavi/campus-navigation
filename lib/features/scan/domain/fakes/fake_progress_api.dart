@@ -17,9 +17,12 @@ class FakeProgressApi implements ProgressApi {
   }
 
   @override
-  Future<void> recordVisit(VisitEvent event) async {
-    _visited.add(event.locationId);
-    _controller.add(const VisitedState(visited: true, rewardEarned: false));
+  Future<bool> recordVisit(VisitEvent event) async {
+    final isNewVisit = _visited.add(event.locationId);
+    if (isNewVisit) {
+      _controller.add(const VisitedState(visited: true, rewardEarned: false));
+    }
+    return isNewVisit;
   }
 
   void dispose() => _controller.close();
