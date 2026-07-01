@@ -2568,5 +2568,44 @@
         "type": "String"
       }
     }
-  }
+  },
+  "stampCelebrationTitle": "Congratulations!",
+  "stampCelebrationCompleteTitle": "Passport complete!",
+  "stampCelebrationSubtitle": "You collected the {location} stamp",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Your Open Day passport has begun",
+  "stampCelebrationKeepExploring": "Keep exploring",
+  "stampCelebrationViewPassport": "View my passport",
+  "stampAlreadyCollected": "Already collected — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Congratulations. You collected the {location} stamp. {count} of {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "My Stamps",
+  "stampsPassportLockedHint": "Scan to collect",
+  "settingsMyStampsTile": "My Stamps",
+  "settingsMyStampsSubtitle": "View your Open Day passport"
 }
