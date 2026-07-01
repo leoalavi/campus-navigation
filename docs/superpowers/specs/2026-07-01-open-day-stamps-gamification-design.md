@@ -40,6 +40,8 @@
 > **Vocabulary:** use "stamp" / "passport" in all UI copy. "XP" is the partner's web-side reward layer — never rendered as a number in this surface. When `ProgressApi.watch` streams `rewardEarned: true`, render the partner's badge/chip; never compute it.
 
 > **Existing `OpenDayGamification` service (tech-debt note):** `lib/features/open_day/domain/services/open_day_gamification.dart` already computes a flat 50-XP-per-visit economy and predates this design. It is **not** part of this feature. Leave it in place and do not import it from any stamps/passport code — it likely has other consumers (`visitProgressProvider`, home) and cleaning it up is a partner-owned migration, not this feature's PR. The passport derives progress **only** from `UserPreferences.visitedLocationCodes` (§6), never from `OpenDayGamification`.
+>
+> **Verified boundary (not just an assumption):** `visitProgressProvider` (`lib/features/open_day/data/open_day_providers.dart:172`) does internally call `OpenDayGamification.progress()`, confirming the leak risk is real *in that provider*. Neither of this feature's new read paths touches it, though: the celebration trigger (`ScanPage`) and the passport (`StampsPassportPage`) both read `settingsControllerProvider`'s `visitedLocationCodes` directly, never `visitProgressProvider`. Any future change that makes stamps/passport code depend on `visitProgressProvider` must first confirm it's been split so the visited-count path doesn't carry `OpenDayGamification`'s XP field with it.
 
 ## 4. Experience design (screen by screen)
 
@@ -67,7 +69,8 @@
 
 - **👤 Why:** the first and final stamp are emotional peaks — mark them without inventing a points economy.
 - **🤖 Spec:** **first stamp** → the §4.1 sheet adds a one-line "Your Open Day passport has begun" note. **Passport complete (9/9)** → a distinct "Passport complete!" celebration (stronger confetti + a completion badge on `/stamps`). Both are pure UI states derived from the collected count; no partner call required.
-- **✅ Done when:** collecting the 1st stamp shows the begin note; collecting the 9th shows the completion celebration + badge exactly once; neither depends on partner code.
+- **Two distinct "exactly once" claims — don't conflate them.** (a) The *completion celebration* (the sheet + confetti) is a one-shot event, gated the same way the ordinary per-stamp celebration is: it can only fire from `recordVisit` returning `isNewVisit == true` for the 9th unique location, and `isNewVisit` can only be `true` once per location ever (§6's idempotent local set). No separate persisted `passportCompleteCelebrated` flag is needed — a second flag would duplicate a guarantee the data model already provides. (b) The *completion badge on `/stamps`* is a **persistent display state**, not a one-shot event — it is expected to render every time the passport is opened once `collected == 9`, the same way a filled progress ring always shows full. Do not gate the badge behind a one-shot flag; that would make it disappear after the first `/stamps` visit, which is wrong.
+- **✅ Done when:** collecting the 1st stamp shows the begin note; collecting the 9th shows the completion celebration exactly once (never re-fires on subsequent scans or app restarts); the completion badge on `/stamps` renders on every visit to the page once complete; neither depends on partner code.
 
 ### 4.5 Cross-cutting UX standards
 
@@ -178,7 +181,8 @@ open_day_stamps (id, user_id, location_id, scanned_at, created_at, unique(user_i
 | Reduce-motion on | Skip confetti + Lottie; static stamp + fade; still announce |
 | Screen reader on | Assertive congratulations announcement; semantic cell labels |
 | Missing stamp artwork | Neutral placeholder stamp; celebration + progress still fire |
-| 9/9 reached | Passport-complete celebration + badge, once |
+| 9/9 reached | Passport-complete celebration fires once (guaranteed by `isNewVisit`); the completion badge on `/stamps` then renders on every subsequent visit to the page (persistent state, not one-shot — see §4.4) |
+| Local data wiped via Settings → Danger Zone, same anonymous session survives | The wipe (`SettingsRepository.wipeAllLocalData` → `SecureStorageService.deleteAll()`) clears `UserPreferences.visitedLocationCodes` but does **not** touch the Supabase SDK's own session storage, so `auth.uid()` and the existing `open_day_stamps` rows survive. The next scan of a previously-stamped location reads an empty local set, so `isNewVisit` is `true` again and the celebration re-fires — but the remote upsert's `unique(user_id, location_id)` constraint prevents a duplicate row. **Accepted trade-off:** fixing this fully would require a remote existence check before every celebration, which conflicts with the offline-first / zero-extra-network-calls goal (§2, §8) for a rare, user-initiated action. If this needs to change later, the fix is a one-time reconciliation read of `open_day_stamps` back into the local set immediately after a wipe, not a per-scan check. |
 
 ## 10. Testing & Definition of Done
 
@@ -221,7 +225,8 @@ open_day_stamps (id, user_id, location_id, scanned_at, created_at, unique(user_i
 | Ownership creep into XP | Double-built economy | Render `rewardEarned` only; never compute points; never import `OpenDayGamification` (§3/§7) |
 | Offline scan loses the reward | Broken on flaky Open Day network | Local-first trigger + queued upsert (§6) |
 | Artwork gaps for 9 stamps | Empty-looking passport | Placeholder stamp; author as a content task; surface gaps in PR |
-| Stale `OpenDayGamification` service confuses future contributors | Someone wires the passport to the wrong progress source | §3 tech-debt note + explicit falsifier (§10) forbidding the import |
+| Stale `OpenDayGamification` service confuses future contributors | Someone wires the passport to the wrong progress source | §3 tech-debt note + explicit falsifier (§10) forbidding the import; verified `visitProgressProvider` (which *does* wrap `OpenDayGamification`) is never read by stamps/passport code (§3) |
+| Danger Zone wipe desyncs local vs. remote stamp truth | A previously-earned stamp can re-celebrate once after a full data wipe (no duplicate row, but a duplicate UI moment) | Documented as an accepted trade-off in §9 rather than adding a remote check before every celebration; revisit only if user reports surface |
 
 ## 14. Decisions log (defaults — overridable by Raouf)
 
@@ -233,6 +238,8 @@ open_day_stamps (id, user_id, location_id, scanned_at, created_at, unique(user_i
 - **Route & entry point:** `/stamps` is a **new** route (not previously reserved); reachable via a new Settings "My Stamps" tile + the celebration sheet's CTA + deep link. No 4th bottom-nav tab in v1.
 - **`OpenDayGamification`:** left in place, not imported by this feature, logged as tech-debt for a future partner-owned economy migration.
 - **`ProgressApi.recordVisit` contract:** amended to `Future<bool>` (isNewVisit), surfacing the existing `SettingsController.recordLocationVisit()` return value instead of discarding it.
+- **9/9 completion state:** no separate persisted `passportCompleteCelebrated` flag. The one-shot celebration is already exactly-once via `isNewVisit`; the `/stamps` completion badge is deliberately a persistent display state, not a one-shot event, so it renders every time the page opens at 9/9 (§4.4, §9).
+- **Local/remote desync after a full data wipe:** accepted as a known, low-severity trade-off rather than adding a remote reconciliation read before every celebration (§9, §13). Revisit only if this surfaces as a real user complaint.
 
 ## 15. Dependency alignment (verified against 2026 docs)
 
