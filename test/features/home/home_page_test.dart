@@ -33,7 +33,9 @@ Widget _app({required GoRouter router}) {
     overrides: [
       settingsControllerProvider.overrideWith(() => _FakeSettingsController()),
       mapControllerProvider.overrideWith(() => _FakeMapController()),
-      tfnswMetroProvider.overrideWith((ref) => Stream.value(const <MetroDeparture>[])),
+      tfnswMetroProvider.overrideWith(
+        (ref) => Stream.value(const <MetroDeparture>[]),
+      ),
       selectedBachelorProvider.overrideWithValue(null),
       openDayDataProvider.overrideWith(
         (ref) async => OpenDayData(
@@ -53,12 +55,19 @@ Widget _app({required GoRouter router}) {
   );
 }
 
-GoRouter _routerWithHome({required Widget Function() extraRouteBody, required String extraPath}) {
+GoRouter _routerWithHome({
+  required Widget Function() extraRouteBody,
+  required String extraPath,
+}) {
   return GoRouter(
     initialLocation: '/home',
     routes: [
       GoRoute(path: '/home', name: 'home', builder: (_, _) => const HomePage()),
-      GoRoute(path: extraPath, name: extraPath.replaceAll('/', ''), builder: (_, _) => extraRouteBody()),
+      GoRoute(
+        path: extraPath,
+        name: extraPath.replaceAll('/', ''),
+        builder: (_, _) => extraRouteBody(),
+      ),
     ],
   );
 }
@@ -66,7 +75,9 @@ GoRouter _routerWithHome({required Widget Function() extraRouteBody, required St
 void main() {
   setUpAll(() => tz.initializeTimeZones());
 
-  testWidgets('renders the welcome hero and quick access section', (tester) async {
+  testWidgets('renders the welcome hero and quick access section', (
+    tester,
+  ) async {
     final router = _routerWithHome(
       extraPath: '/scan',
       extraRouteBody: () => const Scaffold(body: Text('scan-page')),
@@ -107,8 +118,16 @@ void main() {
     final router = GoRouter(
       initialLocation: '/home',
       routes: [
-        GoRoute(path: '/home', name: 'home', builder: (_, _) => const HomePage()),
-        GoRoute(path: '/map', name: 'map', builder: (_, _) => const Scaffold(body: Text('map-page'))),
+        GoRoute(
+          path: '/home',
+          name: 'home',
+          builder: (_, _) => const HomePage(),
+        ),
+        GoRoute(
+          path: '/map',
+          name: 'map',
+          builder: (_, _) => const Scaffold(body: Text('map-page')),
+        ),
       ],
     );
 

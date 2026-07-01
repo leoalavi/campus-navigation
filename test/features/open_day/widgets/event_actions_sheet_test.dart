@@ -8,7 +8,11 @@ import 'package:mq_journey/features/map/domain/entities/building.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
 import 'package:mq_journey/features/open_day/presentation/widgets/event_actions_sheet.dart';
 
-const _building = Building(id: 'wallys-1', code: 'wallys-1', name: "1 Wally's Walk");
+const _building = Building(
+  id: 'wallys-1',
+  code: 'wallys-1',
+  name: "1 Wally's Walk",
+);
 
 final _mappableEvent = OpenDayEvent(
   id: 'evt-1',
@@ -65,45 +69,54 @@ Widget _app({required OpenDayEvent event, required List<Building> buildings}) {
 }
 
 void main() {
-  testWidgets('shows the campus-map action for an event with a resolvable venue', (
-    tester,
-  ) async {
-    await tester.pumpWidget(_app(event: _mappableEvent, buildings: const [_building]));
-    await tester.tap(find.text('open'));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'shows the campus-map action for an event with a resolvable venue',
+    (tester) async {
+      await tester.pumpWidget(
+        _app(event: _mappableEvent, buildings: const [_building]),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(EventActionsSheet)),
-    )!;
-    expect(find.text(l10n.openDay_viewInCampusMap), findsOneWidget);
-  });
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(EventActionsSheet)),
+      )!;
+      expect(find.text(l10n.openDay_viewInCampusMap), findsOneWidget);
+    },
+  );
 
-  testWidgets('shows the no-mappable-venue copy when the venue cannot be resolved', (
-    tester,
-  ) async {
-    await tester.pumpWidget(_app(event: _unmappableEvent, buildings: const [_building]));
-    await tester.tap(find.text('open'));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'shows the no-mappable-venue copy when the venue cannot be resolved',
+    (tester) async {
+      await tester.pumpWidget(
+        _app(event: _unmappableEvent, buildings: const [_building]),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(EventActionsSheet)),
-    )!;
-    expect(find.text(l10n.openDay_noMappableVenue), findsOneWidget);
-  });
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(EventActionsSheet)),
+      )!;
+      expect(find.text(l10n.openDay_noMappableVenue), findsOneWidget);
+    },
+  );
 
-  testWidgets('tapping the campus-map action closes the sheet and navigates to Map', (
-    tester,
-  ) async {
-    await tester.pumpWidget(_app(event: _mappableEvent, buildings: const [_building]));
-    await tester.tap(find.text('open'));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'tapping the campus-map action closes the sheet and navigates to Map',
+    (tester) async {
+      await tester.pumpWidget(
+        _app(event: _mappableEvent, buildings: const [_building]),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(EventActionsSheet)),
-    )!;
-    await tester.tap(find.text(l10n.openDay_viewInCampusMap));
-    await tester.pumpAndSettle();
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(EventActionsSheet)),
+      )!;
+      await tester.tap(find.text(l10n.openDay_viewInCampusMap));
+      await tester.pumpAndSettle();
 
-    expect(find.text('map-page'), findsOneWidget);
-  });
+      expect(find.text('map-page'), findsOneWidget);
+    },
+  );
 }

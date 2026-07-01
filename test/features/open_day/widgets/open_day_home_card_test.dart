@@ -32,10 +32,7 @@ class _FakeSettingsController extends SettingsController {
   Future<UserPreferences> build() async => _prefs;
 }
 
-Widget _app({
-  required List<OpenDayEvent> events,
-  String? selectedBachelorId,
-}) {
+Widget _app({required List<OpenDayEvent> events, String? selectedBachelorId}) {
   return ProviderScope(
     overrides: [
       settingsControllerProvider.overrideWith(
@@ -73,7 +70,9 @@ void main() {
     await tester.pumpWidget(_app(events: const []));
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(OpenDayHomeCard)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(OpenDayHomeCard)),
+    )!;
     expect(find.text(l10n.openDay_interestedInStudying), findsOneWidget);
   });
 
@@ -89,15 +88,18 @@ void main() {
     expect(find.textContaining(_event.venueName), findsOneWidget);
   });
 
-  testWidgets('shows the empty-sessions copy when the selected degree has none', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      _app(events: const [], selectedBachelorId: 'comp-sci'),
-    );
-    await tester.pumpAndSettle();
+  testWidgets(
+    'shows the empty-sessions copy when the selected degree has none',
+    (tester) async {
+      await tester.pumpWidget(
+        _app(events: const [], selectedBachelorId: 'comp-sci'),
+      );
+      await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(OpenDayHomeCard)))!;
-    expect(find.text(l10n.openDay_noSessionsYet), findsOneWidget);
-  });
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(OpenDayHomeCard)),
+      )!;
+      expect(find.text(l10n.openDay_noSessionsYet), findsOneWidget);
+    },
+  );
 }

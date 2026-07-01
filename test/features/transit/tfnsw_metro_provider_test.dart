@@ -13,34 +13,31 @@ class _FakeSettingsController extends SettingsController {
 }
 
 void main() {
-  test(
-    'tfnswMetroProvider yields an empty list immediately when no commute '
-    'mode is configured, without touching location or network',
-    () async {
-      // commuteMode 'none' is the early-return branch in tfnswMetroProvider —
-      // the only piece of this provider testable without an http client or
-      // location-source injection seam (see the rest of tfnsw_provider.dart,
-      // which calls http.get() directly with no DI point).
-      final container = ProviderContainer(
-        overrides: [
-          settingsControllerProvider.overrideWith(
-            () => _FakeSettingsController(
-              const UserPreferences(commuteMode: 'none'),
-            ),
+  test('tfnswMetroProvider yields an empty list immediately when no commute '
+      'mode is configured, without touching location or network', () async {
+    // commuteMode 'none' is the early-return branch in tfnswMetroProvider —
+    // the only piece of this provider testable without an http client or
+    // location-source injection seam (see the rest of tfnsw_provider.dart,
+    // which calls http.get() directly with no DI point).
+    final container = ProviderContainer(
+      overrides: [
+        settingsControllerProvider.overrideWith(
+          () => _FakeSettingsController(
+            const UserPreferences(commuteMode: 'none'),
           ),
-        ],
-      );
-      addTearDown(container.dispose);
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
 
-      // tfnswMetroProvider is autoDispose — an active listener is required
-      // to keep it alive across the async gap, otherwise it tears itself
-      // down before the stream emits its first value.
-      final sub = container.listen(tfnswMetroProvider, (_, _) {});
-      addTearDown(sub.close);
+    // tfnswMetroProvider is autoDispose — an active listener is required
+    // to keep it alive across the async gap, otherwise it tears itself
+    // down before the stream emits its first value.
+    final sub = container.listen(tfnswMetroProvider, (_, _) {});
+    addTearDown(sub.close);
 
-      final departures = await container.read(tfnswMetroProvider.future);
+    final departures = await container.read(tfnswMetroProvider.future);
 
-      expect(departures, isEmpty);
-    },
-  );
+    expect(departures, isEmpty);
+  });
 }

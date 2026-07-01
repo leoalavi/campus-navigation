@@ -18,12 +18,15 @@ void main() {
       expect(restored.startIso, '2026-08-10T09:00:00.000');
     });
 
-    test('fromJson defaults location and name to empty string when missing', () {
-      final restored = TimetableClass.fromJson(const {});
+    test(
+      'fromJson defaults location and name to empty string when missing',
+      () {
+        final restored = TimetableClass.fromJson(const {});
 
-      expect(restored.location, '');
-      expect(restored.name, '');
-    });
+        expect(restored.location, '');
+        expect(restored.name, '');
+      },
+    );
 
     test('fromJson defaults startIso to now when missing', () {
       final before = DateTime.now();
@@ -45,7 +48,10 @@ void main() {
         startIso: '2026-08-10T09:00:00.000Z',
       );
 
-      expect(item.startTime, DateTime.parse('2026-08-10T09:00:00.000Z').toLocal());
+      expect(
+        item.startTime,
+        DateTime.parse('2026-08-10T09:00:00.000Z').toLocal(),
+      );
     });
   });
 }

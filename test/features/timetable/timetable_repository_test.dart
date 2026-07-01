@@ -19,39 +19,49 @@ void main() {
       expect(classes, isEmpty);
     });
 
-    test('saveClasses then loadClasses round-trips the stored classes', () async {
-      final repository = SharedPrefsTimetableRepository();
-      const classes = [
-        TimetableClass(
-          location: 'C3A',
-          name: 'COMP3130 Lecture',
-          startIso: '2026-08-10T09:00:00.000',
-        ),
-        TimetableClass(
-          location: 'wallys-1',
-          name: 'Tutorial',
-          startIso: '2026-08-10T11:00:00.000',
-        ),
-      ];
+    test(
+      'saveClasses then loadClasses round-trips the stored classes',
+      () async {
+        final repository = SharedPrefsTimetableRepository();
+        const classes = [
+          TimetableClass(
+            location: 'C3A',
+            name: 'COMP3130 Lecture',
+            startIso: '2026-08-10T09:00:00.000',
+          ),
+          TimetableClass(
+            location: 'wallys-1',
+            name: 'Tutorial',
+            startIso: '2026-08-10T11:00:00.000',
+          ),
+        ];
 
-      await repository.saveClasses(classes);
-      final loaded = await repository.loadClasses();
+        await repository.saveClasses(classes);
+        final loaded = await repository.loadClasses();
 
-      expect(loaded.length, 2);
-      expect(loaded[0].name, 'COMP3130 Lecture');
-      expect(loaded[1].name, 'Tutorial');
-    });
+        expect(loaded.length, 2);
+        expect(loaded[0].name, 'COMP3130 Lecture');
+        expect(loaded[1].name, 'Tutorial');
+      },
+    );
 
-    test('saveClasses with an empty list clears previously stored classes', () async {
-      final repository = SharedPrefsTimetableRepository();
-      await repository.saveClasses(const [
-        TimetableClass(location: 'C3A', name: 'Lecture', startIso: '2026-08-10T09:00:00.000'),
-      ]);
+    test(
+      'saveClasses with an empty list clears previously stored classes',
+      () async {
+        final repository = SharedPrefsTimetableRepository();
+        await repository.saveClasses(const [
+          TimetableClass(
+            location: 'C3A',
+            name: 'Lecture',
+            startIso: '2026-08-10T09:00:00.000',
+          ),
+        ]);
 
-      await repository.saveClasses(const []);
-      final loaded = await repository.loadClasses();
+        await repository.saveClasses(const []);
+        final loaded = await repository.loadClasses();
 
-      expect(loaded, isEmpty);
-    });
+        expect(loaded, isEmpty);
+      },
+    );
   });
 }

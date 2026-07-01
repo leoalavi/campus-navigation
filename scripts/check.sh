@@ -5,7 +5,8 @@
 #   pub get
 #   format check / optional fix
 #   static analysis
-#   tests
+#   tests (with coverage)
+#   coverage gate (line coverage floor, excl. generated code)
 #   l10n generation
 #   privacy guard
 #   secret scan
@@ -135,13 +136,42 @@ run_step "flutter analyze" "flutter analyze --no-fatal-infos"
 
 # ── 4. Tests ─────────────────────────────────────────────
 step "Tests"
-run_step "flutter test" "flutter test"
+run_step "flutter test" "flutter test --coverage"
 
-# ── 5. Localisation generation ───────────────────────────
+# ── 5. Coverage gate ──────────────────────────────────────
+# Enforces a floor on line coverage so "add tests as we go" doesn't quietly
+# regress. Generated code (l10n locale files, .g.dart, .freezed.dart) is
+# excluded — the 35 generated l10n files alone are ~287k lines of mostly
+# one-line getters that only the 'en' locale's tests actually exercise,
+# which would make the raw lcov percentage meaningless.
+step "Coverage gate"
+COVERAGE_FILE="coverage/lcov.info"
+COVERAGE_THRESHOLD=50
+
+if [[ -f "$COVERAGE_FILE" ]]; then
+  COVERAGE_PCT="$(awk '
+    /^SF:/ { file=$0; sub("SF:","",file); skip = (file ~ /generated\// || file ~ /\.g\.dart$/ || file ~ /\.freezed\.dart$/) }
+    /^DA:/ && !skip { split($0, a, ":"); split(a[2], b, ","); total++; if (b[2]+0 > 0) hit++ }
+    END { if (total == 0) { print "0.00" } else { printf "%.2f", (hit/total)*100 } }
+  ' "$COVERAGE_FILE")"
+
+  echo -e "${CYAN}Line coverage (excl. generated code): ${COVERAGE_PCT}% (threshold: ${COVERAGE_THRESHOLD}%)${NC}"
+
+  if awk -v pct="$COVERAGE_PCT" -v threshold="$COVERAGE_THRESHOLD" 'BEGIN { exit !(pct < threshold) }'; then
+    echo -e "${RED}Coverage ${COVERAGE_PCT}% is below the ${COVERAGE_THRESHOLD}% floor.${NC}"
+    fail "coverage gate"
+  else
+    pass "coverage gate (${COVERAGE_PCT}%)"
+  fi
+else
+  echo -e "${YELLOW}No coverage report found at $COVERAGE_FILE. Skipping.${NC}"
+fi
+
+# ── 6. Localisation generation ───────────────────────────
 step "Localisation generation"
 run_step "flutter gen-l10n" "flutter gen-l10n"
 
-# ── 6. Localisation untranslated check ───────────────────
+# ── 7. Localisation untranslated check ───────────────────
 step "Localisation untranslated check"
 UNTRANSLATED_FILE=".dart_tool/untranslated.json"
 
@@ -159,7 +189,7 @@ else
   echo -e "${YELLOW}No untranslated file found at $UNTRANSLATED_FILE. Skipping.${NC}"
 fi
 
-# ── 7. Privacy guard ─────────────────────────────────────
+# ── 8. Privacy guard ─────────────────────────────────────
 step "Privacy guard"
 
 FORBIDDEN_PACKAGES=(
@@ -189,7 +219,7 @@ else
   pass "privacy guard"
 fi
 
-# ── 8. Secret scan ───────────────────────────────────────
+# ── 9. Secret scan ───────────────────────────────────────
 step "Secret scan"
 
 # Only scan source code and config (NOT supabase/ edge functions —
@@ -227,7 +257,7 @@ else
   pass "secret scan"
 fi
 
-# ── 9. No-stale-name guard ─────────────────────────────
+# ── 10. No-stale-name guard ─────────────────────────────
 step "No-stale-name guard"
 
 STALE_NAME_FAIL=false
@@ -252,7 +282,7 @@ else
   pass "no-stale-name guard"
 fi
 
-# ── 10. No-login-route guard ─────────────────────────────────
+# ── 11. No-login-route guard ─────────────────────────────────
 step "No-login-route guard"
 
 NO_LOGIN_FAIL=false
@@ -270,7 +300,7 @@ else
   pass "no-login-route guard"
 fi
 
-# ── 11. No-Google guard ─────────────────────────────────────
+# ── 12. No-Google guard ─────────────────────────────────────
 step "No-Google guard"
 
 GOOGLE_SOURCE_DIRS="lib android ios supabase scripts"
@@ -307,7 +337,7 @@ else
   pass "no-google guard"
 fi
 
-# ── 12. Build ────────────────────────────────────────────
+# ── 13. Build ────────────────────────────────────────────
 if [[ "$QUICK" == false ]]; then
   step "Build check"
   run_step "flutter build apk debug" "flutter build apk --debug"

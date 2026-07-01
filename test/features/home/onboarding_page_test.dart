@@ -28,9 +28,7 @@ Widget _app({
   required _FakeSettingsController controller,
 }) {
   return ProviderScope(
-    overrides: [
-      settingsControllerProvider.overrideWith(() => controller),
-    ],
+    overrides: [settingsControllerProvider.overrideWith(() => controller)],
     child: MaterialApp.router(
       routerConfig: router,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -63,16 +61,22 @@ void main() {
     await tester.pumpWidget(_app(router: _router(), controller: controller));
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(OnboardingPage)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(OnboardingPage)),
+    )!;
     expect(find.text(l10n.onboardingMapTitle), findsOneWidget);
   });
 
-  testWidgets('tapping Skip completes onboarding and navigates home', (tester) async {
+  testWidgets('tapping Skip completes onboarding and navigates home', (
+    tester,
+  ) async {
     final controller = _FakeSettingsController();
     await tester.pumpWidget(_app(router: _router(), controller: controller));
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(OnboardingPage)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(OnboardingPage)),
+    )!;
     await tester.tap(find.text(l10n.onboardingSkip));
     await tester.pumpAndSettle();
 
@@ -80,29 +84,32 @@ void main() {
     expect(find.text('home-page'), findsOneWidget);
   });
 
-  testWidgets('tapping Next advances through slides, then completes on the last', (
-    tester,
-  ) async {
-    final controller = _FakeSettingsController();
-    await tester.pumpWidget(_app(router: _router(), controller: controller));
-    await tester.pumpAndSettle();
-
-    final l10n = AppLocalizations.of(tester.element(find.byType(OnboardingPage)))!;
-
-    // 4 slides total: map, transit, open day, privacy — tap Next 3 times to
-    // reach the last slide, then a 4th time to finish.
-    for (var i = 0; i < 3; i++) {
-      await tester.tap(find.text(l10n.onboardingNext));
+  testWidgets(
+    'tapping Next advances through slides, then completes on the last',
+    (tester) async {
+      final controller = _FakeSettingsController();
+      await tester.pumpWidget(_app(router: _router(), controller: controller));
       await tester.pumpAndSettle();
-    }
 
-    expect(find.text(l10n.onboardingPrivacyTitle), findsOneWidget);
-    expect(find.text(l10n.onboardingStart), findsOneWidget);
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(OnboardingPage)),
+      )!;
 
-    await tester.tap(find.text(l10n.onboardingStart));
-    await tester.pumpAndSettle();
+      // 4 slides total: map, transit, open day, privacy — tap Next 3 times to
+      // reach the last slide, then a 4th time to finish.
+      for (var i = 0; i < 3; i++) {
+        await tester.tap(find.text(l10n.onboardingNext));
+        await tester.pumpAndSettle();
+      }
 
-    expect(controller.completedCalled, isTrue);
-    expect(find.text('home-page'), findsOneWidget);
-  });
+      expect(find.text(l10n.onboardingPrivacyTitle), findsOneWidget);
+      expect(find.text(l10n.onboardingStart), findsOneWidget);
+
+      await tester.tap(find.text(l10n.onboardingStart));
+      await tester.pumpAndSettle();
+
+      expect(controller.completedCalled, isTrue);
+      expect(find.text('home-page'), findsOneWidget);
+    },
+  );
 }

@@ -6,7 +6,11 @@ import 'package:mq_journey/features/map/domain/entities/nav_instruction.dart';
 import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
 import 'package:mq_journey/features/map/presentation/widgets/route_panel.dart';
 
-const _building = Building(id: 'wallys-1', code: 'wallys-1', name: "1 Wally's Walk");
+const _building = Building(
+  id: 'wallys-1',
+  code: 'wallys-1',
+  name: "1 Wally's Walk",
+);
 
 MapRoute _route() {
   return MapRoute(
@@ -75,20 +79,21 @@ void main() {
     expect(find.text("1 Wally's Walk"), findsOneWidget);
   });
 
-  testWidgets('shows Get Directions when no route is loaded yet, and invokes onLoadRoute', (
-    tester,
-  ) async {
-    var loaded = false;
-    await tester.pumpWidget(
-      _app(onLoadRoute: () async => loaded = true),
-    );
+  testWidgets(
+    'shows Get Directions when no route is loaded yet, and invokes onLoadRoute',
+    (tester) async {
+      var loaded = false;
+      await tester.pumpWidget(_app(onLoadRoute: () async => loaded = true));
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(RoutePanel)))!;
-    await tester.tap(find.text(l10n.walkingDirections));
-    await tester.pump();
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(RoutePanel)),
+      )!;
+      await tester.tap(find.text(l10n.walkingDirections));
+      await tester.pump();
 
-    expect(loaded, isTrue);
-  });
+      expect(loaded, isTrue);
+    },
+  );
 
   testWidgets('shows route info and travel mode pills once a route is loaded', (
     tester,
@@ -103,7 +108,9 @@ void main() {
 
   testWidgets('tapping Clear invokes onClearRoute', (tester) async {
     var cleared = false;
-    await tester.pumpWidget(_app(route: _route(), onClearRoute: () => cleared = true));
+    await tester.pumpWidget(
+      _app(route: _route(), onClearRoute: () => cleared = true),
+    );
 
     final l10n = AppLocalizations.of(tester.element(find.byType(RoutePanel)))!;
     await tester.tap(find.text(l10n.clear));
@@ -112,20 +119,29 @@ void main() {
     expect(cleared, isTrue);
   });
 
-  testWidgets('while navigating, shows Stop navigation and hides travel mode pills', (
+  testWidgets(
+    'while navigating, shows Stop navigation and hides travel mode pills',
+    (tester) async {
+      await tester.pumpWidget(_app(route: _route(), isNavigating: true));
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(RoutePanel)),
+      )!;
+      expect(find.text(l10n.stopNavigation), findsOneWidget);
+      expect(find.text(l10n.drive), findsNothing);
+    },
+  );
+
+  testWidgets('tapping Stop navigation invokes onStopNavigation', (
     tester,
   ) async {
-    await tester.pumpWidget(_app(route: _route(), isNavigating: true));
-
-    final l10n = AppLocalizations.of(tester.element(find.byType(RoutePanel)))!;
-    expect(find.text(l10n.stopNavigation), findsOneWidget);
-    expect(find.text(l10n.drive), findsNothing);
-  });
-
-  testWidgets('tapping Stop navigation invokes onStopNavigation', (tester) async {
     var stopped = false;
     await tester.pumpWidget(
-      _app(route: _route(), isNavigating: true, onStopNavigation: () => stopped = true),
+      _app(
+        route: _route(),
+        isNavigating: true,
+        onStopNavigation: () => stopped = true,
+      ),
     );
 
     final l10n = AppLocalizations.of(tester.element(find.byType(RoutePanel)))!;

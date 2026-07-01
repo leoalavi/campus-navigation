@@ -32,7 +32,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(Switch), findsWidgets);
-    final l10n = AppLocalizations.of(tester.element(find.byType(OverlayPickerSheet)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(OverlayPickerSheet)),
+    )!;
     expect(find.text(l10n.overlayParking), findsOneWidget);
   });
 
@@ -42,7 +44,9 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(OverlayPickerSheet)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(OverlayPickerSheet)),
+    )!;
     expect(find.text(l10n.clearAll), findsNothing);
   });
 
@@ -52,7 +56,9 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(OverlayPickerSheet)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(OverlayPickerSheet)),
+    )!;
     await tester.tap(find.text(l10n.overlayParking));
     await tester.pumpAndSettle();
 
