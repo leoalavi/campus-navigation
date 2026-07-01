@@ -103,8 +103,13 @@ run_step() {
       pass "$name"
     else
       fail "$name"
-      echo -e "${YELLOW}Last 40 log lines from $log_file:${NC}"
-      tail -40 "$log_file" || true
+      if grep -q "❌" "$log_file" 2>/dev/null; then
+        echo -e "${YELLOW}Failure details from $log_file:${NC}"
+        grep -n -A 20 "❌" "$log_file" | head -400
+      else
+        echo -e "${YELLOW}Last 40 log lines from $log_file:${NC}"
+        tail -40 "$log_file" || true
+      fi
     fi
   fi
 }
