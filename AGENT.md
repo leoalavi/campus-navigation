@@ -44,6 +44,13 @@ lib/
 ```
 
 
+### Raouf: 2026-07-01 (Australia/Sydney) — Expand test coverage + add a coverage gate to check.sh
+**Scope:** Repo-wide test coverage audit; `scripts/check.sh`; `.github/workflows/ci.yml`
+**Summary:** Triaged `lib/` vs `test/` to find real gaps (not coverage theatre) and added 16 new test files across two tiers. Tier 1 (previously zero coverage anywhere): the whole `timetable` feature, `HomePage`/`OnboardingPage`, `AppShell`, `ConnectivityService`, `SessionGuard`, `MqHaptics`, and `tfnswMetroProvider`'s no-commute-mode path. Tier 2 (widget polish): `RoutePanel`, `BuildingActionsSheet`, `OverlayPickerSheet`, `NotificationTile`, `OpenDayHomeCard`, `EventActionsSheet`, `ScheduleChips`, `CardVisitBadge`. Coverage (excl. generated code) rose 43.79% → 54.37%. Added a `scripts/check.sh` coverage gate (50% floor) and collapsed `.github/workflows/ci.yml`'s duplicated pub-get/format/analyze/test steps into a single `./scripts/check.sh --quick` call.
+**Files Changed:** see CHANGELOG.md entry of same date.
+**Verification:** `flutter test` — 441/441 passed (was 381); `scripts/check.sh --quick` — all 12 gates green.
+**Follow-ups:** `tfnsw_provider.dart`'s network-calling functions remain untested (no injectable http client); coverage threshold is conservative, raise incrementally.
+
 ### Raouf: 2026-06-30 (Australia/Sydney) — Scanned-Location Card (gallery, AR/Map buttons, stops table, /ar route)
 **Scope:** Scan feature — `/location/:locationId` card + new `/location/:locationId/ar` viewer; data, domain, presentation, assets
 **Summary:** Implemented the dual-audience Scanned-Location Card per the brainstormed spec via a 10-task TDD plan. Bumped go_router 17.3.0 / flutter_riverpod 3.3.2 / supabase_flutter 2.15.1. Extended `TrailLocation` (photos/arSceneId/stops) + `OpenDayStop`. Reseeded `open_day_trail.json` to 9 locations / 16 stops with slug `buildingId`s + `mapRefs[]`; 9 per-building indoor manifests; placeholder assets; 9 slug buildings added to `buildings.json` (kept legacy C3A/18WW). Added `firstSceneId` to Pannellum config + `IndoorWebView`. New `LocationArPage` (reuses `IndoorWebView`) with `resolveArFirstScene` entrance fallback + `/ar?stop=` route. New `PhotoGallery` + `OpenDayStopsTable`. Reworked `LocationCardPage` to spec §3 order with registry-gated Campus-Map button, AR-hide rule, Full-schedule link. Localised all copy via ARB.
