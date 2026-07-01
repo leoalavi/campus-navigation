@@ -69,6 +69,7 @@ flutter:
     - assets/maps/
     - assets/images/
     - assets/photos/
+    - assets/stamps/
     - assets/web/
     - assets/web/pannellum/
 
