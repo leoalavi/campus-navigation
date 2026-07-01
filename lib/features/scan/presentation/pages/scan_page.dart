@@ -5,8 +5,11 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_adapter.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_journey/features/scan/domain/services/stamp_award_calculator.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/scanner_view.dart';
+import 'package:mq_journey/features/scan/presentation/widgets/stamp_earned_sheet.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 enum _ScanState { scanning, decoding, denied, notOnTrail, decodeError }
@@ -95,8 +98,36 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       buildingId: location.buildingId,
       scannedAt: DateTime.now(),
     );
-    // ignore: unused_local_variable
     final isNewVisit = await ref.read(progressApiProvider).recordVisit(visit);
+
+    final visitedCode = visit.buildingId ?? visit.locationId;
+    final catalog = await ref.read(stampCatalogProvider.future);
+    final visitedCodesAfter =
+        ref.read(settingsControllerProvider).value?.visitedLocationCodes ??
+        const <String>[];
+    final award = computeStampAward(
+      visitedCode: visitedCode,
+      visitedLocationCodesAfterVisit: visitedCodesAfter,
+      catalog: catalog,
+    );
+
+    if (!mounted) return;
+
+    if (award != null) {
+      if (isNewVisit) {
+        final action = await showStampEarnedSheet(context, award);
+        if (action == StampSheetAction.viewPassport) {
+          if (!mounted) return;
+          context.push('/stamps');
+          return;
+        }
+      } else {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.stampAlreadyCollected(award.stamp.title))),
+        );
+      }
+    }
 
     if (!mounted) return;
     context.go('/location/$locationId');
