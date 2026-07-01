@@ -1,0 +1,11 @@
+{ "stamps": [
+  { "locationId": "hadenfeld-10", "title": "10 Hadenfeld Avenue",            "mapRef": "P6",  "stampAsset": "assets/stamps/hadenfeld-10.png" },
+  { "locationId": "wallys-29",    "title": "29 Wally's Walk",                "mapRef": "L11", "stampAsset": "assets/stamps/wallys-29.png" },
+  { "locationId": "wallys-27",    "title": "27 Wally's Walk",                "mapRef": "L12", "stampAsset": "assets/stamps/wallys-27.png" },
+  { "locationId": "wallys-23",    "title": "23 Wally's Walk",                "mapRef": "L14", "stampAsset": "assets/stamps/wallys-23.png" },
+  { "locationId": "wallys-21",    "title": "21 Wally's Walk",                "mapRef": "L15", "stampAsset": "assets/stamps/wallys-21.png" },
+  { "locationId": "wallys-17",    "title": "17 Wally's Walk",                "mapRef": "L17", "stampAsset": "assets/stamps/wallys-17.png" },
+  { "locationId": "ondaatje-14",  "title": "14 Sir Christopher Ondaatje Ave", "mapRef": "J20", "stampAsset": "assets/stamps/ondaatje-14.png" },
+  { "locationId": "wallys-1",     "title": "1 Wally's Walk",                 "mapRef": "K27", "stampAsset": "assets/stamps/wallys-1.png" },
+  { "locationId": "wallys-25",    "title": "25 Wally's Walk",                "mapRef": "N12", "stampAsset": "assets/stamps/wallys-25.png" }
+] }
