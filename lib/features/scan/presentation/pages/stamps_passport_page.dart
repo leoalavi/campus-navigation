@@ -26,13 +26,9 @@ class StampsPassportPage extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.stampsPassportTitle)),
       body: catalogAsync.when(
         data: (catalog) {
-          final visitedUpper = visitedCodes
-              .map((c) => c.toUpperCase())
-              .toSet();
+          final visitedUpper = visitedCodes.map((c) => c.toUpperCase()).toSet();
           final collectedCount = catalog
-              .where(
-                (e) => visitedUpper.contains(e.locationId.toUpperCase()),
-              )
+              .where((e) => visitedUpper.contains(e.locationId.toUpperCase()))
               .length;
 
           return Column(
@@ -59,12 +55,11 @@ class StampsPassportPage extends ConsumerWidget {
               Expanded(
                 child: GridView.builder(
                   padding: const EdgeInsets.all(MqSpacing.space4),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: MqSpacing.space3,
-                        mainAxisSpacing: MqSpacing.space3,
-                      ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: MqSpacing.space3,
+                    mainAxisSpacing: MqSpacing.space3,
+                  ),
                   itemCount: catalog.length,
                   itemBuilder: (context, index) {
                     final entry = catalog[index];

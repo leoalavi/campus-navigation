@@ -16,16 +16,22 @@ void main() {
       expect(api.added.length, 1);
     });
 
-    test('FakeProgressApi returns true on first visit, false on repeat', () async {
-      final api = FakeProgressApi();
-      final event = VisitEvent(locationId: 'lib-01', scannedAt: DateTime.now());
-      final first = await api.recordVisit(event);
-      final second = await api.recordVisit(event);
-      expect(first, isTrue);
-      expect(second, isFalse);
-      expect(api.watch('lib-01'), emits(isA<VisitedState>()));
-      api.dispose();
-    });
+    test(
+      'FakeProgressApi returns true on first visit, false on repeat',
+      () async {
+        final api = FakeProgressApi();
+        final event = VisitEvent(
+          locationId: 'lib-01',
+          scannedAt: DateTime.now(),
+        );
+        final first = await api.recordVisit(event);
+        final second = await api.recordVisit(event);
+        expect(first, isTrue);
+        expect(second, isFalse);
+        expect(api.watch('lib-01'), emits(isA<VisitedState>()));
+        api.dispose();
+      },
+    );
 
     test('FakeScheduleProvider returns coming up next', () {
       final provider = FakeScheduleProvider();

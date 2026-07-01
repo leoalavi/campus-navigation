@@ -124,7 +124,9 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       } else {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.stampAlreadyCollected(award.stamp.title))),
+          SnackBar(
+            content: Text(l10n.stampAlreadyCollected(award.stamp.title)),
+          ),
         );
       }
     }

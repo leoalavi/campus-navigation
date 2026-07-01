@@ -86,10 +86,7 @@ class _StampEarnedSheetState extends State<StampEarnedSheet> {
             children: [
               ExcludeSemantics(
                 child: TweenAnimationBuilder<double>(
-                  tween: Tween(
-                    begin: widget.playEffects ? 0.6 : 1.0,
-                    end: 1.0,
-                  ),
+                  tween: Tween(begin: widget.playEffects ? 0.6 : 1.0, end: 1.0),
                   duration: const Duration(milliseconds: 350),
                   curve: Curves.easeOutBack,
                   builder: (context, scale, child) =>
@@ -149,10 +146,8 @@ class _StampEarnedSheetState extends State<StampEarnedSheet> {
                   const SizedBox(width: MqSpacing.space3),
                   Expanded(
                     child: FilledButton(
-                      onPressed: () => Navigator.pop(
-                        context,
-                        StampSheetAction.viewPassport,
-                      ),
+                      onPressed: () =>
+                          Navigator.pop(context, StampSheetAction.viewPassport),
                       child: Text(l10n.stampCelebrationViewPassport),
                     ),
                   ),

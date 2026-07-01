@@ -27,7 +27,9 @@ Widget _app(Widget home) {
 }
 
 void main() {
-  testWidgets('shows the stamp title, first-visit note, and progress', (tester) async {
+  testWidgets('shows the stamp title, first-visit note, and progress', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       _app(
         Scaffold(
@@ -57,7 +59,9 @@ void main() {
     expect(find.text('1/9'), findsOneWidget);
   });
 
-  testWidgets('View my passport CTA returns StampSheetAction.viewPassport', (tester) async {
+  testWidgets('View my passport CTA returns StampSheetAction.viewPassport', (
+    tester,
+  ) async {
     StampSheetAction? result;
     await tester.pumpWidget(
       _app(
@@ -88,7 +92,9 @@ void main() {
     expect(result, StampSheetAction.viewPassport);
   });
 
-  testWidgets('reduce-motion skips confetti but still renders content', (tester) async {
+  testWidgets('reduce-motion skips confetti but still renders content', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       _app(
         MediaQuery(

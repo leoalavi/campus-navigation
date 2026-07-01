@@ -6,9 +6,7 @@ void main() {
   testWidgets('renders the collected/total count as text', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: Scaffold(
-          body: StampProgressRing(collected: 3, total: 9),
-        ),
+        home: Scaffold(body: StampProgressRing(collected: 3, total: 9)),
       ),
     );
 
@@ -19,12 +17,12 @@ void main() {
     expect(indicator.value, closeTo(3 / 9, 0.0001));
   });
 
-  testWidgets('clamps progress to 1.0 when collected exceeds total', (tester) async {
+  testWidgets('clamps progress to 1.0 when collected exceeds total', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: Scaffold(
-          body: StampProgressRing(collected: 9, total: 9),
-        ),
+        home: Scaffold(body: StampProgressRing(collected: 9, total: 9)),
       ),
     );
 

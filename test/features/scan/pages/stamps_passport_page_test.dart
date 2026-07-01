@@ -74,7 +74,9 @@ void main() {
     expect(find.text("25 Wally's Walk"), findsOneWidget);
   });
 
-  testWidgets('tapping a collected stamp opens its location card', (tester) async {
+  testWidgets('tapping a collected stamp opens its location card', (
+    tester,
+  ) async {
     final mockRepo = MockSettingsRepository();
     when(() => mockRepo.loadPreferences()).thenAnswer(
       (_) async => const UserPreferences(visitedLocationCodes: ['WALLYS-1']),
