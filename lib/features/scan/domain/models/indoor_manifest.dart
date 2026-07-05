@@ -76,6 +76,10 @@ class IndoorManifest {
               'type': 'scene',
               'sceneId': n.id,
               'yaw': n.bearing,
+              // Pannellum positions hot spots with `pitch * PI/180`; an absent
+              // pitch becomes NaN and the marker never renders. Navigation
+              // doorways sit at the horizon, so default to 0.
+              'pitch': 0,
               'text': n.label ?? 'Go',
             },
         ],
@@ -87,6 +91,10 @@ class IndoorManifest {
       'default': {
         if (nodes.isNotEmpty)
           'firstScene': hasRequested ? firstSceneId : nodes.first.id,
+        // Pannellum's `autoLoad` defaults to false, which shows a "Click to
+        // Load" button instead of the panorama. In an embedded viewer we always
+        // want the scene to render immediately.
+        'autoLoad': true,
         'sceneFadeDuration': 600,
       },
       'scenes': scenes,

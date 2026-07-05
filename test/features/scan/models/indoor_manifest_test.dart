@@ -34,6 +34,14 @@ void main() {
       expect(config['scenes']['lobby'], isNotNull);
       final hotspots = config['scenes']['lobby']['hotSpots'] as List;
       expect(hotspots.first['yaw'], 90);
+      // Hot spots must carry a pitch or Pannellum positions them at NaN.
+      expect(hotspots.first['pitch'], 0);
+    });
+
+    test('buildPannellumConfig enables autoLoad so the panorama renders', () {
+      final m = IndoorManifest.fromJson(json);
+      final config = m.buildPannellumConfig(assetBaseUrl: '/indoor');
+      expect(config['default']['autoLoad'], isTrue);
     });
 
     test('isEmpty is true for empty manifest', () {

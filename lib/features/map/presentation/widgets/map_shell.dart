@@ -170,6 +170,22 @@ class MapShell extends StatelessWidget {
             ),
           ),
         ],
+
+        // In AR mode the campus overlay above is hidden, so surface the mode
+        // toggle on its own — otherwise there is no way back to Campus Map.
+        if (!isCampusMap && mapMode != null && onMapModeChanged != null)
+          Positioned(
+            top: safeTop + MqSpacing.space4,
+            left: MqSpacing.space4,
+            right: MqSpacing.space4,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: MapModeToggle(
+                value: mapMode!,
+                onChanged: onMapModeChanged!,
+              ),
+            ),
+          ),
       ],
     );
   }
