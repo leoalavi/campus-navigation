@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Gününüzden kaydedilen tüm oturumları ve durakları kaldırılsın mı? Bu geri alınamaz.",
   "openDay_searchBachelorHint": "Bölümünü ara",
   "openDay_noBachelorMatch": "Eşleşen bölüm bulunamadı",
   "openDay_noBachelorMatchHint": "Başka bir kelime deneyin",

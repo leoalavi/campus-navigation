@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Poistetaanko kaikki tallennetut tapahtumat ja pysähdykset päivästäsi? Tätä ei voi kumota.",
   "openDay_searchBachelorHint": "Hae tutkintoa",
   "openDay_noBachelorMatch": "Vastaavaa tutkintoa ei löytynyt",
   "openDay_noBachelorMatchHint": "Kokeile toista hakusanaa",

@@ -2346,6 +2346,10 @@
   "openDay_savedToMyDay": "Added to your day",
   "openDay_removedFromMyDay": "Removed from your day",
   "openDay_clearMyDay": "Clear my day",
+  "openDay_clearMyDayConfirm": "Remove all saved sessions and stops from Your Day? This can't be undone.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
   "openDay_progressVisited": "Visited {count} of {total} stops",
   "@openDay_progressVisited": {
     "placeholders": {

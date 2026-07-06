@@ -6,9 +6,14 @@ final timetableClassesProvider = FutureProvider<List<TimetableClass>>((ref) {
   return ref.watch(timetableRepositoryProvider).loadClasses();
 });
 
+/// Injectable clock so the "next class today" cutoff is deterministic in
+/// tests (same pattern as `openDayNowProvider`). Production reads the wall
+/// clock.
+final timetableNowProvider = Provider<DateTime>((ref) => DateTime.now());
+
 final nextTimetableClassProvider = FutureProvider<TimetableClass?>((ref) async {
   final classes = await ref.watch(timetableClassesProvider.future);
-  final now = DateTime.now();
+  final now = ref.watch(timetableNowProvider);
   final today = classes.where((item) {
     final local = item.startTime;
     return local.year == now.year &&

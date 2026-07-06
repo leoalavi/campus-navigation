@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Fjern alle gemte sessioner og stop fra din dag? Dette kan ikke fortrydes.",
   "openDay_searchBachelorHint": "Søg efter din uddannelse",
   "openDay_noBachelorMatch": "Ingen matchende uddannelse fundet",
   "openDay_noBachelorMatchHint": "Prøv et andet søgeord",

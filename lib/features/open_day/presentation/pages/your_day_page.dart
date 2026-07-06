@@ -52,9 +52,37 @@ class YourDayPage extends ConsumerWidget {
         actions: [
           if (items.isNotEmpty)
             TextButton(
-              onPressed: () => ref
-                  .read(settingsControllerProvider.notifier)
-                  .clearSavedOpenDayEvents(),
+              // Wiping the whole plan is irreversible — one accidental tap on
+              // an app-bar text button shouldn't destroy a curated day, so
+              // confirm first.
+              onPressed: () async {
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (dialogContext) => AlertDialog(
+                    content: Text(l10n.openDay_clearMyDayConfirm),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogContext, false),
+                        child: Text(l10n.cancel),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogContext, true),
+                        style: TextButton.styleFrom(
+                          foregroundColor: dark
+                              ? MqColors.brightRed
+                              : MqColors.red,
+                        ),
+                        child: Text(l10n.openDay_clearMyDay),
+                      ),
+                    ],
+                  ),
+                );
+                if (confirmed ?? false) {
+                  await ref
+                      .read(settingsControllerProvider.notifier)
+                      .clearSavedOpenDayEvents();
+                }
+              },
               style: TextButton.styleFrom(
                 foregroundColor: dark ? MqColors.brightRed : MqColors.red,
               ),

@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Usunąć wszystkie zapisane sesje i przystanki z twojego dnia? Tej operacji nie można cofnąć.",
   "openDay_searchBachelorHint": "Wyszukaj swój kierunek",
   "openDay_noBachelorMatch": "Nie znaleziono odpowiedniego kierunku",
   "openDay_noBachelorMatchHint": "Spróbuj innego słowa",

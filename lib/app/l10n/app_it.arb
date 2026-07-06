@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Rimuovere tutte le sessioni e le tappe salvate dalla tua giornata? Questa azione non può essere annullata.",
   "openDay_searchBachelorHint": "Cerca il tuo corso",
   "openDay_noBachelorMatch": "Nessun corso corrispondente trovato",
   "openDay_noBachelorMatchHint": "Prova un'altra parola chiave",

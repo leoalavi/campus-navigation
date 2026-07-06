@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Eltávolítod az összes mentett programot és megállót a napodból? Ez nem vonható vissza.",
   "openDay_searchBachelorHint": "Keresd meg a szakodat",
   "openDay_noBachelorMatch": "Nem található megfelelő szak",
   "openDay_noBachelorMatchHint": "Próbálj másik kulcsszót",

@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Fjerne alle lagrede økter og stopp fra dagen din? Dette kan ikke angres.",
   "openDay_searchBachelorHint": "Søk etter graden din",
   "openDay_noBachelorMatch": "Ingen samsvarende grad funnet",
   "openDay_noBachelorMatchHint": "Prøv et annet søkeord",

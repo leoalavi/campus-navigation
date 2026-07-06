@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Αφαίρεση όλων των αποθηκευμένων συνεδριών και στάσεων από την ημέρα σας; Αυτό δεν μπορεί να αναιρεθεί.",
   "openDay_searchBachelorHint": "Αναζήτηση πτυχίου",
   "openDay_noBachelorMatch": "Δεν βρέθηκε αντίστοιχο πτυχίο",
   "openDay_noBachelorMatchHint": "Δοκιμάστε άλλη λέξη-κλειδί",

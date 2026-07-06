@@ -7,6 +7,7 @@ import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
+import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
 import 'package:mq_journey/shared/extensions/context_extensions.dart';
 import 'package:mq_journey/shared/widgets/mq_bottom_sheet.dart';
@@ -17,24 +18,35 @@ class EventActionsSheet extends ConsumerWidget {
   final OpenDayEvent event;
 
   static Future<void> show(BuildContext context, OpenDayEvent event) async {
-    await showModalBottomSheet<void>(
+    // The sheet pops with `true` only when the user explicitly chooses the
+    // map action. Swipe-dismiss / tap-outside pops with null — navigating on
+    // that would yank the user to the Map tab they never asked for (and, for
+    // events with no buildingCode, crash on the null assertion below).
+    final openMap = await showModalBottomSheet<bool>(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (_) => EventActionsSheet(event: event),
     );
 
-    if (context.mounted) {
-      final container = ProviderScope.containerOf(context);
-      final buildings = container.read(buildingRegistryProvider).value;
-      final resolved = _resolveBuilding(buildings, event.buildingCode);
-      final targetBuildingId = resolved?.id ?? event.buildingCode!;
-
-      context.goNamed(
-        RouteNames.map,
-        queryParameters: {'building': targetBuildingId},
-      );
+    if (openMap != true || !context.mounted || event.buildingCode == null) {
+      return;
     }
+
+    final container = ProviderScope.containerOf(context);
+    final buildings = container.read(buildingRegistryProvider).value;
+    final resolved = _resolveBuilding(buildings, event.buildingCode);
+    final targetBuildingId = resolved?.id ?? event.buildingCode!;
+
+    // Re-emit the selection imperatively so the marker re-shows even when
+    // the same building URL was opened before (go_router same-URL no-op).
+    container
+        .read(mapControllerProvider.notifier)
+        .selectBuildingById(targetBuildingId);
+    context.goNamed(
+      RouteNames.map,
+      queryParameters: {'building': targetBuildingId},
+    );
   }
 
   @override
@@ -102,7 +114,7 @@ class EventActionsSheet extends ConsumerWidget {
                       ),
                     ),
                     subtitle: Text(l10n.openDay_openInsideMqNav),
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigator.pop(context, true),
                   ),
                 ),
               ),

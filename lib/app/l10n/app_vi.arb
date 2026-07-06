@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Xóa tất cả các phiên và điểm dừng đã lưu khỏi ngày của bạn? Không thể hoàn tác thao tác này.",
   "openDay_searchBachelorHint": "Tìm ngành học của bạn",
   "openDay_noBachelorMatch": "Không tìm thấy ngành học phù hợp",
   "openDay_noBachelorMatchHint": "Hãy thử từ khóa khác",

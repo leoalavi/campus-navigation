@@ -102,6 +102,41 @@ void main() {
   );
 
   testWidgets(
+    'dismissing the sheet without choosing does NOT navigate to Map',
+    (tester) async {
+      await tester.pumpWidget(
+        _app(event: _mappableEvent, buildings: const [_building]),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+
+      // Tap outside the sheet (barrier) to dismiss it.
+      await tester.tapAt(const Offset(400, 40));
+      await tester.pumpAndSettle();
+
+      expect(find.text('map-page'), findsNothing);
+      expect(find.text('open'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'dismissing the sheet for an unmappable event does not crash or navigate',
+    (tester) async {
+      await tester.pumpWidget(
+        _app(event: _unmappableEvent, buildings: const [_building]),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+
+      await tester.tapAt(const Offset(400, 40));
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('map-page'), findsNothing);
+    },
+  );
+
+  testWidgets(
     'tapping the campus-map action closes the sheet and navigates to Map',
     (tester) async {
       await tester.pumpWidget(

@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "保存したセッションと立ち寄り先をすべて削除しますか？この操作は元に戻せません。",
   "openDay_searchBachelorHint": "学位を検索",
   "openDay_noBachelorMatch": "該当する学位が見つかりません",
   "openDay_noBachelorMatchHint": "別のキーワードを試してください",

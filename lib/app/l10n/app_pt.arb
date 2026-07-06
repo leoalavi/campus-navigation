@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Remover todas as sessões e paragens guardadas do seu dia? Isto não pode ser anulado.",
   "openDay_searchBachelorHint": "Pesquise o seu curso",
   "openDay_noBachelorMatch": "Nenhum curso correspondente encontrado",
   "openDay_noBachelorMatchHint": "Tente outra palavra-chave",

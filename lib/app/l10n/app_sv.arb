@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Ta bort alla sparade pass och stopp från din dag? Detta kan inte ångras.",
   "openDay_searchBachelorHint": "Sök efter din utbildning",
   "openDay_noBachelorMatch": "Ingen matchande utbildning hittades",
   "openDay_noBachelorMatchHint": "Försök med ett annat sökord",

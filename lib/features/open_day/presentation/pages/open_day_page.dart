@@ -188,13 +188,14 @@ class _StudyInterestHeader extends ConsumerWidget {
     return Container(
       padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
       decoration: BoxDecoration(
-        color: dark
-            ? MqColors.charcoal800.withAlpha(20)
-            : MqColors.red.withAlpha(14),
+        // Dark scaffold IS charcoal800 — a charcoal-tinted fill/border here
+        // is invisible against it, so dark mode tints with red + white
+        // hairline instead, matching the light variant's red identity.
+        color: dark ? MqColors.red.withAlpha(36) : MqColors.red.withAlpha(14),
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
           color: dark
-              ? MqColors.charcoal800.withAlpha(70)
+              ? MqColors.red.withValues(alpha: 0.45)
               : MqColors.red.withAlpha(40),
         ),
       ),
@@ -378,10 +379,17 @@ class _EventTile extends ConsumerWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: dark ? MqColors.charcoal800 : Colors.white,
+        // Lift the tile slightly off the charcoal800 scaffold in dark mode —
+        // an identical fill left card boundaries defined only by a 5% border.
+        color: dark
+            ? Color.alphaBlend(
+                Colors.white.withValues(alpha: 0.06),
+                MqColors.charcoal800,
+              )
+            : Colors.white,
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
-          color: dark ? Colors.white.withAlpha(13) : MqColors.sand200,
+          color: dark ? Colors.white.withAlpha(20) : MqColors.sand200,
         ),
       ),
       child: Row(

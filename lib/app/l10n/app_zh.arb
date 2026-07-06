@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "从您的日程中移除所有已保存的场次和站点？此操作无法撤销。",
   "openDay_searchBachelorHint": "搜索你的学位",
   "openDay_noBachelorMatch": "未找到匹配的学位",
   "openDay_noBachelorMatchHint": "试试其他关键词",

@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "¿Quitar todas las sesiones y paradas guardadas de tu día? Esto no se puede deshacer.",
   "openDay_searchBachelorHint": "Busca tu carrera",
   "openDay_noBachelorMatch": "No se encontró ninguna carrera coincidente",
   "openDay_noBachelorMatchHint": "Prueba otra palabra clave",

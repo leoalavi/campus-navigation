@@ -36,12 +36,19 @@ class OpenDayHomeCard extends ConsumerWidget {
     // Degree-specific sessions only, so the preview reflects the chosen degree
     // rather than general/open sessions.
     final events = ref.watch(degreeSessionsProvider);
+    // "Upcoming" must respect the clock on the day itself — at 2 PM the
+    // preview shouldn't still lead with finished 9 AM sessions. Prefer
+    // sessions that haven't ended yet; once the day is over, fall back to
+    // the first sessions so the card still previews the schedule.
+    final now = ref.watch(openDayNowProvider);
+    final notEnded = events.where((e) => e.endTime.isAfter(now)).toList();
+    final preview = (notEnded.isEmpty ? events : notEnded).take(2).toList();
 
     return selected == null
         ? _OnboardingCard(openDayDate: data.openDayDate)
         : _PreviewCard(
             selected: selected,
-            upcoming: events.take(2).toList(),
+            upcoming: preview,
             openDayDate: data.openDayDate,
           );
   }

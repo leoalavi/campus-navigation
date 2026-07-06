@@ -15,9 +15,16 @@ class _FakeTimetableRepository implements TimetableRepository {
   Future<void> saveClasses(List<TimetableClass> classes) async {}
 }
 
+/// Fixed mid-morning "now" so `now + 1h/2h` always stays within the same
+/// calendar day — using the real wall clock made these tests fail when the
+/// suite ran late in the evening (the "upcoming" classes rolled into
+/// tomorrow and were correctly filtered out).
+final _now = DateTime(2026, 8, 22, 9);
+
 ProviderContainer _containerWith(List<TimetableClass> classes) {
   return ProviderContainer(
     overrides: [
+      timetableNowProvider.overrideWithValue(_now),
       timetableRepositoryProvider.overrideWithValue(
         _FakeTimetableRepository(classes),
       ),
@@ -28,7 +35,7 @@ ProviderContainer _containerWith(List<TimetableClass> classes) {
 void main() {
   group('nextTimetableClassProvider', () {
     test('returns the earliest upcoming class today', () async {
-      final now = DateTime.now();
+      final now = _now;
       final container = _containerWith([
         TimetableClass(
           location: 'C3A',
@@ -49,7 +56,7 @@ void main() {
     });
 
     test('ignores classes that have already started today', () async {
-      final now = DateTime.now();
+      final now = _now;
       final container = _containerWith([
         TimetableClass(
           location: 'C3A',
@@ -65,7 +72,7 @@ void main() {
     });
 
     test('ignores classes on a different day', () async {
-      final now = DateTime.now();
+      final now = _now;
       final container = _containerWith([
         TimetableClass(
           location: 'C3A',

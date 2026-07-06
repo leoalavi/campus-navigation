@@ -32,9 +32,14 @@ class _FakeSettingsController extends SettingsController {
   Future<UserPreferences> build() async => _prefs;
 }
 
-Widget _app({required List<OpenDayEvent> events, String? selectedBachelorId}) {
+Widget _app({
+  required List<OpenDayEvent> events,
+  String? selectedBachelorId,
+  DateTime? now,
+}) {
   return ProviderScope(
     overrides: [
+      if (now != null) openDayNowProvider.overrideWithValue(now),
       settingsControllerProvider.overrideWith(
         () => _FakeSettingsController(
           UserPreferences(selectedBachelorId: selectedBachelorId),
@@ -85,6 +90,53 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(_bachelor.name), findsOneWidget);
+    expect(find.textContaining(_event.venueName), findsOneWidget);
+  });
+
+  testWidgets('preview skips sessions that already ended on the day', (
+    tester,
+  ) async {
+    final morning = OpenDayEvent(
+      id: 'evt-am',
+      title: 'Morning Tour',
+      startTime: DateTime(2026, 8, 22, 9),
+      endTime: DateTime(2026, 8, 22, 10),
+      venueName: 'Morning Venue',
+      bachelorIds: const ['comp-sci'],
+    );
+    final afternoon = OpenDayEvent(
+      id: 'evt-pm',
+      title: 'Afternoon Talk',
+      startTime: DateTime(2026, 8, 22, 15),
+      endTime: DateTime(2026, 8, 22, 16),
+      venueName: 'Afternoon Venue',
+      bachelorIds: const ['comp-sci'],
+    );
+    await tester.pumpWidget(
+      _app(
+        events: [morning, afternoon],
+        selectedBachelorId: 'comp-sci',
+        now: DateTime(2026, 8, 22, 12),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Afternoon Venue'), findsOneWidget);
+    expect(find.textContaining('Morning Venue'), findsNothing);
+  });
+
+  testWidgets('preview falls back to the schedule once the day is over', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _app(
+        events: [_event],
+        selectedBachelorId: 'comp-sci',
+        now: DateTime(2026, 8, 22, 20),
+      ),
+    );
+    await tester.pumpAndSettle();
+
     expect(find.textContaining(_event.venueName), findsOneWidget);
   });
 

@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Supprimer toutes les sessions et étapes enregistrées de votre journée ? Cette action est irréversible.",
   "openDay_searchBachelorHint": "Rechercher votre diplôme",
   "openDay_noBachelorMatch": "Aucun diplôme correspondant trouvé",
   "openDay_noBachelorMatchHint": "Essayez un autre mot-clé",

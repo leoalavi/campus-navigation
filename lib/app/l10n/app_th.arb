@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "ลบเซสชันและจุดแวะที่บันทึกไว้ทั้งหมดออกจากวันของคุณ? การดำเนินการนี้ไม่สามารถยกเลิกได้",
   "openDay_searchBachelorHint": "ค้นหาหลักสูตรของคุณ",
   "openDay_noBachelorMatch": "ไม่พบหลักสูตรที่ตรงกัน",
   "openDay_noBachelorMatchHint": "ลองใช้คำอื่น",

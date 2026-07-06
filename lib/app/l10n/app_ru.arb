@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "Удалить все сохранённые сессии и остановки из вашего дня? Это действие нельзя отменить.",
   "openDay_searchBachelorHint": "Найти программу",
   "openDay_noBachelorMatch": "Подходящая программа не найдена",
   "openDay_noBachelorMatchHint": "Попробуйте другое слово",

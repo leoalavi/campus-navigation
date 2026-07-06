@@ -1,4 +1,5 @@
 {
+  "openDay_clearMyDayConfirm": "هل تريد إزالة جميع الجلسات والمحطات المحفوظة من يومك؟ لا يمكن التراجع عن هذا.",
   "openDay_searchBachelorHint": "البحث عن تخصصك",
   "openDay_noBachelorMatch": "لم يتم العثور على تخصص مطابق",
   "openDay_noBachelorMatchHint": "جرّب كلمة مختلفة",
