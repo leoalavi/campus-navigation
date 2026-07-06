@@ -417,10 +417,13 @@ class _DepartureBody extends StatelessWidget {
     // Prefer the line the API actually reports for *this* departure over the
     // saved preference string — if the server's route filter ever falls back
     // to an unfiltered list, echoing the saved preference here would pair it
-    // with a destination/line that doesn't really match.
-    final routeLabel = next != null && next.line.trim().isNotEmpty
-        ? next.line.trim()
-        : favoriteRoute.trim();
+    // with a destination/line that doesn't really match. TfNSW line names are
+    // verbose ("M1 Metro North West & Bankstown Line"), so compact to the
+    // leading route code when one is present.
+    final apiLine = next?.line.trim() ?? '';
+    final routeLabel = apiLine.isEmpty
+        ? favoriteRoute.trim()
+        : RegExp(r'^[A-Z]{1,3}\d{1,4}').stringMatch(apiLine) ?? apiLine;
     final routeSuffix = routeLabel.isEmpty ? '' : ' • $routeLabel';
 
     final title = next == null

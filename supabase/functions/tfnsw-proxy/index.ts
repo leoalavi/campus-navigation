@@ -258,9 +258,13 @@ Deno.serve(async (req) => {
       Number.isFinite(latitude) && Number.isFinite(longitude)
         ? await resolveNearestStopId({ apiKey, latitude, longitude })
         : null;
+    // Default stop: Macquarie University Station (TfNSW id 211310). The old
+    // fallback "10101403" returns zero metro departures from departure_mon,
+    // so users with no preferred stop (and no usable geolocation — the common
+    // web case) always saw an empty feed.
     const stopId = preferredStopId.length > 0
       ? preferredStopId
-      : stopIdFromLocation ?? Deno.env.get("TFNSW_STOP_ID") ?? "10101403";
+      : stopIdFromLocation ?? Deno.env.get("TFNSW_STOP_ID") ?? "211310";
     const params = new URLSearchParams({
       coordOutputFormat: "EPSG:4326",
       departureMonitorMacro: "true",

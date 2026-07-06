@@ -56,6 +56,10 @@
       }, { capture: true, passive: false });
     })();
   </script>
+  <!-- Required JS bridge for flutter_inappwebview on web (iframe control,
+       evaluateJavascript). Without it the indoor/AR panorama viewer cannot
+       be driven from Dart. -->
+  <script type="application/javascript" src="assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

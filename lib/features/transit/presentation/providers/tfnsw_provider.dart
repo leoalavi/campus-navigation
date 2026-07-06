@@ -57,6 +57,24 @@ final tfnswStopSearchProvider = FutureProvider.autoDispose
       return _searchStops(mode: search.mode, query: search.query);
     });
 
+/// Auth headers for the tfnsw-proxy edge function.
+///
+/// The function is deployed with `verify_jwt: true`, so the Supabase gateway
+/// requires an `Authorization: Bearer <JWT>` header on every request — the
+/// `apikey` header alone is rejected with 401 before the function runs.
+/// This app has no user sign-in (auth was removed), so there is never a
+/// session token; the anon key (itself a JWT) is the correct fallback —
+/// the same thing supabase-js sends for unauthenticated calls.
+Map<String, String> _tfnswAuthHeaders() {
+  final token =
+      Supabase.instance.client.auth.currentSession?.accessToken ??
+      EnvConfig.supabaseAnonKey;
+  return {
+    'Authorization': 'Bearer $token',
+    'apikey': EnvConfig.supabaseAnonKey,
+  };
+}
+
 Future<List<MetroDeparture>> _fetchDepartures({
   required String favoriteDirection,
   required String favoriteRoute,
@@ -66,7 +84,6 @@ Future<List<MetroDeparture>> _fetchDepartures({
   required double? longitude,
 }) async {
   try {
-    final token = Supabase.instance.client.auth.currentSession?.accessToken;
     final query = <String, String>{
       'mode': mode,
       if (favoriteDirection.trim().isNotEmpty)
@@ -80,10 +97,7 @@ Future<List<MetroDeparture>> _fetchDepartures({
       Uri.parse(
         '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
       ).replace(queryParameters: query),
-      headers: {
-        if (token != null) 'Authorization': 'Bearer $token',
-        'apikey': EnvConfig.supabaseAnonKey,
-      },
+      headers: _tfnswAuthHeaders(),
     );
 
     if (response.statusCode != 200) {
@@ -112,15 +126,11 @@ Future<List<TransitStop>> _searchStops({
   }
 
   try {
-    final token = Supabase.instance.client.auth.currentSession?.accessToken;
     final response = await http.get(
       Uri.parse('${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy').replace(
         queryParameters: {'action': 'stop-search', 'mode': mode, 'q': trimmed},
       ),
-      headers: {
-        if (token != null) 'Authorization': 'Bearer $token',
-        'apikey': EnvConfig.supabaseAnonKey,
-      },
+      headers: _tfnswAuthHeaders(),
     );
 
     if (response.statusCode != 200) {
