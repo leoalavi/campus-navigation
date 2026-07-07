@@ -29,3 +29,16 @@ abstract final class RouteNames {
   // Open Day stamps passport
   static const String stamps = 'stamps';
 }
+
+/// Bottom-nav branch indices for the `StatefulShellRoute` in
+/// `app_router.dart`. Single source of truth for the branch order — several
+/// widgets outside the router need a specific branch's index to switch to
+/// it programmatically (`ScanPage` pausing its camera when its branch isn't
+/// active; Home's "Scan QR" CTA jumping straight to the Scan tab via
+/// `StatefulNavigationShell.goBranch`).
+abstract final class ShellBranchIndex {
+  static const int home = 0;
+  static const int map = 1;
+  static const int scan = 2;
+  static const int settings = 3;
+}
