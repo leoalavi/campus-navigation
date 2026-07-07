@@ -36,7 +36,22 @@ void main() {
     registerFallbackValue(const UserPreferences());
   });
 
+  // A tall physical size, matching the pattern in settings_page_test.dart:
+  // the default 800x600 test surface is too short for scrollUntilVisible to
+  // bring the "My Stamps" tile to a genuinely tappable (on-screen) offset,
+  // since Settings now has more sections than the tiny default viewport can
+  // show at once.
+  void setupLargeViewport(WidgetTester tester) {
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+  }
+
   testWidgets('My Stamps tile navigates to /stamps', (tester) async {
+    setupLargeViewport(tester);
     final mockSettingsRepository = MockSettingsRepository();
     final mockOfflineMapsService = MockOfflineMapsService();
     when(

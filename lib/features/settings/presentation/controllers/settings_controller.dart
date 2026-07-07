@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
 import 'package:mq_journey/features/notifications/domain/entities/app_notification.dart';
 import 'package:mq_journey/features/notifications/presentation/controllers/notifications_controller.dart';
 import 'package:mq_journey/features/settings/data/repositories/settings_repository.dart';

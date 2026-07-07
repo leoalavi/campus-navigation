@@ -221,13 +221,27 @@ class _DraggableFooter extends StatefulWidget {
 
 class _DraggableFooterState extends State<_DraggableFooter>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _settle = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 220),
-  )..addListener(() => setState(() => _offset = _settleTween.evaluate(_settle)));
+  // Built eagerly in initState (not via a lazy `late final` field
+  // initializer) so the controller always exists by the time dispose()
+  // runs. A lazy initializer only constructs the controller on first
+  // *access* — if the panel is removed (building deselected, browse
+  // group cleared, etc.) before the user ever drags it, dispose() would
+  // be that first access, and creating a ticker that late tries to look
+  // up TickerMode on an already-deactivated element, crashing with
+  // "Looking up a deactivated widget's ancestor is unsafe."
+  late final AnimationController _settle;
 
   Tween<double> _settleTween = Tween(begin: 0, end: 0);
   double _offset = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _settle = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 220),
+    )..addListener(() => setState(() => _offset = _settleTween.evaluate(_settle)));
+  }
 
   @override
   void dispose() {

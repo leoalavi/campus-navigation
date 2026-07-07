@@ -62,7 +62,7 @@ void main() {
     when(() => mockOfflineMapsService.isFmtcBackendReady).thenReturn(false);
     when(
       () => mockOfflineMapsService.downloadCampusTiles(),
-    ).thenAnswer((_) async {});
+    ).thenAnswer((_) async => true);
   });
 
   Widget buildTestApp({Widget? child}) {
@@ -129,7 +129,6 @@ void main() {
 
       // Verify key section labels exist
       expect(find.text(l10n.settings_general.toUpperCase()), findsOneWidget);
-      expect(find.text(l10n.settings_experience.toUpperCase()), findsOneWidget);
       expect(find.text(l10n.commutePreferences.toUpperCase()), findsOneWidget);
       expect(find.text(l10n.openDay_section.toUpperCase()), findsOneWidget);
       expect(find.text(l10n.accessibility.toUpperCase()), findsOneWidget);

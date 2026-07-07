@@ -1293,7 +1293,6 @@
   "settings_general": "General",
   "settings_appearance": "Appearance",
   "settings_privacySecurity": "Security",
-  "settings_experience": "Experience",
   "settings_about": "About",
   "settings_sections": "Sections",
   "event_servicesPopup_title": "Student Services Pop-up",
@@ -2033,6 +2032,10 @@
   "offlineCampusMapsDownload": "Download Campus Maps for Offline Use",
   "offlineCampusMapsDownloading": "Downloading offline campus maps...",
   "offlineCampusMapsReady": "Offline campus maps are ready",
+  "offlineCampusMapsDownloadedLabel": "Downloaded",
+  "offlineCampusMapsAlreadyDownloaded": "Campus maps are already downloaded for offline use.",
+  "offlineCampusMapsRedownload": "Re-download",
+  "offlineCampusMapsFailed": "Download failed",
   "homeNextClassLabel": "Next Class",
   "homeNextClassEmpty": "No classes remaining today",
   "homeCommuteCountdownLabel": "{mode} Countdown",
@@ -2095,14 +2098,20 @@
   "hoursMinutesShort": "{hours}h {minutes}m",
   "@hoursMinutesShort": {
     "placeholders": {
-      "hours": { "type": "int" },
-      "minutes": { "type": "int" }
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "hoursShort": "{hours}h",
   "@hoursShort": {
     "placeholders": {
-      "hours": { "type": "int" }
+      "hours": {
+        "type": "int"
+      }
     }
   },
   "devDiagnostics": "Dev Diagnostics",
@@ -2327,7 +2336,11 @@
   "openDay_showSuggestedStopsSemantic": "Show suggested stops on Home",
   "openDay_suggestedStopsForInterest": "Suggested stops for {interest}",
   "@openDay_suggestedStopsForInterest": {
-    "placeholders": { "interest": { "type": "String" } }
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
   },
   "openDay_liveNowTitle": "Live now",
   "openDay_comingUpNextTitle": "Coming up next",
@@ -2340,7 +2353,11 @@
   "openDay_yourDayEmpty": "Save sessions you like to build your personal Open Day plan.",
   "openDay_yourDayCount": "{count, plural, =1{1 session saved} other{{count} sessions saved}}",
   "@openDay_yourDayCount": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "openDay_addToMyDay": "Add to my day",
   "openDay_removeFromMyDay": "Remove from my day",
@@ -2354,14 +2371,20 @@
   "openDay_progressVisited": "Visited {count} of {total} stops",
   "@openDay_progressVisited": {
     "placeholders": {
-      "count": { "type": "int" },
-      "total": { "type": "int" }
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "openDay_trailCompleted": "Completed {trail} trail",
   "@openDay_trailCompleted": {
     "placeholders": {
-      "trail": { "type": "String" }
+      "trail": {
+        "type": "String"
+      }
     }
   },
   "openDay_privacyStrip": "No login needed · Private on your device",
