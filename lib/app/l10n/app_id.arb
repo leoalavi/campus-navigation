@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "Peta mana yang ingin Anda gunakan untuk navigasi?",
   "campusMapDesc": "Navigasi menggunakan peta kampus bawaan",
   "googleMapsDesc": "Buka di Google Maps untuk petunjuk arah",
-  "aboutTitle": "Tentang MQ Navigation",
+  "aboutTitle": "Tentang MQ Journey",
   "aboutDesc": "Manajemen Kampus Universitas Macquarie",
   "version": "Versi",
   "needHelp": "Butuh Bantuan?",
   "helpDesc": "Kunjungi dokumentasi kami atau hubungi dukungan.",
   "viewDocumentation": "Lihat Dokumentasi",
-  "documentationOpening": "📚 Membuka dokumentasi MQ Navigation Universitas Macquarie...",
+  "documentationOpening": "📚 Membuka dokumentasi MQ Journey Universitas Macquarie...",
   "documentationMsg": "📖 Dokumentasi akan segera tersedia.",
   "feedback": "Umpan Balik",
   "feedbackDesc": "Bantu kami berkembang dengan berbagi umpan balik Anda.",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Pintasan Papan Ketik",
   "selectFacultyFirst": "Pilih fakultas terlebih dahulu",
   "installApp": "Pasang Aplikasi",
-  "installAppDesc": "Tambahkan MQ Navigation ke layar beranda Anda untuk pengalaman terbaik.",
+  "installAppDesc": "Tambahkan MQ Journey ke layar beranda Anda untuk pengalaman terbaik.",
   "install": "Pasang",
   "dismiss": "Tutup",
   "updateAvailable": "Pembaruan Tersedia",
-  "updateAvailableDesc": "Versi baru MQ Navigation siap digunakan.",
+  "updateAvailableDesc": "Versi baru MQ Journey siap digunakan.",
   "updateNow": "Perbarui Sekarang",
   "syncConflict": "Konflik Sinkronisasi",
   "syncConflictDesc": "Item ini diubah saat Anda sedang offline. Pilih versi mana yang ingin disimpan.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Minuman di pameran karier",
   "clickCategoryToFilter": "Klik kategori untuk memfilter feed acara",
   "filterInterestDesc": "Filter acara berdasarkan kategori untuk menemukan minat Anda",
-  "youAreOfflineDesc": "MQ Navigation memerlukan koneksi internet. Silakan periksa koneksi Anda dan coba lagi.",
+  "youAreOfflineDesc": "MQ Journey memerlukan koneksi internet. Silakan periksa koneksi Anda dan coba lagi.",
   "errorProfileLoad": "Kami tidak dapat memuat pengaturan profil Anda. Masalah ini telah dilaporkan ke tim teknis kami.",
   "viewLabel": "Lihat {label}",
   "viewCategoryEvents": "Lihat acara {label}",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Buka di MQ Navigation",
+  "openDay_openInsideMqNav": "Buka di MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Navigasi dengan Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Navigasi ke {venue} dengan Google Maps di MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Navigasi ke {venue} dengan Google Maps di MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Buka Google Maps di MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Buka Google Maps di MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "வழிகாட்டலுக்கு எந்த வரைபடத்தைப் பயன்படுத்த விரும்புகிறீர்கள்?",
   "campusMapDesc": "உள்ளமைக்கப்பட்ட வளாக வரைபடத்தைப் பயன்படுத்தி வழிகாட்டவும்",
   "googleMapsDesc": "திசைகளுக்கு Google Maps இல் திறக்கவும்",
-  "aboutTitle": "MQ Navigation பற்றி",
+  "aboutTitle": "MQ Journey பற்றி",
   "aboutDesc": "மக்கரி பல்கலைக்கழக வளாக நிர்வாகம்",
   "version": "பதிப்பு",
   "needHelp": "உதவி தேவையா?",
   "helpDesc": "எங்கள் ஆவணங்களைப் பார்வையிடவும் அல்லது ஆதரவைத் தொடர்பு கொள்ளவும்.",
   "viewDocumentation": "ஆவணங்களைக் காண்",
-  "documentationOpening": "📚 மக்கரி பல்கலைக்கழக MQ Navigation ஆவணங்களைத் திறக்கிறது...",
+  "documentationOpening": "📚 மக்கரி பல்கலைக்கழக MQ Journey ஆவணங்களைத் திறக்கிறது...",
   "documentationMsg": "📖 ஆவணங்கள் விரைவில் கிடைக்கும்.",
   "feedback": "கருத்து",
   "feedbackDesc": "உங்கள் கருத்தைப் பகிர்ந்து எங்களை மேம்படுத்த உதவவும்.",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "விசைப்பலகை குறுக்குவழிகள்",
   "selectFacultyFirst": "முதலில் ஒரு ஆசிரியரைத் தேர்ந்தெடுக்கவும்",
   "installApp": "ஆப்பை நிறுவுங்கள்",
-  "installAppDesc": "சிறந்த அனுபவத்திற்காக MQ Navigation-ஐ உங்கள் முகப்புத் திரையில் சேர்க்கவும்.",
+  "installAppDesc": "சிறந்த அனுபவத்திற்காக MQ Journey-ஐ உங்கள் முகப்புத் திரையில் சேர்க்கவும்.",
   "install": "நிறுவு",
   "dismiss": "நிராகரி",
   "updateAvailable": "புதுப்பிப்பு கிடைக்கிறது",
-  "updateAvailableDesc": "MQ Navigation-இன் புதிய பதிப்பு தயாராக உள்ளது.",
+  "updateAvailableDesc": "MQ Journey-இன் புதிய பதிப்பு தயாராக உள்ளது.",
   "updateNow": "இப்போது புதுப்பிக்கவும்",
   "syncConflict": "ஒத்திசைவு முரண்பாடு",
   "syncConflictDesc": "நீங்கள் ஆஃப்லைனில் இருந்தபோது இந்த உருப்படி மாற்றப்பட்டது. எந்த பதிப்பை வைத்திருக்க வேண்டும் என்று தேர்வு செய்யுங்கள்.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "தொழில் கண்காட்சிகளில் சிற்றுண்டி",
   "clickCategoryToFilter": "நிகழ்வு ஊட்டத்தை வடிகட்ட ஒரு வகையைக் கிளிக் செய்யவும்",
   "filterInterestDesc": "உங்களுக்கு விருப்பமானவற்றைக் கண்டறிய வகையின்படி நிகழ்வுகளை வடிகட்டவும்",
-  "youAreOfflineDesc": "MQ Navigation-க்கு இணைய இணைப்பு தேவை. உங்கள் இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.",
+  "youAreOfflineDesc": "MQ Journey-க்கு இணைய இணைப்பு தேவை. உங்கள் இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.",
   "errorProfileLoad": "உங்கள் சுயவிவர அமைப்புகளை எங்களால் ஏற்ற முடியவில்லை. இது எங்கள் பொறியியல் குழுவிற்குத் தெரிவிக்கப்பட்டுள்ளது.",
   "viewLabel": "{label}ஐக் காண்க",
   "viewCategoryEvents": "{label} நிகழ்வுகளைக் காண்க",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "MQ Navigation இல் திற",
+  "openDay_openInsideMqNav": "MQ Journey இல் திற",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Google Maps மூலம் வழிசெல்க",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "MQ Navigation இல் Google Maps மூலம் {venue} வழிசெல்க",
+  "openDay_navigateWithGoogleSemantic": "MQ Journey இல் Google Maps மூலம் {venue} வழிசெல்க",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "MQ Navigation இல் Google Maps திற",
+  "openDay_openGoogleMapsInsideNav": "MQ Journey இல் Google Maps திற",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

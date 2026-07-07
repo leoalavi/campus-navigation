@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Sneltoetsen",
   "selectFacultyFirst": "Selecteer eerst een faculteit",
   "installApp": "Installeer app",
-  "installAppDesc": "Voeg MQ Navigation toe aan uw startscherm voor de beste ervaring.",
+  "installAppDesc": "Voeg MQ Journey toe aan uw startscherm voor de beste ervaring.",
   "install": "Installeren",
   "dismiss": "Negeren",
   "updateAvailable": "Update beschikbaar",
-  "updateAvailableDesc": "Een nieuwe versie van MQ Navigation is klaar.",
+  "updateAvailableDesc": "Een nieuwe versie van MQ Journey is klaar.",
   "updateNow": "Nu bijwerken",
   "syncConflict": "Synchronisatieconflict",
   "syncConflictDesc": "Dit item is gewijzigd terwijl u offline was. Kies welke versie u wilt behouden.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Verfrissingen op carrièrebeurzen",
   "clickCategoryToFilter": "Klik op een categorie om de gebeurtenisfeed te filteren",
   "filterInterestDesc": "Filter evenementen op categorie om te vinden wat u interesseert",
-  "youAreOfflineDesc": "MQ Navigation vereist een internetverbinding. Controleer uw verzoek en probeer het opnieuw.",
+  "youAreOfflineDesc": "MQ Journey vereist een internetverbinding. Controleer uw verzoek en probeer het opnieuw.",
   "errorProfileLoad": "We konden uw profielinstellingen niet laden. Dit is gemeld bij ons technische team.",
   "viewLabel": "Bekijk {label}",
   "viewCategoryEvents": "Bekijk {label}-gebeurtenissen",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Openen in MQ Navigation",
+  "openDay_openInsideMqNav": "Openen in MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Navigeren met Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Navigeren naar {venue} met Google Maps in MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Navigeren naar {venue} met Google Maps in MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Google Maps openen in MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Google Maps openen in MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

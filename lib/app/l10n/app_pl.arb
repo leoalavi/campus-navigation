@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Poczęstunek na targach pracy",
   "clickCategoryToFilter": "Kliknij kategorię, aby przefiltrować kanał wydarzeń",
   "filterInterestDesc": "Filtruj wydarzenia według kategorii, aby znaleźć to, co Cię interesuje",
-  "youAreOfflineDesc": "MQ Navigation wymaga połączenia z Internetem. Sprawdź połączenie i spróbuj ponownie.",
+  "youAreOfflineDesc": "MQ Journey wymaga połączenia z Internetem. Sprawdź połączenie i spróbuj ponownie.",
   "errorProfileLoad": "Nie udało się załadować ustawień profilu. Zgłoszono to naszemu zespołowi technicznemu.",
   "viewLabel": "Wyświetl {label}",
   "viewCategoryEvents": "Wyświetl zdarzenia {label}",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Otwórz w MQ Navigation",
+  "openDay_openInsideMqNav": "Otwórz w MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Nawiguj z Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Nawiguj do {venue} z Google Maps w MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Nawiguj do {venue} z Google Maps w MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Otwórz Google Maps w MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Otwórz Google Maps w MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

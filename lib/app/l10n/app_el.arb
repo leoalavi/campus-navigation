@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "Σχόλια δόνησης κατά την πλοήγηση (μόνο για κινητά)",
   "privacySecurity": "Απόρρητο και Ασφάλεια",
   "quickActions": "Γρήγορες Ενέργειες",
-  "helpSupport": "Σχετικά με το MQ Navigation",
+  "helpSupport": "Σχετικά με το MQ Journey",
   "deadlineReminders": "Υπενθυμίσεις προθεσμίας",
   "examReminders": "Υπενθυμίσεις Εξετάσεων",
   "deadlineRemindersDesc": "Ενημερωθείτε για τις επερχόμενες προθεσμίες",
@@ -223,7 +223,7 @@
   "chooseNavigationMethod": "Ποιον χάρτη θέλετε να χρησιμοποιήσετε για πλοήγηση;",
   "campusMapDesc": "Πλοηγηθείτε χρησιμοποιώντας τον ενσωματωμένο χάρτη πανεπιστημιούπολης",
   "googleMapsDesc": "Άνοιγμα στους Χάρτες Google για οδηγίες",
-  "aboutTitle": "Σχετικά με το MQ Navigation",
+  "aboutTitle": "Σχετικά με το MQ Journey",
   "aboutDesc": "Macquarie University Campus Management",
   "version": "Εκδοχή",
   "needHelp": "Χρειάζεστε βοήθεια;",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "Χαμηλό επίπεδο άγχους - έχετε λίγες επερχόμενες προθεσμίες",
   "stressLevelBusy": "Φορτωμένο πρόγραμμα - πλησιάζουν αρκετές προθεσμίες",
   "stressLevelHigh": "Υψηλό επίπεδο άγχους - πολλές προθεσμίες χρειάζονται προσοχή",
-  "copyright": "© {year} MQ Navigation - Πανεπιστήμιο Macquarie",
+  "copyright": "© {year} MQ Journey - Πανεπιστήμιο Macquarie",
   "overlay_parking_name": "Στάθμευση",
   "overlay_parking_desc": "Ζώνες στάθμευσης, φόρτιση EV, μηχανήματα εισιτηρίων, προσβάσιμες θέσεις και στάση μετρό",
   "overlay_drinking_water_name": "Πόσιμο νερό",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "Δεν ήταν δυνατή η ολοκλήρωση της σύνδεσης στο Google.Ο κωδικός εξουσιοδότησης έληξε ή χρησιμοποιήθηκε ήδη.Δοκιμάστε ξανά.",
   "rememberMe": "Θυμήσου με",
   "campusNavigation": "ΦΟΙΤΗΤΙΚΟ ΚΕΝΤΡΟ",
-  "exploreMap": "Εξερευνήστε το MQ Navigation",
+  "exploreMap": "Εξερευνήστε το MQ Journey",
   "featureComingSoon": "Η λειτουργία έρχεται σύντομα",
   "oauthComingSoon": "Η σύνδεση {provider} θα είναι διαθέσιμη σύντομα.",
   "searchEventsPlaceholder": "Αναζήτηση συμβάντων...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Συντομεύσεις πληκτρολογίου",
   "selectFacultyFirst": "Επιλέξτε πρώτα μια σχολή",
   "installApp": "Εγκαταστήστε την εφαρμογή",
-  "installAppDesc": "Προσθέστε το MQ Navigation στην αρχική σας οθόνη για την καλύτερη εμπειρία.",
+  "installAppDesc": "Προσθέστε το MQ Journey στην αρχική σας οθόνη για την καλύτερη εμπειρία.",
   "install": "Εγκαθιστώ",
   "dismiss": "Απολύω",
   "updateAvailable": "Διαθέσιμη ενημέρωση",
-  "updateAvailableDesc": "Μια νέα έκδοση του MQ Navigation είναι έτοιμη.",
+  "updateAvailableDesc": "Μια νέα έκδοση του MQ Journey είναι έτοιμη.",
   "updateNow": "Ενημέρωση τώρα",
   "syncConflict": "Σύγκρουση συγχρονισμού",
   "syncConflictDesc": "Αυτό το στοιχείο τροποποιήθηκε ενώ ήσασταν εκτός σύνδεσης.Επιλέξτε ποια έκδοση θα διατηρήσετε.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Αναψυκτικά σε εκθέσεις καριέρας",
   "clickCategoryToFilter": "Κάντε κλικ σε μια κατηγορία για να φιλτράρετε τη ροή συμβάντων",
   "filterInterestDesc": "Φιλτράρετε τα συμβάντα ανά κατηγορία για να βρείτε αυτό που σας ενδιαφέρει",
-  "youAreOfflineDesc": "Το MQ Navigation απαιτεί σύνδεση στο Διαδίκτυο.Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.",
+  "youAreOfflineDesc": "Το MQ Journey απαιτεί σύνδεση στο Διαδίκτυο.Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.",
   "errorProfileLoad": "Δεν ήταν δυνατή η φόρτωση των ρυθμίσεων του προφίλ σας.Αυτό έχει καταγραφεί για την ομάδα μηχανικών μας.",
   "viewLabel": "Προβολή {label}",
   "viewCategoryEvents": "Προβολή συμβάντων {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "Renderer: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: χάρτες-μέρη (Ενεργό)",
   "home_brandTitle": "MQ NAVIGATION",
-  "home_welcomeTitle": "Καλώς ήρθατε στο MQ Navigation",
+  "home_welcomeTitle": "Καλώς ήρθατε στο MQ Journey",
   "home_welcomeSubtitle": "Βρείτε το δρόμο σας γύρω από την πανεπιστημιούπολη γρήγορα και εύκολα.",
   "home_scanQrCta": "Σάρωση κωδικού QR",
   "home_quickAccess": "Γρήγορη πρόσβαση",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Άνοιγμα στο MQ Navigation",
+  "openDay_openInsideMqNav": "Άνοιγμα στο MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Πλοήγηση με Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Πλοήγηση στο {venue} με Google Maps στο MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Πλοήγηση στο {venue} με Google Maps στο MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Άνοιγμα Google Maps στο MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Άνοιγμα Google Maps στο MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "ナビゲーション中の振動フィードバック（モバイルのみ）",
   "privacySecurity": "プライバシーとセキュリティ",
   "quickActions": "クイックアクション",
-  "helpSupport": "MQ Navigationについて",
+  "helpSupport": "MQ Journeyについて",
   "deadlineReminders": "締め切りリマインダー",
   "examReminders": "試験リマインダー",
   "deadlineRemindersDesc": "今後の締め切りについて通知を受け取る",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "ナビゲーションにどのマップを使用しますか？",
   "campusMapDesc": "内蔵キャンパスマップでナビゲート",
   "googleMapsDesc": "Google マップで道順を確認",
-  "aboutTitle": "MQ Navigationについて",
+  "aboutTitle": "MQ Journeyについて",
   "aboutDesc": "マッコーリー大学キャンパス管理",
   "version": "バージョン",
   "needHelp": "ヘルプが必要ですか？",
   "helpDesc": "ドキュメントを参照するか、サポートにお問い合わせください。",
   "viewDocumentation": "ドキュメントを表示",
-  "documentationOpening": "📚 マッコーリー大学MQ Navigationドキュメントを開いています...",
+  "documentationOpening": "📚 マッコーリー大学MQ Journeyドキュメントを開いています...",
   "documentationMsg": "📖 ドキュメントは近日公開予定です。後でご確認ください！",
   "feedback": "フィードバック",
   "feedbackDesc": "フィードバックを共有して改善にご協力ください。",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "Googleサインインを完了できませんでした。認証コードが期限切れか、すでに使用されています。もう一度お試しください。",
   "rememberMe": "ログイン状態を保持",
   "campusNavigation": "学生ハブ",
-  "exploreMap": "MQ Navigationを探索",
+  "exploreMap": "MQ Journeyを探索",
   "featureComingSoon": "近日公開予定の機能",
   "oauthComingSoon": "{provider}サインインは近日対応予定です。",
   "searchEventsPlaceholder": "イベントを検索...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "キーボードショートカット",
   "selectFacultyFirst": "最初に学部を選択してください",
   "installApp": "アプリをインストール",
-  "installAppDesc": "最良の体験のために、MQ Navigationをホーム画面に追加してください。",
+  "installAppDesc": "最良の体験のために、MQ Journeyをホーム画面に追加してください。",
   "install": "インストール",
   "dismiss": "閉じる",
   "updateAvailable": "アップデートが利用可能",
-  "updateAvailableDesc": "MQ Navigationの新しいバージョンが準備できました。",
+  "updateAvailableDesc": "MQ Journeyの新しいバージョンが準備できました。",
   "updateNow": "今すぐアップデート",
   "syncConflict": "同期の競合",
   "syncConflictDesc": "このアイテムはオフライン中に変更されました。保持するバージョンを選択してください。",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "就職説明会での軽食",
   "clickCategoryToFilter": "カテゴリーをクリックしてイベントフィードをフィルタリング",
   "filterInterestDesc": "カテゴリーでイベントをフィルタリングして興味のあるものを見つける",
-  "youAreOfflineDesc": "MQ Navigationにはインターネット接続が必要です。接続を確認して再試行してください。",
+  "youAreOfflineDesc": "MQ Journeyにはインターネット接続が必要です。接続を確認して再試行してください。",
   "errorProfileLoad": "プロファイル設定を読み込めませんでした。この問題はエンジニアリングチームに報告されました。",
   "viewLabel": "{label}を表示",
   "viewCategoryEvents": "{label}のイベントを表示",
@@ -2125,7 +2125,7 @@
   "renderer": "レンダラー：CrsSimple（キャンパス）",
   "edgeProxy": "エッジプロキシ：maps-places（アクティブ）",
   "home_brandTitle": "MQナビゲーション",
-  "home_welcomeTitle": "MQ Navigationへようこそ",
+  "home_welcomeTitle": "MQ Journeyへようこそ",
   "home_welcomeSubtitle": "キャンパスをすばやく簡単に見つけましょう。",
   "home_scanQrCta": "QRコードをスキャン",
   "home_quickAccess": "クイックアクセス",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "MQ Navigation内で開く",
+  "openDay_openInsideMqNav": "MQ Journey内で開く",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Google マップでナビ",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "MQ NavigationでGoogle マップを使って{venue}へ案内",
+  "openDay_navigateWithGoogleSemantic": "MQ JourneyでGoogle マップを使って{venue}へ案内",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "MQ Navigation内でGoogle マップを開く",
+  "openDay_openGoogleMapsInsideNav": "MQ Journey内でGoogle マップを開く",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

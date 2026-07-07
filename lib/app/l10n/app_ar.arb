@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "اهتزاز تفاعلي أثناء التنقل (للموبايل فقط)",
   "privacySecurity": "الخصوصية والأمان",
   "quickActions": "إجراءات سريعة",
-  "helpSupport": "حول MQ Navigation",
+  "helpSupport": "حول MQ Journey",
   "deadlineReminders": "تنبيهات المواعيد النهائية",
   "examReminders": "تذكيرات الامتحانات",
   "deadlineRemindersDesc": "احصل على إشعارات حول المواعيد النهائية القادمة",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "أي خريطة تريد استخدامها للتنقل؟",
   "campusMapDesc": "التنقل باستخدام خريطة الحرم الجامعي المدمجة",
   "googleMapsDesc": "فتح في خرائط جوجل للحصول على الاتجاهات",
-  "aboutTitle": "حول MQ Navigation",
+  "aboutTitle": "حول MQ Journey",
   "aboutDesc": "إدارة حرم جامعة ماكواري",
   "version": "الإصدار",
   "needHelp": "تحتاج مساعدة؟",
   "helpDesc": "قم بزيارة وثائقنا أو اتصل بالدعم.",
   "viewDocumentation": "عرض الوثائق",
-  "documentationOpening": "📚 جاري فتح وثائق MQ Navigation لجامعة ماكواري...",
+  "documentationOpening": "📚 جاري فتح وثائق MQ Journey لجامعة ماكواري...",
   "documentationMsg": "📖 ستتوفر الوثائق قريباً. تحقق لاحقاً!",
   "feedback": "الملاحظات",
   "feedbackDesc": "ساعدنا على التحسين بمشاركة ملاحظاتك.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "مستوى ضغط منخفض - لديك مواعيد نهائية قليلة قادمة",
   "stressLevelBusy": "جدول مزدحم - عدة مواعيد نهائية قادمة",
   "stressLevelHigh": "مستوى ضغط عالٍ - مواعيد نهائية كثيرة تحتاج اهتماماً",
-  "copyright": "© {year} MQ Navigation - جامعة ماكواري",
+  "copyright": "© {year} MQ Journey - جامعة ماكواري",
   "overlay_parking_name": "مواقف السيارات",
   "overlay_parking_desc": "مناطق المواقف، شحن المركبات الكهربائية، أجهزة التذاكر، المواقف المخصصة، ومحطة المترو",
   "overlay_drinking_water_name": "مياه الشرب",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "تعذر إكمال تسجيل الدخول عبر جوجل. انتهت صلاحية الكود.",
   "rememberMe": "تذكرني",
   "campusNavigation": "مركز الطلاب",
-  "exploreMap": "استكشف MQ Navigation",
+  "exploreMap": "استكشف MQ Journey",
   "featureComingSoon": "الميزة ستتوفر قريباً",
   "oauthComingSoon": "تسجيل الدخول عبر {provider} سيكون متاحاً قريباً.",
   "searchEventsPlaceholder": "البحث عن الأحداث...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "اختصارات لوحة المفاتيح",
   "selectFacultyFirst": "اختر الكلية أولاً",
   "installApp": "تثبيت التطبيق",
-  "installAppDesc": "أضف MQ Navigation إلى شاشتك الرئيسية للحصول على أفضل تجربة.",
+  "installAppDesc": "أضف MQ Journey إلى شاشتك الرئيسية للحصول على أفضل تجربة.",
   "install": "تثبيت",
   "dismiss": "إغلاق",
   "updateAvailable": "تحديث متاح",
-  "updateAvailableDesc": "إصدار جديد من MQ Navigation جاهز.",
+  "updateAvailableDesc": "إصدار جديد من MQ Journey جاهز.",
   "updateNow": "تحديث الآن",
   "syncConflict": "تعارض في المزامنة",
   "syncConflictDesc": "تم تعديل هذا العنصر أثناء كنت غير متصل. اختر الإصدار الذي تريد الاحتفاظ به.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "مرطبات في معارض التوظيف",
   "clickCategoryToFilter": "انقر على فئة لتصفية موجز الأحداث",
   "filterInterestDesc": "تصفية الأحداث حسب الفئة للعثور على ما يهمك",
-  "youAreOfflineDesc": "يتطلب MQ Navigation اتصالاً بالإنترنت. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
+  "youAreOfflineDesc": "يتطلب MQ Journey اتصالاً بالإنترنت. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
   "errorProfileLoad": "تعذر تحميل إعدادات ملفك الشخصي. تم تسجيل ذلك لفريق الهندسة لدينا.",
   "viewLabel": "عرض {label}",
   "viewCategoryEvents": "عرض فعاليات {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "العارض: CrsSimple (الحرم)",
   "edgeProxy": "الوكيل الطرفي: maps-places (نشط)",
   "home_brandTitle": "الملاحة إم كيو",
-  "home_welcomeTitle": "مرحباً بك في MQ Navigation",
+  "home_welcomeTitle": "مرحباً بك في MQ Journey",
   "home_welcomeSubtitle": "اعثر على طريقك في الحرم الجامعي بسرعة وسهولة.",
   "home_scanQrCta": "مسح رمز QR",
   "home_quickAccess": "وصول سريع",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "فتح داخل MQ Navigation",
+  "openDay_openInsideMqNav": "فتح داخل MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "التنقل باستخدام خرائط Google",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "التنقل إلى {venue} باستخدام خرائط Google في MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "التنقل إلى {venue} باستخدام خرائط Google في MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {

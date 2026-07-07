@@ -1,7 +1,7 @@
-/// Public deep-link contract for MQ Navigation.
+/// Public deep-link contract for MQ Journey.
 ///
 /// This file is the **single source of truth** that sister apps (e.g. the
-/// Syllabus Sync companion) rely on when generating "Open in MQ Navigation"
+/// Syllabus Sync companion) rely on when generating "Open in MQ Journey"
 /// links. Internal GoRouter paths can change freely — the contract below
 /// should not.
 ///
@@ -20,7 +20,7 @@
 ///   mqnav://open?q=library
 ///   https://mqnavigation.app/open?lat=-33.7738&lng=151.1126
 ///
-/// The matching "Download MQ Navigation" fallback (shown when the app is
+/// The matching "Download MQ Journey" fallback (shown when the app is
 /// not installed) is the responsibility of Syllabus Sync — universal-link
 /// resolution on iOS / app-link resolution on Android will surface the
 /// Play Store / App Store listing automatically when the app is absent.

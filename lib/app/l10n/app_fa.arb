@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "بازخورد لرزشی در حین پیمایش (فقط تلفن همراه)",
   "privacySecurity": "حریم خصوصی و امنیت",
   "quickActions": "اقدامات سریع",
-  "helpSupport": "درباره MQ Navigation",
+  "helpSupport": "درباره MQ Journey",
   "deadlineReminders": "یادآورهای مهلت",
   "examReminders": "یادآوری امتحان",
   "deadlineRemindersDesc": "در مورد مهلت‌های نزدیک اعلان دریافت کنید",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "کدام نقشه را برای مسیریابی ترجیح می‌دهید؟",
   "campusMapDesc": "با استفاده از نقشه داخلی دانشگاه مسیریابی کنید",
   "googleMapsDesc": "باز کردن در نقشه گوگل برای مسیریابی",
-  "aboutTitle": "درباره MQ Navigation",
+  "aboutTitle": "درباره MQ Journey",
   "aboutDesc": "مدیریت دانشگاه Macquarie",
   "version": "نسخه",
   "needHelp": "نیاز به کمک دارید؟",
   "helpDesc": "اسناد ما را مشاهده کنید یا با پشتیبانی تماس بگیرید.",
   "viewDocumentation": "مشاهده مستندات",
-  "documentationOpening": "📚 باز کردن مستندات MQ Navigation دانشگاه Macquarie...",
+  "documentationOpening": "📚 باز کردن مستندات MQ Journey دانشگاه Macquarie...",
   "documentationMsg": "📖 مستندات به زودی در دسترس خواهد بود. بعداً دوباره بررسی کنید!",
   "feedback": "بازخورد",
   "feedbackDesc": "برای بهبود ما، بازخورد خود را به اشتراک بگذارید.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "سطح استرس کم - ضرب الاجل های آینده کمی دارید",
   "stressLevelBusy": "برنامه شلوغ - چندین ضرب الاجل در راه است",
   "stressLevelHigh": "سطح استرس بالا - ضرب الاجل های زیادی نیاز به توجه دارند",
-  "copyright": "© {year} MQ Navigation - دانشگاه مک کواری",
+  "copyright": "© {year} MQ Journey - دانشگاه مک کواری",
   "overlay_parking_name": "پارکینگ",
   "overlay_parking_desc": "مناطق پارکینگ، شارژ خودرو برقی، دستگاه بلیت، جایگاه‌های دسترس‌پذیر و ایستگاه مترو",
   "overlay_drinking_water_name": "آب آشامیدنی",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "ورود به سیستم Google تکمیل نشد.کد مجوز منقضی شده است یا قبلاً استفاده شده است.لطفا دوباره امتحان کنید.",
   "rememberMe": "مرا به خاطر بسپار",
   "campusNavigation": "مرکز دانشجویی",
-  "exploreMap": "MQ Navigation را کاوش کنید",
+  "exploreMap": "MQ Journey را کاوش کنید",
   "featureComingSoon": "ویژگی به زودی",
   "oauthComingSoon": "ورود به سیستم {provider} به زودی در دسترس خواهد بود.",
   "searchEventsPlaceholder": "جستجوی رویدادها...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "میانبرهای صفحه کلید",
   "selectFacultyFirst": "ابتدا یک دانشکده را انتخاب کنید",
   "installApp": "نصب برنامه",
-  "installAppDesc": "MQ Navigation را به صفحه اصلی خود اضافه کنید تا بهترین تجربه را داشته باشید.",
+  "installAppDesc": "MQ Journey را به صفحه اصلی خود اضافه کنید تا بهترین تجربه را داشته باشید.",
   "install": "نصب",
   "dismiss": "رد کردن",
   "updateAvailable": "به‌روزرسانی موجود است",
-  "updateAvailableDesc": "نسخه جدیدی از MQ Navigation آماده است.",
+  "updateAvailableDesc": "نسخه جدیدی از MQ Journey آماده است.",
   "updateNow": "اکنون به‌روزرسانی کنید",
   "syncConflict": "تعارض همگام‌سازی",
   "syncConflictDesc": "این مورد در حین آفلاین بودن شما ویرایش شده است. انتخاب کنید کدام نسخه را نگه دارید.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "نوشیدنی در نمایشگاه های شغلی",
   "clickCategoryToFilter": "روی یک دسته کلیک کنید تا فید رویداد فیلتر شود",
   "filterInterestDesc": "رویدادها را بر اساس دسته بندی فیلتر کنید تا موارد مورد علاقه خود را پیدا کنید",
-  "youAreOfflineDesc": "MQ Navigation به اتصال اینترنت نیاز دارد. لطفاً اتصال خود را بررسی کرده و دوباره تلاش کنید.",
+  "youAreOfflineDesc": "MQ Journey به اتصال اینترنت نیاز دارد. لطفاً اتصال خود را بررسی کرده و دوباره تلاش کنید.",
   "errorProfileLoad": "ما نتوانستیم تنظیمات پروفایل شما را بارگذاری کنیم. این موضوع به تیم مهندسی ما گزارش شده است.",
   "viewLabel": "مشاهده {label}",
   "viewCategoryEvents": "مشاهده رویدادهای {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "رندر: CrsSimple (پردیس)",
   "edgeProxy": "Edge Proxy: maps-places (فعال)",
   "home_brandTitle": "MQ NAVIGATION",
-  "home_welcomeTitle": "به MQ Navigation خوش آمدید",
+  "home_welcomeTitle": "به MQ Journey خوش آمدید",
   "home_welcomeSubtitle": "به سرعت و به راحتی راه خود را در اطراف دانشگاه پیدا کنید.",
   "home_scanQrCta": "اسکن کد QR",
   "home_quickAccess": "دسترسی سریع",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "باز کردن در MQ Navigation",
+  "openDay_openInsideMqNav": "باز کردن در MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "مسیریابی با Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "مسیریابی به {venue} با Google Maps در MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "مسیریابی به {venue} با Google Maps در MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "باز کردن Google Maps در MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "باز کردن Google Maps در MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

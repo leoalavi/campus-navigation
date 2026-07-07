@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "کی بورڈ شارٹ کٹس",
   "selectFacultyFirst": "پہلے ایک فیکلٹی منتخب کریں۔",
   "installApp": "ایپ انسٹال کریں",
-  "installAppDesc": "بہترین تجربے کے لیے MQ Navigation کو اپنی ہوم اسکرین میں شامل کریں۔",
+  "installAppDesc": "بہترین تجربے کے لیے MQ Journey کو اپنی ہوم اسکرین میں شامل کریں۔",
   "install": "انسٹال کریں",
   "dismiss": "رد کریں",
   "updateAvailable": "اپ ڈیٹ دستیاب ہے",
-  "updateAvailableDesc": "MQ Navigation کا ایک نیا ورژن تیار ہے۔",
+  "updateAvailableDesc": "MQ Journey کا ایک نیا ورژن تیار ہے۔",
   "updateNow": "ابھی اپ ڈیٹ کریں",
   "syncConflict": "سنک تنازعہ",
   "syncConflictDesc": "یہ آئٹم اس وقت تبدیل کیا گیا جب آپ آف لائن تھے۔ انتخاب کریں کہ کون سا ورژن رکھنا ہے۔",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "MQ Navigation میں کھولیں",
+  "openDay_openInsideMqNav": "MQ Journey میں کھولیں",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Google Maps سے نیویگیٹ کریں",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "MQ Navigation میں Google Maps سے {venue} تک نیویگیٹ کریں",
+  "openDay_navigateWithGoogleSemantic": "MQ Journey میں Google Maps سے {venue} تک نیویگیٹ کریں",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "MQ Navigation میں Google Maps کھولیں",
+  "openDay_openGoogleMapsInsideNav": "MQ Journey میں Google Maps کھولیں",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

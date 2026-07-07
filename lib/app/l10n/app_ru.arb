@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "Какую карту вы хотите использовать для навигации?",
   "campusMapDesc": "Навигация с помощью встроенной карты кампуса",
   "googleMapsDesc": "Открыть в Google Картах для маршрута",
-  "aboutTitle": "О MQ Navigation",
+  "aboutTitle": "О MQ Journey",
   "aboutDesc": "Управление кампусом Университета Маккуори",
   "version": "Версия",
   "needHelp": "Нужна помощь?",
   "helpDesc": "Посетите нашу документацию или свяжитесь с поддержкой.",
   "viewDocumentation": "Документация",
-  "documentationOpening": "📚 Открывается документация MQ Navigation...",
+  "documentationOpening": "📚 Открывается документация MQ Journey...",
   "documentationMsg": "📖 Документация скоро будет доступна. Проверьте позже!",
   "feedback": "Обратная связь",
   "feedbackDesc": "Помогите нам улучшиться, поделившись отзывом.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "Низкий уровень стресса – у вас мало предстоящих сроков",
   "stressLevelBusy": "Плотный график, впереди несколько дедлайнов.",
   "stressLevelHigh": "Высокий уровень стресса – многие сроки требуют внимания",
-  "copyright": "© {year} MQ Navigation - Университет Маккуори",
+  "copyright": "© {year} MQ Journey - Университет Маккуори",
   "overlay_parking_name": "Парковка",
   "overlay_parking_desc": "Парковочные зоны, зарядка EV, билетные автоматы, доступные места и остановка метро",
   "overlay_drinking_water_name": "Питьевая вода",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Сочетания клавиш",
   "selectFacultyFirst": "Сначала выберите факультет",
   "installApp": "Установить приложение",
-  "installAppDesc": "Добавьте MQ Navigation на главный экран для наилучшего опыта.",
+  "installAppDesc": "Добавьте MQ Journey на главный экран для наилучшего опыта.",
   "install": "Установить",
   "dismiss": "Закрыть",
   "updateAvailable": "Доступно обновление",
-  "updateAvailableDesc": "Новая версия MQ Navigation готова.",
+  "updateAvailableDesc": "Новая версия MQ Journey готова.",
   "updateNow": "Обновить сейчас",
   "syncConflict": "Конфликт синхронизации",
   "syncConflictDesc": "Этот элемент был изменён, пока вы были офлайн. Выберите, какую версию сохранить.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Напитки",
   "clickCategoryToFilter": "Нажмите на категорию, чтобы отфильтровать ленту событий",
   "filterInterestDesc": "Фильтруйте события по категориям, чтобы найти то, что вам интересно",
-  "youAreOfflineDesc": "MQ Navigation требуется подключение к интернету. Пожалуйста, проверьте соединение и попробуйте снова.",
+  "youAreOfflineDesc": "MQ Journey требуется подключение к интернету. Пожалуйста, проверьте соединение и попробуйте снова.",
   "errorProfileLoad": "Не удалось загрузить настройки вашего профиля. Информация об этом была передана нашей инженерной команде.",
   "viewLabel": "Посмотреть {label}",
   "viewCategoryEvents": "Просмотр событий {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "Средство визуализации: CrsSimple (Кампус)",
   "edgeProxy": "Edge Proxy: карты-места (Активный)",
   "home_brandTitle": "МК НАВИГАЦИЯ",
-  "home_welcomeTitle": "Добро пожаловать в MQ Navigation",
+  "home_welcomeTitle": "Добро пожаловать в MQ Journey",
   "home_welcomeSubtitle": "Находите дорогу по кампусу быстро и легко.",
   "home_scanQrCta": "Сканировать QR-код",
   "home_quickAccess": "Быстрый доступ",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Открыть в MQ Navigation",
+  "openDay_openInsideMqNav": "Открыть в MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Навигация через Google Карты",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Навигация до {venue} через Google Карты в MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Навигация до {venue} через Google Карты в MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Открыть Google Карты в MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Открыть Google Карты в MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

@@ -1758,7 +1758,7 @@
   "expectRefreshments": "क्यारियर मेलाहरूमा जलपान",
   "clickCategoryToFilter": "घटना फिड फिल्टर गर्न कोटिमा क्लिक गर्नुहोस्",
   "filterInterestDesc": "तपाइँको रुचि के फेला पार्न कोटि द्वारा घटनाहरु फिल्टर गर्नुहोस्",
-  "youAreOfflineDesc": "MQ Navigation को लागि इन्टरनेट जडान आवश्यक छ। कृपया आफ्नो जडान जाँच गर्नुहोस् र पुन: प्रयास गर्नुहोस्।",
+  "youAreOfflineDesc": "MQ Journey को लागि इन्टरनेट जडान आवश्यक छ। कृपया आफ्नो जडान जाँच गर्नुहोस् र पुन: प्रयास गर्नुहोस्।",
   "errorProfileLoad": "हामीले तपाईंको प्रोफाइल सेटिङहरू लोड गर्न सकेनौं। यो हाम्रो इन्जिनियरिङ टोलीलाई जानकारी गराइएको छ।",
   "viewLabel": "{label} हेर्नुहोस्",
   "viewCategoryEvents": "{label} घटनाहरू हेर्नुहोस्",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "MQ Navigation मा खोल्नुहोस्",
+  "openDay_openInsideMqNav": "MQ Journey मा खोल्नुहोस्",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Google Maps सँग नेभिगेट गर्नुहोस्",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "MQ Navigation मा Google Maps सँग {venue} मा नेभिगेट गर्नुहोस्",
+  "openDay_navigateWithGoogleSemantic": "MQ Journey मा Google Maps सँग {venue} मा नेभिगेट गर्नुहोस्",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "MQ Navigation मा Google Maps खोल्नुहोस्",
+  "openDay_openGoogleMapsInsideNav": "MQ Journey मा Google Maps खोल्नुहोस्",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

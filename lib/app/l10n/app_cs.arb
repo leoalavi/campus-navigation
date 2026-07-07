@@ -229,7 +229,7 @@
   "needHelp": "Potřebujete pomoc?",
   "helpDesc": "Navštivte naši dokumentaci nebo kontaktujte podporu.",
   "viewDocumentation": "Zobrazit dokumentaci",
-  "documentationOpening": "📚 Otevírání dokumentace Macquarie University MQ Navigation...",
+  "documentationOpening": "📚 Otevírání dokumentace Macquarie University MQ Journey...",
   "documentationMsg": "📖 Dokumentace bude brzy k dispozici.Vraťte se později!",
   "feedback": "Zpětná vazba",
   "feedbackDesc": "Pomozte nám zlepšit se tím, že sdílíte zpětnou vazbu.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "Nízká úroveň stresu – máte málo nadcházejících termínů",
   "stressLevelBusy": "Nabitý program - blíží se několik termínů",
   "stressLevelHigh": "Vysoká úroveň stresu – mnoho termínů vyžaduje pozornost",
-  "copyright": "© {year} MQ Navigation – Macquarie University",
+  "copyright": "© {year} MQ Journey – Macquarie University",
   "overlay_parking_name": "Parkování",
   "overlay_parking_desc": "Parkovací zóny, nabíjení elektromobilů, parkovací automaty, vyhrazená místa a zastávka metra",
   "overlay_drinking_water_name": "Pitná voda",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "Přihlášení Google nebylo možné dokončit.Autorizační kód vypršel nebo byl již použit.Zkuste to znovu.",
   "rememberMe": "Pamatuj si mě",
   "campusNavigation": "STUDENTSKÝ HUB",
-  "exploreMap": "Prozkoumejte MQ Navigation",
+  "exploreMap": "Prozkoumejte MQ Journey",
   "featureComingSoon": "Funkce již brzy",
   "oauthComingSoon": "Přihlášení {provider} bude brzy k dispozici.",
   "searchEventsPlaceholder": "Hledat události...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Klávesové zkratky",
   "selectFacultyFirst": "Nejprve vyberte fakultu",
   "installApp": "Nainstalovat aplikaci",
-  "installAppDesc": "Přidejte si MQ Navigation na svou domovskou obrazovku pro nejlepší zážitek.",
+  "installAppDesc": "Přidejte si MQ Journey na svou domovskou obrazovku pro nejlepší zážitek.",
   "install": "Instalovat",
   "dismiss": "Propustit",
   "updateAvailable": "Aktualizace k dispozici",
-  "updateAvailableDesc": "Je připravena nová verze MQ Navigation.",
+  "updateAvailableDesc": "Je připravena nová verze MQ Journey.",
   "updateNow": "Aktualizovat nyní",
   "syncConflict": "Konflikt synchronizace",
   "syncConflictDesc": "Tato položka byla upravena, když jste byli offline.Vyberte verzi, kterou chcete zachovat.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Občerstvení na kariérních veletrzích",
   "clickCategoryToFilter": "Kliknutím na kategorii filtr události",
   "filterInterestDesc": "Filtrujte události podle kategorií a zjistěte, co vás zajímá",
-  "youAreOfflineDesc": "MQ Navigation vyžaduje připojení k internetu. Zkontrolujte prosím připojení a zkuste to znovu.",
+  "youAreOfflineDesc": "MQ Journey vyžaduje připojení k internetu. Zkontrolujte prosím připojení a zkuste to znovu.",
   "errorProfileLoad": "Nepodařilo se načíst nastavení profilu. Bylo to nahlášeno našemu technickému týmu.",
   "viewLabel": "Zobrazit {label}",
   "viewCategoryEvents": "Zobrazit události {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "Renderer: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: mapy-místa (aktivní)",
   "home_brandTitle": "NAVIGACE MQ",
-  "home_welcomeTitle": "Vítejte v MQ Navigation",
+  "home_welcomeTitle": "Vítejte v MQ Journey",
   "home_welcomeSubtitle": "Rychle a snadno se zorientujte v kampusu.",
   "home_scanQrCta": "Naskenovat QR kód",
   "home_quickAccess": "Rychlý přístup",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Otevřít v MQ Navigation",
+  "openDay_openInsideMqNav": "Otevřít v MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Navigovat pomocí Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Navigovat do {venue} přes Google Maps v MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Navigovat do {venue} přes Google Maps v MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Otevřít Google Maps v MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Otevřít Google Maps v MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

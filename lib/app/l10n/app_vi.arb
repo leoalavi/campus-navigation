@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "Bạn muốn sử dụng bản đồ nào để điều hướng?",
   "campusMapDesc": "Điều hướng bằng bản đồ khuôn viên tích hợp",
   "googleMapsDesc": "Mở trong Google Maps để xem chỉ đường",
-  "aboutTitle": "Về MQ Navigation",
+  "aboutTitle": "Về MQ Journey",
   "aboutDesc": "Quản lý khuôn viên Đại học Macquarie",
   "version": "Phiên bản",
   "needHelp": "Cần trợ giúp?",
   "helpDesc": "Xem tài liệu hoặc liên hệ hỗ trợ.",
   "viewDocumentation": "Xem tài liệu",
-  "documentationOpening": "📚 Đang mở tài liệu MQ Navigation Đại học Macquarie...",
+  "documentationOpening": "📚 Đang mở tài liệu MQ Journey Đại học Macquarie...",
   "documentationMsg": "📖 Tài liệu sẽ sớm có. Hãy quay lại kiểm tra sau!",
   "feedback": "Phản hồi",
   "feedbackDesc": "Giúp chúng tôi cải thiện bằng cách chia sẻ phản hồi.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "Mức độ căng thẳng thấp - bạn có ít thời hạn sắp tới",
   "stressLevelBusy": "Lịch trình bận rộn - một số thời hạn sắp tới",
   "stressLevelHigh": "Mức độ căng thẳng cao – nhiều deadline cần chú ý",
-  "copyright": "© {year} MQ Navigation - Đại học Macquarie",
+  "copyright": "© {year} MQ Journey - Đại học Macquarie",
   "overlay_parking_name": "Bãi đỗ xe",
   "overlay_parking_desc": "Khu vực đỗ xe, sạc EV, máy vé, chỗ đỗ tiếp cận và điểm dừng metro",
   "overlay_drinking_water_name": "Nước uống",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Phím tắt",
   "selectFacultyFirst": "Chọn khoa trước",
   "installApp": "Cài đặt ứng dụng",
-  "installAppDesc": "Thêm MQ Navigation vào màn hình chính để có trải nghiệm tốt nhất.",
+  "installAppDesc": "Thêm MQ Journey vào màn hình chính để có trải nghiệm tốt nhất.",
   "install": "Cài đặt",
   "dismiss": "Bỏ qua",
   "updateAvailable": "Có bản cập nhật",
-  "updateAvailableDesc": "Phiên bản mới của MQ Navigation đã sẵn sàng.",
+  "updateAvailableDesc": "Phiên bản mới của MQ Journey đã sẵn sàng.",
   "updateNow": "Cập nhật ngay",
   "syncConflict": "Xung đột đồng bộ",
   "syncConflictDesc": "Mục này đã bị thay đổi khi bạn ngoại tuyến. Chọn phiên bản nào cần giữ lại.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Giải khát tại hội chợ nghề nghiệp",
   "clickCategoryToFilter": "Nhấp vào một danh mục để lọc nguồn cấp dữ liệu sự kiện",
   "filterInterestDesc": "Lọc các sự kiện theo danh mục để tìm những gì bạn quan tâm",
-  "youAreOfflineDesc": "MQ Navigation yêu cầu kết nối internet. Vui lòng kiểm tra kết nối của bạn và thử lại.",
+  "youAreOfflineDesc": "MQ Journey yêu cầu kết nối internet. Vui lòng kiểm tra kết nối của bạn và thử lại.",
   "errorProfileLoad": "Chúng tôi không thể tải cài đặt hồ sơ của bạn. Điều này đã được báo cáo cho đội ngũ kỹ thuật của chúng tôi.",
   "viewLabel": "Xem {label}",
   "viewCategoryEvents": "Xem các sự kiện {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "Trình kết xuất: CrsSimple (Khuôn viên)",
   "edgeProxy": "Edge Proxy: địa điểm bản đồ (Hoạt động)",
   "home_brandTitle": "ĐIỀU HƯỚNG MQ",
-  "home_welcomeTitle": "Chào mừng đến với MQ Navigation",
+  "home_welcomeTitle": "Chào mừng đến với MQ Journey",
   "home_welcomeSubtitle": "Tìm đường quanh khuôn viên trường một cách nhanh chóng và dễ dàng.",
   "home_scanQrCta": "Quét mã QR",
   "home_quickAccess": "Truy cập nhanh",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Mở trong MQ Navigation",
+  "openDay_openInsideMqNav": "Mở trong MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Điều hướng bằng Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Điều hướng đến {venue} bằng Google Maps trong MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Điều hướng đến {venue} bằng Google Maps trong MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Mở Google Maps trong MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Mở Google Maps trong MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },
