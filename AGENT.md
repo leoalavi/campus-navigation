@@ -44,6 +44,13 @@ lib/
 ```
 
 
+### Raouf: 2026-07-07 (Australia/Sydney) — Full click-through test (Maestro/adb): map deep-link crash fix + friendly indoor title
+**Scope:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart` (map-ready guard), `lib/features/scan/presentation/pages/indoor_preview_page.dart` (friendly title).
+**Summary:** Exhaustively clicked every interactive surface on an Android emulator with a persistent exception watcher. One runtime exception found + fixed: (1) **Map deep-link crash** — reaching Campus Map with a building already selected from another tab threw `You need to have the FlutterMap widget rendered at least once before using the MapController` because `didUpdateWidget` → `_moveMap` → `MapController.move()` ran while the branch was offstage. Added a `_mapReady` flag (set in `onMapReady`); `_moveMap` no-ops before ready, and `_handleMapReady` already repositions once ready. (2) **Follow-up** — AR indoor app bar showed the raw slug ("hadenfeld-10 Indoor"); now resolves the friendly trail title ("10 Hadenfeld Avenue"), fallback to slug.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/scan/presentation/pages/indoor_preview_page.dart`.
+**Verification:** `flutter test` — **478/478**; `flutter analyze` — 0 errors. Everything else clicked healthy (Home/bachelor/My Day/Open Day sessions, Settings/dark-mode/stamps/wipe-confirm, Map search/chips/layers/detail, AR picker→panorama→back→hotspots).
+**Notes (not bugs):** Scan camera error-glyph after tab resume is an emulator virtual-camera quirk (single camera, surface re-attach fails) — confirm on device. Map-search building sheet stacks under the action sheet (minor). Stamp artwork still text-only (content follow-up).
+
 ### Raouf: 2026-07-07 (Australia/Sydney) — AR indoor preview: back button returns to the building picker
 **Scope:** `lib/features/scan/presentation/pages/indoor_preview_page.dart` (+optional `onBack`), `lib/features/map/presentation/pages/map_page.dart` (wire-up), test.
 **Summary:** In AR mode, selecting a building swaps `ArBuildingPicker` for an embedded `IndoorPreviewPage`, which (being embedded, not pushed) had no back button — users were stuck on the panorama with no way back to the list except leaving AR via the toggle. Added an optional `onBack` callback to `IndoorPreviewPage` (leading back arrow when provided; default app-bar behaviour when null, so the pushed `/map/building/:id/indoor` route is unchanged). The map page passes `onBack` → `mapController.clearSelection()` + `setState`, which nulls `selectedBuilding` so `_buildArContent` shows the picker again — back to the AR building list without leaving AR.
