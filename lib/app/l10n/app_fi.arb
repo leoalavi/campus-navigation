@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "Tärinäpalaute navigoinnin aikana (vain mobiili)",
   "privacySecurity": "Tietosuoja ja turvallisuus",
   "quickActions": "Nopeat toiminnot",
-  "helpSupport": "Tietoja MQ Navigationista",
+  "helpSupport": "Tietoja MQ Journeyista",
   "deadlineReminders": "Määräajan muistutukset",
   "examReminders": "Muistutukset kokeesta",
   "deadlineRemindersDesc": "Saat ilmoituksen tulevista määräajoista",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "Mitä karttaa haluat käyttää navigointiin?",
   "campusMapDesc": "Navigoi sisäänrakennetulla kampuskartalla",
   "googleMapsDesc": "Avaa Google Mapsissa reittiohjeiden saamiseksi",
-  "aboutTitle": "Tietoja MQ Navigationista",
+  "aboutTitle": "Tietoja MQ Journeyista",
   "aboutDesc": "Macquarie Universityn kampuksen hallinta",
   "version": "Versio",
   "needHelp": "Tarvitsetko apua?",
   "helpDesc": "Tutustu dokumentaatioomme tai ota yhteyttä tukeen.",
   "viewDocumentation": "Näytä dokumentaatio",
-  "documentationOpening": "📚 Avataan Macquarie University MQ Navigation -dokumentaatio...",
+  "documentationOpening": "📚 Avataan Macquarie University MQ Journey -dokumentaatio...",
   "documentationMsg": "📖 Dokumentaatio on saatavilla pian. Tarkista myöhemmin uudelleen!",
   "feedback": "Palaute",
   "feedbackDesc": "Auta meitä kehittymään jakamalla palautetta.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "Alhainen stressitaso – sinulla on vähän tulevia määräaikoja",
   "stressLevelBusy": "Kiireinen aikataulu - useita määräaikoja tulossa",
   "stressLevelHigh": "Korkea stressitaso – monet määräajat vaativat huomiota",
-  "copyright": "© {year} MQ Navigation - Macquarien yliopisto",
+  "copyright": "© {year} MQ Journey - Macquarien yliopisto",
   "overlay_parking_name": "Pysäköinti",
   "overlay_parking_desc": "Pysäköintialueet, sähköautojen lataus, lippuautomaatit, esteettömät paikat ja metroasema",
   "overlay_drinking_water_name": "Juomavesi",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Pikanäppäimet",
   "selectFacultyFirst": "Valitse ensin tiedekunta",
   "installApp": "Asenna sovellus",
-  "installAppDesc": "Lisää MQ Navigation aloitusnäyttöön saadaksesi parhaan kokemuksen.",
+  "installAppDesc": "Lisää MQ Journey aloitusnäyttöön saadaksesi parhaan kokemuksen.",
   "install": "Asentaa",
   "dismiss": "Hylkää",
   "updateAvailable": "Päivitys saatavilla",
-  "updateAvailableDesc": "MQ Navigationin uusi versio on valmis.",
+  "updateAvailableDesc": "MQ Journeyin uusi versio on valmis.",
   "updateNow": "Päivitä nyt",
   "syncConflict": "Synkronointiristiriita",
   "syncConflictDesc": "Tätä kohdetta muokattiin, kun olit offline-tilassa. Valitse säilytettävä versio.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Virvokkeita uramessuilla",
   "clickCategoryToFilter": "Suodata tapahtumasyöte napsauttamalla luokkaa",
   "filterInterestDesc": "Suodata tapahtumia luokan mukaan löytääksesi sinua kiinnostavat asiat",
-  "youAreOfflineDesc": "MQ Navigation vaatii Internet-yhteyden. Tarkista yhteys ja yritä uudelleen.",
+  "youAreOfflineDesc": "MQ Journey vaatii Internet-yhteyden. Tarkista yhteys ja yritä uudelleen.",
   "errorProfileLoad": "Profiiliasetuksiasi ei voitu ladata. Tästä on ilmoitettu tekniselle tiimillemme.",
   "viewLabel": "Näytä {label}",
   "viewCategoryEvents": "Tarkastele {label}-tapahtumia",
@@ -2125,7 +2125,7 @@
   "renderer": "Renderöijä: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: maps-places (aktiivinen)",
   "home_brandTitle": "MQ NAVIGOINTI",
-  "home_welcomeTitle": "Tervetuloa MQ Navigationiin",
+  "home_welcomeTitle": "Tervetuloa MQ Journeyiin",
   "home_welcomeSubtitle": "Löydä reittisi kampuksella nopeasti ja helposti.",
   "home_scanQrCta": "Skannaa QR-koodi",
   "home_quickAccess": "Nopea pääsy",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Avaa MQ Navigationissa",
+  "openDay_openInsideMqNav": "Avaa MQ Journeyissa",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Navigoi Google Mapsilla",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Navigoi kohteeseen {venue} Google Mapsilla MQ Navigationissa",
+  "openDay_navigateWithGoogleSemantic": "Navigoi kohteeseen {venue} Google Mapsilla MQ Journeyissa",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Avaa Google Maps MQ Navigationissa",
+  "openDay_openGoogleMapsInsideNav": "Avaa Google Maps MQ Journeyissa",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

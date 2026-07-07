@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "සංචාලනය අතරතුර කම්පන ප්‍රතිපෝෂණය (ජංගම පමණක්)",
   "privacySecurity": "පෞද්ගලිකත්වය සහ ආරක්ෂාව",
   "quickActions": "ඉක්මන් ක්‍රියා",
-  "helpSupport": "MQ Navigation ගැන",
+  "helpSupport": "MQ Journey ගැන",
   "deadlineReminders": "අවසාන දින මතක් කිරීම්",
   "examReminders": "විභාග මතක් කිරීම්",
   "deadlineRemindersDesc": "ඉදිරි කාලසීමාවන් ගැන දැනුම් දෙන්න",
@@ -223,7 +223,7 @@
   "chooseNavigationMethod": "සැරිසැරීමට ඔබ කුමන සිතියම භාවිතා කිරීමට කැමතිද?",
   "campusMapDesc": "ගොඩනැගිලි සිතියම භාවිතයෙන් සැරිසරන්න",
   "googleMapsDesc": "මාර්ග සඳහා Google Maps හි විවෘත කරන්න",
-  "aboutTitle": "MQ Navigation ගැන",
+  "aboutTitle": "MQ Journey ගැන",
   "aboutDesc": "Macquarie විශ්වවිද්‍යාල මණ්ඩප කළමනාකරණය",
   "version": "අනුවාදය",
   "needHelp": "උදව් අවශ්‍යද?",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "අඩු පීඩන මට්ටම - ඔබට ඉදිරි කාලසීමාවන් කිහිපයක් තිබේ",
   "stressLevelBusy": "කාර්යබහුල කාලසටහන - නියමිත දින කිහිපයක් පැමිණේ",
   "stressLevelHigh": "අධි පීඩන මට්ටම - බොහෝ කාලසීමාවන් කෙරෙහි අවධානය යොමු කළ යුතුය",
-  "copyright": "© {year} MQ Navigation - Macquarie University",
+  "copyright": "© {year} MQ Journey - Macquarie University",
   "overlay_parking_name": "නවතා තැබීම",
   "overlay_parking_desc": "නවතා තැබීමේ කලාප, EV ආරෝපණය, ටිකට් යන්ත්‍ර, ප්‍රවේශ පහසු ස්ථාන සහ මෙට්‍රෝ නැවතුම",
   "overlay_drinking_water_name": "පානීය ජලය",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "Google පුරනය වීම සම්පූර්ණ කළ නොහැකි විය. අවසර කේතය කල් ඉකුත් වී හෝ දැනටමත් භාවිතා කර ඇත. කරුණාකර නැවත උත්සාහ කරන්න.",
   "rememberMe": "මාව මතක තියාගන්න",
   "campusNavigation": "ශිෂ්‍ය මධ්‍යස්ථානය",
-  "exploreMap": "MQ Navigation ගවේෂණය කරන්න",
+  "exploreMap": "MQ Journey ගවේෂණය කරන්න",
   "featureComingSoon": "විශේෂාංගය ළඟදීම",
   "oauthComingSoon": "{provider} පුරනය වීම ඉක්මනින් ලබා ගත හැක.",
   "searchEventsPlaceholder": "සිදුවීම් සොයන්න...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "යතුරුපුවරු කෙටිමං",
   "selectFacultyFirst": "පළමුව පීඨයක් තෝරන්න",
   "installApp": "යෙදුම ස්ථාපනය කරන්න",
-  "installAppDesc": "හොඳම අත්දැකීම සඳහා ඔබේ මුල් තිරයට MQ Navigation එක් කරන්න.",
+  "installAppDesc": "හොඳම අත්දැකීම සඳහා ඔබේ මුල් තිරයට MQ Journey එක් කරන්න.",
   "install": "ස්ථාපනය කරන්න",
   "dismiss": "අස් කරන්න",
   "updateAvailable": "යාවත්කාලීන ලබා ගත හැක",
-  "updateAvailableDesc": "MQ Navigation හි නව අනුවාදයක් සූදානම්.",
+  "updateAvailableDesc": "MQ Journey හි නව අනුවාදයක් සූදානම්.",
   "updateNow": "දැන් යාවත්කාලීන කරන්න",
   "syncConflict": "සමමුහුර්ත ගැටුම",
   "syncConflictDesc": "ඔබ නොබැඳිව සිටියදී මෙම අයිතමය වෙනස් කරන ලදී. තබා ගත යුතු අනුවාදය තෝරන්න.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "වෘත්තීය ප්‍රදර්ශනවල ප්‍රබෝධමත්",
   "clickCategoryToFilter": "සිදුවීම් සංග්‍රහය පෙරීමට ප්‍රවර්ගයක් ක්ලික් කරන්න",
   "filterInterestDesc": "ඔබට කැමති දේ සොයා ගැනීමට ප්‍රවර්ග අනුව සිදුවීම් පෙරහන් කරන්න",
-  "youAreOfflineDesc": "MQ Navigation සඳහා අන්තර්ජාල සම්බන්ධතාවයක් අවශ්‍ය වේ. කරුණාකර ඔබගේ සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.",
+  "youAreOfflineDesc": "MQ Journey සඳහා අන්තර්ජාල සම්බන්ධතාවයක් අවශ්‍ය වේ. කරුණාකර ඔබගේ සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.",
   "errorProfileLoad": "අපට ඔබගේ පැතිකඩ සැකසුම් පූරණය කිරීමට නොහැකි විය. මෙය අපගේ ඉංජිනේරු කණ්ඩායමට දන්වා ඇත.",
   "viewLabel": "{label} බලන්න",
   "viewCategoryEvents": "{label} සිදුවීම් බලන්න",
@@ -2125,7 +2125,7 @@
   "renderer": "Renderer: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: සිතියම්-ස්ථාන (ක්‍රියාකාරී)",
   "home_brandTitle": "MQ සංචලනය",
-  "home_welcomeTitle": "MQ Navigation වෙත සාදරයෙන් පිළිගනිමු",
+  "home_welcomeTitle": "MQ Journey වෙත සාදරයෙන් පිළිගනිමු",
   "home_welcomeSubtitle": "ඉක්මනින් සහ පහසුවෙන් කැම්පස් වටා ඔබේ මාර්ගය සොයා ගන්න.",
   "home_scanQrCta": "QR කේතය ස්කෑන් කරන්න",
   "home_quickAccess": "ඉක්මන් ප්රවේශය",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "MQ Navigation හිදී විවෘත කරන්න",
+  "openDay_openInsideMqNav": "MQ Journey හිදී විවෘත කරන්න",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Google Maps සමඟ ගමන් කරන්න",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "MQ Navigation හි Google Maps සමඟ {venue} වෙත ගමන් කරන්න",
+  "openDay_navigateWithGoogleSemantic": "MQ Journey හි Google Maps සමඟ {venue} වෙත ගමන් කරන්න",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "MQ Navigation හිදී Google Maps විවෘත කරන්න",
+  "openDay_openGoogleMapsInsideNav": "MQ Journey හිදී Google Maps විවෘත කරන්න",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

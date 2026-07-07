@@ -47,12 +47,15 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>io.mqnavigation</string>
+			<string>io.mqjourney</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>io.mqjourney</string>
 				<string>io.mqnavigation</string>
 			</array>
 		</dict>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>MQ Journey uses your camera to scan Open Day QR codes at campus locations.</string>
 </dict>
 </plist>

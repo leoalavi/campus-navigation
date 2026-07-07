@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "באיזו מפה תרצה להשתמש לניווט?",
   "campusMapDesc": "נווט באמצעות מפת הקמפוס המובנית",
   "googleMapsDesc": "פתח ב-Google Maps להנחיות",
-  "aboutTitle": "אודות MQ Navigation",
+  "aboutTitle": "אודות MQ Journey",
   "aboutDesc": "ניהול קמפוס אוניברסיטת מקווארי",
   "version": "גרסה",
   "needHelp": "צריך עזרה?",
   "helpDesc": "עיין בתיעוד שלנו או פנה לתמיכה.",
   "viewDocumentation": "צפה בתיעוד",
-  "documentationOpening": "📚 פותח את תיעוד MQ Navigation של אוניברסיטת מקווארי...",
+  "documentationOpening": "📚 פותח את תיעוד MQ Journey של אוניברסיטת מקווארי...",
   "documentationMsg": "📖 התיעוד יהיה זמין בקרוב.",
   "feedback": "משוב",
   "feedbackDesc": "עזור לנו להשתפר על ידי שיתוף המשוב שלך.",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "קיצורי מקלדת",
   "selectFacultyFirst": "תחילה בחר פקולטה",
   "installApp": "התקן אפליקציה",
-  "installAppDesc": "הוסף את MQ Navigation למסך הבית שלך לחוויה הטובה ביותר.",
+  "installAppDesc": "הוסף את MQ Journey למסך הבית שלך לחוויה הטובה ביותר.",
   "install": "התקן",
   "dismiss": "סגור",
   "updateAvailable": "עדכון זמין",
-  "updateAvailableDesc": "גרסה חדשה של MQ Navigation מוכנה.",
+  "updateAvailableDesc": "גרסה חדשה של MQ Journey מוכנה.",
   "updateNow": "עדכן עכשיו",
   "syncConflict": "התנגשות סנכרון",
   "syncConflictDesc": "פריט זה שונה בזמן שהיית לא מחובר. בחר איזו גרסה לשמור.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "כיבוד בירידי קריירה",
   "clickCategoryToFilter": "לחץ על קטגוריה כדי לסנן את עדכון האירוע",
   "filterInterestDesc": "סנן אירועים לפי קטגוריה כדי למצוא את מה שמעניין אותך",
-  "youAreOfflineDesc": "MQ Navigation דורש חיבור לאינטרנט. אנא בדוק את החיבור שלך ונסה שוב.",
+  "youAreOfflineDesc": "MQ Journey דורש חיבור לאינטרנט. אנא בדוק את החיבור שלך ונסה שוב.",
   "errorProfileLoad": "לא הצלחנו לטעון את הגדרות הפרופיל שלך. הנושא דווח לצוות ההנדסה שלנו.",
   "viewLabel": "צפה ב-{label}",
   "viewCategoryEvents": "הצג אירועי {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "מעבד: CrsSimple (קמפוס)",
   "edgeProxy": "Edge Proxy: maps-places (פעיל)",
   "home_brandTitle": "MQ NAVIGATION",
-  "home_welcomeTitle": "ברוכים הבאים ל-MQ Navigation",
+  "home_welcomeTitle": "ברוכים הבאים ל-MQ Journey",
   "home_welcomeSubtitle": "מצא את דרכך בקמפוס במהירות ובקלות.",
   "home_scanQrCta": "סריקת קוד QR",
   "home_quickAccess": "גישה מהירה",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "פתח ב-MQ Navigation",
+  "openDay_openInsideMqNav": "פתח ב-MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "נווט עם Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "נווט אל {venue} עם Google Maps ב-MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "נווט אל {venue} עם Google Maps ב-MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "פתח Google Maps ב-MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "פתח Google Maps ב-MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

@@ -1673,7 +1673,7 @@
   "install": "встановити",
   "dismiss": "Відхилити",
   "updateAvailable": "Оновлення доступне",
-  "updateAvailableDesc": "Готова нова версія MQ Navigation.",
+  "updateAvailableDesc": "Готова нова версія MQ Journey.",
   "updateNow": "Оновити зараз",
   "syncConflict": "Конфлікт синхронізації",
   "syncConflictDesc": "Цей елемент було змінено, коли ви були офлайн. Виберіть, яку версію зберегти.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Частування на ярмарках вакансій",
   "clickCategoryToFilter": "Натисніть категорію, щоб відфільтрувати стрічку подій",
   "filterInterestDesc": "Фільтруйте події за категоріями, щоб знайти те, що вас цікавить",
-  "youAreOfflineDesc": "MQ Navigation потребує підключення к інтернету. Будь ласка, перевірте з'єднання та спробуйте ще раз.",
+  "youAreOfflineDesc": "MQ Journey потребує підключення к інтернету. Будь ласка, перевірте з'єднання та спробуйте ще раз.",
   "errorProfileLoad": "Не вдалося завантажити налаштування профілю. Про це повідомлено нашу інженерну групу.",
   "viewLabel": "Переглянути {label}",
   "viewCategoryEvents": "Перегляд подій {label}",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Відкрити у MQ Navigation",
+  "openDay_openInsideMqNav": "Відкрити у MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Навігація через Google Карти",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Навігація до {venue} через Google Карти у MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Навігація до {venue} через Google Карти у MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Відкрити Google Карти у MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Відкрити Google Карти у MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "নেভিগেশনের জন্য আপনি কোন মানচিত্র ব্যবহার করতে চান?",
   "campusMapDesc": "বিল্ট-ইন ক্যাম্পাস মানচিত্র ব্যবহার করে নেভিগেট করুন",
   "googleMapsDesc": "দিকনির্দেশের জন্য গুগল ম্যাপসে খুলুন",
-  "aboutTitle": "MQ Navigation সম্পর্কে",
+  "aboutTitle": "MQ Journey সম্পর্কে",
   "aboutDesc": "ম্যাকোয়ারি ইউনিভার্সিটি ক্যাম্পাস ম্যানেজমেন্ট",
   "version": "ভার্সন",
   "needHelp": "সাহায্য দরকার?",
   "helpDesc": "আমাদের ডকুমেন্টেশন দেখুন বা সাপোর্টের সাথে যোগাযোগ করুন।",
   "viewDocumentation": "ডকুমেন্টেশন দেখুন",
-  "documentationOpening": "📚 ম্যাকোয়ারি ইউনিভার্সিটি MQ Navigation ডকুমেন্টেশন খোলা হচ্ছে...",
+  "documentationOpening": "📚 ম্যাকোয়ারি ইউনিভার্সিটি MQ Journey ডকুমেন্টেশন খোলা হচ্ছে...",
   "documentationMsg": "📖 ডকুমেন্টেশন শীঘ্রই পাওয়া যাবে।",
   "feedback": "ফিডব্যাক",
   "feedbackDesc": "আপনার ফিডব্যাক শেয়ার করে আমাদের উন্নতিতে সাহায্য করুন।",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "কীবোর্ড শর্টকাট",
   "selectFacultyFirst": "প্রথমে একটি অনুষদ নির্বাচন করুন",
   "installApp": "অ্যাপ ইনস্টল করুন",
-  "installAppDesc": "সেরা অভিজ্ঞতার জন্য আপনার হোম স্ক্রিনে MQ Navigation যোগ করুন।",
+  "installAppDesc": "সেরা অভিজ্ঞতার জন্য আপনার হোম স্ক্রিনে MQ Journey যোগ করুন।",
   "install": "ইনস্টল",
   "dismiss": "বাতিল",
   "updateAvailable": "আপডেট পাওয়া গেছে",
-  "updateAvailableDesc": "MQ Navigation-এর একটি নতুন সংস্করণ প্রস্তুত।",
+  "updateAvailableDesc": "MQ Journey-এর একটি নতুন সংস্করণ প্রস্তুত।",
   "updateNow": "এখন আপডেট করুন",
   "syncConflict": "সিঙ্ক দ্বন্দ্ব",
   "syncConflictDesc": "আপনি অফলাইনে থাকাকালীন এই আইটেমটি পরিবর্তন করা হয়েছে। কোন সংস্করণটি রাখতে হবে তা বেছে নিন।",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "কর্মজীবন মেলায় রিফ্রেশমেন্ট",
   "clickCategoryToFilter": "ইভেন্ট ফিড ফিল্টার করতে একটি বিভাগে ক্লিক করুন",
   "filterInterestDesc": "আপনি কি আগ্রহী তা খুঁজে পেতে বিভাগ দ্বারা ইভেন্টগুলি ফিল্টার করুন৷",
-  "youAreOfflineDesc": "MQ Navigation-এর জন্য ইন্টারনেট সংযোগ প্রয়োজন। অনুগ্রহ করে আপনার সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।",
+  "youAreOfflineDesc": "MQ Journey-এর জন্য ইন্টারনেট সংযোগ প্রয়োজন। অনুগ্রহ করে আপনার সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।",
   "errorProfileLoad": "আমরা আপনার প্রোফাইল সেটিংস লোড করতে পারিনি। এটি আমাদের ইঞ্জিনিয়ারিং টিমকে জানানো হয়েছে।",
   "viewLabel": "দেখুন {label}",
   "viewCategoryEvents": "{label} ইভেন্টগুলি দেখুন৷",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "MQ Navigation-এ খুলুন",
+  "openDay_openInsideMqNav": "MQ Journey-এ খুলুন",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Google Maps দিয়ে নেভিগেট করুন",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "MQ Navigation-এ Google Maps দিয়ে {venue}-এ নেভিগেট করুন",
+  "openDay_navigateWithGoogleSemantic": "MQ Journey-এ Google Maps দিয়ে {venue}-এ নেভিগেট করুন",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "MQ Navigation-এ Google Maps খুলুন",
+  "openDay_openGoogleMapsInsideNav": "MQ Journey-এ Google Maps খুলুন",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

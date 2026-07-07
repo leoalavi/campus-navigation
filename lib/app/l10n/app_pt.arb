@@ -229,7 +229,7 @@
   "needHelp": "Precisar de ajuda?",
   "helpDesc": "Visite nossa documentação ou entre em contato com o suporte.",
   "viewDocumentation": "Ver documentação",
-  "documentationOpening": "📚 Abrindo a documentação do MQ Navigation da Macquarie University...",
+  "documentationOpening": "📚 Abrindo a documentação do MQ Journey da Macquarie University...",
   "documentationMsg": "📖 A documentação estará disponível em breve. Volte mais tarde!",
   "feedback": "Comentários",
   "feedbackDesc": "Ajude-nos a melhorar compartilhando seus comentários.",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Atalhos de teclado",
   "selectFacultyFirst": "Selecione um corpo docente primeiro",
   "installApp": "Instalar aplicativo",
-  "installAppDesc": "Adicione o MQ Navigation à sua tela inicial para obter a melhor experiência.",
+  "installAppDesc": "Adicione o MQ Journey à sua tela inicial para obter a melhor experiência.",
   "install": "Instalar",
   "dismiss": "Dispensar",
   "updateAvailable": "Atualização disponível",
-  "updateAvailableDesc": "Uma nova versão do MQ Navigation está pronta.",
+  "updateAvailableDesc": "Uma nova versão do MQ Journey está pronta.",
   "updateNow": "Atualizar agora",
   "syncConflict": "Conflito de sincronização",
   "syncConflictDesc": "Este item foi modificado enquanto você estava off-line. Escolha qual versão manter.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Refrescos em feiras de carreira",
   "clickCategoryToFilter": "Clique em uma categoria para filtrar o feed do evento",
   "filterInterestDesc": "Filtre eventos por categoria para encontrar o que lhe interessa",
-  "youAreOfflineDesc": "O MQ Navigation requer uma ligação à Internet. Verifique a sua ligação e tente novamente.",
+  "youAreOfflineDesc": "O MQ Journey requer uma ligação à Internet. Verifique a sua ligação e tente novamente.",
   "errorProfileLoad": "Não foi possível carregar as definições do seu perfil. Isto foi reportado à nossa equipa de engenharia.",
   "viewLabel": "Ver {label}",
   "viewCategoryEvents": "Ver eventos {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "Renderizador: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: mapas-locais (ativo)",
   "home_brandTitle": "NAVEGAÇÃO MQ",
-  "home_welcomeTitle": "Bem vindo ao MQ Navigation",
+  "home_welcomeTitle": "Bem vindo ao MQ Journey",
   "home_welcomeSubtitle": "Localize-se no campus com rapidez e facilidade.",
   "home_scanQrCta": "Ler código QR",
   "home_quickAccess": "Acesso rápido",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Abrir no MQ Navigation",
+  "openDay_openInsideMqNav": "Abrir no MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Navegar com o Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Navegar para {venue} com o Google Maps no MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Navegar para {venue} com o Google Maps no MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Abrir o Google Maps no MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Abrir o Google Maps no MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

@@ -229,7 +229,7 @@
   "needHelp": "Segítségre van szüksége?",
   "helpDesc": "Tekintse meg dokumentációnkat, vagy lépjen kapcsolatba az ügyfélszolgálattal.",
   "viewDocumentation": "Dokumentáció megtekintése",
-  "documentationOpening": "📚 A Macquarie University MQ Navigation dokumentációjának megnyitása...",
+  "documentationOpening": "📚 A Macquarie University MQ Journey dokumentációjának megnyitása...",
   "documentationMsg": "📖 Hamarosan elérhető lesz a dokumentáció. Nézz vissza később!",
   "feedback": "Visszajelzés",
   "feedbackDesc": "Segítsen a fejlődésünkben azzal, hogy megosztja visszajelzését.",
@@ -1673,7 +1673,7 @@
   "install": "Telepítés",
   "dismiss": "Elvetés",
   "updateAvailable": "Frissítés elérhető",
-  "updateAvailableDesc": "Elkészült az MQ Navigation új verziója.",
+  "updateAvailableDesc": "Elkészült az MQ Journey új verziója.",
   "updateNow": "Frissítés most",
   "syncConflict": "Szinkronizálási ütközés",
   "syncConflictDesc": "Ez az elem módosult, amikor Ön offline volt. Válassza ki, melyik verziót szeretné megtartani.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Frissítés a karrierbörzéken",
   "clickCategoryToFilter": "Kattintson egy kategóriára az esemény feed szűréséhez",
   "filterInterestDesc": "Szűrje az eseményeket kategóriák szerint, hogy megtalálja, mi érdekli Önt",
-  "youAreOfflineDesc": "A MQ Navigation használatához internetkapcsolat szükséges. Kérjük, ellenőrizze a kapcsolatot, és próbálja újra.",
+  "youAreOfflineDesc": "A MQ Journey használatához internetkapcsolat szükséges. Kérjük, ellenőrizze a kapcsolatot, és próbálja újra.",
   "errorProfileLoad": "Nem sikerült betölteni a profilbeállításokat. Ezt jeleztük a technikai csapatunknak.",
   "viewLabel": "{label} megtekintése",
   "viewCategoryEvents": "Tekintse meg az {label} eseményeket",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Megnyitás az MQ Navigationben",
+  "openDay_openInsideMqNav": "Megnyitás az MQ Journeyben",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Navigálás a Google Térképpel",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Navigálás ide: {venue} a Google Térképpel az MQ Navigationben",
+  "openDay_navigateWithGoogleSemantic": "Navigálás ide: {venue} a Google Térképpel az MQ Journeyben",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Google Térkép megnyitása az MQ Navigationben",
+  "openDay_openGoogleMapsInsideNav": "Google Térkép megnyitása az MQ Journeyben",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

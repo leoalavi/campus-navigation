@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "내비게이션 중 진동 피드백 (모바일 전용)",
   "privacySecurity": "개인정보 및 보안",
   "quickActions": "빠른 작업",
-  "helpSupport": "MQ Navigation 정보",
+  "helpSupport": "MQ Journey 정보",
   "deadlineReminders": "마감일 알림",
   "examReminders": "시험 알림",
   "deadlineRemindersDesc": "다가오는 마감일에 대한 알림 받기",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "내비게이션에 어떤 지도를 사용하시겠습니까?",
   "campusMapDesc": "내장 캠퍼스 지도로 내비게이션",
   "googleMapsDesc": "Google 지도에서 길찾기 열기",
-  "aboutTitle": "MQ Navigation 정보",
+  "aboutTitle": "MQ Journey 정보",
   "aboutDesc": "맥쿼리 대학교 캠퍼스 관리",
   "version": "버전",
   "needHelp": "도움이 필요하신가요?",
   "helpDesc": "문서를 참조하거나 지원팀에 문의하세요.",
   "viewDocumentation": "문서 보기",
-  "documentationOpening": "📚 맥쿼리 대학교 MQ Navigation 문서 열기...",
+  "documentationOpening": "📚 맥쿼리 대학교 MQ Journey 문서 열기...",
   "documentationMsg": "📖 문서가 곧 제공될 예정입니다. 나중에 다시 확인하세요!",
   "feedback": "피드백",
   "feedbackDesc": "피드백을 공유하여 개선에 도움을 주세요.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "스트레스 낮음 — 다가오는 마감일이 적습니다",
   "stressLevelBusy": "바쁜 일정 — 여러 마감일이 다가오고 있습니다",
   "stressLevelHigh": "스트레스 높음 — 많은 마감일에 주의가 필요합니다",
-  "copyright": "© {year} MQ Navigation - 맥쿼리대학교",
+  "copyright": "© {year} MQ Journey - 맥쿼리대학교",
   "overlay_parking_name": "주차",
   "overlay_parking_desc": "주차 구역, 전기차 충전, 티켓 기계, 접근 가능한 주차 공간 및 메트로 정차 지점",
   "overlay_drinking_water_name": "식수",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "Google 로그인을 완료할 수 없었습니다. 인증 코드가 만료되었거나 이미 사용되었습니다. 다시 시도해 주세요.",
   "rememberMe": "로그인 상태 유지",
   "campusNavigation": "학생 허브",
-  "exploreMap": "MQ Navigation 탐색",
+  "exploreMap": "MQ Journey 탐색",
   "featureComingSoon": "곧 출시될 기능",
   "oauthComingSoon": "{provider} 로그인이 곧 제공될 예정입니다.",
   "searchEventsPlaceholder": "이벤트 검색...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "키보드 단축키",
   "selectFacultyFirst": "먼저 학부를 선택하세요",
   "installApp": "앱 설치",
-  "installAppDesc": "최상의 경험을 위해 MQ Navigation를 홈 화면에 추가하세요.",
+  "installAppDesc": "최상의 경험을 위해 MQ Journey를 홈 화면에 추가하세요.",
   "install": "설치",
   "dismiss": "닫기",
   "updateAvailable": "업데이트 가능",
-  "updateAvailableDesc": "MQ Navigation의 새 버전이 준비되었습니다.",
+  "updateAvailableDesc": "MQ Journey의 새 버전이 준비되었습니다.",
   "updateNow": "지금 업데이트",
   "syncConflict": "동기화 충돌",
   "syncConflictDesc": "오프라인 상태에서 이 항목이 수정되었습니다. 유지할 버전을 선택하세요.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "취업 박람회에서의 다과",
   "clickCategoryToFilter": "카테고리를 클릭하여 이벤트 피드 필터링",
   "filterInterestDesc": "카테고리로 이벤트를 필터링하여 관심 있는 것 찾기",
-  "youAreOfflineDesc": "MQ Navigation를 사용하려면 인터넷 연결이 필요합니다. 연결을 확인하고 다시 시도하세요.",
+  "youAreOfflineDesc": "MQ Journey를 사용하려면 인터넷 연결이 필요합니다. 연결을 확인하고 다시 시도하세요.",
   "errorProfileLoad": "프로필 설정을 불러오지 못했습니다. 이 문제는 엔지니어링 팀에 보고되었습니다.",
   "viewLabel": "{label} 보기",
   "viewCategoryEvents": "{label} 이벤트 보기",
@@ -2125,7 +2125,7 @@
   "renderer": "렌더러: CrsSimple (캠퍼스)",
   "edgeProxy": "엣지 프록시: maps-places (활성)",
   "home_brandTitle": "MQ 내비게이션",
-  "home_welcomeTitle": "MQ Navigation에 오신 것을 환영합니다",
+  "home_welcomeTitle": "MQ Journey에 오신 것을 환영합니다",
   "home_welcomeSubtitle": "캠퍼스를 빠르고 쉽게 찾아보세요.",
   "home_scanQrCta": "QR 코드 스캔",
   "home_quickAccess": "빠른 접근",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "MQ Navigation 내에서 열기",
+  "openDay_openInsideMqNav": "MQ Journey 내에서 열기",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Google 지도로 안내",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "MQ Navigation에서 Google 지도로 {venue}까지 안내",
+  "openDay_navigateWithGoogleSemantic": "MQ Journey에서 Google 지도로 {venue}까지 안내",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "MQ Navigation에서 Google 지도 열기",
+  "openDay_openGoogleMapsInsideNav": "MQ Journey에서 Google 지도 열기",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

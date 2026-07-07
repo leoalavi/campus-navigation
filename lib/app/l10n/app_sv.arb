@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "Vibrationsfeedback under navigering (endast mobil)",
   "privacySecurity": "Integritet och säkerhet",
   "quickActions": "Snabba åtgärder",
-  "helpSupport": "Om MQ Navigation",
+  "helpSupport": "Om MQ Journey",
   "deadlineReminders": "Påminnelser om deadline",
   "examReminders": "Tentapåminnelser",
   "deadlineRemindersDesc": "Få besked om kommande deadlines",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "Vilken karta vill du använda för navigering?",
   "campusMapDesc": "Navigera med den inbyggda campuskartan",
   "googleMapsDesc": "Öppna i Google Maps för vägbeskrivning",
-  "aboutTitle": "Om MQ Navigation",
+  "aboutTitle": "Om MQ Journey",
   "aboutDesc": "Macquarie University Campus Management",
   "version": "Version",
   "needHelp": "Behöver du hjälp?",
   "helpDesc": "Besök vår dokumentation eller kontakta support.",
   "viewDocumentation": "Se dokumentation",
-  "documentationOpening": "📚 Öppnar Macquarie University MQ Navigation-dokumentation...",
+  "documentationOpening": "📚 Öppnar Macquarie University MQ Journey-dokumentation...",
   "documentationMsg": "📖 Dokumentation kommer snart att finnas tillgänglig. Kom tillbaka senare!",
   "feedback": "Feed-back",
   "feedbackDesc": "Hjälp oss att förbättra genom att dela din feedback.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "Låg stressnivå - du har få kommande deadlines",
   "stressLevelBusy": "Späckat schema - flera deadlines närmar sig",
   "stressLevelHigh": "Hög stressnivå – många deadlines kräver uppmärksamhet",
-  "copyright": "© {year} MQ Navigation - Macquarie University",
+  "copyright": "© {year} MQ Journey - Macquarie University",
   "overlay_parking_name": "Parkering",
   "overlay_parking_desc": "Parkeringszoner, EV-laddning, biljettmaskiner, tillgängliga platser och tunnelbanestopp",
   "overlay_drinking_water_name": "Dricksvatten",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "Google-inloggning kunde inte slutföras. Auktoriseringskoden har löpt ut eller användes redan. Försök igen.",
   "rememberMe": "Kom ihåg mig",
   "campusNavigation": "STUDENTHUB",
-  "exploreMap": "Utforska MQ Navigation",
+  "exploreMap": "Utforska MQ Journey",
   "featureComingSoon": "Funktion kommer snart",
   "oauthComingSoon": "{provider}-inloggning kommer snart att vara tillgänglig.",
   "searchEventsPlaceholder": "Sök händelser...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Kortkommandon",
   "selectFacultyFirst": "Välj en fakultet först",
   "installApp": "Installera appen",
-  "installAppDesc": "Lägg till MQ Navigation på din startskärm för den bästa upplevelsen.",
+  "installAppDesc": "Lägg till MQ Journey på din startskärm för den bästa upplevelsen.",
   "install": "Installera",
   "dismiss": "Avvisa",
   "updateAvailable": "Uppdatering tillgänglig",
-  "updateAvailableDesc": "En ny version av MQ Navigation är klar.",
+  "updateAvailableDesc": "En ny version av MQ Journey är klar.",
   "updateNow": "Uppdatera nu",
   "syncConflict": "Synkroniseringskonflikt",
   "syncConflictDesc": "Det här objektet ändrades medan du var offline. Välj vilken version du vill behålla.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Förfriskningar på karriärmässor",
   "clickCategoryToFilter": "Klicka på en kategori för att filtrera händelseflödet",
   "filterInterestDesc": "Filtrera händelser efter kategori för att hitta det som intresserar dig",
-  "youAreOfflineDesc": "MQ Navigation kräver en internetanslutning. Kontrollera din anslutning och försök igen.",
+  "youAreOfflineDesc": "MQ Journey kräver en internetanslutning. Kontrollera din anslutning och försök igen.",
   "errorProfileLoad": "Vi kunde inte ladda dina profilinställningar. Detta har rapporterats till vårt tekniska team.",
   "viewLabel": "Visa {label}",
   "viewCategoryEvents": "Visa {label}-händelser",
@@ -2125,7 +2125,7 @@
   "renderer": "Renderare: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: maps-places (aktiv)",
   "home_brandTitle": "MQ NAVIGATION",
-  "home_welcomeTitle": "Välkommen till MQ Navigation",
+  "home_welcomeTitle": "Välkommen till MQ Journey",
   "home_welcomeSubtitle": "Hitta din väg runt campus snabbt och enkelt.",
   "home_scanQrCta": "Skanna QR-kod",
   "home_quickAccess": "Snabb åtkomst",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Öppna i MQ Navigation",
+  "openDay_openInsideMqNav": "Öppna i MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Navigera med Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Navigera till {venue} med Google Maps i MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Navigera till {venue} med Google Maps i MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Öppna Google Maps i MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Öppna Google Maps i MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

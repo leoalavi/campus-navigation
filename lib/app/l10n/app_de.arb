@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "Vibrationsfeedback während der Navigation (nur Mobilgerät)",
   "privacySecurity": "Datenschutz & Sicherheit",
   "quickActions": "Schnellaktionen",
-  "helpSupport": "Über MQ Navigation",
+  "helpSupport": "Über MQ Journey",
   "deadlineReminders": "Abgabeerinnerungen",
   "examReminders": "Prüfungserinnerungen",
   "deadlineRemindersDesc": "Über bevorstehende Abgaben informiert werden",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "Welche Karte möchten Sie zur Navigation verwenden?",
   "campusMapDesc": "Mit der integrierten Campuskarte navigieren",
   "googleMapsDesc": "In Google Maps für Wegbeschreibung öffnen",
-  "aboutTitle": "Über MQ Navigation",
+  "aboutTitle": "Über MQ Journey",
   "aboutDesc": "Macquarie University Campusverwaltung",
   "version": "Version",
   "needHelp": "Hilfe benötigt?",
   "helpDesc": "Besuchen Sie unsere Dokumentation oder kontaktieren Sie den Support.",
   "viewDocumentation": "Dokumentation ansehen",
-  "documentationOpening": "📚 Öffne Macquarie University MQ Navigation Dokumentation...",
+  "documentationOpening": "📚 Öffne Macquarie University MQ Journey Dokumentation...",
   "documentationMsg": "📖 Dokumentation wird bald verfügbar sein. Schauen Sie später vorbei!",
   "feedback": "Rückmeldung",
   "feedbackDesc": "Helfen Sie uns durch Ihr Feedback.",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "Geringes Stressniveau",
   "stressLevelBusy": "Voller Terminkalender",
   "stressLevelHigh": "Hohes Stressniveau",
-  "copyright": "© {year} MQ Navigation – Macquarie University",
+  "copyright": "© {year} MQ Journey – Macquarie University",
   "overlay_parking_name": "Parken",
   "overlay_parking_desc": "Parkzonen, E-Ladestationen, Ticketautomaten",
   "overlay_drinking_water_name": "Trinkwasser",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "Google-Anmeldung konnte nicht abgeschlossen werden.",
   "rememberMe": "Angemeldet bleiben",
   "campusNavigation": "STUDENTEN-HUB",
-  "exploreMap": "MQ Navigation erkunden",
+  "exploreMap": "MQ Journey erkunden",
   "featureComingSoon": "Funktion demnächst",
   "oauthComingSoon": "{provider}-Anmeldung demnächst.",
   "searchEventsPlaceholder": "Veranstaltungen suchen...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Tastaturkürzel",
   "selectFacultyFirst": "Zuerst eine Fakultät auswählen",
   "installApp": "App installieren",
-  "installAppDesc": "MQ Navigation zum Startbildschirm hinzufügen.",
+  "installAppDesc": "MQ Journey zum Startbildschirm hinzufügen.",
   "install": "Installieren",
   "dismiss": "Ignorieren",
   "updateAvailable": "Update verfügbar",
-  "updateAvailableDesc": "Eine neue Version von MQ Navigation ist bereit.",
+  "updateAvailableDesc": "Eine neue Version von MQ Journey ist bereit.",
   "updateNow": "Jetzt aktualisieren",
   "syncConflict": "Synchronisierungskonflikt",
   "syncConflictDesc": "Dieses Element wurde offline geändert. Version auswählen.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Erfrischungen bei Karrieremessen",
   "clickCategoryToFilter": "Kategorie klicken um Veranstaltungs-Feed zu filtern",
   "filterInterestDesc": "Veranstaltungen nach Kategorie filtern",
-  "youAreOfflineDesc": "MQ Navigation benötigt eine Internetverbindung.",
+  "youAreOfflineDesc": "MQ Journey benötigt eine Internetverbindung.",
   "errorProfileLoad": "Ihre Profileinstellungen konnten nicht geladen werden.",
   "viewLabel": "{label} ansehen",
   "viewCategoryEvents": "{label}-Ereignisse anzeigen",
@@ -2125,7 +2125,7 @@
   "renderer": "Renderer: CrsSimple (Campus)",
   "edgeProxy": "Edge-Proxy: Maps-Places (Aktiv)",
   "home_brandTitle": "MQ-NAVIGATION",
-  "home_welcomeTitle": "Willkommen bei MQ Navigation",
+  "home_welcomeTitle": "Willkommen bei MQ Journey",
   "home_welcomeSubtitle": "Finden Sie schnell und einfach den Weg auf dem Campus.",
   "home_scanQrCta": "QR-Code scannen",
   "home_quickAccess": "Schnellzugriff",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "In MQ Navigation öffnen",
+  "openDay_openInsideMqNav": "In MQ Journey öffnen",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Mit Google Maps navigieren",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Mit Google Maps in MQ Navigation zu {venue} navigieren",
+  "openDay_navigateWithGoogleSemantic": "Mit Google Maps in MQ Journey zu {venue} navigieren",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Google Maps in MQ Navigation öffnen",
+  "openDay_openGoogleMapsInsideNav": "Google Maps in MQ Journey öffnen",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

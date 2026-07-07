@@ -18,7 +18,7 @@ import 'package:mq_journey/shared/models/user_preferences.dart';
 import 'package:mq_journey/shared/widgets/mq_tactile_button.dart';
 import 'package:mq_journey/shared/widgets/open_day_wordmark.dart';
 
-/// Home screen for the MQ Navigation app.
+/// Home screen for the MQ Journey app.
 ///
 /// Structure (top → bottom):
 ///   1. Hero — Open Day 2026 banner (wordmark + date + welcome copy) + CTA
@@ -680,7 +680,6 @@ class _HeroSection extends StatelessWidget {
     );
   }
 }
-
 
 // -------------------------------------------------------------------------- //
 // PRIVACY / INSTANT-ACCESS STRIP                                             //

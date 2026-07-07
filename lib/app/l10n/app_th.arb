@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "การสั่นตอบสนองระหว่างการนำทาง (มือถือเท่านั้น)",
   "privacySecurity": "ความเป็นส่วนตัวและความปลอดภัย",
   "quickActions": "การดำเนินการด่วน",
-  "helpSupport": "เกี่ยวกับ MQ Navigation",
+  "helpSupport": "เกี่ยวกับ MQ Journey",
   "deadlineReminders": "การแจ้งเตือนกำหนดส่ง",
   "examReminders": "การแจ้งเตือนการสอบ",
   "deadlineRemindersDesc": "รับการแจ้งเตือนเกี่ยวกับกำหนดส่งที่ใกล้เข้ามา",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "คุณต้องการใช้แผนที่ใดในการนำทาง?",
   "campusMapDesc": "นำทางโดยใช้แผนที่วิทยาเขตในตัว",
   "googleMapsDesc": "เปิดใน Google Maps เพื่อดูเส้นทาง",
-  "aboutTitle": "เกี่ยวกับ MQ Navigation",
+  "aboutTitle": "เกี่ยวกับ MQ Journey",
   "aboutDesc": "การจัดการวิทยาเขตมหาวิทยาลัย Macquarie",
   "version": "เวอร์ชัน",
   "needHelp": "ต้องการความช่วยเหลือ?",
   "helpDesc": "เยี่ยมชมเอกสารของเราหรือติดต่อฝ่ายสนับสนุน",
   "viewDocumentation": "ดูเอกสาร",
-  "documentationOpening": "📚 กำลังเปิดเอกสาร MQ Navigation ของมหาวิทยาลัย Macquarie...",
+  "documentationOpening": "📚 กำลังเปิดเอกสาร MQ Journey ของมหาวิทยาลัย Macquarie...",
   "documentationMsg": "📖 เอกสารจะพร้อมใช้งานเร็วๆ นี้ กลับมาตรวจสอบภายหลัง!",
   "feedback": "ข้อเสนอแนะ",
   "feedbackDesc": "ช่วยเราปรับปรุงโดยแบ่งปันข้อเสนอแนะของคุณ",
@@ -1172,7 +1172,7 @@
   "stressLevelLow": "ระดับความเครียดต่ำ - คุณมีกำหนดเวลาที่กำลังจะมาถึงเล็กน้อย",
   "stressLevelBusy": "ตารางงานยุ่ง - มีกำหนดเวลาอีกหลายรายการที่กำลังจะมาถึง",
   "stressLevelHigh": "ระดับความเครียดสูง - กำหนดเวลาจำนวนมากต้องได้รับการดูแล",
-  "copyright": "© {year} MQ Navigation - มหาวิทยาลัย Macquarie",
+  "copyright": "© {year} MQ Journey - มหาวิทยาลัย Macquarie",
   "overlay_parking_name": "ที่จอดรถ",
   "overlay_parking_desc": "โซนจอดรถ จุดชาร์จ EV เครื่องจำหน่ายตั๋ว ช่องจอดสำหรับผู้พิการ และจุดจอดเมโทร",
   "overlay_drinking_water_name": "น้ำดื่ม",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "แป้นพิมพ์ลัด",
   "selectFacultyFirst": "เลือกคณะก่อน",
   "installApp": "ติดตั้งแอป",
-  "installAppDesc": "เพิ่ม MQ Navigation ไปยังหน้าจอหลักของคุณเพื่อประสบการณ์ที่ดีที่สุด",
+  "installAppDesc": "เพิ่ม MQ Journey ไปยังหน้าจอหลักของคุณเพื่อประสบการณ์ที่ดีที่สุด",
   "install": "ติดตั้ง",
   "dismiss": "ปิด",
   "updateAvailable": "มีการอัปเดต",
-  "updateAvailableDesc": "MQ Navigation เวอร์ชันใหม่พร้อมใช้งานแล้ว",
+  "updateAvailableDesc": "MQ Journey เวอร์ชันใหม่พร้อมใช้งานแล้ว",
   "updateNow": "อัปเดตเดี๋ยวนี้",
   "syncConflict": "ความขัดแย้งในการซิงค์",
   "syncConflictDesc": "รายการนี้ถูกแก้ไขในขณะที่คุณออฟไลน์ เลือกเวอร์ชันที่ต้องการเก็บไว้",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "เครื่องดื่มในงานมหกรรมอาชีพ",
   "clickCategoryToFilter": "คลิกหมวดหมู่เพื่อกรองฟีดเหตุการณ์",
   "filterInterestDesc": "กรองกิจกรรมตามหมวดหมู่เพื่อค้นหาสิ่งที่คุณสนใจ",
-  "youAreOfflineDesc": "MQ Navigation จำเป็นต้องมีการเชื่อมต่ออินเทอร์เน็ต โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง",
+  "youAreOfflineDesc": "MQ Journey จำเป็นต้องมีการเชื่อมต่ออินเทอร์เน็ต โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง",
   "errorProfileLoad": "เราไม่สามารถโหลดการตั้งค่าโปรไฟล์ของคุณได้ ปัญหานี้ได้รับการรายงานไปยังทีมวิศวกรของเราแล้ว",
   "viewLabel": "ดู {label}",
   "viewCategoryEvents": "ดูเหตุการณ์ {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "ตัวแสดงภาพ: CrsSimple (วิทยาเขต)",
   "edgeProxy": "Edge Proxy: แผนที่-สถานที่ (ใช้งานอยู่)",
   "home_brandTitle": "การนำทาง MQ",
-  "home_welcomeTitle": "ยินดีต้อนรับสู่ MQ Navigation",
+  "home_welcomeTitle": "ยินดีต้อนรับสู่ MQ Journey",
   "home_welcomeSubtitle": "ค้นหาเส้นทางรอบมหาวิทยาลัยอย่างรวดเร็วและง่ายดาย",
   "home_scanQrCta": "สแกนคิวอาร์โค้ด",
   "home_quickAccess": "เข้าถึงด่วน",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "เปิดใน MQ Navigation",
+  "openDay_openInsideMqNav": "เปิดใน MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "นำทางด้วย Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "นำทางไปยัง {venue} ด้วย Google Maps ใน MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "นำทางไปยัง {venue} ด้วย Google Maps ใน MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "เปิด Google Maps ใน MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "เปิด Google Maps ใน MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

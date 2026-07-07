@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Kariyer fuarlarında ikramlar",
   "clickCategoryToFilter": "Etkinlik akışını filtrelemek için bir kategoriyi tıklayın",
   "filterInterestDesc": "İlginizi çeken şeyleri bulmak için etkinlikleri kategoriye göre filtreleyin",
-  "youAreOfflineDesc": "MQ Navigation internet bağlantısı gerektirir. Lütfen bağlantınızı kontrol edin ve tekrar deneyin.",
+  "youAreOfflineDesc": "MQ Journey internet bağlantısı gerektirir. Lütfen bağlantınızı kontrol edin ve tekrar deneyin.",
   "errorProfileLoad": "Profil ayarlarınız yüklenemedi. Bu durum teknik ekibimize bildirildi.",
   "viewLabel": "{label}'i görüntüleyin",
   "viewCategoryEvents": "{label} etkinliklerini görüntüleyin",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "MQ Navigation içinde aç",
+  "openDay_openInsideMqNav": "MQ Journey içinde aç",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Google Maps ile gezin",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "MQ Navigation'da Google Maps ile {venue} konumuna git",
+  "openDay_navigateWithGoogleSemantic": "MQ Journey'da Google Maps ile {venue} konumuna git",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "MQ Navigation içinde Google Maps aç",
+  "openDay_openGoogleMapsInsideNav": "MQ Journey içinde Google Maps aç",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

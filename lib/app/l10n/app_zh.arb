@@ -176,7 +176,7 @@
   "hapticFeedbackDesc": "导航期间的振动反馈（仅限移动端）",
   "privacySecurity": "隐私与安全",
   "quickActions": "快捷操作",
-  "helpSupport": "关于 MQ Navigation",
+  "helpSupport": "关于 MQ Journey",
   "deadlineReminders": "截止日期提醒",
   "examReminders": "考试提醒",
   "deadlineRemindersDesc": "获取即将到期的截止日期通知",
@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "您想使用哪个地图进行导航？",
   "campusMapDesc": "使用内置校园地图进行导航",
   "googleMapsDesc": "在 Google 地图中打开以获取路线",
-  "aboutTitle": "关于 MQ Navigation",
+  "aboutTitle": "关于 MQ Journey",
   "aboutDesc": "麦考瑞大学校园管理",
   "version": "版本",
   "needHelp": "需要帮助？",
   "helpDesc": "访问我们的文档或联系支持。",
   "viewDocumentation": "查看文档",
-  "documentationOpening": "📚 正在打开麦考瑞大学 MQ Navigation 文档...",
+  "documentationOpening": "📚 正在打开麦考瑞大学 MQ Journey 文档...",
   "documentationMsg": "📖 文档即将推出，请稍后再来！",
   "feedback": "反馈",
   "feedbackDesc": "分享您的反馈帮助我们改进。",
@@ -1303,7 +1303,7 @@
   "oauthCodeExchangeFailed": "无法完成 Google 登录。授权码已过期或已被使用。请重试。",
   "rememberMe": "记住我",
   "campusNavigation": "学生枢纽",
-  "exploreMap": "探索 MQ Navigation",
+  "exploreMap": "探索 MQ Journey",
   "featureComingSoon": "功能即将推出",
   "oauthComingSoon": "{provider} 登录即将上线。",
   "searchEventsPlaceholder": "搜索活动...",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "键盘快捷键",
   "selectFacultyFirst": "请先选择学院",
   "installApp": "安装应用",
-  "installAppDesc": "将 MQ Navigation 添加到您的主屏幕以获得最佳体验。",
+  "installAppDesc": "将 MQ Journey 添加到您的主屏幕以获得最佳体验。",
   "install": "安装",
   "dismiss": "关闭",
   "updateAvailable": "有可用更新",
-  "updateAvailableDesc": "MQ Navigation 的新版本已准备就绪。",
+  "updateAvailableDesc": "MQ Journey 的新版本已准备就绪。",
   "updateNow": "立即更新",
   "syncConflict": "同步冲突",
   "syncConflictDesc": "此项目在您离线时被修改。请选择要保留的版本。",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "茶点",
   "clickCategoryToFilter": "点击类别以过滤活动流",
   "filterInterestDesc": "按类别过滤活动以找到您感兴趣的内容",
-  "youAreOfflineDesc": "MQ Navigation 需要互联网连接。请检查您的网络连接并重试。",
+  "youAreOfflineDesc": "MQ Journey 需要互联网连接。请检查您的网络连接并重试。",
   "errorProfileLoad": "无法加载您的个人资料设置。此问题已报告给我们的工程团队。",
   "viewLabel": "查看 {label}",
   "viewCategoryEvents": "查看 {label} 活动",
@@ -2125,7 +2125,7 @@
   "renderer": "渲染器：CrsSimple（校园）",
   "edgeProxy": "边缘代理：maps-places（活跃）",
   "home_brandTitle": "消息导航",
-  "home_welcomeTitle": "欢迎使用 MQ Navigation",
+  "home_welcomeTitle": "欢迎使用 MQ Journey",
   "home_welcomeSubtitle": "快速轻松地找到校园路线。",
   "home_scanQrCta": "扫描二维码",
   "home_quickAccess": "快速访问",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "在MQ Navigation中打开",
+  "openDay_openInsideMqNav": "在MQ Journey中打开",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "使用Google地图导航",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "在MQ Navigation中使用Google地图导航至{venue}",
+  "openDay_navigateWithGoogleSemantic": "在MQ Journey中使用Google地图导航至{venue}",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "在MQ Navigation中打开Google地图",
+  "openDay_openGoogleMapsInsideNav": "在MQ Journey中打开Google地图",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },

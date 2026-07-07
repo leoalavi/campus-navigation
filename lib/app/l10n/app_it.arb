@@ -223,13 +223,13 @@
   "chooseNavigationMethod": "Quale mappa vorresti usare per la navigazione?",
   "campusMapDesc": "Naviga usando la mappa del campus integrata",
   "googleMapsDesc": "Apri in Google Maps per le indicazioni",
-  "aboutTitle": "Informazioni su MQ Navigation",
+  "aboutTitle": "Informazioni su MQ Journey",
   "aboutDesc": "Gestione Campus Macquarie University",
   "version": "Versione",
   "needHelp": "Hai bisogno di aiuto?",
   "helpDesc": "Visita la nostra documentazione o contatta il supporto.",
   "viewDocumentation": "Visualizza Documentazione",
-  "documentationOpening": "📚 Apertura documentazione MQ Navigation Macquarie University...",
+  "documentationOpening": "📚 Apertura documentazione MQ Journey Macquarie University...",
   "documentationMsg": "📖 La documentazione sarà disponibile presto. Ricontrolla più tardi!",
   "feedback": "Feedback",
   "feedbackDesc": "Aiutaci a migliorare condividendo il tuo feedback.",
@@ -1669,11 +1669,11 @@
   "keyboardShortcutsTitle": "Scorciatoie da tastiera",
   "selectFacultyFirst": "Seleziona prima una facoltà",
   "installApp": "Installa App",
-  "installAppDesc": "Aggiungi MQ Navigation alla tua schermata Home per la migliore esperienza.",
+  "installAppDesc": "Aggiungi MQ Journey alla tua schermata Home per la migliore esperienza.",
   "install": "Installa",
   "dismiss": "Ignora",
   "updateAvailable": "Aggiornamento disponibile",
-  "updateAvailableDesc": "Una nuova versione di MQ Navigation è pronta.",
+  "updateAvailableDesc": "Una nuova versione di MQ Journey è pronta.",
   "updateNow": "Aggiorna ora",
   "syncConflict": "Conflitto di sincronizzazione",
   "syncConflictDesc": "Questo elemento è stato modificato mentre eri offline. Scegli quale versione conservare.",
@@ -1758,7 +1758,7 @@
   "expectRefreshments": "Rinfreschi alle fiere del lavoro",
   "clickCategoryToFilter": "Fai clic su una categoria per filtrare il feed degli eventi",
   "filterInterestDesc": "Filtra gli eventi per categoria per trovare ciò che ti interessa",
-  "youAreOfflineDesc": "MQ Navigation richiede una connessione a Internet. Controlla la tua connessione e riprova.",
+  "youAreOfflineDesc": "MQ Journey richiede una connessione a Internet. Controlla la tua connessione e riprova.",
   "errorProfileLoad": "Impossibile caricare le impostazioni del profilo. L'errore è stato segnalato al nostro team tecnico.",
   "viewLabel": "View {label}",
   "viewCategoryEvents": "Visualizza gli eventi {label}",
@@ -2125,7 +2125,7 @@
   "renderer": "Rendering: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: mappe-luoghi (Attivo)",
   "home_brandTitle": "NAVIGAZIONE MQ",
-  "home_welcomeTitle": "Benvenuti in MQ Navigation",
+  "home_welcomeTitle": "Benvenuti in MQ Journey",
   "home_welcomeSubtitle": "Orientarsi nel campus in modo rapido e semplice.",
   "home_scanQrCta": "Scansiona codice QR",
   "home_quickAccess": "Accesso rapido",
@@ -2159,15 +2159,15 @@
       }
     }
   },
-  "openDay_openInsideMqNav": "Apri in MQ Navigation",
+  "openDay_openInsideMqNav": "Apri in MQ Journey",
   "@openDay_openInsideMqNav": {
-    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Journey."
   },
   "openDay_navigateWithGoogle": "Naviga con Google Maps",
   "@openDay_navigateWithGoogle": {
     "description": "ListTile title for the Google-Maps navigation action."
   },
-  "openDay_navigateWithGoogleSemantic": "Naviga verso {venue} con Google Maps in MQ Navigation",
+  "openDay_navigateWithGoogleSemantic": "Naviga verso {venue} con Google Maps in MQ Journey",
   "@openDay_navigateWithGoogleSemantic": {
     "placeholders": {
       "venue": {
@@ -2175,7 +2175,7 @@
       }
     }
   },
-  "openDay_openGoogleMapsInsideNav": "Apri Google Maps in MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Apri Google Maps in MQ Journey",
   "@openDay_openGoogleMapsInsideNav": {
     "description": "ListTile subtitle for the Google-Maps navigation action."
   },
