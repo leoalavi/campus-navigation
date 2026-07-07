@@ -20,6 +20,23 @@ class IndoorPreviewPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final manifestAsync = ref.watch(indoorManifestProvider(buildingId));
+
+    // Prefer the building's friendly name from the Open Day trail (e.g.
+    // "10 Hadenfeld Avenue") over the raw slug title ("hadenfeld-10 Indoor").
+    // Falls back to the slug while the trail is still loading or when the
+    // building isn't on the trail (e.g. a legacy map-code deep link).
+    final trail = ref.watch(trailManifestProvider).value;
+    String? friendlyName;
+    if (trail != null) {
+      for (final loc in trail.locations) {
+        if (loc.buildingId == buildingId || loc.locationId == buildingId) {
+          friendlyName = loc.title;
+          break;
+        }
+      }
+    }
+    final title = friendlyName ?? '$buildingId Indoor';
+
     return Scaffold(
       appBar: AppBar(
         leading: onBack != null
@@ -29,7 +46,7 @@ class IndoorPreviewPage extends ConsumerWidget {
                 onPressed: onBack,
               )
             : null,
-        title: Text('$buildingId Indoor'),
+        title: Text(title),
       ),
       body: manifestAsync.when(
         data: (manifest) {

@@ -59,6 +59,16 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
   final MapController _controller = MapController();
   late final Future<CampusOverlayMeta> _metaFuture;
   CampusProjection? _projection;
+
+  /// True once `FlutterMap` has fired `onMapReady`. `MapController.move()`
+  /// throws ("You need to have the FlutterMap widget rendered at least once
+  /// before using the MapController") if called before that — which happens
+  /// when the Map branch is deep-linked to with a building already selected
+  /// (e.g. from an Open Day session's "View in Campus Map"): `didUpdateWidget`
+  /// runs `_moveMap` before the offstage map has laid out. `_handleMapReady`
+  /// already repositions to the selected building once ready, so moves
+  /// requested before then are safely skipped.
+  bool _mapReady = false;
   static const double _mapMinZoom = -4.0;
   static const double _mapHardMaxZoom = -2.2;
   @override
@@ -323,6 +333,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
   }
 
   void _handleMapReady(CampusOverlayMeta meta, CampusProjection projection) {
+    _mapReady = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
@@ -340,6 +351,9 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
   }
 
   void _moveMap(latlong.LatLng point, {double? zoom}) {
+    // The FlutterMap must have rendered at least once before its controller
+    // can move; before then `_handleMapReady` handles the initial position.
+    if (!_mapReady) return;
     final targetZoom = (zoom ?? _currentZoom(fallback: _mapHardMaxZoom)).clamp(
       _mapMinZoom,
       _mapHardMaxZoom,
