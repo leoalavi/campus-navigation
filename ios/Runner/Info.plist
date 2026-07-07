@@ -38,8 +38,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>MQ Journey uses your camera to scan Open Day QR codes at campus locations.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>MQ Navigation uses your location to navigate you around campus.</string>
+	<string>MQ Journey uses your location to navigate you around campus.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
