@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/indoor_webview.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/indoor_stop_list.dart';
 
 class IndoorPreviewPage extends ConsumerWidget {
-  const IndoorPreviewPage({super.key, required this.buildingId});
+  const IndoorPreviewPage({super.key, required this.buildingId, this.onBack});
   final String buildingId;
+
+  /// When provided, the app bar shows a leading back button that calls this
+  /// instead of relying on the navigation stack. Used when the page is
+  /// embedded (not pushed) — e.g. the AR building picker in the Map tab swaps
+  /// itself for this page, so there is nothing to pop; [onBack] returns to
+  /// the picker. When null the app bar uses its default behaviour (an
+  /// automatic back button only when the route can be popped).
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final manifestAsync = ref.watch(indoorManifestProvider(buildingId));
     return Scaffold(
-      appBar: AppBar(title: Text('$buildingId Indoor')),
+      appBar: AppBar(
+        leading: onBack != null
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                tooltip: AppLocalizations.of(context)!.back,
+                onPressed: onBack,
+              )
+            : null,
+        title: Text('$buildingId Indoor'),
+      ),
       body: manifestAsync.when(
         data: (manifest) {
           if (manifest == null || manifest.isEmpty) {

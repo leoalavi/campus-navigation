@@ -49,7 +49,16 @@ class _MapPageState extends ConsumerState<MapPage> {
     final buildingCode = selected?.code;
 
     if (buildingCode != null) {
-      return IndoorPreviewPage(buildingId: buildingCode);
+      // Embedded (not pushed) in the AR branch, so there's nothing to pop —
+      // give it an explicit back button that clears the selection and returns
+      // to the AR building picker, keeping the user inside AR mode.
+      return IndoorPreviewPage(
+        buildingId: buildingCode,
+        onBack: () {
+          ref.read(mapControllerProvider.notifier).clearSelection();
+          setState(() {});
+        },
+      );
     }
 
     return ArBuildingPicker(
