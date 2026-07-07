@@ -6,7 +6,6 @@ import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/core/utils/haptics.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
 import 'package:mq_journey/features/map/data/services/offline_maps_service.dart';
 import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
 import 'package:mq_journey/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
@@ -311,42 +310,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ),
                   const SizedBox(height: MqSpacing.space6),
 
-                  // ── Map Preferences section ───────────────────
-                  _SectionHeader(
-                    title: l10n.settings_experience,
-                  ), // Using experience for map prefs
-                  _SettingsCard(
-                    children: [
-                      _TapRow(
-                        icon: Icons.directions_walk_outlined,
-                        label: l10n.defaultTravelMode,
-                        value: switch (preferences.defaultTravelMode) {
-                          TravelMode.walk => l10n.walk,
-                          TravelMode.drive => l10n.drive,
-                          TravelMode.bike => l10n.bike,
-                          TravelMode.transit => l10n.transit,
-                        },
-                        semanticLabel: l10n.defaultTravelMode,
-                        hapticsEnabled: preferences.hapticsEnabled,
-                        onTap: () => _showPicker<TravelMode>(
-                          context: context,
-                          title: l10n.defaultTravelMode,
-                          current: preferences.defaultTravelMode,
-                          items: TravelMode.values,
-                          labelOf: (v) => switch (v) {
-                            TravelMode.walk => l10n.walk,
-                            TravelMode.drive => l10n.drive,
-                            TravelMode.bike => l10n.bike,
-                            TravelMode.transit => l10n.transit,
-                          },
-                          onSelect: (v) => ref
-                              .read(settingsControllerProvider.notifier)
-                              .updateDefaultTravelMode(v),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: MqSpacing.space6),
+                  // Default Travel Mode setting removed: this is a campus
+                  // walking app for Open Day — visitors never choose between
+                  // route modes, so the picker only added confusion. Campus
+                  // routing keeps using the preference's default (walk).
 
                   // ── Commute Preferences section ───────────────
                   //
@@ -524,25 +491,24 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                       if (preferences.offlineCampusMapsEnabled)
                         _TapRow(
-                          icon: Icons.cloud_download_outlined,
+                          icon: preferences.offlineCampusMapsDownloaded
+                              ? Icons.cloud_done_outlined
+                              : Icons.cloud_download_outlined,
                           label: l10n.offlineCampusMapsDownload,
-                          value: '',
+                          // Reflect the real state so the row never reads as
+                          // "not downloaded" after a successful download.
+                          value: preferences.offlineCampusMapsDownloaded
+                              ? l10n.offlineCampusMapsDownloadedLabel
+                              : '',
                           semanticLabel: l10n.offlineCampusMapsDownload,
                           hapticsEnabled: preferences.hapticsEnabled,
-                          onTap: () async {
-                            if (!context.mounted) {
-                              return;
-                            }
-                            context.showSnackBar(
-                              l10n.offlineCampusMapsDownloading,
-                            );
-                            await ref
-                                .read(offlineMapsServiceProvider)
-                                .downloadCampusTiles();
-                            if (context.mounted) {
-                              context.showSnackBar(l10n.offlineCampusMapsReady);
-                            }
-                          },
+                          onTap: () => _downloadOfflineMaps(
+                            context,
+                            ref,
+                            l10n,
+                            alreadyDownloaded:
+                                preferences.offlineCampusMapsDownloaded,
+                          ),
                         ),
                       _ToggleRow(
                         icon: Icons.motion_photos_off_outlined,
@@ -574,16 +540,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                             .read(settingsControllerProvider.notifier)
                             .updateHighContrastMap(v),
                       ),
-                      _ToggleRow(
-                        icon: Icons.data_usage_outlined,
-                        label: l10n.lowDataMode,
-                        value: preferences.lowDataMode,
-                        semanticLabel: l10n.lowDataMode,
-                        hapticsEnabled: preferences.hapticsEnabled,
-                        onChanged: (v) => ref
-                            .read(settingsControllerProvider.notifier)
-                            .updateLowDataMode(v),
-                      ),
+                      // Low Data Mode removed: the toggle persisted a flag
+                      // that nothing in the app reads — a dead control that
+                      // only eroded trust in the rest of the page.
                     ],
                   ),
                   const SizedBox(height: MqSpacing.space6),
@@ -607,44 +566,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           }
                         },
                       ),
-                      _ToggleRow(
-                        icon: Icons.bedtime_outlined,
-                        label: l10n.quietHours,
-                        value: preferences.quietHoursEnabled,
-                        semanticLabel: l10n.quietHours,
-                        hapticsEnabled: preferences.hapticsEnabled,
-                        onChanged: (v) => ref
-                            .read(settingsControllerProvider.notifier)
-                            .updateQuietHoursEnabled(v),
-                      ),
-                      if (preferences.quietHoursEnabled) ...[
-                        _TapRow(
-                          icon: Icons.access_time_outlined,
-                          label: l10n.quietHoursStart,
-                          value: preferences.quietHoursStart,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onTap: () => _selectTime(
-                            context,
-                            preferences.quietHoursStart,
-                            (time) => ref
-                                .read(settingsControllerProvider.notifier)
-                                .updateQuietHoursStart(time),
-                          ),
-                        ),
-                        _TapRow(
-                          icon: Icons.access_time_filled_outlined,
-                          label: l10n.quietHoursEnd,
-                          value: preferences.quietHoursEnd,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onTap: () => _selectTime(
-                            context,
-                            preferences.quietHoursEnd,
-                            (time) => ref
-                                .read(settingsControllerProvider.notifier)
-                                .updateQuietHoursEnd(time),
-                          ),
-                        ),
-                      ],
+                      // Quiet Hours removed: Open Day runs 10am–4pm, so a
+                      // night-time reminder mute can never apply — it was
+                      // pure clutter for a visitor. (Preference fields and
+                      // scheduler support remain; only the UI is gone.)
                     ],
                   ),
                   const SizedBox(height: MqSpacing.space6),
@@ -772,26 +697,49 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  Future<void> _selectTime(
+  /// Runs the offline campus tile download with correct state handling:
+  /// already-downloaded taps require an explicit re-download confirmation
+  /// (never an accidental restart), and the downloaded flag is persisted
+  /// only when the download actually completed.
+  Future<void> _downloadOfflineMaps(
     BuildContext context,
-    String current,
-    Function(String) onSelect,
-  ) async {
-    // Defensive parsing — if storage was ever corrupted to a non-`HH:mm`
-    // value, fall back to a midday default rather than throwing in the
-    // picker and leaving the user with a dead row.
-    final parts = current.split(':');
-    final hour = parts.isEmpty ? null : int.tryParse(parts[0]);
-    final minute = parts.length < 2 ? null : int.tryParse(parts[1]);
-    final initial = TimeOfDay(
-      hour: (hour != null && hour >= 0 && hour < 24) ? hour : 12,
-      minute: (minute != null && minute >= 0 && minute < 60) ? minute : 0,
-    );
-    final picked = await showTimePicker(context: context, initialTime: initial);
-    if (picked != null) {
-      final hh = picked.hour.toString().padLeft(2, '0');
-      final mm = picked.minute.toString().padLeft(2, '0');
-      onSelect('$hh:$mm');
+    WidgetRef ref,
+    AppLocalizations l10n, {
+    required bool alreadyDownloaded,
+  }) async {
+    if (alreadyDownloaded) {
+      final redownload = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          content: Text(l10n.offlineCampusMapsAlreadyDownloaded),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(l10n.offlineCampusMapsRedownload),
+            ),
+          ],
+        ),
+      );
+      if (redownload != true) return;
+    }
+    if (!context.mounted) return;
+    context.showSnackBar(l10n.offlineCampusMapsDownloading);
+    final completed = await ref
+        .read(offlineMapsServiceProvider)
+        .downloadCampusTiles();
+    if (completed) {
+      await ref
+          .read(settingsControllerProvider.notifier)
+          .updateOfflineCampusMapsDownloaded(true);
+    }
+    if (context.mounted) {
+      context.showSnackBar(
+        completed ? l10n.offlineCampusMapsReady : l10n.offlineCampusMapsFailed,
+      );
     }
   }
 

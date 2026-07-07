@@ -55,11 +55,6 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     return result;
   }
 
-  Future<String?> updateDefaultTravelMode(TravelMode mode) async {
-    final currentPreferences = state.value ?? const UserPreferences();
-    return _save(currentPreferences.copyWith(defaultTravelMode: mode));
-  }
-
   Future<String?> updateLowDataMode(bool enabled) async {
     final currentPreferences = state.value ?? const UserPreferences();
     return _save(currentPreferences.copyWith(lowDataMode: enabled));
@@ -99,6 +94,13 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     final currentPreferences = state.value ?? const UserPreferences();
     return _save(
       currentPreferences.copyWith(offlineCampusMapsEnabled: enabled),
+    );
+  }
+
+  Future<String?> updateOfflineCampusMapsDownloaded(bool downloaded) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(
+      currentPreferences.copyWith(offlineCampusMapsDownloaded: downloaded),
     );
   }
 

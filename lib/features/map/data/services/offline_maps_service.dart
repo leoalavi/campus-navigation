@@ -37,13 +37,16 @@ class OfflineMapsService {
     return FMTCTileProvider(stores: const {campusOfflineStoreName: null});
   }
 
-  Future<void> downloadCampusTiles() async {
+  /// Downloads the campus tile region. Returns true only when the download
+  /// ran to completion, so callers can persist a "downloaded" state and stop
+  /// offering the download as if it never happened.
+  Future<bool> downloadCampusTiles() async {
     if (!_fmtcObjectBoxBackendReady) {
       AppLogger.warning(
         'Offline campus tile download skipped: FMTC ObjectBox backend is not '
         'initialised (e.g. macOS App Sandbox may need an application group).',
       );
-      return;
+      return false;
     }
     await ensureStore();
 
@@ -62,6 +65,7 @@ class OfflineMapsService {
       campusOfflineStoreName,
     ).download.startForeground(region: region, skipExistingTiles: true);
     await streams.downloadProgress.last;
+    return true;
   }
 
   Future<void> initializeBackend() async {

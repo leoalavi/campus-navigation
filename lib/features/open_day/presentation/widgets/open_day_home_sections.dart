@@ -148,6 +148,9 @@ void _openOnMap(BuildContext context, WidgetRef ref, String? buildingCode) {
   final buildings = ref.read(buildingRegistryProvider).value;
   final resolved = _resolveBuilding(buildings, buildingCode);
   final targetId = resolved?.id ?? buildingCode;
+  // This flow must always land on the Campus Map — never a remembered AR
+  // view (see campusMapIntentProvider).
+  ref.read(campusMapIntentProvider.notifier).bump();
   ref.read(mapControllerProvider.notifier).selectBuildingById(targetId);
   context.goNamed(RouteNames.map, queryParameters: {'building': targetId});
 }

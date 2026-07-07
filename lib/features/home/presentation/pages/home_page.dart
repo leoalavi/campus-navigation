@@ -510,40 +510,34 @@ class _CampusBackground extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           ImageFiltered(
-            imageFilter: ui.ImageFilter.blur(sigmaX: 4.8, sigmaY: 4.8),
-            child: ColorFiltered(
-              colorFilter: const ColorFilter.matrix(<double>[
-                0.803,
-                0.179,
-                0.018,
-                0,
-                0,
-                0.053,
-                0.929,
-                0.018,
-                0,
-                0,
-                0.053,
-                0.179,
-                0.768,
-                0,
-                0,
-                0,
-                0,
-                0,
-                1,
-                0,
-              ]),
-              child: Image.asset(
-                asset,
-                fit: BoxFit.cover,
-                filterQuality: FilterQuality.high,
-                errorBuilder: (_, _, _) =>
-                    const ColoredBox(color: Colors.white),
-              ),
+            // Gentle blur only: the photo is the Open Day arch itself and
+            // should read as such — the arch stays recognisable while fine
+            // detail (faces, signage text) softens out of competition with
+            // the cards. The old desaturating colour matrix was removed too:
+            // it dulled the arch's magenta, fighting the Open Day palette
+            // instead of echoing it.
+            imageFilter: ui.ImageFilter.blur(sigmaX: 3.5, sigmaY: 3.5),
+            child: Image.asset(
+              asset,
+              fit: BoxFit.cover,
+              // Keep the arch crown in frame: on tall screens the wide photo
+              // fits vertically anyway; on wide/desktop windows (where cover
+              // crops vertically) this pins the crop to the arch rather than
+              // the pavement, so the pink gate sits in the upper region —
+              // visually beneath the hero + Scan QR block.
+              alignment: Alignment.topCenter,
+              filterQuality: FilterQuality.high,
+              errorBuilder: (_, _, _) => const ColoredBox(color: Colors.white),
             ),
           ),
-          Container(color: Colors.white.withValues(alpha: 0.08)),
+          // Theme-aware scrim: strong enough that card/text contrast never
+          // depends on what happens to be in the photo behind it, light
+          // enough that the arch's magenta still shows through.
+          Container(
+            color: isDark
+                ? MqColors.charcoal800.withValues(alpha: 0.36)
+                : Colors.white.withValues(alpha: 0.22),
+          ),
         ],
       ),
     );

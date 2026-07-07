@@ -16,6 +16,7 @@ class MapShell extends StatelessWidget {
     this.onOpenOverlayPicker,
     this.banner,
     this.footer,
+    this.onFooterDismiss,
     this.filterChips,
     this.mapMode,
     this.onMapModeChanged,
@@ -28,6 +29,10 @@ class MapShell extends StatelessWidget {
   final VoidCallback? onOpenOverlayPicker;
   final Widget? banner;
   final Widget? footer;
+
+  /// Called when the user drags/flings the footer panel down past the
+  /// dismiss threshold (bottom-sheet behaviour).
+  final VoidCallback? onFooterDismiss;
   final Widget? filterChips;
   final MapMode? mapMode;
   final ValueChanged<MapMode>? onMapModeChanged;
@@ -143,7 +148,10 @@ class MapShell extends StatelessWidget {
                         MqSpacing.space3 -
                         MqSpacing.space2,
                   ),
-                  child: footerWidget,
+                  child: _DraggableFooter(
+                    onDismiss: onFooterDismiss,
+                    child: footerWidget,
+                  ),
                 ),
               ),
             ),
@@ -193,6 +201,79 @@ class MapShell extends StatelessWidget {
 
 class _GlassPane extends GlassPane {
   const _GlassPane({required super.isDark, required super.child});
+}
+
+/// Makes the map's footer panel behave like a real bottom sheet: the user
+/// can drag it down (touch or mouse — plain drag recognizers accept both)
+/// and either fling/drag past the threshold to dismiss it, or release to
+/// have it spring back. Drags that start on the panel's inner scrollables
+/// stay with the list (the child wins the gesture arena there), so the
+/// natural grab area is the handle/header — matching standard sheets.
+class _DraggableFooter extends StatefulWidget {
+  const _DraggableFooter({required this.child, this.onDismiss});
+
+  final Widget child;
+  final VoidCallback? onDismiss;
+
+  @override
+  State<_DraggableFooter> createState() => _DraggableFooterState();
+}
+
+class _DraggableFooterState extends State<_DraggableFooter>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _settle = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 220),
+  )..addListener(() => setState(() => _offset = _settleTween.evaluate(_settle)));
+
+  Tween<double> _settleTween = Tween(begin: 0, end: 0);
+  double _offset = 0;
+
+  @override
+  void dispose() {
+    _settle.dispose();
+    super.dispose();
+  }
+
+  void _onDragUpdate(DragUpdateDetails details) {
+    _settle.stop();
+    setState(() {
+      // Only allow downward translation; upward just returns to rest.
+      _offset = (_offset + details.delta.dy).clamp(0.0, double.infinity);
+    });
+  }
+
+  void _onDragEnd(DragEndDetails details) {
+    final panelHeight = context.size?.height ?? 240;
+    final flungDown = details.primaryVelocity != null &&
+        details.primaryVelocity! > 700;
+    final draggedFar = _offset > panelHeight * 0.35;
+    if ((flungDown || draggedFar) && widget.onDismiss != null) {
+      widget.onDismiss!();
+      // The panel unmounts when state clears; reset for the next one.
+      _offset = 0;
+      return;
+    }
+    _settleTween = Tween(begin: _offset, end: 0);
+    _settle.forward(from: 0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: Offset(0, _offset),
+      child: GestureDetector(
+        behavior: HitTestBehavior.deferToChild,
+        onVerticalDragUpdate: _onDragUpdate,
+        onVerticalDragEnd: _onDragEnd,
+        onVerticalDragCancel: () {
+          _settleTween = Tween(begin: _offset, end: 0);
+          _settle.forward(from: 0);
+        },
+        child: widget.child,
+      ),
+    );
+  }
 }
 
 class _GlassIconButton extends StatelessWidget {

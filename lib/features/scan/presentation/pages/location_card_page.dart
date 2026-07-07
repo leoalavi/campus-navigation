@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/route_names.dart';
+import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
 import 'package:mq_journey/features/scan/domain/contracts/my_day_entry.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
@@ -101,7 +102,7 @@ class LocationCardPage extends ConsumerWidget {
   }
 }
 
-class _PrimaryButtons extends StatelessWidget {
+class _PrimaryButtons extends ConsumerWidget {
   const _PrimaryButtons({
     required this.content,
     required this.loc,
@@ -112,17 +113,22 @@ class _PrimaryButtons extends StatelessWidget {
   final bool mapEnabled;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         Expanded(
           child: OutlinedButton.icon(
             onPressed: mapEnabled
-                ? () => context.goNamed(
-                    RouteNames.map,
-                    queryParameters: {'building': content.buildingId!},
-                  )
+                ? () {
+                    // "View on Campus Map" must always show the map —
+                    // never a remembered AR view on the Journey tab.
+                    ref.read(campusMapIntentProvider.notifier).bump();
+                    context.goNamed(
+                      RouteNames.map,
+                      queryParameters: {'building': content.buildingId!},
+                    );
+                  }
                 : null,
             icon: const Icon(Icons.map),
             label: Text(l10n.cardViewOnCampusMap),

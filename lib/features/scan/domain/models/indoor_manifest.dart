@@ -7,7 +7,17 @@ class NodeNeighbour {
   final double bearing;
   final String? label;
 
-  const NodeNeighbour({required this.id, required this.bearing, this.label});
+  /// Vertical placement of the hotspot in degrees (0 = horizon). Lets a
+  /// manifest pin an arrow onto a door/stair rather than floating at eye
+  /// level when the target sits below/above the camera line.
+  final double pitch;
+
+  const NodeNeighbour({
+    required this.id,
+    required this.bearing,
+    this.label,
+    this.pitch = 0,
+  });
 }
 
 @immutable
@@ -63,6 +73,7 @@ class IndoorManifest {
                     bearing: ((nm['heading'] ?? nm['bearing']) as num)
                         .toDouble(),
                     label: nm['label'] as String?,
+                    pitch: (nm['pitch'] as num?)?.toDouble() ?? 0,
                   );
                 })
                 .toList(growable: false),
@@ -95,16 +106,21 @@ class IndoorManifest {
         'hfov': 90,
         'minHfov': 55,
         'maxHfov': 110,
+        // Phone-shot equirectangular panoramas have badly stitched, warped
+        // zenith/nadir poles — clamp vertical look so users never end up
+        // staring at the ugly seams above/below.
+        'minPitch': -50,
+        'maxPitch': 50,
         'hotSpots': [
           for (final n in node.neighbours)
             {
               'type': 'scene',
               'sceneId': n.id,
               'yaw': n.bearing,
-              // Pannellum positions hot spots with `pitch * PI/180`; an absent
-              // pitch becomes NaN and the marker never renders. Navigation
-              // doorways sit at the horizon, so default to 0.
-              'pitch': 0,
+              // Pannellum positions hot spots with `pitch * PI/180`; an
+              // absent pitch becomes NaN and the marker never renders, so
+              // it is always explicit (0 = horizon).
+              'pitch': n.pitch,
               'text': n.label ?? 'Go',
             },
         ],

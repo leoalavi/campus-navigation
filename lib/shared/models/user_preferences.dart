@@ -23,6 +23,7 @@ class UserPreferences {
     this.quietHoursEnd = '08:00',
     this.highContrastMap = false,
     this.offlineCampusMapsEnabled = false,
+    this.offlineCampusMapsDownloaded = false,
     this.selectedBachelorId,
     this.openDayRemindersEnabled = true,
     this.openDayReminderMinutesBefore = 15,
@@ -50,6 +51,9 @@ class UserPreferences {
   final String quietHoursEnd;
   final bool highContrastMap;
   final bool offlineCampusMapsEnabled;
+
+  /// True once a full campus tile download has completed successfully.
+  final bool offlineCampusMapsDownloaded;
 
   final String? selectedBachelorId;
   final bool openDayRemindersEnabled;
@@ -104,6 +108,7 @@ class UserPreferences {
     String? quietHoursEnd,
     bool? highContrastMap,
     bool? offlineCampusMapsEnabled,
+    bool? offlineCampusMapsDownloaded,
     String? selectedBachelorId,
     bool clearSelectedBachelor = false,
     bool? openDayRemindersEnabled,
@@ -134,6 +139,8 @@ class UserPreferences {
       highContrastMap: highContrastMap ?? this.highContrastMap,
       offlineCampusMapsEnabled:
           offlineCampusMapsEnabled ?? this.offlineCampusMapsEnabled,
+      offlineCampusMapsDownloaded:
+          offlineCampusMapsDownloaded ?? this.offlineCampusMapsDownloaded,
       selectedBachelorId: clearSelectedBachelor
           ? null
           : (selectedBachelorId ?? this.selectedBachelorId),
@@ -171,6 +178,7 @@ class UserPreferences {
           quietHoursEnd == other.quietHoursEnd &&
           highContrastMap == other.highContrastMap &&
           offlineCampusMapsEnabled == other.offlineCampusMapsEnabled &&
+          offlineCampusMapsDownloaded == other.offlineCampusMapsDownloaded &&
           selectedBachelorId == other.selectedBachelorId &&
           openDayRemindersEnabled == other.openDayRemindersEnabled &&
           openDayReminderMinutesBefore == other.openDayReminderMinutesBefore &&
@@ -199,6 +207,7 @@ class UserPreferences {
     quietHoursEnd,
     highContrastMap,
     offlineCampusMapsEnabled,
+    offlineCampusMapsDownloaded,
     selectedBachelorId,
     openDayRemindersEnabled,
     openDayReminderMinutesBefore,

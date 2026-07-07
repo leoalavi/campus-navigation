@@ -40,6 +40,8 @@ class EventActionsSheet extends ConsumerWidget {
 
     // Re-emit the selection imperatively so the marker re-shows even when
     // the same building URL was opened before (go_router same-URL no-op).
+    // Always land on the Campus Map, never a remembered AR view.
+    container.read(campusMapIntentProvider.notifier).bump();
     container
         .read(mapControllerProvider.notifier)
         .selectBuildingById(targetBuildingId);

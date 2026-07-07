@@ -42,6 +42,27 @@ class MapPage extends ConsumerStatefulWidget {
 class _MapPageState extends ConsumerState<MapPage> {
   MapMode _mapMode = MapMode.campusMap;
 
+  /// Last [campusMapIntentProvider] value this page has honoured. Null until
+  /// the first build so a pre-existing counter value doesn't force a reset.
+  int? _handledCampusMapIntent;
+
+  /// Suggested stops / "show on map" flows bump the intent counter when they
+  /// navigate here; honour it by snapping back to Campus Map mode. Runs
+  /// during build (plain field mutation, no setState) so it is safe with
+  /// paused/resumed offstage subscriptions and always applies before this
+  /// frame renders.
+  void _syncCampusMapIntent() {
+    final intent = ref.watch(campusMapIntentProvider);
+    if (_handledCampusMapIntent == null) {
+      _handledCampusMapIntent = intent;
+      return;
+    }
+    if (intent != _handledCampusMapIntent) {
+      _handledCampusMapIntent = intent;
+      _mapMode = MapMode.campusMap;
+    }
+  }
+
   Widget? _buildArContent() {
     if (_mapMode != MapMode.ar) return null;
     final state = ref.read(mapControllerProvider).value;
@@ -164,6 +185,7 @@ class _MapPageState extends ConsumerState<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    _syncCampusMapIntent();
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(mapControllerProvider);
     final isDark = context.isDarkMode;
@@ -332,6 +354,11 @@ class _MapPageState extends ConsumerState<MapPage> {
                         ? controller.openLocationSettings
                         : controller.openAppSettings,
                   ),
+            // Dragging the footer down (bottom-sheet gesture) dismisses it
+            // via the same action as its own close button.
+            onFooterDismiss: mapState.selectedBuilding != null
+                ? controller.clearSelection
+                : controller.clearCategoryBrowse,
             footer: mapState.selectedBuilding != null
                 ? _CampusBuildingInfoPanel(
                     selectedBuilding: mapState.selectedBuilding!,

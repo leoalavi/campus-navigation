@@ -289,6 +289,8 @@ class _ShowOnMapButton extends ConsumerWidget {
           final targetId = resolved?.id ?? buildingCode;
           // Re-emit the selection so the marker re-shows even if the same
           // location was opened and closed before (same-URL no-op guard).
+          // Always land on the Campus Map, never a remembered AR view.
+          ref.read(campusMapIntentProvider.notifier).bump();
           ref.read(mapControllerProvider.notifier).selectBuildingById(targetId);
           context.goNamed(
             RouteNames.map,

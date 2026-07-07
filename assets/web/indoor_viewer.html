@@ -18,6 +18,12 @@
       width: 56px;
       height: 56px;
       cursor: pointer;
+      /* Kill Pannellum's default hotspot chrome: the pnlm-scene/pnlm-sprite
+         classes paint a small light sprite circle behind our badge, which
+         showed as a stray white dot on the marker. */
+      background: none !important;
+      background-image: none !important;
+      border-radius: 0;
     }
     .mq-hotspot .mq-hotspot-arrow {
       width: 56px;
@@ -58,6 +64,9 @@
     // Custom hotspot DOM: big arrow badge + persistent label. Used via
     // Pannellum's createTooltipFunc, which hands us the hotspot container.
     function mqCreateHotspot(hotSpotDiv, args) {
+      // Strip Pannellum's sprite classes so no default icon/dot renders
+      // behind the custom badge (belt-and-braces with the CSS reset above).
+      hotSpotDiv.classList.remove('pnlm-sprite', 'pnlm-scene', 'pnlm-info');
       hotSpotDiv.classList.add('mq-hotspot');
       var arrow = document.createElement('div');
       arrow.className = 'mq-hotspot-arrow';

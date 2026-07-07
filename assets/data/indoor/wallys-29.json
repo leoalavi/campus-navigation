@@ -7,11 +7,11 @@
       "neighbours": [
         {
           "targetId": "theatre-1",
-          "heading": 70,
+          "heading": 75,
           "label": "Theatre 1"
         }
       ],
-      "previewHeading": 70,
+      "previewHeading": 75,
       "previewPitch": 0
     },
     {

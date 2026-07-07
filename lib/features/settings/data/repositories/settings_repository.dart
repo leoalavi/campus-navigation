@@ -17,6 +17,8 @@ const _quietHoursStartKey = 'settings.quiet_hours_start';
 const _quietHoursEndKey = 'settings.quiet_hours_end';
 const _highContrastMapKey = 'settings.high_contrast_map';
 const _offlineCampusMapsEnabledKey = 'settings.offline_campus_maps_enabled';
+const _offlineCampusMapsDownloadedKey =
+    'settings.offline_campus_maps_downloaded';
 const _commuteModeKey = 'settings.commute_mode';
 const _favoriteDirectionKey = 'settings.favorite_direction';
 const _favoriteRouteKey = 'settings.favorite_route';
@@ -69,6 +71,9 @@ class LocalSettingsRepository implements SettingsRepository {
       final offlineCampusMapsEnabled = await _storage.read(
         _offlineCampusMapsEnabledKey,
       );
+      final offlineCampusMapsDownloaded = await _storage.read(
+        _offlineCampusMapsDownloadedKey,
+      );
       final commuteMode = await _storage.read(_commuteModeKey);
       final favoriteDirection = await _storage.read(_favoriteDirectionKey);
       final favoriteRoute = await _storage.read(_favoriteRouteKey);
@@ -117,6 +122,7 @@ class LocalSettingsRepository implements SettingsRepository {
         quietHoursEnd: quietHoursEnd ?? '08:00',
         highContrastMap: highContrastMap == 'true',
         offlineCampusMapsEnabled: offlineCampusMapsEnabled == 'true',
+        offlineCampusMapsDownloaded: offlineCampusMapsDownloaded == 'true',
         commuteMode: _normalizeCommuteMode(commuteMode),
         favoriteDirection: favoriteDirection ?? '',
         favoriteRoute: favoriteRoute ?? '',
@@ -178,6 +184,10 @@ class LocalSettingsRepository implements SettingsRepository {
       await _storage.write(
         _offlineCampusMapsEnabledKey,
         preferences.offlineCampusMapsEnabled.toString(),
+      );
+      await _storage.write(
+        _offlineCampusMapsDownloadedKey,
+        preferences.offlineCampusMapsDownloaded.toString(),
       );
       await _storage.write(_commuteModeKey, preferences.commuteMode);
       await _storage.write(

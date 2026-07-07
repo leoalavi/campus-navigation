@@ -136,6 +136,7 @@ class _OpenDayBody extends StatelessWidget {
                 ? l10n.openDay_generalOpenToAll
                 : l10n.openDay_allSessionsLabel,
             icon: Icons.groups_rounded,
+            primary: true,
           ),
           const SizedBox(height: MqSpacing.space3),
           ..._groupedByHour(generalSessions),
@@ -188,15 +189,18 @@ class _StudyInterestHeader extends ConsumerWidget {
     return Container(
       padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
       decoration: BoxDecoration(
-        // Dark scaffold IS charcoal800 — a charcoal-tinted fill/border here
-        // is invisible against it, so dark mode tints with red + white
-        // hairline instead, matching the light variant's red identity.
-        color: dark ? MqColors.red.withAlpha(36) : MqColors.red.withAlpha(14),
+        // Plain content-card surface — only the date label and the
+        // "Change" action below keep the red/pink accent; the card
+        // itself no longer carries a red tint or border.
+        color: dark
+            ? Color.alphaBlend(
+                Colors.white.withValues(alpha: 0.06),
+                MqColors.charcoal800,
+              )
+            : Colors.white,
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
-          color: dark
-              ? MqColors.red.withValues(alpha: 0.45)
-              : MqColors.red.withAlpha(40),
+          color: dark ? Colors.white.withAlpha(20) : MqColors.sand200,
         ),
       ),
       child: Column(

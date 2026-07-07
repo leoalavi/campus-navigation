@@ -895,3 +895,23 @@ class MapController extends AsyncNotifier<MapState> {
     };
   }
 }
+
+/// Monotonic counter bumped by flows OUTSIDE the Journey tab that navigate
+/// to the Campus Map for a specific target (suggested stops, "show on map"
+/// buttons, event direction sheets).
+///
+/// The Journey page keeps its Campus Map / AR mode as retained state; if the
+/// user last used AR, an incoming building selection would otherwise render
+/// the AR indoor view instead of the map. Bumping this counter tells the map
+/// page "this navigation wants the Campus Map" — without disturbing
+/// selections made from inside AR mode itself (which never bump it).
+final campusMapIntentProvider =
+    NotifierProvider<CampusMapIntentNotifier, int>(CampusMapIntentNotifier.new);
+
+class CampusMapIntentNotifier extends Notifier<int> {
+  @override
+  int build() => 0;
+
+  /// Signal that the next map navigation must show the Campus Map view.
+  void bump() => state++;
+}

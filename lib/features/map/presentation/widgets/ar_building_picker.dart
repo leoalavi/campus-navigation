@@ -128,8 +128,13 @@ class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
       return const Center(child: CircularProgressIndicator());
     }
 
+    // The picker renders full-bleed beneath MapShell's floating Campus
+    // Map / AR toggle, so reserve the toggle zone (safe area + pill height)
+    // at the top — otherwise the first rows sit hidden behind the control.
+    final topInset = MediaQuery.paddingOf(context).top + 76.0;
+    final bottomInset = MediaQuery.paddingOf(context).bottom + 16.0;
     return ListView.separated(
-      shrinkWrap: true,
+      padding: EdgeInsetsDirectional.only(top: topInset, bottom: bottomInset),
       itemCount: hasManifest.length + noManifest.length,
       separatorBuilder: (_, _) => const Divider(height: 1),
       itemBuilder: (context, index) {
