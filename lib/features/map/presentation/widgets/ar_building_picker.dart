@@ -66,13 +66,41 @@ class _ManifestAwarePicker extends ConsumerStatefulWidget {
 class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
   bool _autoSelected = false;
 
+  /// Display name for a building id: prefer the registry's official name
+  /// ("29 Wally's Walk"), never show the raw slug ("wallys-29") to users.
+  String _displayName(String id) {
+    final registry = ref.watch(buildingsRegistryProvider).value;
+    final name = registry?.byCode(id)?.name.trim() ?? '';
+    return name.isNotEmpty ? name : id;
+  }
+
+  /// Alphabetical with natural number ordering, so "1 Wally's Walk" <
+  /// "17 Wally's Walk" < "25 Wally's Walk" (plain string sort would give
+  /// 1, 17, 25, 29 vs 1, 17, 21 — and put "10 Hadenfeld" before "1 Wally's").
+  int _naturalCompare(String a, String b) {
+    final re = RegExp(r'(\d+)|(\D+)');
+    final as = re.allMatches(a.toLowerCase()).map((m) => m[0]!).toList();
+    final bs = re.allMatches(b.toLowerCase()).map((m) => m[0]!).toList();
+    for (var i = 0; i < as.length && i < bs.length; i++) {
+      final an = int.tryParse(as[i]);
+      final bn = int.tryParse(bs[i]);
+      final cmp = (an != null && bn != null)
+          ? an.compareTo(bn)
+          : as[i].compareTo(bs[i]);
+      if (cmp != 0) return cmp;
+    }
+    return as.length.compareTo(bs.length);
+  }
+
   @override
   Widget build(BuildContext context) {
     final manifestStates = widget.buildingIds
         .map((id) => ref.watch(indoorManifestProvider(id)))
         .toList();
 
-    final allLoaded = manifestStates.every((s) => s.hasValue);
+    final registryLoaded = ref.watch(buildingsRegistryProvider).hasValue;
+    final allLoaded =
+        manifestStates.every((s) => s.hasValue) && registryLoaded;
     if (!allLoaded) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -86,6 +114,8 @@ class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
         noManifest.add(widget.buildingIds[i]);
       }
     }
+    hasManifest.sort((a, b) => _naturalCompare(_displayName(a), _displayName(b)));
+    noManifest.sort((a, b) => _naturalCompare(_displayName(a), _displayName(b)));
 
     if (hasManifest.length == 1 && !_autoSelected) {
       _autoSelected = true;
@@ -103,14 +133,16 @@ class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
         if (index < hasManifest.length) {
           final id = hasManifest[index];
           return ListTile(
-            title: Text(id),
+            leading: const Icon(Icons.view_in_ar_outlined),
+            title: Text(_displayName(id)),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => widget.onSelect(id),
           );
         }
         final id = noManifest[index - hasManifest.length];
         return ListTile(
-          title: Text(id),
+          leading: const Icon(Icons.view_in_ar_outlined),
+          title: Text(_displayName(id)),
           subtitle: Text(widget.l10n.arComingSoon),
           enabled: false,
           trailing: Icon(

@@ -1,1 +1,32 @@
-{"nodes":[{"id":"entrance","image":"indoor/wallys-21_entrance.jpg","description":"Entrance — 21 Wally's Walk","neighbours":[{"targetId":"macquarie","heading":0,"label":"Macquarie Theatre"}]},{"id":"macquarie","image":"indoor/wallys-21_macquarie.jpg","description":"Macquarie Theatre","neighbours":[{"targetId":"entrance","heading":180,"label":"Entrance"}]}]}
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/wallys-21_entrance.jpg",
+      "description": "Entrance — 21 Wally's Walk",
+      "neighbours": [
+        {
+          "targetId": "macquarie",
+          "heading": -30,
+          "label": "Macquarie Theatre"
+        }
+      ],
+      "previewHeading": -30,
+      "previewPitch": 0
+    },
+    {
+      "id": "macquarie",
+      "image": "indoor/wallys-21_macquarie.jpg",
+      "description": "Macquarie Theatre",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 79,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -5,
+      "previewPitch": 0
+    }
+  ]
+}

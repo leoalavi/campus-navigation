@@ -1,1 +1,32 @@
-{"nodes":[{"id":"entrance","image":"indoor/hadenfeld-10_entrance.jpg","description":"Entrance — 10 Hadenfeld Avenue","neighbours":[{"targetId":"theatre-1","heading":0,"label":"Theatre 1"}]},{"id":"theatre-1","image":"indoor/hadenfeld-10_t1.jpg","description":"Theatre 1","neighbours":[{"targetId":"entrance","heading":180,"label":"Entrance"}]}]}
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/hadenfeld-10_entrance.jpg",
+      "description": "Entrance — 10 Hadenfeld Avenue",
+      "neighbours": [
+        {
+          "targetId": "theatre-1",
+          "heading": -20,
+          "label": "Theatre 1"
+        }
+      ],
+      "previewHeading": -20,
+      "previewPitch": 0
+    },
+    {
+      "id": "theatre-1",
+      "image": "indoor/hadenfeld-10_t1.jpg",
+      "description": "Theatre 1",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": -170,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": 10,
+      "previewPitch": 0
+    }
+  ]
+}

@@ -6,6 +6,8 @@ import 'package:mq_journey/features/map/presentation/widgets/ar_building_picker.
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/features/scan/data/repositories/trail_repository.dart';
 import 'package:mq_journey/features/scan/data/repositories/indoor_repository.dart';
+import 'package:mq_journey/features/scan/data/repositories/buildings_repository.dart';
+import 'package:mq_journey/features/scan/domain/models/buildings_registry.dart';
 import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
 import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
 
@@ -67,6 +69,30 @@ class _FakeIndoorRepository extends IndoorRepository {
   }
 }
 
+class _FakeBuildingsRepository extends BuildingsRepository {
+  @override
+  Future<BuildingsRegistry> load() async => const BuildingsRegistry(
+    buildings: [
+      BuildingEntry(
+        code: 'C3A',
+        name: 'Waranara Library',
+        campusX: 0,
+        campusY: 0,
+        entranceLatitude: 0,
+        entranceLongitude: 0,
+      ),
+      BuildingEntry(
+        code: '18WW',
+        name: "18 Wally's Walk",
+        campusX: 0,
+        campusY: 0,
+        entranceLatitude: 0,
+        entranceLongitude: 0,
+      ),
+    ],
+  );
+}
+
 Widget _buildApp({
   required TrailRepository trailRepo,
   required IndoorRepository indoorRepo,
@@ -76,6 +102,9 @@ Widget _buildApp({
     overrides: [
       trailRepositoryProvider.overrideWith((_) => trailRepo),
       indoorRepositoryProvider.overrideWith((_) => indoorRepo),
+      buildingsRepositoryProvider.overrideWith(
+        (_) => _FakeBuildingsRepository(),
+      ),
     ],
     child: MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -98,10 +127,14 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
-    // C3A has a manifest, 18WW does not, E7A has a manifest
-    expect(find.text('C3A'), findsOneWidget);
+    // Registry names are shown when available ('Waranara Library' for C3A,
+    // "18 Wally's Walk" for 18WW); E7A is not in the registry so its raw id
+    // is the fallback. Raw slugs must never appear for registry buildings.
+    expect(find.text('Waranara Library'), findsOneWidget);
     expect(find.text('E7A'), findsOneWidget);
-    expect(find.text('18WW'), findsOneWidget);
+    expect(find.text("18 Wally's Walk"), findsOneWidget);
+    expect(find.text('C3A'), findsNothing);
+    expect(find.text('18WW'), findsNothing);
   });
 
   testWidgets('auto-selects when exactly one building has manifest', (

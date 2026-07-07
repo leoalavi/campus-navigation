@@ -32,8 +32,49 @@ function getEnvOrThrow(name: string): string {
 function toMinutes(iso: string): number {
   const date = new Date(iso);
   const diffMs = date.getTime() - Date.now();
-  const minutes = Math.floor(diffMs / 60000);
-  return minutes < 0 ? 0 : minutes;
+  // May be negative for a departure that already left; callers filter those
+  // out rather than showing a sticky "0 min".
+  return Math.floor(diffMs / 60000);
+}
+
+/// Direction is a *travel direction*, not a terminus. City-bound M1 metros
+/// frequently short-run and terminate at Chatswood, and NW-bound services can
+/// short-run too — a plain `destination.includes("sydenham")` drops those
+/// trains and makes the Sydenham direction look far emptier/later than it
+/// really is. Match any terminus that lies in the chosen direction of travel
+/// (M1 stations relative to the Macquarie University campus).
+const DIRECTION_DESTINATIONS: Record<string, string[]> = {
+  tallawong: [
+    "tallawong",
+    "rouse hill",
+    "hills showground",
+    "castle hill",
+    "cherrybrook",
+    "epping",
+  ],
+  sydenham: [
+    "sydenham",
+    "chatswood",
+    "crows nest",
+    "victoria cross",
+    "north sydney",
+    "barangaroo",
+    "martin place",
+    "gadigal",
+    "central",
+    "waterloo",
+    "city",
+  ],
+};
+
+function matchesDirection(destination: string, direction: string): boolean {
+  const dest = destination.toLowerCase();
+  const accepted = DIRECTION_DESTINATIONS[direction];
+  if (accepted) {
+    return accepted.some((name) => dest.includes(name));
+  }
+  // Unknown direction preference: fall back to plain substring matching.
+  return dest.includes(direction);
 }
 
 function modeToMotType(mode: string): string | null {
@@ -380,6 +421,9 @@ Deno.serve(async (req) => {
         };
       })
       .filter((item) => item.destination.length > 0)
+      // Drop services that already departed instead of clamping them to a
+      // sticky "0 min" that lingers until the next poll.
+      .filter((item) => item.minutesUntilDeparture >= 0)
       .filter((item) =>
         commuteMode === "none" || item.mode === commuteMode ||
         item.mode === "unknown"
@@ -407,7 +451,7 @@ Deno.serve(async (req) => {
       favoriteDirection.length === 0
         ? routeFilteredDepartures
         : routeFilteredDepartures.filter((item) =>
-          item.destination.toLowerCase().includes(favoriteDirection)
+          matchesDirection(item.destination, favoriteDirection)
         )
     ).slice(0, 3);
 

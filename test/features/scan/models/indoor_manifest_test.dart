@@ -38,6 +38,34 @@ void main() {
       expect(hotspots.first['pitch'], 0);
     });
 
+    test('scene opens facing its first hotspot when no preview is set', () {
+      final m = IndoorManifest.fromJson(json);
+      final config = m.buildPannellumConfig(assetBaseUrl: '/indoor');
+      // lobby's first (only) hotspot sits at yaw 90 — the initial camera
+      // must face it so "where to go next" is immediately visible.
+      expect(config['scenes']['lobby']['yaw'], 90);
+      expect(config['scenes']['stairs']['yaw'], -90);
+    });
+
+    test('previewHeading/previewPitch override the initial view', () {
+      const withPreview = '''{
+        "nodes": [
+          {
+            "id": "desk",
+            "image": "x/desk.jpg",
+            "description": "Desk",
+            "previewHeading": 45,
+            "previewPitch": -10,
+            "neighbours": [{"id": "lobby", "bearing": 180}]
+          }
+        ]
+      }''';
+      final m = IndoorManifest.fromJson(withPreview);
+      final config = m.buildPannellumConfig(assetBaseUrl: '/indoor');
+      expect(config['scenes']['desk']['yaw'], 45);
+      expect(config['scenes']['desk']['pitch'], -10);
+    });
+
     test('buildPannellumConfig enables autoLoad so the panorama renders', () {
       final m = IndoorManifest.fromJson(json);
       final config = m.buildPannellumConfig(assetBaseUrl: '/indoor');

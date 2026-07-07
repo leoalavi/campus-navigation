@@ -17,11 +17,20 @@ class IndoorNode {
   final String description;
   final List<NodeNeighbour> neighbours;
 
+  /// Initial camera heading/pitch for this scene (degrees, Pannellum yaw
+  /// convention: 0 = panorama centre, positive = right). When absent the
+  /// scene opens facing its first hotspot so the "where to next" affordance
+  /// is immediately visible.
+  final double? previewHeading;
+  final double? previewPitch;
+
   const IndoorNode({
     required this.id,
     required this.image,
     required this.description,
     this.neighbours = const [],
+    this.previewHeading,
+    this.previewPitch,
   });
 }
 
@@ -42,6 +51,8 @@ class IndoorManifest {
             id: m['id'] as String,
             image: m['image'] as String,
             description: (m['description'] as String?) ?? '',
+            previewHeading: (m['previewHeading'] as num?)?.toDouble(),
+            previewPitch: (m['previewPitch'] as num?)?.toDouble(),
             neighbours: ((m['neighbours'] as List?) ?? [])
                 .map((n) {
                   final nm = n as Map<String, dynamic>;
@@ -67,9 +78,23 @@ class IndoorManifest {
   }) {
     final scenes = <String, dynamic>{};
     for (final node in nodes) {
+      // Open each scene facing its authored preview heading, or failing
+      // that, its first hotspot — never a random default angle. A visitor
+      // should land looking at "where to go next", not a blank wall.
+      final initialYaw =
+          node.previewHeading ??
+          (node.neighbours.isNotEmpty ? node.neighbours.first.bearing : 0.0);
       scenes[node.id] = {
         'type': 'equirectangular',
         'panorama': '$assetBaseUrl/${node.image}',
+        'yaw': initialYaw,
+        'pitch': node.previewPitch ?? 0,
+        // 90° gives a natural, less fisheye-distorted framing than
+        // Pannellum's 100° default; clamp zoom so users can't zoom out into
+        // a warped "little planet" or in past the imagery's resolution.
+        'hfov': 90,
+        'minHfov': 55,
+        'maxHfov': 110,
         'hotSpots': [
           for (final n in node.neighbours)
             {

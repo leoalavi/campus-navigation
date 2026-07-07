@@ -1,1 +1,51 @@
-{"nodes":[{"id":"entrance","image":"indoor/wallys-17_entrance.jpg","description":"Entrance — 17 Wally's Walk","neighbours":[{"targetId":"vloten","heading":0,"label":"Johan van Vloten Theatre"},{"targetId":"theatre-2","heading":180,"label":"Theatre 2"}]},{"id":"vloten","image":"indoor/wallys-17_vloten.jpg","description":"Johan van Vloten Theatre (G02)","neighbours":[{"targetId":"entrance","heading":180,"label":"Entrance"}]},{"id":"theatre-2","image":"indoor/wallys-17_t2.jpg","description":"Theatre 2 (G25)","neighbours":[{"targetId":"entrance","heading":0,"label":"Entrance"}]}]}
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/wallys-17_entrance.jpg",
+      "description": "Entrance — 17 Wally's Walk",
+      "neighbours": [
+        {
+          "targetId": "vloten",
+          "heading": -44,
+          "label": "Johan van Vloten Theatre"
+        },
+        {
+          "targetId": "theatre-2",
+          "heading": -32,
+          "label": "Theatre 2"
+        }
+      ],
+      "previewHeading": -38,
+      "previewPitch": 0
+    },
+    {
+      "id": "vloten",
+      "image": "indoor/wallys-17_vloten.jpg",
+      "description": "Johan van Vloten Theatre (G02)",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 83,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -9,
+      "previewPitch": 0
+    },
+    {
+      "id": "theatre-2",
+      "image": "indoor/wallys-17_t2.jpg",
+      "description": "Theatre 2 (G25)",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 145,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": 15,
+      "previewPitch": 0
+    }
+  ]
+}
