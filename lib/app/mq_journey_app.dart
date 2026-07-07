@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
@@ -167,75 +168,99 @@ class _SplashView extends StatelessWidget {
     );
   }
 
+  static const _backgroundAsset = 'assets/images/login_background.png';
+
   Widget _buildSplashScaffold() {
     return Scaffold(
       // Solid brand magenta base so any un-painted frame during startup is
       // still on-brand — never a black/blank flash.
       backgroundColor: MqColors.openDayMagenta,
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          // Flyer-inspired: bright magenta falling into the deep plum used
-          // on the campaign material's footer panel.
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [MqColors.openDayMagenta, MqColors.openDayPlum],
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Open Day 2026 arch photo, blurred beneath the brand scrim. If
+          // the asset ever fails to load, the scrim gradient below still
+          // paints a fully on-brand splash on its own.
+          ImageFiltered(
+            imageFilter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+            child: Image.asset(
+              _backgroundAsset,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+              errorBuilder: (_, _, _) => const SizedBox.shrink(),
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'MACQUARIE UNIVERSITY',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white70,
-                      letterSpacing: 3.2,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  const OpenDayWordmark(fontSize: 40),
-                  const SizedBox(height: 18),
-                  const OpenDayDateChip(),
-                  const SizedBox(height: 56),
-                  if (isLoading) ...[
-                    const SizedBox(
-                      width: 26,
-                      height: 26,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.5,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Colors.white,
-                        ),
-                      ),
-                    ),
-                  ] else ...[
-                    const Icon(
-                      Icons.warning_amber_rounded,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      errorMessage ?? 'Service initialisation failed.',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
+          DecoratedBox(
+            decoration: BoxDecoration(
+              // Flyer-inspired: bright magenta falling into the deep plum
+              // used on the campaign material's footer panel — translucent
+              // so the arch photo reads through it.
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  MqColors.openDayMagenta.withValues(alpha: 0.78),
+                  MqColors.openDayPlum.withValues(alpha: 0.88),
                 ],
               ),
             ),
+            child: const SizedBox.expand(),
           ),
-        ),
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'MACQUARIE UNIVERSITY',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white70,
+                        letterSpacing: 3.2,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    const OpenDayWordmark(fontSize: 40),
+                    const SizedBox(height: 18),
+                    const OpenDayDateChip(),
+                    const SizedBox(height: 56),
+                    if (isLoading) ...[
+                      const SizedBox(
+                        width: 26,
+                        height: 26,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        ),
+                      ),
+                    ] else ...[
+                      const Icon(
+                        Icons.warning_amber_rounded,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        errorMessage ?? 'Service initialisation failed.',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
