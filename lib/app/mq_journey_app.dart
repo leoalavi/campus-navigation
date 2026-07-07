@@ -147,98 +147,116 @@ class _SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Uses `onGenerateInitialRoutes` instead of `home` so this splash screen
+    // always renders regardless of the platform's requested initial route
+    // (e.g. a cold start via a deep link to "/map"). The real router
+    // (`GoRouter`, mounted once app initialization completes) is the one
+    // that honours that initial route. If we used `home` here instead,
+    // Flutter's default initial-route matching would run against this
+    // temporary MaterialApp — which has no matching routes — logging a
+    // spurious "Could not navigate to initial route" framework error even
+    // though navigation ultimately succeeds once the real router mounts.
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: MqTheme.light,
       darkTheme: MqTheme.dark,
-      home: Scaffold(
-        backgroundColor: MqColors.charcoal900,
-        body: Stack(
-          children: [
-            // Background image (blurred, premium)
-            Positioned.fill(
-              child: ImageFiltered(
-                imageFilter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                child: Image.asset(
-                  _backgroundAsset,
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
-                  errorBuilder: (_, _, _) => const SizedBox.shrink(),
-                ),
+      onGenerateInitialRoutes: (_) => [
+        MaterialPageRoute<void>(builder: (context) => _buildSplashScaffold()),
+      ],
+      onGenerateRoute: (_) =>
+          MaterialPageRoute<void>(builder: (context) => _buildSplashScaffold()),
+      builder: (context, child) => child ?? _buildSplashScaffold(),
+    );
+  }
+
+  Widget _buildSplashScaffold() {
+    return Scaffold(
+      backgroundColor: MqColors.charcoal900,
+      body: Stack(
+        children: [
+          // Background image (blurred, premium)
+          Positioned.fill(
+            child: ImageFiltered(
+              imageFilter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+              child: Image.asset(
+                _backgroundAsset,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.high,
+                errorBuilder: (_, _, _) => const SizedBox.shrink(),
               ),
             ),
-            // Dark scrim for premium readability
-            Positioned.fill(
-              child: Container(color: Colors.black.withValues(alpha: 0.55)),
-            ),
-            // Centered branding/loading content
-            SafeArea(
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 4,
-                        width: 120,
-                        color: MqColors.red,
-                        margin: const EdgeInsets.only(bottom: 32),
+          ),
+          // Dark scrim for premium readability
+          Positioned.fill(
+            child: Container(color: Colors.black.withValues(alpha: 0.55)),
+          ),
+          // Centered branding/loading content
+          SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 4,
+                      width: 120,
+                      color: MqColors.red,
+                      margin: const EdgeInsets.only(bottom: 32),
+                    ),
+                    const Icon(Icons.explore, size: 72, color: MqColors.red),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'MQ Navigation',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.2,
                       ),
-                      const Icon(Icons.explore, size: 72, color: MqColors.red),
+                    ),
+                    const SizedBox(height: 48),
+                    if (isLoading) ...[
+                      const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            MqColors.red,
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'MQ Navigation',
+                      Text(
+                        'Starting campus navigation...',
                         style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 1.2,
+                          fontSize: 14,
+                          color: Colors.white.withValues(alpha: 0.7),
                         ),
                       ),
-                      const SizedBox(height: 48),
-                      if (isLoading) ...[
-                        const SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              MqColors.red,
-                            ),
-                          ),
+                    ] else ...[
+                      const Icon(
+                        Icons.warning_amber_rounded,
+                        size: 40,
+                        color: MqColors.red,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        errorMessage ?? 'Service initialisation failed.',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Starting campus navigation...',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white.withValues(alpha: 0.7),
-                          ),
-                        ),
-                      ] else ...[
-                        const Icon(
-                          Icons.warning_amber_rounded,
-                          size: 40,
-                          color: MqColors.red,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          errorMessage ?? 'Service initialisation failed.',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+                      ),
                     ],
-                  ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
