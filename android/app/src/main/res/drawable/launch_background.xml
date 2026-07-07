@@ -2,6 +2,6 @@
 <!-- Modify this file to customize your launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <color android:color="#FFA6192E"/>
+        <color android:color="#FFC6006F"/>
     </item>
 </layer-list>
