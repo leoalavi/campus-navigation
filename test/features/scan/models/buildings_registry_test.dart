@@ -30,5 +30,28 @@ void main() {
       final r = BuildingsRegistry.fromJson(validJson);
       expect(r.byCode('  c3a  ')?.code, 'C3A');
     });
+
+    // Regression: the bundled assets/data/buildings.json has 35 of 170
+    // entries with no campusX/campusY. The parser used to do an unguarded
+    // `(m['campusX'] as num).toDouble()`, so `null as num` threw and the
+    // whole registry future errored — which left the AR building picker
+    // (`buildingsRegistryProvider`) spinning forever with no visible error.
+    test('tolerates entries missing campusX/campusY (defaults to 0)', () {
+      const jsonMissingCoords = '''[
+        {"code": "A1", "name": "No Coords Building"},
+        {"code": "B2", "campusX": 10, "campusY": 20}
+      ]''';
+      late final BuildingsRegistry r;
+      expect(
+        () => r = BuildingsRegistry.fromJson(jsonMissingCoords),
+        returnsNormally,
+      );
+      expect(r.buildings.length, 2);
+      final a1 = r.byCode('A1')!;
+      expect(a1.campusX, 0);
+      expect(a1.campusY, 0);
+      expect(a1.name, 'No Coords Building');
+      expect(r.byCode('B2')!.campusX, 10);
+    });
   });
 }

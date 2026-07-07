@@ -46,8 +46,13 @@ class BuildingsRegistry {
               code: (m['code'] ?? m['id'] ?? '') as String,
               name: (m['name'] as String?) ?? '',
               description: (m['description'] as String?) ?? '',
-              campusX: (m['campusX'] as num).toDouble(),
-              campusY: (m['campusY'] as num).toDouble(),
+              // Many bundled buildings have no campus grid coordinates
+              // (35 of 170 in assets/data/buildings.json). Default to 0
+              // rather than an unguarded cast — otherwise `null as num`
+              // throws and the whole registry (and every consumer, incl.
+              // the AR building picker) fails to load.
+              campusX: (m['campusX'] as num?)?.toDouble() ?? 0,
+              campusY: (m['campusY'] as num?)?.toDouble() ?? 0,
               entranceLatitude:
                   (m['entranceLatitude'] ?? m['latitude'] as num?)
                       ?.toDouble() ??
