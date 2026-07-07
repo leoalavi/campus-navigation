@@ -99,8 +99,7 @@ class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
         .toList();
 
     final registryLoaded = ref.watch(buildingsRegistryProvider).hasValue;
-    final allLoaded =
-        manifestStates.every((s) => s.hasValue) && registryLoaded;
+    final allLoaded = manifestStates.every((s) => s.hasValue) && registryLoaded;
     if (!allLoaded) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -114,8 +113,12 @@ class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
         noManifest.add(widget.buildingIds[i]);
       }
     }
-    hasManifest.sort((a, b) => _naturalCompare(_displayName(a), _displayName(b)));
-    noManifest.sort((a, b) => _naturalCompare(_displayName(a), _displayName(b)));
+    hasManifest.sort(
+      (a, b) => _naturalCompare(_displayName(a), _displayName(b)),
+    );
+    noManifest.sort(
+      (a, b) => _naturalCompare(_displayName(a), _displayName(b)),
+    );
 
     if (hasManifest.length == 1 && !_autoSelected) {
       _autoSelected = true;

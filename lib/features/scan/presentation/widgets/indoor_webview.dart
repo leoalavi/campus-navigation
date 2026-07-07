@@ -70,9 +70,8 @@ class _IndoorWebViewState extends State<IndoorWebView> {
   /// `assets/web/indoor_viewer.html` → URL `assets/assets/web/...`).
   /// Other platforms: the localhost asset server, whose document root is
   /// already the `assets/` directory.
-  String get _viewerBase => kIsWeb
-      ? Uri.base.resolve('assets/assets').toString()
-      : _indoorServerBase;
+  String get _viewerBase =>
+      kIsWeb ? Uri.base.resolve('assets/assets').toString() : _indoorServerBase;
 
   InAppWebViewSettings get _settings => InAppWebViewSettings(
     javaScriptEnabled: true,
@@ -85,9 +84,7 @@ class _IndoorWebViewState extends State<IndoorWebView> {
   @override
   Widget build(BuildContext context) {
     if (_serverFailed) {
-      return Center(
-        child: Text(AppLocalizations.of(context)!.cardNoArPreview),
-      );
+      return Center(child: Text(AppLocalizations.of(context)!.cardNoArPreview));
     }
     if (!_serverReady) {
       return const Center(child: CircularProgressIndicator());

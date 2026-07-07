@@ -134,12 +134,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: RouteNames.stamps,
         builder: (context, state) => const StampsPassportPage(),
       ),
-      // QR scanner — camera surface for scanning Open Day QR codes.
-      GoRoute(
-        path: '/scan',
-        name: RouteNames.scan,
-        builder: (context, state) => const ScanPage(),
-      ),
       // Scanned-location card — full-page detail for a QR-resolved location.
       GoRoute(
         path: '/location/:locationId',
@@ -203,6 +197,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     ),
                   ),
                 ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              // QR scanner — camera surface for scanning Open Day QR codes.
+              // Lives in the shell (not a standalone pushed route) so it's
+              // reachable as its own persistent bottom-nav tab next to
+              // Journey. Position here must match ShellBranchIndex.scan.
+              GoRoute(
+                path: '/scan',
+                name: RouteNames.scan,
+                builder: (context, state) => const ScanPage(),
               ),
             ],
           ),

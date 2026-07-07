@@ -32,6 +32,14 @@ GoRouter _shellRouter() {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                path: '/scan',
+                builder: (_, _) => const Scaffold(body: Text('scan-branch')),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
                 path: '/settings',
                 builder: (_, _) =>
                     const Scaffold(body: Text('settings-branch')),
@@ -55,7 +63,7 @@ Widget _app() {
 }
 
 void main() {
-  testWidgets('renders the 3 bottom-nav destinations and the home branch', (
+  testWidgets('renders the 4 bottom-nav destinations and the home branch', (
     tester,
   ) async {
     await tester.pumpWidget(_app());
@@ -64,11 +72,14 @@ void main() {
     final l10n = AppLocalizations.of(tester.element(find.byType(AppShell)))!;
     expect(find.text(l10n.home), findsOneWidget);
     expect(find.text(l10n.navigation), findsOneWidget);
+    expect(find.text(l10n.scanTab), findsOneWidget);
     expect(find.text(l10n.settings), findsOneWidget);
     expect(find.text('home-branch'), findsOneWidget);
   });
 
-  testWidgets('tapping a destination switches to that branch', (tester) async {
+  testWidgets('tapping the Journey destination switches to the map branch', (
+    tester,
+  ) async {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
@@ -77,6 +88,20 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('map-branch'), findsOneWidget);
+    expect(find.text('home-branch'), findsNothing);
+  });
+
+  testWidgets('tapping the scan destination switches to the scan branch', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(tester.element(find.byType(AppShell)))!;
+    await tester.tap(find.text(l10n.scanTab));
+    await tester.pumpAndSettle();
+
+    expect(find.text('scan-branch'), findsOneWidget);
     expect(find.text('home-branch'), findsNothing);
   });
 
