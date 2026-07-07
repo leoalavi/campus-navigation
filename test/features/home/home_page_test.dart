@@ -59,14 +59,54 @@ GoRouter _routerWithHome({
   required Widget Function() extraRouteBody,
   required String extraPath,
 }) {
+  // Mirrors production's branch order (Home=0, Map=1, Scan=2, Settings=3) so
+  // that ShellBranchIndex.scan resolves to extraPath exactly like it does in
+  // the real app_router.dart — the Home CTA now switches tabs via
+  // StatefulNavigationShell.of(context).goBranch(), which requires a real
+  // shell ancestor to exist.
   return GoRouter(
     initialLocation: '/home',
     routes: [
-      GoRoute(path: '/home', name: 'home', builder: (_, _) => const HomePage()),
-      GoRoute(
-        path: extraPath,
-        name: extraPath.replaceAll('/', ''),
-        builder: (_, _) => extraRouteBody(),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) => navigationShell,
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/home',
+                name: 'home',
+                builder: (_, _) => const HomePage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/map-placeholder',
+                builder: (_, _) =>
+                    const Scaffold(body: Text('map-placeholder')),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: extraPath,
+                name: extraPath.replaceAll('/', ''),
+                builder: (_, _) => extraRouteBody(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/settings-placeholder',
+                builder: (_, _) =>
+                    const Scaffold(body: Text('settings-placeholder')),
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );
