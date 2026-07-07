@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
+import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_adapter.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_journey/features/scan/domain/services/scan_branch_lifecycle.dart';
 import 'package:mq_journey/features/scan/domain/services/stamp_award_calculator.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/scanner_view.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/stamp_earned_sheet.dart';
@@ -138,32 +141,38 @@ class _ScanPageState extends ConsumerState<ScanPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return PopScope(
-      canPop: Navigator.canPop(context),
-      onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && mounted) {
-          context.go('/');
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.scanQrCta),
-          actions: [
-            if (_currentScanState == _ScanState.scanning)
-              ValueListenableBuilder<MobileScannerState>(
-                valueListenable: _scannerController,
-                builder: (context, state, _) {
-                  final torchOn = state.torchState == TorchState.on;
-                  return IconButton(
-                    icon: Icon(torchOn ? Icons.flash_on : Icons.flash_off),
-                    onPressed: _toggleTorch,
-                  );
-                },
-              ),
-          ],
-        ),
-        body: _buildBody(l10n),
+    ref.listen<int>(activeShellBranchIndexProvider, (previous, next) {
+      switch (scanBranchLifecycleAction(
+        previousIndex: previous,
+        nextIndex: next,
+        scanBranchIndex: ShellBranchIndex.scan,
+      )) {
+        case ScanBranchLifecycleAction.pause:
+          _onAppPause();
+        case ScanBranchLifecycleAction.resume:
+          _onAppResume();
+        case ScanBranchLifecycleAction.none:
+          break;
+      }
+    });
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.scanQrCta),
+        actions: [
+          if (_currentScanState == _ScanState.scanning)
+            ValueListenableBuilder<MobileScannerState>(
+              valueListenable: _scannerController,
+              builder: (context, state, _) {
+                final torchOn = state.torchState == TorchState.on;
+                return IconButton(
+                  icon: Icon(torchOn ? Icons.flash_on : Icons.flash_off),
+                  onPressed: _toggleTorch,
+                );
+              },
+            ),
+        ],
       ),
+      body: _buildBody(l10n),
     );
   }
 
