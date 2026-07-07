@@ -7,10 +7,11 @@ import 'package:mq_journey/app/theme/mq_typography.dart';
 
 void main() {
   group('MqColors', () {
-    test('brand colors match web tokens', () {
-      expect(MqColors.red, const Color(0xFFA6192E));
-      expect(MqColors.brightRed, const Color(0xFFD6001C));
-      expect(MqColors.deepRed, const Color(0xFF76232F));
+    test('brand accents are the Open Day 2026 magenta family', () {
+      expect(MqColors.red, const Color(0xFFC6006F));
+      expect(MqColors.red, MqColors.openDayMagenta);
+      expect(MqColors.brightRed, const Color(0xFFEB3C96));
+      expect(MqColors.deepRed, const Color(0xFF7C1850));
       expect(MqColors.magenta, const Color(0xFFC6007E));
       expect(MqColors.purple, const Color(0xFF80225F));
     });

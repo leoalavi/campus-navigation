@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
 
-/// Macquarie University brand colour palette.
+/// Macquarie University — **Open Day 2026 edition** colour palette.
 ///
-/// Sourced from the web app's mq-tokens.css and tailwind config.
+/// Base neutrals sourced from the web app's mq-tokens.css; the brand accent
+/// family is repointed from the standard MQ deep red to the official Open
+/// Day magenta identity ("(OPEN DAY)us" campaign material). The token NAMES
+/// are kept (`red`, `brightRed`, `deepRed`) so the entire app — CTAs,
+/// markers, section headers, nav pill — re-themes centrally without touching
+/// 140+ call sites; their VALUES are the Open Day family.
 abstract final class MqColors {
-  // ── Brand ──────────────────────────────────────────────
-  static const Color red = Color(0xFFA6192E);
-  static const Color brightRed = Color(0xFFD6001C);
-  static const Color vividRed = Color(0xFFFF0025);
-  static const Color deepRed = Color(0xFF76232F);
+  // ── Brand (Open Day 2026) ──────────────────────────────
+  /// Primary Open Day magenta (flyer/header colour). White text on this
+  /// passes WCAG AA (≈5:1).
+  static const Color red = Color(0xFFC6006F);
+
+  /// Brighter magenta-pink pop accent (chevrons, dark-mode accents).
+  static const Color brightRed = Color(0xFFEB3C96);
+
+  /// Loud highlight variant — rarely used directly.
+  static const Color vividRed = Color(0xFFFF2D96);
+
+  /// Deep plum (flyer footer panel) — secondary/supporting tone.
+  static const Color deepRed = Color(0xFF7C1850);
+
   static const Color magenta = Color(0xFFC6007E);
   static const Color purple = Color(0xFF80225F);
+
+  // Explicit aliases for code that wants to say "Open Day" out loud.
+  static const Color openDayMagenta = red;
+  static const Color openDayPink = brightRed;
+  static const Color openDayPlum = deepRed;
 
   // ── Alabaster (primary background family) ──────────────
   static const Color alabaster = Color(0xFFEDEADE);

@@ -16,17 +16,18 @@ import 'package:mq_journey/features/transit/presentation/providers/tfnsw_provide
 import 'package:mq_journey/shared/extensions/context_extensions.dart';
 import 'package:mq_journey/shared/models/user_preferences.dart';
 import 'package:mq_journey/shared/widgets/mq_tactile_button.dart';
+import 'package:mq_journey/shared/widgets/open_day_wordmark.dart';
 
 /// Home screen for the MQ Navigation app.
 ///
 /// Structure (top → bottom):
-///   1. Hero — official MQ shield logo + welcome copy + CTA
+///   1. Hero — Open Day 2026 banner (wordmark + date + welcome copy) + CTA
 ///   2. Metro Countdown glanceable card (configurable from Settings)
 ///   3. Quick Access — 2 featured tiles + 3 supporting tiles
 ///
 /// Removed intentionally:
 ///   - The dedicated top app-bar / branded header. The hero now carries
-///     the brand identity via the official MQ shield logo, eliminating
+///     the brand identity via the Open Day wordmark banner, eliminating
 ///     vertical clutter and the prior "icon + wordmark" duplication.
 ///   - "Transport" Quick Access item — the Metro Countdown card already
 ///     covers the same intent in a more glanceable form.
@@ -35,7 +36,6 @@ class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   static const _backgroundAsset = 'assets/images/campus_background.jpg';
-  static const _logoAsset = 'assets/images/mq_logo.png';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -105,7 +105,7 @@ class HomePage extends ConsumerWidget {
                       children: [
                         // ── A. Study-interest group ──────────────────────
                         // 1. QR-first CTA hero.
-                        const _HeroSection(logoAsset: _logoAsset),
+                        const _HeroSection(),
                         const SizedBox(height: MqSpacing.space5),
                         // 2. Study Interest card (onboarding CTA before a
                         //    choice, compact preview after).
@@ -559,68 +559,13 @@ class _CampusBackground extends StatelessWidget {
 /// the prior top branding bar — while the CTA button remains full-width
 /// below for one-handed reachability.
 class _HeroSection extends StatelessWidget {
-  const _HeroSection({required this.logoAsset});
-
-  final String logoAsset;
+  const _HeroSection();
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
-
-    final titleColor = dark ? Colors.white : MqColors.black;
-    final subtitleColor = dark ? Colors.white : MqColors.black;
     const ctaColor = MqColors.red;
-    final heroTextShadow = dark
-        ? [
-            Shadow(
-              blurRadius: 20,
-              color: MqColors.charcoal800.withValues(alpha: 0.62),
-              offset: const Offset(0, 2),
-            ),
-            Shadow(
-              blurRadius: 14,
-              color: Colors.white.withValues(alpha: 0.28),
-              offset: Offset.zero,
-            ),
-          ]
-        : [
-            Shadow(
-              blurRadius: 18,
-              color: MqColors.black.withValues(alpha: 0.42),
-              offset: const Offset(0, 2),
-            ),
-            Shadow(
-              blurRadius: 6,
-              color: MqColors.black.withValues(alpha: 0.22),
-              offset: Offset.zero,
-            ),
-          ];
-    final subtitleTextShadow = dark
-        ? [
-            Shadow(
-              blurRadius: 22,
-              color: MqColors.charcoal800.withValues(alpha: 0.68),
-              offset: const Offset(0, 2),
-            ),
-            Shadow(
-              blurRadius: 12,
-              color: Colors.white.withValues(alpha: 0.34),
-              offset: Offset.zero,
-            ),
-          ]
-        : [
-            Shadow(
-              blurRadius: 18,
-              color: MqColors.black.withValues(alpha: 0.46),
-              offset: const Offset(0, 2),
-            ),
-            Shadow(
-              blurRadius: 6,
-              color: MqColors.black.withValues(alpha: 0.24),
-              offset: Offset.zero,
-            ),
-          ];
 
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
@@ -637,48 +582,61 @@ class _HeroSection extends StatelessWidget {
       },
       child: Column(
         children: [
-          // Logo + welcome copy. The logo is sized to span the full
-          // height of the two-line text block so the brand mark feels
-          // like a true hero anchor — not an afterthought icon.
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+          // Open Day hero banner — the flyer's magenta header translated
+          // into an app surface: wordmark + date chip + welcome copy on a
+          // solid brand plate. A solid plate (not a tint) guarantees
+          // contrast over the campus photo background in both themes and
+          // replaces the standard MQ shield + app-name treatment so Home
+          // immediately reads as the Open Day edition.
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              MqSpacing.space5,
+              MqSpacing.space5,
+              MqSpacing.space5,
+              MqSpacing.space4,
+            ),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [MqColors.openDayMagenta, MqColors.openDayPlum],
+              ),
+              borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
+              boxShadow: [
+                BoxShadow(
+                  color: MqColors.openDayPlum.withValues(
+                    alpha: dark ? 0.45 : 0.30,
+                  ),
+                  blurRadius: 18,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Aspect-ratio-aware: the shield asset is taller than wide,
-                // so we let height drive layout and let width fall out
-                // naturally via `BoxFit.contain`. 100px gives the logo
-                // visual mass equal to title + subtitle stacked.
-                _MqShieldLogo(asset: logoAsset, size: 100),
-                const SizedBox(width: MqSpacing.space4),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        l10n.home_welcomeTitle,
-                        style: context.textTheme.headlineLarge?.copyWith(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w800,
-                          height: 1.15,
-                          letterSpacing: -0.4,
-                          color: titleColor,
-                          shadows: heroTextShadow,
-                        ),
-                      ),
-                      const SizedBox(height: MqSpacing.space1),
-                      Text(
-                        l10n.home_welcomeSubtitle,
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: subtitleColor,
-                          fontSize: 14,
-                          height: 1.4,
-                          fontWeight: dark ? FontWeight.w700 : FontWeight.w600,
-                          shadows: subtitleTextShadow,
-                        ),
-                      ),
-                    ],
+                const Text(
+                  'MACQUARIE UNIVERSITY',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white70,
+                    letterSpacing: 2.6,
+                  ),
+                ),
+                const SizedBox(height: MqSpacing.space2),
+                const OpenDayWordmark(fontSize: 30),
+                const SizedBox(height: MqSpacing.space3),
+                const OpenDayDateChip(),
+                const SizedBox(height: MqSpacing.space3),
+                Text(
+                  l10n.home_welcomeSubtitle,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.92),
+                    fontSize: 14,
+                    height: 1.4,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
@@ -721,66 +679,6 @@ class _HeroSection extends StatelessWidget {
   }
 }
 
-/// Renders the official MQ shield logo at a given size, with a graceful
-/// fallback shield in case the asset isn't bundled. The fallback keeps
-/// the layout stable during initial onboarding of the asset and on any
-/// device where the asset failed to load.
-class _MqShieldLogo extends StatelessWidget {
-  const _MqShieldLogo({required this.asset, required this.size});
-
-  final String asset;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: AppLocalizations.of(context)!.macquarieUniversity,
-      image: true,
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: Image.asset(
-          asset,
-          fit: BoxFit.contain,
-          filterQuality: FilterQuality.high,
-          errorBuilder: (_, _, _) => _LogoFallback(size: size),
-        ),
-      ),
-    );
-  }
-}
-
-class _LogoFallback extends StatelessWidget {
-  const _LogoFallback({required this.size});
-
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    // Pentagon-ish red shield placeholder — preserves visual mass and
-    // brand color until the official asset ships.
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: MqColors.red,
-        borderRadius: BorderRadius.circular(size * 0.18),
-        boxShadow: [
-          BoxShadow(
-            color: MqColors.red.withValues(alpha: 0.30),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Center(
-        child: Icon(
-          Icons.school_rounded,
-          color: Colors.white,
-          size: size * 0.55,
-        ),
-      ),
-    );
-  }
-}
 
 // -------------------------------------------------------------------------- //
 // PRIVACY / INSTANT-ACCESS STRIP                                             //

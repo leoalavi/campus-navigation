@@ -6,8 +6,8 @@ import 'package:mq_journey/app/theme/mq_spacing.dart';
 
 void main() {
   group('MqColors', () {
-    test('brand red matches web token', () {
-      expect(MqColors.red, const Color(0xFFA6192E));
+    test('brand accent is the Open Day 2026 magenta', () {
+      expect(MqColors.red, const Color(0xFFC6006F));
     });
 
     test('alabaster matches web token', () {

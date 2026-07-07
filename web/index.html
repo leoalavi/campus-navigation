@@ -60,8 +60,39 @@
        evaluateJavascript). Without it the indoor/AR panorama viewer cannot
        be driven from Dart. -->
   <script type="application/javascript" src="assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script>
+  <meta name="theme-color" content="#C6006F">
+  <style>
+    /* Open Day 2026 pre-Flutter loading treatment: the page shows the brand
+       wordmark on the campaign magenta until the Flutter engine paints its
+       own (matching) splash — no white/blank flash at any point. */
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: linear-gradient(180deg, #C6006F 0%, #7C1850 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #mq-boot {
+      color: #fff; text-align: center;
+      font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    #mq-boot .wordmark { font-size: 34px; font-weight: 800; letter-spacing: 0.5px; }
+    #mq-boot .wordmark .paren { font-weight: 300; opacity: 0.55; }
+    #mq-boot .wordmark .us { font-size: 17px; font-style: italic; opacity: 0.85; vertical-align: super; }
+    #mq-boot .date { margin-top: 12px; font-size: 12px; font-weight: 700; letter-spacing: 2px; opacity: 0.85; }
+  </style>
 </head>
 <body>
+  <div id="mq-boot">
+    <div class="wordmark"><span class="paren">(</span>OPEN DAY<span class="paren">)</span><span class="us">us</span></div>
+    <div class="date">15 AUGUST 2026 &nbsp;·&nbsp; 10AM – 4PM</div>
+  </div>
+  <script>
+    // Remove the boot placeholder as soon as Flutter's first frame renders.
+    window.addEventListener('flutter-first-frame', function () {
+      var boot = document.getElementById('mq-boot');
+      if (boot) boot.remove();
+      document.body.style.background = 'none';
+    });
+  </script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

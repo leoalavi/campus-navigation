@@ -13,6 +13,7 @@ import 'package:mq_journey/features/settings/presentation/controllers/settings_c
 import 'package:mq_journey/features/transit/domain/entities/metro_departure.dart';
 import 'package:mq_journey/features/transit/presentation/providers/tfnsw_provider.dart';
 import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_journey/shared/widgets/open_day_wordmark.dart';
 
 class _FakeSettingsController extends SettingsController {
   final UserPreferences _prefs = const UserPreferences();
@@ -87,7 +88,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 700));
 
     final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)))!;
-    expect(find.text(l10n.home_welcomeTitle), findsOneWidget);
+    // The hero now carries the Open Day 2026 identity (wordmark banner)
+    // instead of the standard app-name welcome title.
+    expect(find.byType(OpenDayWordmark), findsOneWidget);
+    expect(find.text(l10n.home_welcomeSubtitle), findsOneWidget);
     expect(find.text(l10n.home_quickAccess.toUpperCase()), findsOneWidget);
   });
 
