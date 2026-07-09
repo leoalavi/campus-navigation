@@ -132,6 +132,39 @@ void main() {
       expect(state, isA<VisitedState>());
       expect(state.visited, isFalse);
     });
+
+    test(
+      'watch matches lowercase ids against uppercase stored visits',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            progressApiProvider.overrideWith((ref) {
+              return SettingsProgressApiAdapter(
+                ref,
+                supabaseClient: mockSupabaseClient,
+              );
+            }),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(() => container.dispose());
+
+        final api = container.read(progressApiProvider);
+        await api.recordVisit(
+          VisitEvent(
+            locationId: 'wallys-1',
+            buildingId: 'wallys-1',
+            scannedAt: DateTime(2026, 7, 9, 10, 0),
+          ),
+        );
+
+        final state = await api.watch('wallys-1').first;
+
+        expect(state.visited, isTrue);
+      },
+    );
   });
 }
 

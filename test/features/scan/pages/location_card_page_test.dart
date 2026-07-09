@@ -15,6 +15,9 @@ import 'package:mq_journey/features/scan/presentation/pages/location_card_page.d
 import 'package:mq_journey/features/scan/presentation/widgets/photo_gallery.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/open_day_stops_table.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_journey/features/settings/data/repositories/settings_repository.dart';
+import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mocktail/mocktail.dart';
 
 class _NoSchedule implements ScheduleProvider {
   @override
@@ -22,6 +25,8 @@ class _NoSchedule implements ScheduleProvider {
   @override
   ScheduleSlot? comingUpNext(String id) => null;
 }
+
+class MockSettingsRepository extends Mock implements SettingsRepository {}
 
 // MaterialApp + router only; overrides are supplied by wrapping in ProviderScope
 // at each call site (keeps the Riverpod Override type inferred, never named).
@@ -81,7 +86,7 @@ void main() {
   );
 
   // Inferred return type is List<Override> — never named explicitly.
-  baseOverrides({String? scheduleUrl}) => [
+  baseOverrides({String? scheduleUrl, bool overrideVisitedState = true}) => [
     trailManifestProvider.overrideWith((ref) async => trail),
     buildingsRegistryProvider.overrideWith((ref) async => registry),
     locationContentProvider.overrideWith(
@@ -95,10 +100,12 @@ void main() {
       ),
     ),
     scheduleProvider.overrideWith((ref) => _NoSchedule()),
-    visitedStateProvider.overrideWith(
-      (ref, id) =>
-          Stream.value(const VisitedState(visited: false, rewardEarned: false)),
-    ),
+    if (overrideVisitedState)
+      visitedStateProvider.overrideWith(
+        (ref, id) => Stream.value(
+          const VisitedState(visited: false, rewardEarned: false),
+        ),
+      ),
     myDayApiProvider.overrideWith((ref) => FakeMyDayApi()),
   ];
 
@@ -174,6 +181,28 @@ void main() {
       find.widgetWithText(OutlinedButton, 'View on Campus Map'),
     );
     expect(button.onPressed, isNull); // disabled — never opens an empty map
+  });
+
+  testWidgets('shows visited badge after scan state is stored uppercase', (
+    tester,
+  ) async {
+    final mockRepo = MockSettingsRepository();
+    when(() => mockRepo.loadPreferences()).thenAnswer(
+      (_) async => const UserPreferences(visitedLocationCodes: ['WALLYS-1']),
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(mockRepo),
+          ...baseOverrides(overrideVisitedState: false),
+        ],
+        child: _app(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Visited'), findsOneWidget);
   });
 
   testWidgets('Full schedule link shows when fullScheduleUrl is set', (

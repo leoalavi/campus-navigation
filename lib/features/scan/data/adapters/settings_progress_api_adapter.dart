@@ -60,18 +60,26 @@ class SettingsProgressApiAdapter implements ProgressApi {
 
   @override
   Stream<VisitedState> watch(String locationId) {
+    final normalizedLocationId = locationId.trim().toUpperCase();
     // ignore: close_sinks
-    final controller = StreamController<VisitedState>.broadcast();
+    late final StreamController<VisitedState> controller;
 
     void emit() {
+      if (controller.isClosed) return;
       final prefs = _ref.read(settingsControllerProvider).value;
       final codes = prefs?.visitedLocationCodes ?? const <String>[];
       controller.add(
-        VisitedState(visited: codes.contains(locationId), rewardEarned: false),
+        VisitedState(
+          visited: codes
+              .map((code) => code.trim().toUpperCase())
+              .contains(normalizedLocationId),
+          rewardEarned: false,
+        ),
       );
     }
 
-    emit();
+    // ignore: close_sinks
+    controller = StreamController<VisitedState>.broadcast(onListen: emit);
     _ref.listen(settingsControllerProvider, (_, _) => emit());
 
     return controller.stream;
