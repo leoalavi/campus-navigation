@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Buang semua sesi dan hentian yang disimpan daripada hari anda? Ini tidak boleh dibatalkan.",
-  "openDay_searchBachelorHint": "Cari ijazah anda",
-  "openDay_noBachelorMatch": "Tiada ijazah sepadan ditemui",
-  "openDay_noBachelorMatchHint": "Cuba kata kunci lain",
-  "openDay_matchedToYourDegree": "Sepadan dengan ijazah anda",
-  "openDay_generalOpenToAll": "Umum · Terbuka untuk semua",
-  "openDay_allSessionsLabel": "Semua sesi",
-  "hoursMinutesShort": "{hours} j {minutes} min",
-  "hoursShort": "{hours} j",
-  "openDay_progressVisited": "Melawat {count} daripada {total} hentian",
-  "openDay_trailCompleted": "Laluan {trail} selesai",
-  "openDay_privacyStrip": "Tiada log masuk · Peribadi pada peranti anda",
-  "openDay_showSuggestedStops": "Tunjukkan hentian dicadangkan",
-  "openDay_showSuggestedStopsSemantic": "Tunjukkan hentian dicadangkan di Laman Utama",
-  "openDay_suggestedStopsForInterest": "Hentian dicadangkan untuk {interest}",
-  "openDay_liveNowTitle": "Secara langsung sekarang",
-  "openDay_comingUpNextTitle": "Seterusnya",
-  "openDay_liveNowForInterest": "Sepadan dengan minat anda",
-  "openDay_liveNowAcrossDay": "Terbuka kepada semua pengunjung",
-  "openDay_yourDayTitle": "Hari anda",
-  "openDay_yourDayEmpty": "Simpan sesi yang anda suka untuk membina rancangan Hari Terbuka anda sendiri.",
-  "openDay_yourDayCount": "{count, plural, other{{count} sesi disimpan}}",
-  "openDay_addToMyDay": "Tambah ke hari saya",
-  "openDay_removeFromMyDay": "Alih keluar dari hari saya",
-  "openDay_savedToMyDay": "Ditambah ke hari anda",
-  "openDay_removedFromMyDay": "Dialih keluar dari hari anda",
-  "openDay_clearMyDay": "Kosongkan hari saya",
   "@@locale": "ms",
   "clear": "Kosongkan",
   "routePanelMinimize": "Minimumkan panel laluan",
@@ -35,6 +8,7 @@
   "home": "Utama",
   "map": "Peta",
   "navigation": "Navigasi",
+  "scanTab": "Imbas",
   "settings": "Tetapan",
   "loading": "Memuatkan...",
   "save": "Simpan",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} j {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} j",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Diagnostik Dev",
   "buildVersion": "Binaan: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Kampus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Padam pilihan saya",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Cari ijazah anda",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Tiada ijazah sepadan ditemui",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Cuba kata kunci lain",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "HARI TERBUKA · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Tiada acara yang sepadan dengan minat pengajian anda lagi.",
   "openDay_noEventsNoneSelected": "Pilih minat anda untuk melihat acara yang berkaitan.",
+  "openDay_showSuggestedStops": "Tunjukkan hentian dicadangkan",
+  "openDay_showSuggestedStopsSemantic": "Tunjukkan hentian dicadangkan di Laman Utama",
+  "openDay_suggestedStopsForInterest": "Hentian dicadangkan untuk {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Secara langsung sekarang",
+  "openDay_comingUpNextTitle": "Seterusnya",
+  "openDay_liveNowForInterest": "Sepadan dengan minat anda",
+  "openDay_liveNowAcrossDay": "Terbuka kepada semua pengunjung",
+  "openDay_matchedToYourDegree": "Sepadan dengan ijazah anda",
+  "openDay_generalOpenToAll": "Umum · Terbuka untuk semua",
+  "openDay_allSessionsLabel": "Semua sesi",
+  "openDay_yourDayTitle": "Hari anda",
+  "openDay_yourDayEmpty": "Simpan sesi yang anda suka untuk membina rancangan Hari Terbuka anda sendiri.",
+  "openDay_yourDayCount": "{count, plural, other{{count} sesi disimpan}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Tambah ke hari saya",
+  "openDay_removeFromMyDay": "Alih keluar dari hari saya",
+  "openDay_savedToMyDay": "Ditambah ke hari anda",
+  "openDay_removedFromMyDay": "Dialih keluar dari hari anda",
+  "openDay_clearMyDay": "Kosongkan hari saya",
+  "openDay_clearMyDayConfirm": "Buang semua sesi dan hentian yang disimpan daripada hari anda? Ini tidak boleh dibatalkan.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Melawat {count} daripada {total} hentian",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Laluan {trail} selesai",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Tiada log masuk · Peribadi pada peranti anda",
   "faculty_arts_label": "Fakulti Sastera",
   "faculty_arts_desc": "Kemanusiaan, Undang-undang, Pendidikan, MMCCS",
   "faculty_business_label": "Sekolah Perniagaan Macquarie",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Imbas",
   "scanQrCta": "Imbas",
   "scanPermissionDenied": "Kebenaran kamera dinafikan",
   "scanPermissionDeniedDesc": "Dayakan akses kamera dalam Tetapan untuk mengimbas kod QR",
   "scanOpenSettings": "Buka tetapan",
   "scanDecodeError": "Tidak dapat membaca kod QR",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Bukan sebahagian daripada laluan",
   "scanNotOnTrailDesc": "Kod QR ini bukan sebahagian daripada laluan Open Day",
   "arNoBuildingSelected": "Pilih bangunan untuk melihat dalamannya",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "Pratonton AR",
   "cardNoArPreview": "Tiada pratonton AR tersedia",
   "stopLiveNow": "Langsung sekarang: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Seterusnya: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Tahniah!",
   "stampCelebrationCompleteTitle": "Pasport lengkap!",
   "stampCelebrationSubtitle": "Anda mengumpul setem {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Pasport Open Day anda telah bermula",
   "stampCelebrationKeepExploring": "Terus meneroka",
   "stampCelebrationViewPassport": "Lihat pasport saya",
   "stampAlreadyCollected": "Sudah dikumpulkan — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Tahniah. Anda mengumpul setem {location}. {count} daripada {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Setem Saya",
   "stampsPassportLockedHint": "Imbas untuk mengumpul",
   "settingsMyStampsTile": "Setem Saya",

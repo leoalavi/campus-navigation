@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Usunąć wszystkie zapisane sesje i przystanki z twojego dnia? Tej operacji nie można cofnąć.",
-  "openDay_searchBachelorHint": "Wyszukaj swój kierunek",
-  "openDay_noBachelorMatch": "Nie znaleziono odpowiedniego kierunku",
-  "openDay_noBachelorMatchHint": "Spróbuj innego słowa",
-  "openDay_matchedToYourDegree": "Pasuje do Twojego kierunku",
-  "openDay_generalOpenToAll": "Ogólne · Otwarte dla wszystkich",
-  "openDay_allSessionsLabel": "Wszystkie sesje",
-  "hoursMinutesShort": "{hours} godz {minutes} min",
-  "hoursShort": "{hours} godz",
-  "openDay_progressVisited": "Odwiedzono {count} z {total} przystanków",
-  "openDay_trailCompleted": "Ukończono trasę {trail}",
-  "openDay_privacyStrip": "Bez logowania · Prywatnie na Twoim urządzeniu",
-  "openDay_showSuggestedStops": "Pokaż sugerowane przystanki",
-  "openDay_showSuggestedStopsSemantic": "Pokaż sugerowane przystanki na ekranie głównym",
-  "openDay_suggestedStopsForInterest": "Sugerowane przystanki dla: {interest}",
-  "openDay_liveNowTitle": "Na żywo teraz",
-  "openDay_comingUpNextTitle": "Wkrótce",
-  "openDay_liveNowForInterest": "Pasuje do Twoich zainteresowań",
-  "openDay_liveNowAcrossDay": "Otwarte dla wszystkich",
-  "openDay_yourDayTitle": "Twój dzień",
-  "openDay_yourDayEmpty": "Zapisz sesje, które Ci się podobają, aby ułożyć własny plan Dnia Otwartego.",
-  "openDay_yourDayCount": "{count, plural, =1{Zapisano 1 sesję} few{Zapisano {count} sesje} other{Zapisano {count} sesji}}",
-  "openDay_addToMyDay": "Dodaj do mojego dnia",
-  "openDay_removeFromMyDay": "Usuń z mojego dnia",
-  "openDay_savedToMyDay": "Dodano do Twojego dnia",
-  "openDay_removedFromMyDay": "Usunięto z Twojego dnia",
-  "openDay_clearMyDay": "Wyczyść mój dzień",
   "@@locale": "pl",
   "clear": "Jasne",
   "routePanelMinimize": "Zminimalizuj panel trasy",
@@ -35,6 +8,7 @@
   "home": "Start",
   "map": "Mapa",
   "navigation": "Nawigacja",
+  "scanTab": "Skanuj",
   "settings": "Ustawienia",
   "loading": "Ładowanie...",
   "save": "Zapisz",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} godz {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} godz",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Diagnostyka deweloperów",
   "buildVersion": "Kompilacja: 2026.04.22-beta",
   "renderer": "Moduł renderujący: CrsSimple (kampus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Wyczyść mój wybór",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Wyszukaj swój kierunek",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Nie znaleziono odpowiedniego kierunku",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Spróbuj innego słowa",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "DZIEŃ OTWARTY · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Brak wydarzeń pasujących do Twojego zainteresowania studiami.",
   "openDay_noEventsNoneSelected": "Wybierz swoje zainteresowanie, aby zobaczyć odpowiednie wydarzenia.",
+  "openDay_showSuggestedStops": "Pokaż sugerowane przystanki",
+  "openDay_showSuggestedStopsSemantic": "Pokaż sugerowane przystanki na ekranie głównym",
+  "openDay_suggestedStopsForInterest": "Sugerowane przystanki dla: {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Na żywo teraz",
+  "openDay_comingUpNextTitle": "Wkrótce",
+  "openDay_liveNowForInterest": "Pasuje do Twoich zainteresowań",
+  "openDay_liveNowAcrossDay": "Otwarte dla wszystkich",
+  "openDay_matchedToYourDegree": "Pasuje do Twojego kierunku",
+  "openDay_generalOpenToAll": "Ogólne · Otwarte dla wszystkich",
+  "openDay_allSessionsLabel": "Wszystkie sesje",
+  "openDay_yourDayTitle": "Twój dzień",
+  "openDay_yourDayEmpty": "Zapisz sesje, które Ci się podobają, aby ułożyć własny plan Dnia Otwartego.",
+  "openDay_yourDayCount": "{count, plural, =1{Zapisano 1 sesję} few{Zapisano {count} sesje} other{Zapisano {count} sesji}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Dodaj do mojego dnia",
+  "openDay_removeFromMyDay": "Usuń z mojego dnia",
+  "openDay_savedToMyDay": "Dodano do Twojego dnia",
+  "openDay_removedFromMyDay": "Usunięto z Twojego dnia",
+  "openDay_clearMyDay": "Wyczyść mój dzień",
+  "openDay_clearMyDayConfirm": "Usunąć wszystkie zapisane sesje i przystanki z twojego dnia? Tej operacji nie można cofnąć.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Odwiedzono {count} z {total} przystanków",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Ukończono trasę {trail}",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Bez logowania · Prywatnie na Twoim urządzeniu",
   "faculty_arts_label": "Wydział Sztuki",
   "faculty_arts_desc": "Nauki humanistyczne, prawo, edukacja, MMCCS",
   "faculty_business_label": "Szkoła Biznesu Macquarie",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Skanuj",
   "scanQrCta": "Skanuj",
   "scanPermissionDenied": "Odmówiono dostępu do kamery",
   "scanPermissionDeniedDesc": "Włącz dostęp do aparatu w ustawieniach, aby skanować kody QR",
   "scanOpenSettings": "Otwórz ustawienia",
   "scanDecodeError": "Nie można odczytać kodu QR",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Nie jest częścią trasy",
   "scanNotOnTrailDesc": "Ten kod QR nie jest częścią trasy Open Day",
   "arNoBuildingSelected": "Wybierz budynek, aby zobaczyć wnętrze",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "Podgląd AR",
   "cardNoArPreview": "Brak dostępnego podglądu AR",
   "stopLiveNow": "Na żywo teraz: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Następnie: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Gratulacje!",
   "stampCelebrationCompleteTitle": "Paszport ukończony!",
   "stampCelebrationSubtitle": "Zebrałeś pieczątkę {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Twój paszport Open Day właśnie się zaczął",
   "stampCelebrationKeepExploring": "Kontynuuj odkrywanie",
   "stampCelebrationViewPassport": "Zobacz mój paszport",
   "stampAlreadyCollected": "Już zebrano — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Gratulacje. Zebrałeś pieczątkę {location}. {count} z {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Moje pieczątki",
   "stampsPassportLockedHint": "Zeskanuj, aby zebrać",
   "settingsMyStampsTile": "Moje pieczątki",

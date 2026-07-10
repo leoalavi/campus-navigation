@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "আপনার দিন থেকে সমস্ত সংরক্ষিত সেশন ও স্টপ মুছে ফেলবেন? এটি পূর্বাবস্থায় ফেরানো যাবে না।",
-  "openDay_searchBachelorHint": "আপনার ডিগ্রি অনুসন্ধান করুন",
-  "openDay_noBachelorMatch": "কোনো মিল পাওয়া যায়নি",
-  "openDay_noBachelorMatchHint": "অন্য শব্দ চেষ্টা করুন",
-  "openDay_matchedToYourDegree": "আপনার ডিগ্রির সাথে মিলেছে",
-  "openDay_generalOpenToAll": "সাধারণ · সকলের জন্য উন্মুক্ত",
-  "openDay_allSessionsLabel": "সব সেশন",
-  "hoursMinutesShort": "{hours} ঘ {minutes} মি",
-  "hoursShort": "{hours} ঘ",
-  "openDay_progressVisited": "{total}টির মধ্যে {count}টি স্থান ঘোরা হয়েছে",
-  "openDay_trailCompleted": "{trail} ট্রেইল সম্পূর্ণ হয়েছে",
-  "openDay_privacyStrip": "লগইন প্রয়োজন নেই · আপনার ডিভাইসে ব্যক্তিগত",
-  "openDay_showSuggestedStops": "প্রস্তাবিত স্থানগুলি দেখান",
-  "openDay_showSuggestedStopsSemantic": "হোমে প্রস্তাবিত স্থানগুলি দেখান",
-  "openDay_suggestedStopsForInterest": "{interest} এর জন্য প্রস্তাবিত স্থান",
-  "openDay_liveNowTitle": "এখন চলছে",
-  "openDay_comingUpNextTitle": "পরবর্তী আসছে",
-  "openDay_liveNowForInterest": "আপনার আগ্রহের সাথে মিলেছে",
-  "openDay_liveNowAcrossDay": "সকল দর্শনার্থীর জন্য উন্মুক্ত",
-  "openDay_yourDayTitle": "আপনার দিন",
-  "openDay_yourDayEmpty": "আপনার পছন্দের সেশনগুলি সংরক্ষণ করে আপনার নিজের খোলা দিনের পরিকল্পনা তৈরি করুন।",
-  "openDay_yourDayCount": "{count, plural, =1{১টি সেশন সংরক্ষিত} other{{count}টি সেশন সংরক্ষিত}}",
-  "openDay_addToMyDay": "আমার দিনে যোগ করুন",
-  "openDay_removeFromMyDay": "আমার দিন থেকে সরান",
-  "openDay_savedToMyDay": "আপনার দিনে যোগ করা হয়েছে",
-  "openDay_removedFromMyDay": "আপনার দিন থেকে সরানো হয়েছে",
-  "openDay_clearMyDay": "আমার দিন সাফ করুন",
   "@@locale": "bn",
   "clear": "পরিষ্কার",
   "routePanelMinimize": "রুট প্যানেল ছোট করুন",
@@ -35,6 +8,7 @@
   "home": "হোম",
   "map": "ক্যাম্পাস ম্যাপ",
   "navigation": "নেভিগেশন",
+  "scanTab": "স্ক্যান",
   "settings": "সেটিংস",
   "loading": "লোড হচ্ছে...",
   "save": "সেভ",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} ঘ {minutes} মি",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ঘ",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "দেব ডায়াগনস্টিকস",
   "buildVersion": "বিল্ড: 2026.04.22-বিটা",
   "renderer": "রেন্ডারার: ​​CrsSimple (ক্যাম্পাস)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "আমার নির্বাচন মুছুন",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "আপনার ডিগ্রি অনুসন্ধান করুন",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "কোনো মিল পাওয়া যায়নি",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "অন্য শব্দ চেষ্টা করুন",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "খোলার দিন · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "এখনও আপনার পড়াশোনার আগ্রহের সাথে মেলে এমন কোনো ইভেন্ট নেই।",
   "openDay_noEventsNoneSelected": "প্রাসঙ্গিক ইভেন্ট দেখতে আপনার আগ্রহ বেছে নিন।",
+  "openDay_showSuggestedStops": "প্রস্তাবিত স্থানগুলি দেখান",
+  "openDay_showSuggestedStopsSemantic": "হোমে প্রস্তাবিত স্থানগুলি দেখান",
+  "openDay_suggestedStopsForInterest": "{interest} এর জন্য প্রস্তাবিত স্থান",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "এখন চলছে",
+  "openDay_comingUpNextTitle": "পরবর্তী আসছে",
+  "openDay_liveNowForInterest": "আপনার আগ্রহের সাথে মিলেছে",
+  "openDay_liveNowAcrossDay": "সকল দর্শনার্থীর জন্য উন্মুক্ত",
+  "openDay_matchedToYourDegree": "আপনার ডিগ্রির সাথে মিলেছে",
+  "openDay_generalOpenToAll": "সাধারণ · সকলের জন্য উন্মুক্ত",
+  "openDay_allSessionsLabel": "সব সেশন",
+  "openDay_yourDayTitle": "আপনার দিন",
+  "openDay_yourDayEmpty": "আপনার পছন্দের সেশনগুলি সংরক্ষণ করে আপনার নিজের খোলা দিনের পরিকল্পনা তৈরি করুন।",
+  "openDay_yourDayCount": "{count, plural, =1{১টি সেশন সংরক্ষিত} other{{count}টি সেশন সংরক্ষিত}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "আমার দিনে যোগ করুন",
+  "openDay_removeFromMyDay": "আমার দিন থেকে সরান",
+  "openDay_savedToMyDay": "আপনার দিনে যোগ করা হয়েছে",
+  "openDay_removedFromMyDay": "আপনার দিন থেকে সরানো হয়েছে",
+  "openDay_clearMyDay": "আমার দিন সাফ করুন",
+  "openDay_clearMyDayConfirm": "আপনার দিন থেকে সমস্ত সংরক্ষিত সেশন ও স্টপ মুছে ফেলবেন? এটি পূর্বাবস্থায় ফেরানো যাবে না।",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total}টির মধ্যে {count}টি স্থান ঘোরা হয়েছে",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} ট্রেইল সম্পূর্ণ হয়েছে",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "লগইন প্রয়োজন নেই · আপনার ডিভাইসে ব্যক্তিগত",
   "faculty_arts_label": "কলা অনুষদ",
   "faculty_arts_desc": "মানবিক, আইন, শিক্ষা, MMCCS",
   "faculty_business_label": "ম্যাককুয়ারি বিজনেস স্কুল",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "স্ক্যান",
   "scanQrCta": "স্ক্যান",
   "scanPermissionDenied": "ক্যামেরার অনুমতি প্রত্যাখ্যাত হয়েছে",
   "scanPermissionDeniedDesc": "QR কোড স্ক্যান করতে সেটিংসে ক্যামেরা অ্যাক্সেস সক্ষম করুন",
   "scanOpenSettings": "সেটিংস খুলুন",
   "scanDecodeError": "QR কোড পড়া যায়নি",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "ট্রেইলের অংশ নয়",
   "scanNotOnTrailDesc": "এই QR কোডটি ওপেন ডে ট্রেইলের অংশ নয়",
   "arNoBuildingSelected": "ভেতরে দেখতে একটি ভবন নির্বাচন করুন",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "এআর প্রিভিউ",
   "cardNoArPreview": "কোনো এআর প্রিভিউ উপলব্ধ নেই",
   "stopLiveNow": "এখন লাইভ: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "পরবর্তী: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "অভিনন্দন!",
   "stampCelebrationCompleteTitle": "পাসপোর্ট সম্পূর্ণ!",
   "stampCelebrationSubtitle": "আপনি {location} স্ট্যাম্প সংগ্রহ করেছেন",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "আপনার ওপেন ডে পাসপোর্ট শুরু হয়েছে",
   "stampCelebrationKeepExploring": "অন্বেষণ চালিয়ে যান",
   "stampCelebrationViewPassport": "আমার পাসপোর্ট দেখুন",
   "stampAlreadyCollected": "ইতিমধ্যে সংগ্রহ করা হয়েছে — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "অভিনন্দন। আপনি {location} স্ট্যাম্প সংগ্রহ করেছেন। {total} এর মধ্যে {count}।",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "আমার স্ট্যাম্প",
   "stampsPassportLockedHint": "সংগ্রহ করতে স্ক্যান করুন",
   "settingsMyStampsTile": "আমার স্ট্যাম্প",

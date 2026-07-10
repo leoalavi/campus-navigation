@@ -5,15 +5,19 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
 import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
 import 'package:mq_journey/features/scan/domain/contracts/my_day_entry.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
 import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_journey/features/scan/domain/services/stamp_award_calculator.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/card_visit_badge.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/open_day_stops_table.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/photo_gallery.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/schedule_chips.dart';
+import 'package:mq_journey/features/scan/presentation/widgets/stamp_earned_sheet.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
 
 bool arEnabled(TrailLocation? loc) {
   if (loc == null) return false;
@@ -30,6 +34,13 @@ class LocationCardPage extends ConsumerWidget {
     final schedule = ref.watch(scheduleProvider);
     final trail = ref.watch(trailManifestProvider).value;
     final registry = ref.watch(buildingsRegistryProvider).value;
+    final pendingNotice = ref.watch(pendingStampAwardProvider);
+
+    if (pendingNotice?.locationId == locationId) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _consumePendingNotice(context, ref, locationId);
+      });
+    }
 
     if (content == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -99,6 +110,46 @@ class LocationCardPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _consumePendingNotice(
+    BuildContext context,
+    WidgetRef ref,
+    String locationId,
+  ) async {
+    final notice = ref
+        .read(pendingStampAwardProvider.notifier)
+        .consume(locationId);
+    if (notice == null || !context.mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    if (notice.saveFailed) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.scanVisitSaveFailed)));
+      return;
+    }
+
+    final catalog = await ref.read(stampCatalogProvider.future);
+    final visitedCodes =
+        ref.read(settingsControllerProvider).value?.visitedLocationCodes ??
+        const <String>[];
+    final award = computeStampAward(
+      visitedCode: locationId,
+      visitedLocationCodesAfterVisit: visitedCodes,
+      catalog: catalog,
+    );
+    if (award == null || !context.mounted) return;
+
+    if (notice.isNewVisit) {
+      final action = await showStampEarnedSheet(context, award);
+      if (action == StampSheetAction.viewPassport && context.mounted) {
+        context.push('/stamps');
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.stampAlreadyCollected(award.stamp.title))),
+      );
+    }
   }
 }
 

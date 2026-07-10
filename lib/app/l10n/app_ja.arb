@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "保存したセッションと立ち寄り先をすべて削除しますか？この操作は元に戻せません。",
-  "openDay_searchBachelorHint": "学位を検索",
-  "openDay_noBachelorMatch": "該当する学位が見つかりません",
-  "openDay_noBachelorMatchHint": "別のキーワードを試してください",
-  "openDay_matchedToYourDegree": "あなたの学位に一致",
-  "openDay_generalOpenToAll": "一般 · どなたでも参加可能",
-  "openDay_allSessionsLabel": "すべてのセッション",
-  "hoursMinutesShort": "{hours}時間{minutes}分",
-  "hoursShort": "{hours}時間",
-  "openDay_progressVisited": "{total}か所中{count}か所を訪問",
-  "openDay_trailCompleted": "{trail}トレイルを達成",
-  "openDay_privacyStrip": "ログイン不要 · 端末内でプライベート",
-  "openDay_showSuggestedStops": "おすすめスポットを表示",
-  "openDay_showSuggestedStopsSemantic": "ホームにおすすめスポットを表示",
-  "openDay_suggestedStopsForInterest": "{interest}向けのおすすめスポット",
-  "openDay_liveNowTitle": "ただいまライブ中",
-  "openDay_comingUpNextTitle": "次の予定",
-  "openDay_liveNowForInterest": "あなたの興味に一致",
-  "openDay_liveNowAcrossDay": "どなたでも参加可能",
-  "openDay_yourDayTitle": "あなたの一日",
-  "openDay_yourDayEmpty": "気になるセッションを保存して、自分だけのオープンデー計画を作りましょう。",
-  "openDay_yourDayCount": "{count, plural, other{{count}件のセッションを保存しました}}",
-  "openDay_addToMyDay": "マイデーに追加",
-  "openDay_removeFromMyDay": "マイデーから削除",
-  "openDay_savedToMyDay": "あなたの一日に追加しました",
-  "openDay_removedFromMyDay": "あなたの一日から削除しました",
-  "openDay_clearMyDay": "マイデーをクリア",
   "@@locale": "ja",
   "clear": "クリア",
   "routePanelMinimize": "ルートパネルを最小化",
@@ -35,6 +8,7 @@
   "home": "ホーム",
   "map": "キャンパスマップ",
   "navigation": "ナビゲーション",
+  "scanTab": "スキャン",
   "settings": "設定",
   "loading": "読み込み中...",
   "save": "保存",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours}時間{minutes}分",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours}時間",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "開発診断",
   "buildVersion": "ビルド：2026.04.22-beta",
   "renderer": "レンダラー：CrsSimple（キャンパス）",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "選択を解除",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "学位を検索",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "該当する学位が見つかりません",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "別のキーワードを試してください",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "オープンデー · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "学習の関心に一致するイベントがまだありません。",
   "openDay_noEventsNoneSelected": "関連するイベントを見るには興味を選択してください。",
+  "openDay_showSuggestedStops": "おすすめスポットを表示",
+  "openDay_showSuggestedStopsSemantic": "ホームにおすすめスポットを表示",
+  "openDay_suggestedStopsForInterest": "{interest}向けのおすすめスポット",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "ただいまライブ中",
+  "openDay_comingUpNextTitle": "次の予定",
+  "openDay_liveNowForInterest": "あなたの興味に一致",
+  "openDay_liveNowAcrossDay": "どなたでも参加可能",
+  "openDay_matchedToYourDegree": "あなたの学位に一致",
+  "openDay_generalOpenToAll": "一般 · どなたでも参加可能",
+  "openDay_allSessionsLabel": "すべてのセッション",
+  "openDay_yourDayTitle": "あなたの一日",
+  "openDay_yourDayEmpty": "気になるセッションを保存して、自分だけのオープンデー計画を作りましょう。",
+  "openDay_yourDayCount": "{count, plural, other{{count}件のセッションを保存しました}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "マイデーに追加",
+  "openDay_removeFromMyDay": "マイデーから削除",
+  "openDay_savedToMyDay": "あなたの一日に追加しました",
+  "openDay_removedFromMyDay": "あなたの一日から削除しました",
+  "openDay_clearMyDay": "マイデーをクリア",
+  "openDay_clearMyDayConfirm": "保存したセッションと立ち寄り先をすべて削除しますか？この操作は元に戻せません。",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total}か所中{count}か所を訪問",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail}トレイルを達成",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "ログイン不要 · 端末内でプライベート",
   "faculty_arts_label": "芸術学部",
   "faculty_arts_desc": "人文科学、法学、教育、MMCCS",
   "faculty_business_label": "マッコーリー ビジネス スクール",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "スキャン",
   "scanQrCta": "スキャン",
   "scanPermissionDenied": "カメラの権限が拒否されました",
   "scanPermissionDeniedDesc": "設定でカメラへのアクセスを有効にしてQRコードをスキャンしてください",
   "scanOpenSettings": "設定を開く",
   "scanDecodeError": "QRコードを読み取れませんでした",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "トレイルの一部ではありません",
   "scanNotOnTrailDesc": "このQRコードはOpen Dayトレイルの一部ではありません",
   "arNoBuildingSelected": "建物を選択して屋内を表示",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "ARプレビュー",
   "cardNoArPreview": "ARプレビューはありません",
   "stopLiveNow": "現在ライブ: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "次: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "おめでとうございます！",
   "stampCelebrationCompleteTitle": "パスポート完了！",
   "stampCelebrationSubtitle": "{location}のスタンプを収集しました",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Open Dayパスポートが始まりました",
   "stampCelebrationKeepExploring": "探索を続ける",
   "stampCelebrationViewPassport": "マイパスポートを見る",
   "stampAlreadyCollected": "すでに収集済み — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "おめでとうございます。{location}のスタンプを収集しました。{total}個中{count}個。",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "マイスタンプ",
   "stampsPassportLockedHint": "スキャンして収集",
   "settingsMyStampsTile": "マイスタンプ",

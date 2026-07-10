@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Poistetaanko kaikki tallennetut tapahtumat ja pysähdykset päivästäsi? Tätä ei voi kumota.",
-  "openDay_searchBachelorHint": "Hae tutkintoa",
-  "openDay_noBachelorMatch": "Vastaavaa tutkintoa ei löytynyt",
-  "openDay_noBachelorMatchHint": "Kokeile toista hakusanaa",
-  "openDay_matchedToYourDegree": "Tutkintoosi sopivat",
-  "openDay_generalOpenToAll": "Yleiset · Avoin kaikille",
-  "openDay_allSessionsLabel": "Kaikki sessiot",
-  "hoursMinutesShort": "{hours} t {minutes} min",
-  "hoursShort": "{hours} t",
-  "openDay_progressVisited": "Käyty {count}/{total} pysähdyksellä",
-  "openDay_trailCompleted": "{trail}-reitti suoritettu",
-  "openDay_privacyStrip": "Ei kirjautumista · Yksityinen laitteellasi",
-  "openDay_showSuggestedStops": "Näytä ehdotetut pysähdykset",
-  "openDay_showSuggestedStopsSemantic": "Näytä ehdotetut pysähdykset etusivulla",
-  "openDay_suggestedStopsForInterest": "Ehdotetut pysähdykset: {interest}",
-  "openDay_liveNowTitle": "Käynnissä nyt",
-  "openDay_comingUpNextTitle": "Seuraavaksi",
-  "openDay_liveNowForInterest": "Vastaa kiinnostuksenkohdettasi",
-  "openDay_liveNowAcrossDay": "Avoin kaikille kävijöille",
-  "openDay_yourDayTitle": "Sinun päiväsi",
-  "openDay_yourDayEmpty": "Tallenna pitämäsi sessiot ja kokoa oma Avointen ovien päivän suunnitelmasi.",
-  "openDay_yourDayCount": "{count, plural, =1{1 sessio tallennettu} other{{count} sessiota tallennettu}}",
-  "openDay_addToMyDay": "Lisää päivääni",
-  "openDay_removeFromMyDay": "Poista päivästäni",
-  "openDay_savedToMyDay": "Lisätty päivääsi",
-  "openDay_removedFromMyDay": "Poistettu päivästäsi",
-  "openDay_clearMyDay": "Tyhjennä päiväni",
   "@@locale": "fi",
   "clear": "Selkeä",
   "routePanelMinimize": "Pienennä reittipaneeli",
@@ -35,6 +8,7 @@
   "home": "Koti",
   "map": "Kartta",
   "navigation": "Navigointi",
+  "scanTab": "Skannaa",
   "settings": "Asetukset",
   "loading": "Ladataan...",
   "save": "Tallenna",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} t {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} t",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Kehittäjän diagnostiikka",
   "buildVersion": "Koonti: 2026.04.22-beta",
   "renderer": "Renderöijä: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Tyhjennä valintani",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Hae tutkintoa",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Vastaavaa tutkintoa ei löytynyt",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Kokeile toista hakusanaa",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "AVOIN PÄIVÄ · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Ei tapahtumia, jotka vastaavat opiskelukiinnostustasi vielä.",
   "openDay_noEventsNoneSelected": "Valitse kiinnostuksesi nähdäksesi asiaankuuluvat tapahtumat.",
+  "openDay_showSuggestedStops": "Näytä ehdotetut pysähdykset",
+  "openDay_showSuggestedStopsSemantic": "Näytä ehdotetut pysähdykset etusivulla",
+  "openDay_suggestedStopsForInterest": "Ehdotetut pysähdykset: {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Käynnissä nyt",
+  "openDay_comingUpNextTitle": "Seuraavaksi",
+  "openDay_liveNowForInterest": "Vastaa kiinnostuksenkohdettasi",
+  "openDay_liveNowAcrossDay": "Avoin kaikille kävijöille",
+  "openDay_matchedToYourDegree": "Tutkintoosi sopivat",
+  "openDay_generalOpenToAll": "Yleiset · Avoin kaikille",
+  "openDay_allSessionsLabel": "Kaikki sessiot",
+  "openDay_yourDayTitle": "Sinun päiväsi",
+  "openDay_yourDayEmpty": "Tallenna pitämäsi sessiot ja kokoa oma Avointen ovien päivän suunnitelmasi.",
+  "openDay_yourDayCount": "{count, plural, =1{1 sessio tallennettu} other{{count} sessiota tallennettu}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Lisää päivääni",
+  "openDay_removeFromMyDay": "Poista päivästäni",
+  "openDay_savedToMyDay": "Lisätty päivääsi",
+  "openDay_removedFromMyDay": "Poistettu päivästäsi",
+  "openDay_clearMyDay": "Tyhjennä päiväni",
+  "openDay_clearMyDayConfirm": "Poistetaanko kaikki tallennetut tapahtumat ja pysähdykset päivästäsi? Tätä ei voi kumota.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Käyty {count}/{total} pysähdyksellä",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail}-reitti suoritettu",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Ei kirjautumista · Yksityinen laitteellasi",
   "faculty_arts_label": "Taiteiden tiedekunta",
   "faculty_arts_desc": "Humanistiset tieteet, laki, koulutus, MMCCS",
   "faculty_business_label": "Macquarie Business School",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Skannaa",
   "scanQrCta": "Skannaa",
   "scanPermissionDenied": "Kameran käyttöoikeus evätty",
   "scanPermissionDeniedDesc": "Ota kameran käyttöoikeus käyttöön asetuksista QR-koodien skannaamiseksi",
   "scanOpenSettings": "Avaa asetukset",
   "scanDecodeError": "QR-koodia ei voitu lukea",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Ei osa reittiä",
   "scanNotOnTrailDesc": "Tämä QR-koodi ei kuulu Open Day -reittiin",
   "arNoBuildingSelected": "Valitse rakennus nähdäksesi sisätilat",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR-esikatselu",
   "cardNoArPreview": "AR-esikatselua ei ole saatavilla",
   "stopLiveNow": "Live nyt: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Seuraavaksi: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Onnittelut!",
   "stampCelebrationCompleteTitle": "Passi valmis!",
   "stampCelebrationSubtitle": "Keräsit leiman {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Open Day -passisi on alkanut",
   "stampCelebrationKeepExploring": "Jatka tutkimista",
   "stampCelebrationViewPassport": "Näytä passini",
   "stampAlreadyCollected": "Jo kerätty — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Onnittelut. Keräsit leiman {location}. {count}/{total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Omat leimani",
   "stampsPassportLockedHint": "Skannaa kerätäksesi",
   "settingsMyStampsTile": "Omat leimani",

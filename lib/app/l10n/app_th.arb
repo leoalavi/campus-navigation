@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "ลบเซสชันและจุดแวะที่บันทึกไว้ทั้งหมดออกจากวันของคุณ? การดำเนินการนี้ไม่สามารถยกเลิกได้",
-  "openDay_searchBachelorHint": "ค้นหาหลักสูตรของคุณ",
-  "openDay_noBachelorMatch": "ไม่พบหลักสูตรที่ตรงกัน",
-  "openDay_noBachelorMatchHint": "ลองใช้คำอื่น",
-  "openDay_matchedToYourDegree": "ตรงกับหลักสูตรของคุณ",
-  "openDay_generalOpenToAll": "ทั่วไป · เปิดสำหรับทุกคน",
-  "openDay_allSessionsLabel": "ทุกเซสชัน",
-  "hoursMinutesShort": "{hours} ชม. {minutes} นาที",
-  "hoursShort": "{hours} ชม.",
-  "openDay_progressVisited": "เยี่ยมชม {count} จาก {total} จุด",
-  "openDay_trailCompleted": "เส้นทาง {trail} เสร็จสมบูรณ์",
-  "openDay_privacyStrip": "ไม่ต้องเข้าสู่ระบบ · เป็นส่วนตัวบนอุปกรณ์ของคุณ",
-  "openDay_showSuggestedStops": "แสดงจุดแวะที่แนะนำ",
-  "openDay_showSuggestedStopsSemantic": "แสดงจุดแวะที่แนะนำบนหน้าแรก",
-  "openDay_suggestedStopsForInterest": "จุดแวะที่แนะนำสำหรับ {interest}",
-  "openDay_liveNowTitle": "กำลังถ่ายทอดสด",
-  "openDay_comingUpNextTitle": "ถัดไป",
-  "openDay_liveNowForInterest": "ตรงกับความสนใจของคุณ",
-  "openDay_liveNowAcrossDay": "เปิดสำหรับผู้เข้าชมทุกคน",
-  "openDay_yourDayTitle": "วันของคุณ",
-  "openDay_yourDayEmpty": "บันทึกเซสชันที่คุณชอบเพื่อสร้างแผนวันเปิดเทอมของคุณเอง",
-  "openDay_yourDayCount": "{count, plural, other{บันทึกแล้ว {count} เซสชัน}}",
-  "openDay_addToMyDay": "เพิ่มลงในวันของฉัน",
-  "openDay_removeFromMyDay": "นำออกจากวันของฉัน",
-  "openDay_savedToMyDay": "เพิ่มลงในวันของคุณแล้ว",
-  "openDay_removedFromMyDay": "นำออกจากวันของคุณแล้ว",
-  "openDay_clearMyDay": "ล้างวันของฉัน",
   "@@locale": "th",
   "clear": "ล้าง",
   "routePanelMinimize": "ย่อแผงเส้นทาง",
@@ -35,6 +8,7 @@
   "home": "หน้าแรก",
   "map": "แผนที่มหาวิทยาลัย",
   "navigation": "การนำทาง",
+  "scanTab": "สแกน",
   "settings": "การตั้งค่า",
   "loading": "กำลังโหลด...",
   "save": "บันทึก",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} ชม. {minutes} นาที",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ชม.",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "การวินิจฉัยการพัฒนา",
   "buildVersion": "รุ่น: 2026.04.22-เบต้า",
   "renderer": "ตัวแสดงภาพ: CrsSimple (วิทยาเขต)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "ล้างการเลือกของฉัน",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "ค้นหาหลักสูตรของคุณ",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "ไม่พบหลักสูตรที่ตรงกัน",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "ลองใช้คำอื่น",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "วันเปิด · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "ยังไม่มีกิจกรรมที่ตรงกับความสนใจด้านการศึกษาของคุณ",
   "openDay_noEventsNoneSelected": "เลือกความสนใจของคุณเพื่อดูกิจกรรมที่เกี่ยวข้อง",
+  "openDay_showSuggestedStops": "แสดงจุดแวะที่แนะนำ",
+  "openDay_showSuggestedStopsSemantic": "แสดงจุดแวะที่แนะนำบนหน้าแรก",
+  "openDay_suggestedStopsForInterest": "จุดแวะที่แนะนำสำหรับ {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "กำลังถ่ายทอดสด",
+  "openDay_comingUpNextTitle": "ถัดไป",
+  "openDay_liveNowForInterest": "ตรงกับความสนใจของคุณ",
+  "openDay_liveNowAcrossDay": "เปิดสำหรับผู้เข้าชมทุกคน",
+  "openDay_matchedToYourDegree": "ตรงกับหลักสูตรของคุณ",
+  "openDay_generalOpenToAll": "ทั่วไป · เปิดสำหรับทุกคน",
+  "openDay_allSessionsLabel": "ทุกเซสชัน",
+  "openDay_yourDayTitle": "วันของคุณ",
+  "openDay_yourDayEmpty": "บันทึกเซสชันที่คุณชอบเพื่อสร้างแผนวันเปิดเทอมของคุณเอง",
+  "openDay_yourDayCount": "{count, plural, other{บันทึกแล้ว {count} เซสชัน}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "เพิ่มลงในวันของฉัน",
+  "openDay_removeFromMyDay": "นำออกจากวันของฉัน",
+  "openDay_savedToMyDay": "เพิ่มลงในวันของคุณแล้ว",
+  "openDay_removedFromMyDay": "นำออกจากวันของคุณแล้ว",
+  "openDay_clearMyDay": "ล้างวันของฉัน",
+  "openDay_clearMyDayConfirm": "ลบเซสชันและจุดแวะที่บันทึกไว้ทั้งหมดออกจากวันของคุณ? การดำเนินการนี้ไม่สามารถยกเลิกได้",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "เยี่ยมชม {count} จาก {total} จุด",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "เส้นทาง {trail} เสร็จสมบูรณ์",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "ไม่ต้องเข้าสู่ระบบ · เป็นส่วนตัวบนอุปกรณ์ของคุณ",
   "faculty_arts_label": "คณะอักษรศาสตร์",
   "faculty_arts_desc": "มนุษยศาสตร์ กฎหมาย การศึกษา MMCCS",
   "faculty_business_label": "โรงเรียนธุรกิจแมคควอรี",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "สแกน",
   "scanQrCta": "สแกน",
   "scanPermissionDenied": "การอนุญาตกล้องถูกปฏิเสธ",
   "scanPermissionDeniedDesc": "เปิดใช้งานการเข้าถึงกล้องในการตั้งค่าเพื่อสแกนรหัส QR",
   "scanOpenSettings": "เปิดการตั้งค่า",
   "scanDecodeError": "ไม่สามารถอ่านรหัส QR ได้",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "ไม่ใช่ส่วนหนึ่งของเส้นทาง",
   "scanNotOnTrailDesc": "รหัส QR นี้ไม่ใช่ส่วนหนึ่งของเส้นทาง Open Day",
   "arNoBuildingSelected": "เลือกอาคารเพื่อดูภายใน",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "ตัวอย่าง AR",
   "cardNoArPreview": "ไม่มีตัวอย่าง AR ให้ใช้งาน",
   "stopLiveNow": "ถ่ายทอดสดตอนนี้: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "ถัดไป: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "ยินดีด้วย!",
   "stampCelebrationCompleteTitle": "พาสปอร์ตครบสมบูรณ์!",
   "stampCelebrationSubtitle": "คุณเก็บตราประทับ {location} แล้ว",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "พาสปอร์ต Open Day ของคุณเริ่มต้นแล้ว",
   "stampCelebrationKeepExploring": "สำรวจต่อไป",
   "stampCelebrationViewPassport": "ดูพาสปอร์ตของฉัน",
   "stampAlreadyCollected": "เก็บแล้ว — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "ยินดีด้วย คุณเก็บตราประทับ {location} แล้ว {count} จาก {total}",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "แสตมป์ของฉัน",
   "stampsPassportLockedHint": "สแกนเพื่อเก็บ",
   "settingsMyStampsTile": "แสตมป์ของฉัน",

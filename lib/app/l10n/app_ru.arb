@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Удалить все сохранённые сессии и остановки из вашего дня? Это действие нельзя отменить.",
-  "openDay_searchBachelorHint": "Найти программу",
-  "openDay_noBachelorMatch": "Подходящая программа не найдена",
-  "openDay_noBachelorMatchHint": "Попробуйте другое слово",
-  "openDay_matchedToYourDegree": "Подходит вашей программе",
-  "openDay_generalOpenToAll": "Общее · Открыто для всех",
-  "openDay_allSessionsLabel": "Все сессии",
-  "hoursMinutesShort": "{hours} ч {minutes} мин",
-  "hoursShort": "{hours} ч",
-  "openDay_progressVisited": "Посещено {count} из {total} мест",
-  "openDay_trailCompleted": "Маршрут «{trail}» пройден",
-  "openDay_privacyStrip": "Без входа · Приватно на вашем устройстве",
-  "openDay_showSuggestedStops": "Показать рекомендуемые места",
-  "openDay_showSuggestedStopsSemantic": "Показывать рекомендуемые места на главной",
-  "openDay_suggestedStopsForInterest": "Рекомендуемые места для «{interest}»",
-  "openDay_liveNowTitle": "Сейчас в эфире",
-  "openDay_comingUpNextTitle": "Далее",
-  "openDay_liveNowForInterest": "Соответствует вашим интересам",
-  "openDay_liveNowAcrossDay": "Открыто для всех посетителей",
-  "openDay_yourDayTitle": "Ваш день",
-  "openDay_yourDayEmpty": "Сохраняйте понравившиеся сессии, чтобы составить свой план Дня открытых дверей.",
-  "openDay_yourDayCount": "{count, plural, =1{Сохранена 1 сессия} few{Сохранено {count} сессии} other{Сохранено {count} сессий}}",
-  "openDay_addToMyDay": "Добавить в мой день",
-  "openDay_removeFromMyDay": "Убрать из моего дня",
-  "openDay_savedToMyDay": "Добавлено в ваш день",
-  "openDay_removedFromMyDay": "Удалено из вашего дня",
-  "openDay_clearMyDay": "Очистить мой день",
   "@@locale": "ru",
   "clear": "Очистить",
   "routePanelMinimize": "Свернуть панель маршрута",
@@ -35,6 +8,7 @@
   "home": "Главная",
   "map": "Карта кампуса",
   "navigation": "Навигация",
+  "scanTab": "Сканировать",
   "settings": "Настройки",
   "loading": "Загрузка...",
   "save": "Сохранить",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} ч {minutes} мин",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ч",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Диагностика разработчиков",
   "buildVersion": "Сборка: 2026.04.22-бета",
   "renderer": "Средство визуализации: CrsSimple (Кампус)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Очистить выбор",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Найти программу",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Подходящая программа не найдена",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Попробуйте другое слово",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "ДЕНЬ ОТКРЫТЫХ ОТКРЫТИЙ · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Пока нет мероприятий, соответствующих вашим учебным интересам.",
   "openDay_noEventsNoneSelected": "Выберите интересующее вас направление, чтобы увидеть актуальные мероприятия.",
+  "openDay_showSuggestedStops": "Показать рекомендуемые места",
+  "openDay_showSuggestedStopsSemantic": "Показывать рекомендуемые места на главной",
+  "openDay_suggestedStopsForInterest": "Рекомендуемые места для «{interest}»",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Сейчас в эфире",
+  "openDay_comingUpNextTitle": "Далее",
+  "openDay_liveNowForInterest": "Соответствует вашим интересам",
+  "openDay_liveNowAcrossDay": "Открыто для всех посетителей",
+  "openDay_matchedToYourDegree": "Подходит вашей программе",
+  "openDay_generalOpenToAll": "Общее · Открыто для всех",
+  "openDay_allSessionsLabel": "Все сессии",
+  "openDay_yourDayTitle": "Ваш день",
+  "openDay_yourDayEmpty": "Сохраняйте понравившиеся сессии, чтобы составить свой план Дня открытых дверей.",
+  "openDay_yourDayCount": "{count, plural, =1{Сохранена 1 сессия} few{Сохранено {count} сессии} other{Сохранено {count} сессий}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Добавить в мой день",
+  "openDay_removeFromMyDay": "Убрать из моего дня",
+  "openDay_savedToMyDay": "Добавлено в ваш день",
+  "openDay_removedFromMyDay": "Удалено из вашего дня",
+  "openDay_clearMyDay": "Очистить мой день",
+  "openDay_clearMyDayConfirm": "Удалить все сохранённые сессии и остановки из вашего дня? Это действие нельзя отменить.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Посещено {count} из {total} мест",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Маршрут «{trail}» пройден",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Без входа · Приватно на вашем устройстве",
   "faculty_arts_label": "Факультет искусств",
   "faculty_arts_desc": "Гуманитарные науки, Право, Образование, MMCCS",
   "faculty_business_label": "Бизнес-школа Маккуори",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Сканировать",
   "scanQrCta": "Сканировать",
   "scanPermissionDenied": "Доступ к камере отклонён",
   "scanPermissionDeniedDesc": "Включите доступ к камере в настройках, чтобы сканировать QR-коды",
   "scanOpenSettings": "Открыть настройки",
   "scanDecodeError": "Не удалось считать QR-код",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Не входит в маршрут",
   "scanNotOnTrailDesc": "Этот QR-код не входит в маршрут Open Day",
   "arNoBuildingSelected": "Выберите здание, чтобы увидеть интерьер",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "Просмотр в AR",
   "cardNoArPreview": "Просмотр в AR недоступен",
   "stopLiveNow": "Сейчас идёт: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Далее: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Поздравляем!",
   "stampCelebrationCompleteTitle": "Паспорт заполнен!",
   "stampCelebrationSubtitle": "Вы собрали штамп {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Ваш паспорт Open Day начат",
   "stampCelebrationKeepExploring": "Продолжайте исследовать",
   "stampCelebrationViewPassport": "Показать мой паспорт",
   "stampAlreadyCollected": "Уже собрано — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Поздравляем. Вы собрали штамп {location}. {count} из {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Мои штампы",
   "stampsPassportLockedHint": "Сканируйте, чтобы собрать",
   "settingsMyStampsTile": "Мои штампы",

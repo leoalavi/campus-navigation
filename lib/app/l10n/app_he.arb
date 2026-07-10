@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "להסיר את כל המפגשים והתחנות השמורים מהיום שלך? לא ניתן לבטל פעולה זו.",
-  "openDay_searchBachelorHint": "חפש את התואר שלך",
-  "openDay_noBachelorMatch": "לא נמצא תואר מתאים",
-  "openDay_noBachelorMatchHint": "נסה מילת מפתח אחרת",
-  "openDay_matchedToYourDegree": "מתאים לתואר שלך",
-  "openDay_generalOpenToAll": "כללי · פתוח לכולם",
-  "openDay_allSessionsLabel": "כל המפגשים",
-  "hoursMinutesShort": "{hours} ש {minutes} ד",
-  "hoursShort": "{hours} ש",
-  "openDay_progressVisited": "ביקרת ב-{count} מתוך {total} תחנות",
-  "openDay_trailCompleted": "מסלול {trail} הושלם",
-  "openDay_privacyStrip": "אין צורך בהתחברות · פרטי במכשיר שלך",
-  "openDay_showSuggestedStops": "הצג תחנות מומלצות",
-  "openDay_showSuggestedStopsSemantic": "הצג תחנות מומלצות בדף הבית",
-  "openDay_suggestedStopsForInterest": "תחנות מומלצות עבור {interest}",
-  "openDay_liveNowTitle": "משודר עכשיו",
-  "openDay_comingUpNextTitle": "הבא בתור",
-  "openDay_liveNowForInterest": "מותאם לתחום העניין שלך",
-  "openDay_liveNowAcrossDay": "פתוח לכל המבקרים",
-  "openDay_yourDayTitle": "היום שלך",
-  "openDay_yourDayEmpty": "שמור את המפגשים שאהבת כדי לבנות תוכנית יום פתוח אישית.",
-  "openDay_yourDayCount": "{count, plural, =1{מפגש אחד נשמר} other{{count} מפגשים נשמרו}}",
-  "openDay_addToMyDay": "הוסף ליום שלי",
-  "openDay_removeFromMyDay": "הסר מהיום שלי",
-  "openDay_savedToMyDay": "נוסף ליום שלך",
-  "openDay_removedFromMyDay": "הוסר מהיום שלך",
-  "openDay_clearMyDay": "נקה את היום שלי",
   "@@locale": "he",
   "clear": "ברור",
   "routePanelMinimize": "מזער פאנל מסלול",
@@ -35,6 +8,7 @@
   "home": "בית",
   "map": "מפה",
   "navigation": "ניווט",
+  "scanTab": "סרוק",
   "settings": "הגדרות",
   "loading": "טוען...",
   "save": "שמור",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} ש {minutes} ד",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ש",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "אבחון מפתחים",
   "buildVersion": "מבנה: 2026.04.22-בטא",
   "renderer": "מעבד: CrsSimple (קמפוס)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "נקה את הבחירה שלי",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "חפש את התואר שלך",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "לא נמצא תואר מתאים",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "נסה מילת מפתח אחרת",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "יום פתוח · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "עדיין אין אירועים התואמים את תחום העניין הלימודי שלך.",
   "openDay_noEventsNoneSelected": "בחר מה שמעניין אותך כדי לראות אירועים רלוונטיים.",
+  "openDay_showSuggestedStops": "הצג תחנות מומלצות",
+  "openDay_showSuggestedStopsSemantic": "הצג תחנות מומלצות בדף הבית",
+  "openDay_suggestedStopsForInterest": "תחנות מומלצות עבור {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "משודר עכשיו",
+  "openDay_comingUpNextTitle": "הבא בתור",
+  "openDay_liveNowForInterest": "מותאם לתחום העניין שלך",
+  "openDay_liveNowAcrossDay": "פתוח לכל המבקרים",
+  "openDay_matchedToYourDegree": "מתאים לתואר שלך",
+  "openDay_generalOpenToAll": "כללי · פתוח לכולם",
+  "openDay_allSessionsLabel": "כל המפגשים",
+  "openDay_yourDayTitle": "היום שלך",
+  "openDay_yourDayEmpty": "שמור את המפגשים שאהבת כדי לבנות תוכנית יום פתוח אישית.",
+  "openDay_yourDayCount": "{count, plural, =1{מפגש אחד נשמר} other{{count} מפגשים נשמרו}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "הוסף ליום שלי",
+  "openDay_removeFromMyDay": "הסר מהיום שלי",
+  "openDay_savedToMyDay": "נוסף ליום שלך",
+  "openDay_removedFromMyDay": "הוסר מהיום שלך",
+  "openDay_clearMyDay": "נקה את היום שלי",
+  "openDay_clearMyDayConfirm": "להסיר את כל המפגשים והתחנות השמורים מהיום שלך? לא ניתן לבטל פעולה זו.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "ביקרת ב-{count} מתוך {total} תחנות",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "מסלול {trail} הושלם",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "אין צורך בהתחברות · פרטי במכשיר שלך",
   "faculty_arts_label": "הפקולטה לאמנויות",
   "faculty_arts_desc": "מדעי הרוח, משפטים, חינוך, MMCCS",
   "faculty_business_label": "בית הספר לעסקים מקווארי",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "סרוק",
   "scanQrCta": "סרוק",
   "scanPermissionDenied": "הגישה למצלמה נדחתה",
   "scanPermissionDeniedDesc": "אפשר גישה למצלמה בהגדרות כדי לסרוק קודי QR",
   "scanOpenSettings": "פתח הגדרות",
   "scanDecodeError": "לא ניתן לקרוא את קוד ה-QR",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "לא חלק מהמסלול",
   "scanNotOnTrailDesc": "קוד QR זה אינו חלק ממסלול ה-Open Day",
   "arNoBuildingSelected": "בחר בניין כדי לצפות בפנים",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "תצוגה מקדימה של AR",
   "cardNoArPreview": "אין תצוגה מקדימה של AR זמינה",
   "stopLiveNow": "בשידור חי כעת: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "הבא בתור: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "ברכותינו!",
   "stampCelebrationCompleteTitle": "הדרכון הושלם!",
   "stampCelebrationSubtitle": "אספת את החותמת {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "דרכון ה-Open Day שלך התחיל",
   "stampCelebrationKeepExploring": "המשך לחקור",
   "stampCelebrationViewPassport": "הצג את הדרכון שלי",
   "stampAlreadyCollected": "כבר נאסף — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "ברכותינו. אספת את החותמת {location}. {count} מתוך {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "החותמות שלי",
   "stampsPassportLockedHint": "סרוק כדי לאסוף",
   "settingsMyStampsTile": "החותמות שלי",

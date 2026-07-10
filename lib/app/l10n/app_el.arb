@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Αφαίρεση όλων των αποθηκευμένων συνεδριών και στάσεων από την ημέρα σας; Αυτό δεν μπορεί να αναιρεθεί.",
-  "openDay_searchBachelorHint": "Αναζήτηση πτυχίου",
-  "openDay_noBachelorMatch": "Δεν βρέθηκε αντίστοιχο πτυχίο",
-  "openDay_noBachelorMatchHint": "Δοκιμάστε άλλη λέξη-κλειδί",
-  "openDay_matchedToYourDegree": "Ταιριάζει με το πτυχίο σου",
-  "openDay_generalOpenToAll": "Γενικά · Ανοιχτό σε όλους",
-  "openDay_allSessionsLabel": "Όλες οι συνεδρίες",
-  "hoursMinutesShort": "{hours} ώ {minutes} λ",
-  "hoursShort": "{hours} ώ",
-  "openDay_progressVisited": "Επισκεφθήκατε {count} από {total} στάσεις",
-  "openDay_trailCompleted": "Ολοκληρώσατε τη διαδρομή {trail}",
-  "openDay_privacyStrip": "Χωρίς σύνδεση · Ιδιωτικά στη συσκευή σας",
-  "openDay_showSuggestedStops": "Εμφάνιση προτεινόμενων στάσεων",
-  "openDay_showSuggestedStopsSemantic": "Εμφάνιση προτεινόμενων στάσεων στην Αρχική",
-  "openDay_suggestedStopsForInterest": "Προτεινόμενες στάσεις για {interest}",
-  "openDay_liveNowTitle": "Σε εξέλιξη τώρα",
-  "openDay_comingUpNextTitle": "Ακολουθεί",
-  "openDay_liveNowForInterest": "Ταιριάζει με το ενδιαφέρον σου",
-  "openDay_liveNowAcrossDay": "Ανοιχτό σε όλους τους επισκέπτες",
-  "openDay_yourDayTitle": "Η μέρα σου",
-  "openDay_yourDayEmpty": "Αποθήκευσε τις συνεδρίες που σου αρέσουν για να φτιάξεις το δικό σου πρόγραμμα Open Day.",
-  "openDay_yourDayCount": "{count, plural, =1{1 συνεδρία αποθηκεύτηκε} other{{count} συνεδρίες αποθηκεύτηκαν}}",
-  "openDay_addToMyDay": "Προσθήκη στη μέρα μου",
-  "openDay_removeFromMyDay": "Αφαίρεση από τη μέρα μου",
-  "openDay_savedToMyDay": "Προστέθηκε στη μέρα σου",
-  "openDay_removedFromMyDay": "Αφαιρέθηκε από τη μέρα σου",
-  "openDay_clearMyDay": "Εκκαθάριση της μέρας μου",
   "@@locale": "el",
   "clear": "Σαφής",
   "routePanelMinimize": "Ελαχιστοποίηση πίνακα διαδρομής",
@@ -35,6 +8,7 @@
   "home": "Αρχική",
   "map": "Χάρτης",
   "navigation": "Πλοήγηση",
+  "scanTab": "Σάρωση",
   "settings": "Ρυθμίσεις",
   "loading": "Φόρτωση...",
   "save": "Αποθήκευση",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} ώ {minutes} λ",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ώ",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Dev Diagnostics",
   "buildVersion": "Κατασκευή: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Εκκαθάριση επιλογής",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Αναζήτηση πτυχίου",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Δεν βρέθηκε αντίστοιχο πτυχίο",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Δοκιμάστε άλλη λέξη-κλειδί",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "OPEN DAY · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Δεν υπάρχουν εκδηλώσεις που αντιστοιχούν στο σπουδαστικό σας ενδιαφέρον.",
   "openDay_noEventsNoneSelected": "Επιλέξτε το ενδιαφέρον σας για να δείτε σχετικές εκδηλώσεις.",
+  "openDay_showSuggestedStops": "Εμφάνιση προτεινόμενων στάσεων",
+  "openDay_showSuggestedStopsSemantic": "Εμφάνιση προτεινόμενων στάσεων στην Αρχική",
+  "openDay_suggestedStopsForInterest": "Προτεινόμενες στάσεις για {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Σε εξέλιξη τώρα",
+  "openDay_comingUpNextTitle": "Ακολουθεί",
+  "openDay_liveNowForInterest": "Ταιριάζει με το ενδιαφέρον σου",
+  "openDay_liveNowAcrossDay": "Ανοιχτό σε όλους τους επισκέπτες",
+  "openDay_matchedToYourDegree": "Ταιριάζει με το πτυχίο σου",
+  "openDay_generalOpenToAll": "Γενικά · Ανοιχτό σε όλους",
+  "openDay_allSessionsLabel": "Όλες οι συνεδρίες",
+  "openDay_yourDayTitle": "Η μέρα σου",
+  "openDay_yourDayEmpty": "Αποθήκευσε τις συνεδρίες που σου αρέσουν για να φτιάξεις το δικό σου πρόγραμμα Open Day.",
+  "openDay_yourDayCount": "{count, plural, =1{1 συνεδρία αποθηκεύτηκε} other{{count} συνεδρίες αποθηκεύτηκαν}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Προσθήκη στη μέρα μου",
+  "openDay_removeFromMyDay": "Αφαίρεση από τη μέρα μου",
+  "openDay_savedToMyDay": "Προστέθηκε στη μέρα σου",
+  "openDay_removedFromMyDay": "Αφαιρέθηκε από τη μέρα σου",
+  "openDay_clearMyDay": "Εκκαθάριση της μέρας μου",
+  "openDay_clearMyDayConfirm": "Αφαίρεση όλων των αποθηκευμένων συνεδριών και στάσεων από την ημέρα σας; Αυτό δεν μπορεί να αναιρεθεί.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Επισκεφθήκατε {count} από {total} στάσεις",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Ολοκληρώσατε τη διαδρομή {trail}",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Χωρίς σύνδεση · Ιδιωτικά στη συσκευή σας",
   "faculty_arts_label": "Σχολή Τεχνών",
   "faculty_arts_desc": "Ανθρωπιστικές Επιστήμες, Νομική, Εκπαίδευση, MMCCS",
   "faculty_business_label": "Macquarie Business School",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Σάρωση",
   "scanQrCta": "Σάρωση",
   "scanPermissionDenied": "Η άδεια κάμερας απορρίφθηκε",
   "scanPermissionDeniedDesc": "Ενεργοποιήστε την πρόσβαση στην κάμερα στις ρυθμίσεις για να σαρώσετε κωδικούς QR",
   "scanOpenSettings": "Άνοιγμα ρυθμίσεων",
   "scanDecodeError": "Δεν ήταν δυνατή η ανάγνωση του κωδικού QR",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Δεν αποτελεί μέρος της διαδρομής",
   "scanNotOnTrailDesc": "Αυτός ο κωδικός QR δεν ανήκει στη διαδρομή Open Day",
   "arNoBuildingSelected": "Επιλέξτε ένα κτίριο για προβολή εσωτερικού",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "Προεπισκόπηση AR",
   "cardNoArPreview": "Δεν υπάρχει διαθέσιμη προεπισκόπηση AR",
   "stopLiveNow": "Ζωντανά τώρα: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Επόμενο: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Συγχαρητήρια!",
   "stampCelebrationCompleteTitle": "Το διαβατήριο ολοκληρώθηκε!",
   "stampCelebrationSubtitle": "Συλλέξατε τη σφραγίδα {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Το διαβατήριο Open Day σας ξεκίνησε",
   "stampCelebrationKeepExploring": "Συνεχίστε την εξερεύνηση",
   "stampCelebrationViewPassport": "Προβολή του διαβατηρίου μου",
   "stampAlreadyCollected": "Έχει ήδη συλλεχθεί — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Συγχαρητήρια. Συλλέξατε τη σφραγίδα {location}. {count} από {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Τα σφραγίδια μου",
   "stampsPassportLockedHint": "Σαρώστε για συλλογή",
   "settingsMyStampsTile": "Τα σφραγίδια μου",

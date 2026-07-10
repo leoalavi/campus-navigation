@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "ඔබේ දිනයෙන් සුරකින ලද සියලුම සැසි සහ නැවතුම් ඉවත් කරන්නද? මෙය අහෝසි කළ නොහැක.",
-  "openDay_searchBachelorHint": "ඔබේ උපාධිය සොයන්න",
-  "openDay_noBachelorMatch": "ගැළපෙන උපාධියක් හමු නොවුණි",
-  "openDay_noBachelorMatchHint": "වෙනත් වචනයක් උත්සාහ කරන්න",
-  "openDay_matchedToYourDegree": "ඔබේ උපාධියට ගැළපේ",
-  "openDay_generalOpenToAll": "සාමාන්‍ය · සැමට විවෘතයි",
-  "openDay_allSessionsLabel": "සියලු සැසි",
-  "hoursMinutesShort": "පැය {hours} මි {minutes}",
-  "hoursShort": "පැය {hours}",
-  "openDay_progressVisited": "නැවතුම් {total}කින් {count}ක් බැලුවා",
-  "openDay_trailCompleted": "{trail} මාර්ගය සම්පූර්ණයි",
-  "openDay_privacyStrip": "පිවිසුම අවශ්‍ය නැහැ · ඔබේ උපාංගයේ පෞද්ගලිකයි",
-  "openDay_showSuggestedStops": "යෝජිත නැවතුම් පෙන්වන්න",
-  "openDay_showSuggestedStopsSemantic": "මුල් පිටුවේ යෝජිත නැවතුම් පෙන්වන්න",
-  "openDay_suggestedStopsForInterest": "{interest} සඳහා යෝජිත නැවතුම්",
-  "openDay_liveNowTitle": "දැන් සජීවීව",
-  "openDay_comingUpNextTitle": "ඊළඟට",
-  "openDay_liveNowForInterest": "ඔබේ උනන්දුවට ගැළපේ",
-  "openDay_liveNowAcrossDay": "සියලු අමුත්තන්ට විවෘතයි",
-  "openDay_yourDayTitle": "ඔබේ දිනය",
-  "openDay_yourDayEmpty": "ඔබ කැමති සැසි සුරැකීමෙන් ඔබේම විවෘත දින සැලැස්ම සාදන්න.",
-  "openDay_yourDayCount": "{count, plural, =1{සැසි 1ක් සුරැකිණි} other{සැසි {count}ක් සුරැකිණි}}",
-  "openDay_addToMyDay": "මගේ දිනයට එක් කරන්න",
-  "openDay_removeFromMyDay": "මගේ දිනයෙන් ඉවත් කරන්න",
-  "openDay_savedToMyDay": "ඔබේ දිනයට එක් කෙරිණි",
-  "openDay_removedFromMyDay": "ඔබේ දිනයෙන් ඉවත් කෙරිණි",
-  "openDay_clearMyDay": "මගේ දිනය හිස් කරන්න",
   "@@locale": "si",
   "clear": "පැහැදිලියි",
   "routePanelMinimize": "මාර්ග පැනලය කුඩා කරන්න",
@@ -35,6 +8,7 @@
   "home": "මුල් පිටුව",
   "map": "කැම්පස් සිතියම",
   "navigation": "සංචාලනය",
+  "scanTab": "ස්කෑන්",
   "settings": "සැකසුම්",
   "loading": "පූරණය වෙමින් පවතී...",
   "save": "සුරකින්න",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "පැය {hours} මි {minutes}",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "පැය {hours}",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Dev Diagnostics",
   "buildVersion": "ගොඩනැගීම: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "මගේ තේරීම ඉවත් කරන්න",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "ඔබේ උපාධිය සොයන්න",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "ගැළපෙන උපාධියක් හමු නොවුණි",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "වෙනත් වචනයක් උත්සාහ කරන්න",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "විවෘත දිනය · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "ඔබේ අධ්‍යයන කැමැත්ත සමඟ ගැළපෙන සිදුවීම් තවම නොමැත.",
   "openDay_noEventsNoneSelected": "අදාළ සිදුවීම් බැලීමට ඔබේ කැමැත්ත තෝරන්න.",
+  "openDay_showSuggestedStops": "යෝජිත නැවතුම් පෙන්වන්න",
+  "openDay_showSuggestedStopsSemantic": "මුල් පිටුවේ යෝජිත නැවතුම් පෙන්වන්න",
+  "openDay_suggestedStopsForInterest": "{interest} සඳහා යෝජිත නැවතුම්",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "දැන් සජීවීව",
+  "openDay_comingUpNextTitle": "ඊළඟට",
+  "openDay_liveNowForInterest": "ඔබේ උනන්දුවට ගැළපේ",
+  "openDay_liveNowAcrossDay": "සියලු අමුත්තන්ට විවෘතයි",
+  "openDay_matchedToYourDegree": "ඔබේ උපාධියට ගැළපේ",
+  "openDay_generalOpenToAll": "සාමාන්‍ය · සැමට විවෘතයි",
+  "openDay_allSessionsLabel": "සියලු සැසි",
+  "openDay_yourDayTitle": "ඔබේ දිනය",
+  "openDay_yourDayEmpty": "ඔබ කැමති සැසි සුරැකීමෙන් ඔබේම විවෘත දින සැලැස්ම සාදන්න.",
+  "openDay_yourDayCount": "{count, plural, =1{සැසි 1ක් සුරැකිණි} other{සැසි {count}ක් සුරැකිණි}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "මගේ දිනයට එක් කරන්න",
+  "openDay_removeFromMyDay": "මගේ දිනයෙන් ඉවත් කරන්න",
+  "openDay_savedToMyDay": "ඔබේ දිනයට එක් කෙරිණි",
+  "openDay_removedFromMyDay": "ඔබේ දිනයෙන් ඉවත් කෙරිණි",
+  "openDay_clearMyDay": "මගේ දිනය හිස් කරන්න",
+  "openDay_clearMyDayConfirm": "ඔබේ දිනයෙන් සුරකින ලද සියලුම සැසි සහ නැවතුම් ඉවත් කරන්නද? මෙය අහෝසි කළ නොහැක.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "නැවතුම් {total}කින් {count}ක් බැලුවා",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} මාර්ගය සම්පූර්ණයි",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "පිවිසුම අවශ්‍ය නැහැ · ඔබේ උපාංගයේ පෞද්ගලිකයි",
   "faculty_arts_label": "කලා පීඨය",
   "faculty_arts_desc": "මානව ශාස්ත්‍ර, නීතිය, අධ්‍යාපනය, MMCCS",
   "faculty_business_label": "Macquarie ව්යාපාරික පාසල",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "ස්කෑන්",
   "scanQrCta": "ස්කෑන් කරන්න",
   "scanPermissionDenied": "කැමරා අවසරය ප්‍රතික්ෂේප විය",
   "scanPermissionDeniedDesc": "QR කේත ස්කෑන් කිරීමට සැකසීම්වල කැමරා ප්‍රවේශය සක්‍රීය කරන්න",
   "scanOpenSettings": "සැකසීම් විවෘත කරන්න",
   "scanDecodeError": "QR කේතය කියවිය නොහැක",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "මාවතේ කොටසක් නොවේ",
   "scanNotOnTrailDesc": "මෙම QR කේතය Open Day මාවතේ කොටසක් නොවේ",
   "arNoBuildingSelected": "ඇතුළත බැලීමට ගොඩනැගිල්ලක් තෝරන්න",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR පෙරදසුන",
   "cardNoArPreview": "AR පෙරදසුනක් නොමැත",
   "stopLiveNow": "දැන් සජීවීව: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "ඊළඟට: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "සුබ පැතුම්!",
   "stampCelebrationCompleteTitle": "විදේශ ගමන් බලපත්‍රය සම්පූර්ණයි!",
   "stampCelebrationSubtitle": "ඔබ {location} මුද්‍රාව රැස් කළා",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "ඔබේ Open Day විදේශ ගමන් බලපත්‍රය ආරම්භ විය",
   "stampCelebrationKeepExploring": "ගවේෂණය දිගටම කරගෙන යන්න",
   "stampCelebrationViewPassport": "මගේ විදේශ ගමන් බලපත්‍රය බලන්න",
   "stampAlreadyCollected": "දැනටමත් රැස් කර ඇත — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "සුබ පැතුම්. ඔබ {location} මුද්‍රාව රැස් කළා. {total} න් {count}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "මගේ මුද්‍රා",
   "stampsPassportLockedHint": "රැස් කිරීමට ස්කෑන් කරන්න",
   "settingsMyStampsTile": "මගේ මුද්‍රා",

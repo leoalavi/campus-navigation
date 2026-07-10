@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Ta bort alla sparade pass och stopp från din dag? Detta kan inte ångras.",
-  "openDay_searchBachelorHint": "Sök efter din utbildning",
-  "openDay_noBachelorMatch": "Ingen matchande utbildning hittades",
-  "openDay_noBachelorMatchHint": "Försök med ett annat sökord",
-  "openDay_matchedToYourDegree": "Matchar din utbildning",
-  "openDay_generalOpenToAll": "Allmänt · Öppet för alla",
-  "openDay_allSessionsLabel": "Alla pass",
-  "hoursMinutesShort": "{hours} h {minutes} min",
-  "hoursShort": "{hours} h",
-  "openDay_progressVisited": "Besökte {count} av {total} stopp",
-  "openDay_trailCompleted": "{trail}-rutten klar",
-  "openDay_privacyStrip": "Ingen inloggning · Privat på din enhet",
-  "openDay_showSuggestedStops": "Visa föreslagna stopp",
-  "openDay_showSuggestedStopsSemantic": "Visa föreslagna stopp på startsidan",
-  "openDay_suggestedStopsForInterest": "Föreslagna stopp för {interest}",
-  "openDay_liveNowTitle": "Live nu",
-  "openDay_comingUpNextTitle": "Kommer härnäst",
-  "openDay_liveNowForInterest": "Matchar ditt intresse",
-  "openDay_liveNowAcrossDay": "Öppet för alla besökare",
-  "openDay_yourDayTitle": "Din dag",
-  "openDay_yourDayEmpty": "Spara de pass du gillar för att skapa din egen plan för Öppen dag.",
-  "openDay_yourDayCount": "{count, plural, =1{1 pass sparat} other{{count} pass sparade}}",
-  "openDay_addToMyDay": "Lägg till i min dag",
-  "openDay_removeFromMyDay": "Ta bort från min dag",
-  "openDay_savedToMyDay": "Tillagt i din dag",
-  "openDay_removedFromMyDay": "Borttaget från din dag",
-  "openDay_clearMyDay": "Rensa min dag",
   "@@locale": "sv",
   "clear": "Rensa",
   "routePanelMinimize": "Minimera ruttpanel",
@@ -35,6 +8,7 @@
   "home": "Hem",
   "map": "Karta",
   "navigation": "Navigering",
+  "scanTab": "Skanna",
   "settings": "Inställningar",
   "loading": "Laddar...",
   "save": "Spara",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} h {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} h",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Dev Diagnostics",
   "buildVersion": "Bygg: 2026.04.22-beta",
   "renderer": "Renderare: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Rensa mitt val",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Sök efter din utbildning",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Ingen matchande utbildning hittades",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Försök med ett annat sökord",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "ÖPPEN DAG · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Inga evenemang matchar ditt studieintresse ännu.",
   "openDay_noEventsNoneSelected": "Välj ditt intresse för att se relevanta evenemang.",
+  "openDay_showSuggestedStops": "Visa föreslagna stopp",
+  "openDay_showSuggestedStopsSemantic": "Visa föreslagna stopp på startsidan",
+  "openDay_suggestedStopsForInterest": "Föreslagna stopp för {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Live nu",
+  "openDay_comingUpNextTitle": "Kommer härnäst",
+  "openDay_liveNowForInterest": "Matchar ditt intresse",
+  "openDay_liveNowAcrossDay": "Öppet för alla besökare",
+  "openDay_matchedToYourDegree": "Matchar din utbildning",
+  "openDay_generalOpenToAll": "Allmänt · Öppet för alla",
+  "openDay_allSessionsLabel": "Alla pass",
+  "openDay_yourDayTitle": "Din dag",
+  "openDay_yourDayEmpty": "Spara de pass du gillar för att skapa din egen plan för Öppen dag.",
+  "openDay_yourDayCount": "{count, plural, =1{1 pass sparat} other{{count} pass sparade}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Lägg till i min dag",
+  "openDay_removeFromMyDay": "Ta bort från min dag",
+  "openDay_savedToMyDay": "Tillagt i din dag",
+  "openDay_removedFromMyDay": "Borttaget från din dag",
+  "openDay_clearMyDay": "Rensa min dag",
+  "openDay_clearMyDayConfirm": "Ta bort alla sparade pass och stopp från din dag? Detta kan inte ångras.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Besökte {count} av {total} stopp",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail}-rutten klar",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Ingen inloggning · Privat på din enhet",
   "faculty_arts_label": "Konstnärliga fakulteten",
   "faculty_arts_desc": "Humaniora, juridik, utbildning, MMCCS",
   "faculty_business_label": "Macquarie Business School",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Skanna",
   "scanQrCta": "Skanna",
   "scanPermissionDenied": "Kameraåtkomst nekad",
   "scanPermissionDeniedDesc": "Aktivera kameraåtkomst i inställningarna för att skanna QR-koder",
   "scanOpenSettings": "Öppna inställningar",
   "scanDecodeError": "Kunde inte läsa QR-koden",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Inte en del av rundturen",
   "scanNotOnTrailDesc": "Denna QR-kod är inte en del av Open Day-rundturen",
   "arNoBuildingSelected": "Välj en byggnad för att se insidan",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR-förhandsvisning",
   "cardNoArPreview": "Ingen AR-förhandsvisning tillgänglig",
   "stopLiveNow": "Live nu: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Näst på tur: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Grattis!",
   "stampCelebrationCompleteTitle": "Passet är komplett!",
   "stampCelebrationSubtitle": "Du samlade in stämpeln {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Ditt Open Day-pass har börjat",
   "stampCelebrationKeepExploring": "Fortsätt utforska",
   "stampCelebrationViewPassport": "Visa mitt pass",
   "stampAlreadyCollected": "Redan insamlad — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Grattis. Du samlade in stämpeln {location}. {count} av {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Mina stämplar",
   "stampsPassportLockedHint": "Skanna för att samla",
   "settingsMyStampsTile": "Mina stämplar",

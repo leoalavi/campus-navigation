@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "همه جلسات و توقف‌های ذخیره‌شده از روز شما حذف شود؟ این کار قابل بازگشت نیست.",
-  "openDay_searchBachelorHint": "جستجوی رشته شما",
-  "openDay_noBachelorMatch": "رشته‌ای یافت نشد",
-  "openDay_noBachelorMatchHint": "کلمه دیگری را امتحان کنید",
-  "openDay_matchedToYourDegree": "متناسب با رشته شما",
-  "openDay_generalOpenToAll": "عمومی · باز برای همه",
-  "openDay_allSessionsLabel": "همه جلسات",
-  "hoursMinutesShort": "{hours} س {minutes} د",
-  "hoursShort": "{hours} س",
-  "openDay_progressVisited": "{count} از {total} ایستگاه بازدید شد",
-  "openDay_trailCompleted": "مسیر {trail} کامل شد",
-  "openDay_privacyStrip": "نیازی به ورود نیست · خصوصی روی دستگاه شما",
-  "openDay_showSuggestedStops": "نمایش ایستگاه‌های پیشنهادی",
-  "openDay_showSuggestedStopsSemantic": "نمایش ایستگاه‌های پیشنهادی در صفحه اصلی",
-  "openDay_suggestedStopsForInterest": "ایستگاه‌های پیشنهادی برای {interest}",
-  "openDay_liveNowTitle": "هم‌اکنون زنده",
-  "openDay_comingUpNextTitle": "بعدی",
-  "openDay_liveNowForInterest": "متناسب با علاقه شما",
-  "openDay_liveNowAcrossDay": "باز برای همه بازدیدکنندگان",
-  "openDay_yourDayTitle": "روز شما",
-  "openDay_yourDayEmpty": "جلسه‌های مورد علاقه‌تان را ذخیره کنید تا برنامه شخصی روز باز خود را بسازید.",
-  "openDay_yourDayCount": "{count, plural, =1{۱ جلسه ذخیره شد} other{{count} جلسه ذخیره شد}}",
-  "openDay_addToMyDay": "افزودن به روز من",
-  "openDay_removeFromMyDay": "حذف از روز من",
-  "openDay_savedToMyDay": "به روز شما افزوده شد",
-  "openDay_removedFromMyDay": "از روز شما حذف شد",
-  "openDay_clearMyDay": "پاک کردن روز من",
   "@@locale": "fa",
   "clear": "پاک کردن",
   "routePanelMinimize": "کوچک کردن پنل مسیر",
@@ -35,6 +8,7 @@
   "home": "خانه",
   "map": "نقشه دانشگاه",
   "navigation": "مسیریابی",
+  "scanTab": "اسکن",
   "settings": "تنظیمات",
   "loading": "در حال بارگذاری...",
   "save": "ذخیره",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} س {minutes} د",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} س",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Dev Diagnostics",
   "buildVersion": "ساخت: 2026.04.22-بتا",
   "renderer": "رندر: CrsSimple (پردیس)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "پاک کردن انتخابم",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "جستجوی رشته شما",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "رشته‌ای یافت نشد",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "کلمه دیگری را امتحان کنید",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "روز باز · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "هنوز رویدادی مطابق با علاقه تحصیلی شما یافت نشد.",
   "openDay_noEventsNoneSelected": "علاقه خود را انتخاب کنید تا رویدادهای مرتبط را ببینید.",
+  "openDay_showSuggestedStops": "نمایش ایستگاه‌های پیشنهادی",
+  "openDay_showSuggestedStopsSemantic": "نمایش ایستگاه‌های پیشنهادی در صفحه اصلی",
+  "openDay_suggestedStopsForInterest": "ایستگاه‌های پیشنهادی برای {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "هم‌اکنون زنده",
+  "openDay_comingUpNextTitle": "بعدی",
+  "openDay_liveNowForInterest": "متناسب با علاقه شما",
+  "openDay_liveNowAcrossDay": "باز برای همه بازدیدکنندگان",
+  "openDay_matchedToYourDegree": "متناسب با رشته شما",
+  "openDay_generalOpenToAll": "عمومی · باز برای همه",
+  "openDay_allSessionsLabel": "همه جلسات",
+  "openDay_yourDayTitle": "روز شما",
+  "openDay_yourDayEmpty": "جلسه‌های مورد علاقه‌تان را ذخیره کنید تا برنامه شخصی روز باز خود را بسازید.",
+  "openDay_yourDayCount": "{count, plural, =1{۱ جلسه ذخیره شد} other{{count} جلسه ذخیره شد}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "افزودن به روز من",
+  "openDay_removeFromMyDay": "حذف از روز من",
+  "openDay_savedToMyDay": "به روز شما افزوده شد",
+  "openDay_removedFromMyDay": "از روز شما حذف شد",
+  "openDay_clearMyDay": "پاک کردن روز من",
+  "openDay_clearMyDayConfirm": "همه جلسات و توقف‌های ذخیره‌شده از روز شما حذف شود؟ این کار قابل بازگشت نیست.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{count} از {total} ایستگاه بازدید شد",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "مسیر {trail} کامل شد",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "نیازی به ورود نیست · خصوصی روی دستگاه شما",
   "faculty_arts_label": "دانشکده هنر",
   "faculty_arts_desc": "علوم انسانی، حقوق، آموزش و پرورش، MMCCS",
   "faculty_business_label": "مدرسه بازرگانی مک کواری",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "اسکن",
   "scanQrCta": "اسکن",
   "scanPermissionDenied": "دسترسی دوربین رد شد",
   "scanPermissionDeniedDesc": "دسترسی دوربین را در تنظیمات فعال کنید تا کدهای QR را اسکن کنید",
   "scanOpenSettings": "باز کردن تنظیمات",
   "scanDecodeError": "کد QR خوانده نشد",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "بخشی از مسیر نیست",
   "scanNotOnTrailDesc": "این کد QR بخشی از مسیر روز آزاد نیست",
   "arNoBuildingSelected": "ساختمانی را برای مشاهده داخل انتخاب کنید",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "پیش‌نمایش واقعیت افزوده",
   "cardNoArPreview": "پیش‌نمایش واقعیت افزوده در دسترس نیست",
   "stopLiveNow": "اکنون زنده: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "بعدی: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "تبریک می‌گوییم!",
   "stampCelebrationCompleteTitle": "گذرنامه کامل شد!",
   "stampCelebrationSubtitle": "شما مهر {location} را جمع‌آوری کردید",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "گذرنامه روز آزاد شما آغاز شده است",
   "stampCelebrationKeepExploring": "به کاوش ادامه دهید",
   "stampCelebrationViewPassport": "مشاهده گذرنامه من",
   "stampAlreadyCollected": "قبلاً جمع‌آوری شده — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "تبریک می‌گوییم. شما مهر {location} را جمع‌آوری کردید. {count} از {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "مهرهای من",
   "stampsPassportLockedHint": "برای جمع‌آوری اسکن کنید",
   "settingsMyStampsTile": "مهرهای من",

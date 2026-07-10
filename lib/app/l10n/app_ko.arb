@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "저장된 모든 세션과 방문 장소를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
-  "openDay_searchBachelorHint": "학위 검색",
-  "openDay_noBachelorMatch": "일치하는 학위가 없습니다",
-  "openDay_noBachelorMatchHint": "다른 키워드를 시도해 보세요",
-  "openDay_matchedToYourDegree": "내 학위와 일치",
-  "openDay_generalOpenToAll": "일반 · 모두에게 공개",
-  "openDay_allSessionsLabel": "모든 세션",
-  "hoursMinutesShort": "{hours}시간 {minutes}분",
-  "hoursShort": "{hours}시간",
-  "openDay_progressVisited": "{total}곳 중 {count}곳 방문",
-  "openDay_trailCompleted": "{trail} 트레일 완료",
-  "openDay_privacyStrip": "로그인 불필요 · 기기에 비공개 저장",
-  "openDay_showSuggestedStops": "추천 코스 표시",
-  "openDay_showSuggestedStopsSemantic": "홈에 추천 코스 표시",
-  "openDay_suggestedStopsForInterest": "{interest} 추천 코스",
-  "openDay_liveNowTitle": "지금 진행 중",
-  "openDay_comingUpNextTitle": "다음 순서",
-  "openDay_liveNowForInterest": "관심 분야와 일치",
-  "openDay_liveNowAcrossDay": "모든 방문객 참여 가능",
-  "openDay_yourDayTitle": "나의 하루",
-  "openDay_yourDayEmpty": "마음에 드는 세션을 저장해 나만의 오픈 데이 계획을 만들어 보세요.",
-  "openDay_yourDayCount": "{count, plural, other{세션 {count}개 저장됨}}",
-  "openDay_addToMyDay": "나의 하루에 추가",
-  "openDay_removeFromMyDay": "나의 하루에서 제거",
-  "openDay_savedToMyDay": "나의 하루에 추가됨",
-  "openDay_removedFromMyDay": "나의 하루에서 제거됨",
-  "openDay_clearMyDay": "나의 하루 비우기",
   "@@locale": "ko",
   "clear": "지우기",
   "routePanelMinimize": "경로 패널 최소화",
@@ -35,6 +8,7 @@
   "home": "홈",
   "map": "캠퍼스 지도",
   "navigation": "내비게이션",
+  "scanTab": "스캔",
   "settings": "설정",
   "loading": "로딩 중...",
   "save": "저장",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours}시간 {minutes}분",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours}시간",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "개발 진단",
   "buildVersion": "빌드: 2026.04.22-beta",
   "renderer": "렌더러: CrsSimple (캠퍼스)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "선택 초기화",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "학위 검색",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "일치하는 학위가 없습니다",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "다른 키워드를 시도해 보세요",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "오픈 데이 · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "아직 학습 관심사와 일치하는 행사가 없습니다.",
   "openDay_noEventsNoneSelected": "관련 행사를 보려면 관심사를 선택하세요.",
+  "openDay_showSuggestedStops": "추천 코스 표시",
+  "openDay_showSuggestedStopsSemantic": "홈에 추천 코스 표시",
+  "openDay_suggestedStopsForInterest": "{interest} 추천 코스",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "지금 진행 중",
+  "openDay_comingUpNextTitle": "다음 순서",
+  "openDay_liveNowForInterest": "관심 분야와 일치",
+  "openDay_liveNowAcrossDay": "모든 방문객 참여 가능",
+  "openDay_matchedToYourDegree": "내 학위와 일치",
+  "openDay_generalOpenToAll": "일반 · 모두에게 공개",
+  "openDay_allSessionsLabel": "모든 세션",
+  "openDay_yourDayTitle": "나의 하루",
+  "openDay_yourDayEmpty": "마음에 드는 세션을 저장해 나만의 오픈 데이 계획을 만들어 보세요.",
+  "openDay_yourDayCount": "{count, plural, other{세션 {count}개 저장됨}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "나의 하루에 추가",
+  "openDay_removeFromMyDay": "나의 하루에서 제거",
+  "openDay_savedToMyDay": "나의 하루에 추가됨",
+  "openDay_removedFromMyDay": "나의 하루에서 제거됨",
+  "openDay_clearMyDay": "나의 하루 비우기",
+  "openDay_clearMyDayConfirm": "저장된 모든 세션과 방문 장소를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total}곳 중 {count}곳 방문",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} 트레일 완료",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "로그인 불필요 · 기기에 비공개 저장",
   "faculty_arts_label": "예술 학부",
   "faculty_arts_desc": "인문, 법학, 교육, MMCCS",
   "faculty_business_label": "맥쿼리 비즈니스 스쿨",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "스캔",
   "scanQrCta": "스캔",
   "scanPermissionDenied": "카메라 권한이 거부되었습니다",
   "scanPermissionDeniedDesc": "설정에서 카메라 액세스를 활성화하여 QR 코드를 스캔하세요",
   "scanOpenSettings": "설정 열기",
   "scanDecodeError": "QR 코드를 읽을 수 없습니다",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "트레일에 포함되지 않음",
   "scanNotOnTrailDesc": "이 QR 코드는 Open Day 트레일에 포함되지 않습니다",
   "arNoBuildingSelected": "건물을 선택하여 실내를 확인하세요",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR 미리보기",
   "cardNoArPreview": "사용 가능한 AR 미리보기가 없습니다",
   "stopLiveNow": "지금 진행 중: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "다음: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "축하합니다!",
   "stampCelebrationCompleteTitle": "여권 완료!",
   "stampCelebrationSubtitle": "{location} 스탬프를 수집했습니다",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Open Day 여권이 시작되었습니다",
   "stampCelebrationKeepExploring": "계속 탐험하기",
   "stampCelebrationViewPassport": "내 여권 보기",
   "stampAlreadyCollected": "이미 수집됨 — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "축하합니다. {location} 스탬프를 수집했습니다. {total}개 중 {count}개.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "내 스탬프",
   "stampsPassportLockedHint": "스캔하여 수집",
   "settingsMyStampsTile": "내 스탬프",

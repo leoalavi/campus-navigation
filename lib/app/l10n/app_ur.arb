@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "اپنے دن سے تمام محفوظ سیشنز اور اسٹاپس ہٹا دیں؟ اسے واپس نہیں کیا جا سکتا۔",
-  "openDay_searchBachelorHint": "اپنی ڈگری تلاش کریں",
-  "openDay_noBachelorMatch": "کوئی مماثل ڈگری نہیں ملی",
-  "openDay_noBachelorMatchHint": "کوئی اور لفظ آزمائیں",
-  "openDay_matchedToYourDegree": "آپ کی ڈگری سے مطابقت",
-  "openDay_generalOpenToAll": "عام · سب کے لیے کھلا",
-  "openDay_allSessionsLabel": "تمام سیشنز",
-  "hoursMinutesShort": "{hours} گھنٹے {minutes} منٹ",
-  "hoursShort": "{hours} گھنٹے",
-  "openDay_progressVisited": "{total} میں سے {count} مقامات دیکھے",
-  "openDay_trailCompleted": "{trail} ٹریل مکمل ہوا",
-  "openDay_privacyStrip": "لاگ ان کی ضرورت نہیں · آپ کے آلے پر نجی",
-  "openDay_showSuggestedStops": "تجویز کردہ مقامات دکھائیں",
-  "openDay_showSuggestedStopsSemantic": "ہوم پر تجویز کردہ مقامات دکھائیں",
-  "openDay_suggestedStopsForInterest": "{interest} کے لیے تجویز کردہ مقامات",
-  "openDay_liveNowTitle": "ابھی لائیو",
-  "openDay_comingUpNextTitle": "آگے آنے والا",
-  "openDay_liveNowForInterest": "آپ کی دلچسپی سے مطابقت",
-  "openDay_liveNowAcrossDay": "تمام مہمانوں کے لیے کھلا",
-  "openDay_yourDayTitle": "آپ کا دن",
-  "openDay_yourDayEmpty": "اپنی پسند کے سیشن محفوظ کریں اور اپنا ذاتی کھلے دن کا منصوبہ بنائیں۔",
-  "openDay_yourDayCount": "{count, plural, =1{1 سیشن محفوظ ہوگیا} other{{count} سیشن محفوظ ہوگئے}}",
-  "openDay_addToMyDay": "میرے دن میں شامل کریں",
-  "openDay_removeFromMyDay": "میرے دن سے ہٹائیں",
-  "openDay_savedToMyDay": "آپ کے دن میں شامل کر دیا گیا",
-  "openDay_removedFromMyDay": "آپ کے دن سے ہٹا دیا گیا",
-  "openDay_clearMyDay": "میرا دن صاف کریں",
   "@@locale": "ur",
   "clear": "صاف کریں",
   "routePanelMinimize": "راستہ پینل کو چھوٹا کریں",
@@ -35,6 +8,7 @@
   "home": "ہوم",
   "map": "کیمپس میپ",
   "navigation": "نیویگیشن",
+  "scanTab": "اسکین",
   "settings": "ترتیبات",
   "loading": "لوڈ ہو رہا ہے...",
   "save": "محفوظ کریں",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} گھنٹے {minutes} منٹ",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} گھنٹے",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "دیو تشخیص",
   "buildVersion": "تعمیر: 2026.04.22-بیٹا",
   "renderer": "پیش کنندہ: CrsSimple (کیمپس)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "میرا انتخاب صاف کریں",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "اپنی ڈگری تلاش کریں",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "کوئی مماثل ڈگری نہیں ملی",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "کوئی اور لفظ آزمائیں",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "کھلے دن · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "ابھی تک کوئی پروگرام آپ کی تعلیمی دلچسپی سے میل نہیں کھاتا۔",
   "openDay_noEventsNoneSelected": "متعلقہ پروگرام دیکھنے کے لیے اپنی دلچسپی منتخب کریں۔",
+  "openDay_showSuggestedStops": "تجویز کردہ مقامات دکھائیں",
+  "openDay_showSuggestedStopsSemantic": "ہوم پر تجویز کردہ مقامات دکھائیں",
+  "openDay_suggestedStopsForInterest": "{interest} کے لیے تجویز کردہ مقامات",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "ابھی لائیو",
+  "openDay_comingUpNextTitle": "آگے آنے والا",
+  "openDay_liveNowForInterest": "آپ کی دلچسپی سے مطابقت",
+  "openDay_liveNowAcrossDay": "تمام مہمانوں کے لیے کھلا",
+  "openDay_matchedToYourDegree": "آپ کی ڈگری سے مطابقت",
+  "openDay_generalOpenToAll": "عام · سب کے لیے کھلا",
+  "openDay_allSessionsLabel": "تمام سیشنز",
+  "openDay_yourDayTitle": "آپ کا دن",
+  "openDay_yourDayEmpty": "اپنی پسند کے سیشن محفوظ کریں اور اپنا ذاتی کھلے دن کا منصوبہ بنائیں۔",
+  "openDay_yourDayCount": "{count, plural, =1{1 سیشن محفوظ ہوگیا} other{{count} سیشن محفوظ ہوگئے}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "میرے دن میں شامل کریں",
+  "openDay_removeFromMyDay": "میرے دن سے ہٹائیں",
+  "openDay_savedToMyDay": "آپ کے دن میں شامل کر دیا گیا",
+  "openDay_removedFromMyDay": "آپ کے دن سے ہٹا دیا گیا",
+  "openDay_clearMyDay": "میرا دن صاف کریں",
+  "openDay_clearMyDayConfirm": "اپنے دن سے تمام محفوظ سیشنز اور اسٹاپس ہٹا دیں؟ اسے واپس نہیں کیا جا سکتا۔",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total} میں سے {count} مقامات دیکھے",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} ٹریل مکمل ہوا",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "لاگ ان کی ضرورت نہیں · آپ کے آلے پر نجی",
   "faculty_arts_label": "فیکلٹی آف آرٹس",
   "faculty_arts_desc": "انسانیات، قانون، تعلیم، ایم ایم سی سی ایس",
   "faculty_business_label": "میکوری بزنس اسکول",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "اسکین",
   "scanQrCta": "اسکین کریں",
   "scanPermissionDenied": "کیمرے کی اجازت مسترد کر دی گئی",
   "scanPermissionDeniedDesc": "QR کوڈز اسکین کرنے کے لیے ترتیبات میں کیمرے تک رسائی فعال کریں",
   "scanOpenSettings": "ترتیبات کھولیں",
   "scanDecodeError": "QR کوڈ نہیں پڑھا جا سکا",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "ٹریل کا حصہ نہیں",
   "scanNotOnTrailDesc": "یہ QR کوڈ اوپن ڈے ٹریل کا حصہ نہیں ہے",
   "arNoBuildingSelected": "اندر دیکھنے کے لیے ایک عمارت منتخب کریں",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR پیش منظر",
   "cardNoArPreview": "کوئی AR پیش منظر دستیاب نہیں",
   "stopLiveNow": "ابھی لائیو: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "اگلا: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "مبارک ہو!",
   "stampCelebrationCompleteTitle": "پاسپورٹ مکمل ہو گیا!",
   "stampCelebrationSubtitle": "آپ نے {location} اسٹیمپ جمع کیا",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "آپ کا اوپن ڈے پاسپورٹ شروع ہو گیا ہے",
   "stampCelebrationKeepExploring": "تلاش جاری رکھیں",
   "stampCelebrationViewPassport": "میرا پاسپورٹ دیکھیں",
   "stampAlreadyCollected": "پہلے ہی جمع ہو چکا — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "مبارک ہو۔ آپ نے {location} اسٹیمپ جمع کیا۔ {total} میں سے {count}۔",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "میرے اسٹیمپ",
   "stampsPassportLockedHint": "جمع کرنے کے لیے اسکین کریں",
   "settingsMyStampsTile": "میرے اسٹیمپ",

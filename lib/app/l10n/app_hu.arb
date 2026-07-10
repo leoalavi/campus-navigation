@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Eltávolítod az összes mentett programot és megállót a napodból? Ez nem vonható vissza.",
-  "openDay_searchBachelorHint": "Keresd meg a szakodat",
-  "openDay_noBachelorMatch": "Nem található megfelelő szak",
-  "openDay_noBachelorMatchHint": "Próbálj másik kulcsszót",
-  "openDay_matchedToYourDegree": "A szakodhoz illő",
-  "openDay_generalOpenToAll": "Általános · Mindenkinek nyitva",
-  "openDay_allSessionsLabel": "Összes előadás",
-  "hoursMinutesShort": "{hours} ó {minutes} p",
-  "hoursShort": "{hours} ó",
-  "openDay_progressVisited": "{total}/{count} megálló meglátogatva",
-  "openDay_trailCompleted": "{trail} útvonal teljesítve",
-  "openDay_privacyStrip": "Nincs bejelentkezés · Privát az eszközödön",
-  "openDay_showSuggestedStops": "Javasolt megállók megjelenítése",
-  "openDay_showSuggestedStopsSemantic": "Javasolt megállók megjelenítése a kezdőlapon",
-  "openDay_suggestedStopsForInterest": "Javasolt megállók ehhez: {interest}",
-  "openDay_liveNowTitle": "Most élőben",
-  "openDay_comingUpNextTitle": "Következik",
-  "openDay_liveNowForInterest": "Megfelel az érdeklődésednek",
-  "openDay_liveNowAcrossDay": "Minden látogató előtt nyitva",
-  "openDay_yourDayTitle": "A te napod",
-  "openDay_yourDayEmpty": "Mentsd el a tetsző előadásokat, és állítsd össze saját Nyílt nap tervedet.",
-  "openDay_yourDayCount": "{count, plural, =1{1 előadás mentve} other{{count} előadás mentve}}",
-  "openDay_addToMyDay": "Hozzáadás a napomhoz",
-  "openDay_removeFromMyDay": "Eltávolítás a napomból",
-  "openDay_savedToMyDay": "Hozzáadva a napodhoz",
-  "openDay_removedFromMyDay": "Eltávolítva a napodból",
-  "openDay_clearMyDay": "Napom törlése",
   "@@locale": "hu",
   "clear": "Világos",
   "routePanelMinimize": "Útvonalpanel kicsinyítése",
@@ -35,6 +8,7 @@
   "home": "Kezdőlap",
   "map": "Térkép",
   "navigation": "Navigáció",
+  "scanTab": "Beolvasás",
   "settings": "Beállítások",
   "loading": "Betöltés...",
   "save": "Mentés",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} ó {minutes} p",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ó",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Fejlesztői diagnosztika",
   "buildVersion": "Build: 2026.04.22-béta",
   "renderer": "Renderelő: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Kiválasztás törlése",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Keresd meg a szakodat",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Nem található megfelelő szak",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Próbálj másik kulcsszót",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "NYÍLT NAP · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Még nincs a tanulmányi érdeklődésének megfelelő esemény.",
   "openDay_noEventsNoneSelected": "Válassza ki érdeklődését a releváns eseményekhez.",
+  "openDay_showSuggestedStops": "Javasolt megállók megjelenítése",
+  "openDay_showSuggestedStopsSemantic": "Javasolt megállók megjelenítése a kezdőlapon",
+  "openDay_suggestedStopsForInterest": "Javasolt megállók ehhez: {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Most élőben",
+  "openDay_comingUpNextTitle": "Következik",
+  "openDay_liveNowForInterest": "Megfelel az érdeklődésednek",
+  "openDay_liveNowAcrossDay": "Minden látogató előtt nyitva",
+  "openDay_matchedToYourDegree": "A szakodhoz illő",
+  "openDay_generalOpenToAll": "Általános · Mindenkinek nyitva",
+  "openDay_allSessionsLabel": "Összes előadás",
+  "openDay_yourDayTitle": "A te napod",
+  "openDay_yourDayEmpty": "Mentsd el a tetsző előadásokat, és állítsd össze saját Nyílt nap tervedet.",
+  "openDay_yourDayCount": "{count, plural, =1{1 előadás mentve} other{{count} előadás mentve}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Hozzáadás a napomhoz",
+  "openDay_removeFromMyDay": "Eltávolítás a napomból",
+  "openDay_savedToMyDay": "Hozzáadva a napodhoz",
+  "openDay_removedFromMyDay": "Eltávolítva a napodból",
+  "openDay_clearMyDay": "Napom törlése",
+  "openDay_clearMyDayConfirm": "Eltávolítod az összes mentett programot és megállót a napodból? Ez nem vonható vissza.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total}/{count} megálló meglátogatva",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} útvonal teljesítve",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Nincs bejelentkezés · Privát az eszközödön",
   "faculty_arts_label": "Bölcsészettudományi Kar",
   "faculty_arts_desc": "Bölcsészet, jog, oktatás, MMCCS",
   "faculty_business_label": "Macquarie Business School",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Beolvasás",
   "scanQrCta": "Beolvasás",
   "scanPermissionDenied": "Kamera-hozzáférés megtagadva",
   "scanPermissionDeniedDesc": "Engedélyezze a kamera-hozzáférést a beállításokban a QR-kódok beolvasásához",
   "scanOpenSettings": "Beállítások megnyitása",
   "scanDecodeError": "A QR-kód nem olvasható be",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Nem része az útvonalnak",
   "scanNotOnTrailDesc": "Ez a QR-kód nem része az Open Day útvonalnak",
   "arNoBuildingSelected": "Válassz egy épületet a beltér megtekintéséhez",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR előnézet",
   "cardNoArPreview": "Nincs elérhető AR előnézet",
   "stopLiveNow": "Most élő: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Következő: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Gratulálunk!",
   "stampCelebrationCompleteTitle": "Az útlevél teljes!",
   "stampCelebrationSubtitle": "Megszerezte a(z) {location} bélyeget",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Elkezdődött az Open Day útleveled",
   "stampCelebrationKeepExploring": "Folytassa a felfedezést",
   "stampCelebrationViewPassport": "Útlevelem megtekintése",
   "stampAlreadyCollected": "Már összegyűjtve — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Gratulálunk. Megszerezte a(z) {location} bélyeget. {count}/{total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Bélyegeim",
   "stampsPassportLockedHint": "Beolvasás a gyűjtéshez",
   "settingsMyStampsTile": "Bélyegeim",

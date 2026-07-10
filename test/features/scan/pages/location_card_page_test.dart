@@ -4,16 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
+import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
 import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
 import 'package:mq_journey/features/scan/domain/contracts/schedule_provider.dart';
 import 'package:mq_journey/features/scan/domain/contracts/schedule_slot.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
 import 'package:mq_journey/features/scan/domain/fakes/fake_my_day_api.dart';
 import 'package:mq_journey/features/scan/domain/models/buildings_registry.dart';
 import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
 import 'package:mq_journey/features/scan/presentation/pages/location_card_page.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/photo_gallery.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/open_day_stops_table.dart';
+import 'package:mq_journey/features/scan/presentation/widgets/stamp_earned_sheet.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/features/settings/data/repositories/settings_repository.dart';
 import 'package:mq_journey/shared/models/user_preferences.dart';
@@ -203,6 +206,53 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Visited'), findsOneWidget);
+  });
+
+  testWidgets('consumes a pending first visit once on the location card', (
+    tester,
+  ) async {
+    final mockRepo = MockSettingsRepository();
+    when(() => mockRepo.loadPreferences()).thenAnswer(
+      (_) async => const UserPreferences(visitedLocationCodes: ['WALLYS-1']),
+    );
+    final container = ProviderContainer(
+      overrides: [
+        settingsRepositoryProvider.overrideWithValue(mockRepo),
+        stampCatalogProvider.overrideWith(
+          (ref) async => const [
+            StampCatalogEntry(
+              locationId: 'wallys-1',
+              title: "1 Wally's Walk",
+              mapRef: 'K27',
+              stampAsset: 'assets/stamps/wallys-1.png',
+            ),
+          ],
+        ),
+        ...baseOverrides(),
+      ],
+    );
+    addTearDown(container.dispose);
+    container
+        .read(pendingStampAwardProvider.notifier)
+        .setNotice(
+          const PendingStampNotice(locationId: 'wallys-1', isNewVisit: true),
+        );
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(container: container, child: _app()),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.byType(StampEarnedSheet), findsOneWidget);
+    expect(container.read(pendingStampAwardProvider), isNull);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(StampEarnedSheet)),
+    )!;
+    await tester.tap(find.text(l10n.stampCelebrationKeepExploring));
+    await tester.pumpAndSettle();
+    expect(find.byType(StampEarnedSheet), findsNothing);
   });
 
   testWidgets('Full schedule link shows when fullScheduleUrl is set', (

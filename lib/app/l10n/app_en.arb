@@ -644,6 +644,8 @@
   "scanPermissionDeniedDesc": "Enable camera access in Settings to scan QR codes",
   "scanOpenSettings": "Open Settings",
   "scanDecodeError": "Could not read QR code",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Not part of the trail",
   "scanNotOnTrailDesc": "This QR code is not part of the Open Day trail",
   "arNoBuildingSelected": "Select a building to view indoors",

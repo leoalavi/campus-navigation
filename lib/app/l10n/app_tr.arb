@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Gününüzden kaydedilen tüm oturumları ve durakları kaldırılsın mı? Bu geri alınamaz.",
-  "openDay_searchBachelorHint": "Bölümünü ara",
-  "openDay_noBachelorMatch": "Eşleşen bölüm bulunamadı",
-  "openDay_noBachelorMatchHint": "Başka bir kelime deneyin",
-  "openDay_matchedToYourDegree": "Bölümünüze uygun",
-  "openDay_generalOpenToAll": "Genel · Herkese açık",
-  "openDay_allSessionsLabel": "Tüm oturumlar",
-  "hoursMinutesShort": "{hours} sa {minutes} dk",
-  "hoursShort": "{hours} sa",
-  "openDay_progressVisited": "{total} duraktan {count} tanesi gezildi",
-  "openDay_trailCompleted": "{trail} rotası tamamlandı",
-  "openDay_privacyStrip": "Giriş gerekmez · Cihazınızda gizli",
-  "openDay_showSuggestedStops": "Önerilen durakları göster",
-  "openDay_showSuggestedStopsSemantic": "Ana ekranda önerilen durakları göster",
-  "openDay_suggestedStopsForInterest": "{interest} için önerilen duraklar",
-  "openDay_liveNowTitle": "Şimdi canlı",
-  "openDay_comingUpNextTitle": "Sırada",
-  "openDay_liveNowForInterest": "İlgi alanınızla eşleşiyor",
-  "openDay_liveNowAcrossDay": "Tüm ziyaretçilere açık",
-  "openDay_yourDayTitle": "Günün",
-  "openDay_yourDayEmpty": "Beğendiğin oturumları kaydederek kendi Açık Gün planını oluştur.",
-  "openDay_yourDayCount": "{count, plural, other{{count} oturum kaydedildi}}",
-  "openDay_addToMyDay": "Günüme ekle",
-  "openDay_removeFromMyDay": "Günümden çıkar",
-  "openDay_savedToMyDay": "Gününe eklendi",
-  "openDay_removedFromMyDay": "Gününden çıkarıldı",
-  "openDay_clearMyDay": "Günümü temizle",
   "@@locale": "tr",
   "clear": "Temizle",
   "routePanelMinimize": "Rota panelini küçült",
@@ -35,6 +8,7 @@
   "home": "Ana Sayfa",
   "map": "Harita",
   "navigation": "Navigasyon",
+  "scanTab": "Tara",
   "settings": "Ayarlar",
   "loading": "Yükleniyor...",
   "save": "Kaydet",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} sa {minutes} dk",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} sa",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Geliştirici Teşhisi",
   "buildVersion": "Yapı: 2026.04.22-beta",
   "renderer": "Oluşturucu: CrsSimple (Kampüs)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Seçimi temizle",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Bölümünü ara",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Eşleşen bölüm bulunamadı",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Başka bir kelime deneyin",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "AÇIK GÜN · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Henüz çalışma ilginizle eşleşen etkinlik yok.",
   "openDay_noEventsNoneSelected": "İlgili etkinlikleri görmek için ilgi alanınızı seçin.",
+  "openDay_showSuggestedStops": "Önerilen durakları göster",
+  "openDay_showSuggestedStopsSemantic": "Ana ekranda önerilen durakları göster",
+  "openDay_suggestedStopsForInterest": "{interest} için önerilen duraklar",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Şimdi canlı",
+  "openDay_comingUpNextTitle": "Sırada",
+  "openDay_liveNowForInterest": "İlgi alanınızla eşleşiyor",
+  "openDay_liveNowAcrossDay": "Tüm ziyaretçilere açık",
+  "openDay_matchedToYourDegree": "Bölümünüze uygun",
+  "openDay_generalOpenToAll": "Genel · Herkese açık",
+  "openDay_allSessionsLabel": "Tüm oturumlar",
+  "openDay_yourDayTitle": "Günün",
+  "openDay_yourDayEmpty": "Beğendiğin oturumları kaydederek kendi Açık Gün planını oluştur.",
+  "openDay_yourDayCount": "{count, plural, other{{count} oturum kaydedildi}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Günüme ekle",
+  "openDay_removeFromMyDay": "Günümden çıkar",
+  "openDay_savedToMyDay": "Gününe eklendi",
+  "openDay_removedFromMyDay": "Gününden çıkarıldı",
+  "openDay_clearMyDay": "Günümü temizle",
+  "openDay_clearMyDayConfirm": "Gününüzden kaydedilen tüm oturumları ve durakları kaldırılsın mı? Bu geri alınamaz.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total} duraktan {count} tanesi gezildi",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} rotası tamamlandı",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Giriş gerekmez · Cihazınızda gizli",
   "faculty_arts_label": "Sanat Fakültesi",
   "faculty_arts_desc": "Beşeri Bilimler, Hukuk, Eğitim, MMCCS",
   "faculty_business_label": "Macquarie İşletme Okulu",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Tara",
   "scanQrCta": "Tara",
   "scanPermissionDenied": "Kamera izni reddedildi",
   "scanPermissionDeniedDesc": "QR kodlarını taramak için Ayarlar'dan kamera erişimini etkinleştirin",
   "scanOpenSettings": "Ayarları aç",
   "scanDecodeError": "QR kodu okunamadı",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Rotanın parçası değil",
   "scanNotOnTrailDesc": "Bu QR kodu Open Day rotasının bir parçası değil",
   "arNoBuildingSelected": "İçini görmek için bir bina seçin",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR önizlemesi",
   "cardNoArPreview": "AR önizlemesi mevcut değil",
   "stopLiveNow": "Şu anda canlı: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Sırada: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Tebrikler!",
   "stampCelebrationCompleteTitle": "Pasaport tamamlandı!",
   "stampCelebrationSubtitle": "{location} damgasını topladınız",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Open Day pasaportunuz başladı",
   "stampCelebrationKeepExploring": "Keşfetmeye devam edin",
   "stampCelebrationViewPassport": "Pasaportumu görüntüle",
   "stampAlreadyCollected": "Zaten toplandı — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Tebrikler. {location} damgasını topladınız. {total} üzerinden {count}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Damgalarım",
   "stampsPassportLockedHint": "Toplamak için tarayın",
   "settingsMyStampsTile": "Damgalarım",

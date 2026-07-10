@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Odebrat všechny uložené programy a zastávky z vašeho dne? Tuto akci nelze vrátit zpět.",
-  "openDay_searchBachelorHint": "Vyhledejte svůj obor",
-  "openDay_noBachelorMatch": "Žádný odpovídající obor nenalezen",
-  "openDay_noBachelorMatchHint": "Zkuste jiné klíčové slovo",
-  "openDay_matchedToYourDegree": "Odpovídá vašemu studiu",
-  "openDay_generalOpenToAll": "Obecné · Otevřeno všem",
-  "openDay_allSessionsLabel": "Všechny přednášky",
-  "hoursMinutesShort": "{hours} h {minutes} min",
-  "hoursShort": "{hours} h",
-  "openDay_progressVisited": "Navštíveno {count} z {total} zastávek",
-  "openDay_trailCompleted": "Trasa {trail} dokončena",
-  "openDay_privacyStrip": "Není nutné přihlášení · Soukromé ve vašem zařízení",
-  "openDay_showSuggestedStops": "Zobrazit doporučené zastávky",
-  "openDay_showSuggestedStopsSemantic": "Zobrazit doporučené zastávky na domovské stránce",
-  "openDay_suggestedStopsForInterest": "Doporučené zastávky pro: {interest}",
-  "openDay_liveNowTitle": "Právě probíhá",
-  "openDay_comingUpNextTitle": "Brzy začíná",
-  "openDay_liveNowForInterest": "Odpovídá vašemu zájmu",
-  "openDay_liveNowAcrossDay": "Otevřeno všem návštěvníkům",
-  "openDay_yourDayTitle": "Váš den",
-  "openDay_yourDayEmpty": "Uložte si oblíbené přednášky a sestavte si vlastní plán Dne otevřených dveří.",
-  "openDay_yourDayCount": "{count, plural, =1{1 přednáška uložena} few{{count} přednášky uloženy} other{{count} přednášek uloženo}}",
-  "openDay_addToMyDay": "Přidat do mého dne",
-  "openDay_removeFromMyDay": "Odebrat z mého dne",
-  "openDay_savedToMyDay": "Přidáno do vašeho dne",
-  "openDay_removedFromMyDay": "Odebráno z vašeho dne",
-  "openDay_clearMyDay": "Vymazat můj den",
   "@@locale": "cs",
   "clear": "Jasný",
   "routePanelMinimize": "Minimalizovat panel trasy",
@@ -35,6 +8,7 @@
   "home": "Domů",
   "map": "Mapa",
   "navigation": "Navigace",
+  "scanTab": "Skenovat",
   "settings": "Nastavení",
   "loading": "Načítání...",
   "save": "Uložit",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} h {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} h",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Diagnostika pro vývojáře",
   "buildVersion": "Sestavení: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Zrušit výběr",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Vyhledejte svůj obor",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Žádný odpovídající obor nenalezen",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Zkuste jiné klíčové slovo",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "DEN OTEVŘENÝCH DVEŘÍ · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Zatím žádné akce neodpovídají vašemu studijnímu zájmu.",
   "openDay_noEventsNoneSelected": "Vyberte svůj zájem a zobrazte relevantní akce.",
+  "openDay_showSuggestedStops": "Zobrazit doporučené zastávky",
+  "openDay_showSuggestedStopsSemantic": "Zobrazit doporučené zastávky na domovské stránce",
+  "openDay_suggestedStopsForInterest": "Doporučené zastávky pro: {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Právě probíhá",
+  "openDay_comingUpNextTitle": "Brzy začíná",
+  "openDay_liveNowForInterest": "Odpovídá vašemu zájmu",
+  "openDay_liveNowAcrossDay": "Otevřeno všem návštěvníkům",
+  "openDay_matchedToYourDegree": "Odpovídá vašemu studiu",
+  "openDay_generalOpenToAll": "Obecné · Otevřeno všem",
+  "openDay_allSessionsLabel": "Všechny přednášky",
+  "openDay_yourDayTitle": "Váš den",
+  "openDay_yourDayEmpty": "Uložte si oblíbené přednášky a sestavte si vlastní plán Dne otevřených dveří.",
+  "openDay_yourDayCount": "{count, plural, =1{1 přednáška uložena} few{{count} přednášky uloženy} other{{count} přednášek uloženo}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Přidat do mého dne",
+  "openDay_removeFromMyDay": "Odebrat z mého dne",
+  "openDay_savedToMyDay": "Přidáno do vašeho dne",
+  "openDay_removedFromMyDay": "Odebráno z vašeho dne",
+  "openDay_clearMyDay": "Vymazat můj den",
+  "openDay_clearMyDayConfirm": "Odebrat všechny uložené programy a zastávky z vašeho dne? Tuto akci nelze vrátit zpět.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Navštíveno {count} z {total} zastávek",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Trasa {trail} dokončena",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Není nutné přihlášení · Soukromé ve vašem zařízení",
   "faculty_arts_label": "Filozofická fakulta",
   "faculty_arts_desc": "Humanitní vědy, právo, vzdělávání, MMCCS",
   "faculty_business_label": "Obchodní škola Macquarie",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Skenovat",
   "scanQrCta": "Skenovat",
   "scanPermissionDenied": "Přístup ke kameře byl zamítnut",
   "scanPermissionDeniedDesc": "Povolte přístup ke kameře v nastavení, abyste mohli skenovat QR kódy",
   "scanOpenSettings": "Otevřít nastavení",
   "scanDecodeError": "Nepodařilo se přečíst QR kód",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Není součástí trasy",
   "scanNotOnTrailDesc": "Tento QR kód není součástí trasy Open Day",
   "arNoBuildingSelected": "Vyberte budovu pro zobrazení interiéru",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "Náhled AR",
   "cardNoArPreview": "Náhled AR není k dispozici",
   "stopLiveNow": "Právě probíhá: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Další na řadě: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Gratulujeme!",
   "stampCelebrationCompleteTitle": "Pas dokončen!",
   "stampCelebrationSubtitle": "Získali jste razítko {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Váš pas Open Day začal",
   "stampCelebrationKeepExploring": "Pokračujte v objevování",
   "stampCelebrationViewPassport": "Zobrazit můj pas",
   "stampAlreadyCollected": "Již vybráno — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Gratulujeme. Získali jste razítko {location}. {count} z {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Moje razítka",
   "stampsPassportLockedHint": "Naskenováním získáte",
   "settingsMyStampsTile": "Moje razítka",

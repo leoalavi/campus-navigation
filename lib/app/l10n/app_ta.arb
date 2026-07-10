@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "உங்கள் நாளிலிருந்து சேமித்த அனைத்து அமர்வுகளையும் நிறுத்தங்களையும் அகற்றவா? இதைச் செயல்தவிர்க்க முடியாது.",
-  "openDay_searchBachelorHint": "உங்கள் பட்டத்தைத் தேடுங்கள்",
-  "openDay_noBachelorMatch": "பொருந்தும் பட்டம் இல்லை",
-  "openDay_noBachelorMatchHint": "வேறு வார்த்தையை முயற்சிக்கவும்",
-  "openDay_matchedToYourDegree": "உங்கள் பட்டத்துடன் பொருந்தும்",
-  "openDay_generalOpenToAll": "பொது · அனைவருக்கும் திறந்தது",
-  "openDay_allSessionsLabel": "அனைத்து அமர்வுகள்",
-  "hoursMinutesShort": "{hours} ம {minutes} நி",
-  "hoursShort": "{hours} ம",
-  "openDay_progressVisited": "{total} இல் {count} இடங்கள் பார்வையிட்டது",
-  "openDay_trailCompleted": "{trail} பாதை முடிந்தது",
-  "openDay_privacyStrip": "உள்நுழைவு தேவையில்லை · உங்கள் சாதனத்தில் தனிப்பட்டது",
-  "openDay_showSuggestedStops": "பரிந்துரைக்கப்பட்ட இடங்களைக் காட்டு",
-  "openDay_showSuggestedStopsSemantic": "முகப்பில் பரிந்துரைக்கப்பட்ட இடங்களைக் காட்டு",
-  "openDay_suggestedStopsForInterest": "{interest} க்கான பரிந்துரைக்கப்பட்ட இடங்கள்",
-  "openDay_liveNowTitle": "இப்போது நேரலையில்",
-  "openDay_comingUpNextTitle": "அடுத்து வருவது",
-  "openDay_liveNowForInterest": "உங்கள் ஆர்வத்துடன் பொருந்துகிறது",
-  "openDay_liveNowAcrossDay": "அனைத்து பார்வையாளர்களுக்கும் திறந்திருக்கிறது",
-  "openDay_yourDayTitle": "உங்கள் நாள்",
-  "openDay_yourDayEmpty": "நீங்கள் விரும்பும் அமர்வுகளைச் சேமித்து உங்கள் சொந்த திறந்த நாள் திட்டத்தை உருவாக்குங்கள்.",
-  "openDay_yourDayCount": "{count, plural, =1{1 அமர்வு சேமிக்கப்பட்டது} other{{count} அமர்வுகள் சேமிக்கப்பட்டன}}",
-  "openDay_addToMyDay": "என் நாளில் சேர்",
-  "openDay_removeFromMyDay": "என் நாளிலிருந்து அகற்று",
-  "openDay_savedToMyDay": "உங்கள் நாளில் சேர்க்கப்பட்டது",
-  "openDay_removedFromMyDay": "உங்கள் நாளிலிருந்து அகற்றப்பட்டது",
-  "openDay_clearMyDay": "என் நாளை அழி",
   "@@locale": "ta",
   "clear": "அழி",
   "routePanelMinimize": "வழிப் பலகையைக் குறைக்கவும்",
@@ -35,6 +8,7 @@
   "home": "முகப்பு",
   "map": "வளாக வரைபடம்",
   "navigation": "வழிசெலுத்தல்",
+  "scanTab": "ஸ்கேன்",
   "settings": "அமைப்புகள்",
   "loading": "ஏற்றுகிறது...",
   "save": "சேமி",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} ம {minutes} நி",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ம",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "தேவ் கண்டறிதல்",
   "buildVersion": "உருவாக்கம்: 2026.04.22-பீட்டா",
   "renderer": "வழங்குபவர்: CrsSimple (வளாகம்)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "என் தேர்வை அழி",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "உங்கள் பட்டத்தைத் தேடுங்கள்",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "பொருந்தும் பட்டம் இல்லை",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "வேறு வார்த்தையை முயற்சிக்கவும்",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "திறந்த நாள் · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "இன்னும் உங்கள் படிப்பு ஆர்வத்திற்கு பொருத்தமான நிகழ்வுகள் இல்லை.",
   "openDay_noEventsNoneSelected": "தொடர்புடைய நிகழ்வுகளைப் பார்க்க உங்கள் ஆர்வத்தை தேர்ந்தெடுக்கவும்.",
+  "openDay_showSuggestedStops": "பரிந்துரைக்கப்பட்ட இடங்களைக் காட்டு",
+  "openDay_showSuggestedStopsSemantic": "முகப்பில் பரிந்துரைக்கப்பட்ட இடங்களைக் காட்டு",
+  "openDay_suggestedStopsForInterest": "{interest} க்கான பரிந்துரைக்கப்பட்ட இடங்கள்",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "இப்போது நேரலையில்",
+  "openDay_comingUpNextTitle": "அடுத்து வருவது",
+  "openDay_liveNowForInterest": "உங்கள் ஆர்வத்துடன் பொருந்துகிறது",
+  "openDay_liveNowAcrossDay": "அனைத்து பார்வையாளர்களுக்கும் திறந்திருக்கிறது",
+  "openDay_matchedToYourDegree": "உங்கள் பட்டத்துடன் பொருந்தும்",
+  "openDay_generalOpenToAll": "பொது · அனைவருக்கும் திறந்தது",
+  "openDay_allSessionsLabel": "அனைத்து அமர்வுகள்",
+  "openDay_yourDayTitle": "உங்கள் நாள்",
+  "openDay_yourDayEmpty": "நீங்கள் விரும்பும் அமர்வுகளைச் சேமித்து உங்கள் சொந்த திறந்த நாள் திட்டத்தை உருவாக்குங்கள்.",
+  "openDay_yourDayCount": "{count, plural, =1{1 அமர்வு சேமிக்கப்பட்டது} other{{count} அமர்வுகள் சேமிக்கப்பட்டன}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "என் நாளில் சேர்",
+  "openDay_removeFromMyDay": "என் நாளிலிருந்து அகற்று",
+  "openDay_savedToMyDay": "உங்கள் நாளில் சேர்க்கப்பட்டது",
+  "openDay_removedFromMyDay": "உங்கள் நாளிலிருந்து அகற்றப்பட்டது",
+  "openDay_clearMyDay": "என் நாளை அழி",
+  "openDay_clearMyDayConfirm": "உங்கள் நாளிலிருந்து சேமித்த அனைத்து அமர்வுகளையும் நிறுத்தங்களையும் அகற்றவா? இதைச் செயல்தவிர்க்க முடியாது.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total} இல் {count} இடங்கள் பார்வையிட்டது",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} பாதை முடிந்தது",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "உள்நுழைவு தேவையில்லை · உங்கள் சாதனத்தில் தனிப்பட்டது",
   "faculty_arts_label": "கலை பீடம்",
   "faculty_arts_desc": "மனிதநேயம், சட்டம், கல்வி, MMCCS",
   "faculty_business_label": "Macquarie வணிக பள்ளி",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "ஸ்கேன்",
   "scanQrCta": "ஸ்கேன் செய்யவும்",
   "scanPermissionDenied": "கேமரா அனுமதி மறுக்கப்பட்டது",
   "scanPermissionDeniedDesc": "QR குறியீடுகளை ஸ்கேன் செய்ய அமைப்புகளில் கேமரா அணுகலை இயக்கவும்",
   "scanOpenSettings": "அமைப்புகளைத் திறக்கவும்",
   "scanDecodeError": "QR குறியீட்டைப் படிக்க முடியவில்லை",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "பாதையின் ஒரு பகுதி அல்ல",
   "scanNotOnTrailDesc": "இந்த QR குறியீடு ஓபன் டே பாதையின் ஒரு பகுதி அல்ல",
   "arNoBuildingSelected": "உள்ளே பார்க்க கட்டிடத்தைத் தேர்ந்தெடுக்கவும்",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR முன்னோட்டம்",
   "cardNoArPreview": "AR முன்னோட்டம் இல்லை",
   "stopLiveNow": "இப்போது நேரலை: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "அடுத்து: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "வாழ்த்துக்கள்!",
   "stampCelebrationCompleteTitle": "பாஸ்போர்ட் முழுமையானது!",
   "stampCelebrationSubtitle": "நீங்கள் {location} முத்திரையை சேகரித்தீர்கள்",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "உங்கள் ஓபன் டே பாஸ்போர்ட் தொடங்கியது",
   "stampCelebrationKeepExploring": "ஆராய்வதைத் தொடரவும்",
   "stampCelebrationViewPassport": "எனது பாஸ்போர்ட்டைப் பார்க்கவும்",
   "stampAlreadyCollected": "ஏற்கனவே சேகரிக்கப்பட்டது — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "வாழ்த்துக்கள். நீங்கள் {location} முத்திரையை சேகரித்தீர்கள். {total} இல் {count}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "எனது முத்திரைகள்",
   "stampsPassportLockedHint": "சேகரிக்க ஸ்கேன் செய்யவும்",
   "settingsMyStampsTile": "எனது முத்திரைகள்",

@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Fjern alle gemte sessioner og stop fra din dag? Dette kan ikke fortrydes.",
-  "openDay_searchBachelorHint": "Søg efter din uddannelse",
-  "openDay_noBachelorMatch": "Ingen matchende uddannelse fundet",
-  "openDay_noBachelorMatchHint": "Prøv et andet søgeord",
-  "openDay_matchedToYourDegree": "Matcher din uddannelse",
-  "openDay_generalOpenToAll": "Generelt · Åbent for alle",
-  "openDay_allSessionsLabel": "Alle sessioner",
-  "hoursMinutesShort": "{hours} t {minutes} min",
-  "hoursShort": "{hours} t",
-  "openDay_progressVisited": "Besøgt {count} af {total} stop",
-  "openDay_trailCompleted": "{trail}-rute fuldført",
-  "openDay_privacyStrip": "Ingen login nødvendig · Privat på din enhed",
-  "openDay_showSuggestedStops": "Vis foreslåede stop",
-  "openDay_showSuggestedStopsSemantic": "Vis foreslåede stop på startsiden",
-  "openDay_suggestedStopsForInterest": "Foreslåede stop til {interest}",
-  "openDay_liveNowTitle": "Live nu",
-  "openDay_comingUpNextTitle": "Kommer som det næste",
-  "openDay_liveNowForInterest": "Matcher din interesse",
-  "openDay_liveNowAcrossDay": "Åbent for alle besøgende",
-  "openDay_yourDayTitle": "Din dag",
-  "openDay_yourDayEmpty": "Gem de sessioner, du kan lide, for at sammensætte din egen Åben dag-plan.",
-  "openDay_yourDayCount": "{count, plural, =1{1 session gemt} other{{count} sessioner gemt}}",
-  "openDay_addToMyDay": "Tilføj til min dag",
-  "openDay_removeFromMyDay": "Fjern fra min dag",
-  "openDay_savedToMyDay": "Tilføjet til din dag",
-  "openDay_removedFromMyDay": "Fjernet fra din dag",
-  "openDay_clearMyDay": "Ryd min dag",
   "@@locale": "da",
   "clear": "Klar",
   "routePanelMinimize": "Minimer rutepanel",
@@ -35,6 +8,7 @@
   "home": "Hjem",
   "map": "Kort",
   "navigation": "Vejvisning",
+  "scanTab": "Scan",
   "settings": "Indstillinger",
   "loading": "Indlæser...",
   "save": "Gem",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} t {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} t",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Dev Diagnostics",
   "buildVersion": "Byg: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Ryd mit valg",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Søg efter din uddannelse",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Ingen matchende uddannelse fundet",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Prøv et andet søgeord",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "ÅBEN DAG · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Ingen begivenheder matcher din studieinteresse endnu.",
   "openDay_noEventsNoneSelected": "Vælg din interesse for at se relevante begivenheder.",
+  "openDay_showSuggestedStops": "Vis foreslåede stop",
+  "openDay_showSuggestedStopsSemantic": "Vis foreslåede stop på startsiden",
+  "openDay_suggestedStopsForInterest": "Foreslåede stop til {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Live nu",
+  "openDay_comingUpNextTitle": "Kommer som det næste",
+  "openDay_liveNowForInterest": "Matcher din interesse",
+  "openDay_liveNowAcrossDay": "Åbent for alle besøgende",
+  "openDay_matchedToYourDegree": "Matcher din uddannelse",
+  "openDay_generalOpenToAll": "Generelt · Åbent for alle",
+  "openDay_allSessionsLabel": "Alle sessioner",
+  "openDay_yourDayTitle": "Din dag",
+  "openDay_yourDayEmpty": "Gem de sessioner, du kan lide, for at sammensætte din egen Åben dag-plan.",
+  "openDay_yourDayCount": "{count, plural, =1{1 session gemt} other{{count} sessioner gemt}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Tilføj til min dag",
+  "openDay_removeFromMyDay": "Fjern fra min dag",
+  "openDay_savedToMyDay": "Tilføjet til din dag",
+  "openDay_removedFromMyDay": "Fjernet fra din dag",
+  "openDay_clearMyDay": "Ryd min dag",
+  "openDay_clearMyDayConfirm": "Fjern alle gemte sessioner og stop fra din dag? Dette kan ikke fortrydes.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Besøgt {count} af {total} stop",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail}-rute fuldført",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Ingen login nødvendig · Privat på din enhed",
   "faculty_arts_label": "Det kunstfaglige fakultet",
   "faculty_arts_desc": "Humaniora, jura, uddannelse, MMCCS",
   "faculty_business_label": "Macquarie Business School",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Scan",
   "scanQrCta": "Scan",
   "scanPermissionDenied": "Kameraadgang nægtet",
   "scanPermissionDeniedDesc": "Aktivér kameraadgang i indstillingerne for at scanne QR-koder",
   "scanOpenSettings": "Åbn indstillinger",
   "scanDecodeError": "Kunne ikke læse QR-koden",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Ikke en del af ruten",
   "scanNotOnTrailDesc": "Denne QR-kode er ikke en del af Open Day-ruten",
   "arNoBuildingSelected": "Vælg en bygning for at se interiøret",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR-preview",
   "cardNoArPreview": "Ingen AR-preview tilgængelig",
   "stopLiveNow": "Live nu: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Op næste: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Tillykke!",
   "stampCelebrationCompleteTitle": "Pas fuldført!",
   "stampCelebrationSubtitle": "Du indsamlede {location}-mærket",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Dit Open Day-pas er begyndt",
   "stampCelebrationKeepExploring": "Fortsæt med at udforske",
   "stampCelebrationViewPassport": "Se mit pas",
   "stampAlreadyCollected": "Allerede indsamlet — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Tillykke. Du har indsamlet {location}-mærket. {count} af {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Mine mærker",
   "stampsPassportLockedHint": "Scan for at indsamle",
   "settingsMyStampsTile": "Mine mærker",

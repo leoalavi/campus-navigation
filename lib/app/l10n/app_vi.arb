@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Xóa tất cả các phiên và điểm dừng đã lưu khỏi ngày của bạn? Không thể hoàn tác thao tác này.",
-  "openDay_searchBachelorHint": "Tìm ngành học của bạn",
-  "openDay_noBachelorMatch": "Không tìm thấy ngành học phù hợp",
-  "openDay_noBachelorMatchHint": "Hãy thử từ khóa khác",
-  "openDay_matchedToYourDegree": "Phù hợp với ngành của bạn",
-  "openDay_generalOpenToAll": "Chung · Mở cho mọi người",
-  "openDay_allSessionsLabel": "Tất cả phiên",
-  "hoursMinutesShort": "{hours} g {minutes} ph",
-  "hoursShort": "{hours} g",
-  "openDay_progressVisited": "Đã ghé {count}/{total} điểm dừng",
-  "openDay_trailCompleted": "Hoàn thành lộ trình {trail}",
-  "openDay_privacyStrip": "Không cần đăng nhập · Riêng tư trên thiết bị của bạn",
-  "openDay_showSuggestedStops": "Hiển thị các điểm dừng gợi ý",
-  "openDay_showSuggestedStopsSemantic": "Hiển thị các điểm dừng gợi ý trên Trang chủ",
-  "openDay_suggestedStopsForInterest": "Điểm dừng gợi ý cho {interest}",
-  "openDay_liveNowTitle": "Đang diễn ra",
-  "openDay_comingUpNextTitle": "Tiếp theo",
-  "openDay_liveNowForInterest": "Phù hợp với mối quan tâm của bạn",
-  "openDay_liveNowAcrossDay": "Mở cho mọi khách tham quan",
-  "openDay_yourDayTitle": "Ngày của bạn",
-  "openDay_yourDayEmpty": "Lưu các phiên bạn thích để xây dựng kế hoạch Ngày mở cửa của riêng bạn.",
-  "openDay_yourDayCount": "{count, plural, other{Đã lưu {count} phiên}}",
-  "openDay_addToMyDay": "Thêm vào ngày của tôi",
-  "openDay_removeFromMyDay": "Xóa khỏi ngày của tôi",
-  "openDay_savedToMyDay": "Đã thêm vào ngày của bạn",
-  "openDay_removedFromMyDay": "Đã xóa khỏi ngày của bạn",
-  "openDay_clearMyDay": "Xóa ngày của tôi",
   "@@locale": "vi",
   "clear": "Xóa",
   "routePanelMinimize": "Thu nhỏ bảng lộ trình",
@@ -35,6 +8,7 @@
   "home": "Trang chủ",
   "map": "Bản đồ",
   "navigation": "Điều hướng",
+  "scanTab": "Quét",
   "settings": "Cài đặt",
   "loading": "Đang tải...",
   "save": "Lưu",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} g {minutes} ph",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} g",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Chẩn đoán phát triển",
   "buildVersion": "Bản dựng: 2026.04.22-beta",
   "renderer": "Trình kết xuất: CrsSimple (Khuôn viên)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Xóa lựa chọn",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Tìm ngành học của bạn",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Không tìm thấy ngành học phù hợp",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Hãy thử từ khóa khác",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "NGÀY MỞ RỘNG · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Chưa có sự kiện nào phù hợp với sở thích học tập của bạn.",
   "openDay_noEventsNoneSelected": "Chọn sở thích để xem các sự kiện liên quan.",
+  "openDay_showSuggestedStops": "Hiển thị các điểm dừng gợi ý",
+  "openDay_showSuggestedStopsSemantic": "Hiển thị các điểm dừng gợi ý trên Trang chủ",
+  "openDay_suggestedStopsForInterest": "Điểm dừng gợi ý cho {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Đang diễn ra",
+  "openDay_comingUpNextTitle": "Tiếp theo",
+  "openDay_liveNowForInterest": "Phù hợp với mối quan tâm của bạn",
+  "openDay_liveNowAcrossDay": "Mở cho mọi khách tham quan",
+  "openDay_matchedToYourDegree": "Phù hợp với ngành của bạn",
+  "openDay_generalOpenToAll": "Chung · Mở cho mọi người",
+  "openDay_allSessionsLabel": "Tất cả phiên",
+  "openDay_yourDayTitle": "Ngày của bạn",
+  "openDay_yourDayEmpty": "Lưu các phiên bạn thích để xây dựng kế hoạch Ngày mở cửa của riêng bạn.",
+  "openDay_yourDayCount": "{count, plural, other{Đã lưu {count} phiên}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Thêm vào ngày của tôi",
+  "openDay_removeFromMyDay": "Xóa khỏi ngày của tôi",
+  "openDay_savedToMyDay": "Đã thêm vào ngày của bạn",
+  "openDay_removedFromMyDay": "Đã xóa khỏi ngày của bạn",
+  "openDay_clearMyDay": "Xóa ngày của tôi",
+  "openDay_clearMyDayConfirm": "Xóa tất cả các phiên và điểm dừng đã lưu khỏi ngày của bạn? Không thể hoàn tác thao tác này.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Đã ghé {count}/{total} điểm dừng",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Hoàn thành lộ trình {trail}",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Không cần đăng nhập · Riêng tư trên thiết bị của bạn",
   "faculty_arts_label": "Khoa nghệ thuật",
   "faculty_arts_desc": "Nhân văn, Luật, Giáo dục, MMCCS",
   "faculty_business_label": "Trường kinh doanh Macquarie",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Quét",
   "scanQrCta": "Quét",
   "scanPermissionDenied": "Quyền truy cập camera bị từ chối",
   "scanPermissionDeniedDesc": "Bật quyền truy cập camera trong Cài đặt để quét mã QR",
   "scanOpenSettings": "Mở cài đặt",
   "scanDecodeError": "Không thể đọc mã QR",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Không thuộc lộ trình",
   "scanNotOnTrailDesc": "Mã QR này không thuộc lộ trình Open Day",
   "arNoBuildingSelected": "Chọn một tòa nhà để xem bên trong",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "Xem trước AR",
   "cardNoArPreview": "Không có bản xem trước AR",
   "stopLiveNow": "Trực tiếp bây giờ: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Tiếp theo: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Chúc mừng!",
   "stampCelebrationCompleteTitle": "Đã hoàn thành hộ chiếu!",
   "stampCelebrationSubtitle": "Bạn đã thu thập con dấu {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Hộ chiếu Open Day của bạn đã bắt đầu",
   "stampCelebrationKeepExploring": "Tiếp tục khám phá",
   "stampCelebrationViewPassport": "Xem hộ chiếu của tôi",
   "stampAlreadyCollected": "Đã thu thập — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Chúc mừng. Bạn đã thu thập con dấu {location}. {count} trên {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Con dấu của tôi",
   "stampsPassportLockedHint": "Quét để thu thập",
   "settingsMyStampsTile": "Con dấu của tôi",

@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Alle gespeicherten Programmpunkte und Stopps aus deinem Tag entfernen? Dies kann nicht rückgängig gemacht werden.",
-  "openDay_searchBachelorHint": "Studiengang suchen",
-  "openDay_noBachelorMatch": "Kein passender Studiengang gefunden",
-  "openDay_noBachelorMatchHint": "Versuche ein anderes Stichwort",
-  "openDay_matchedToYourDegree": "Passend zu deinem Studium",
-  "openDay_generalOpenToAll": "Allgemein · Für alle offen",
-  "openDay_allSessionsLabel": "Alle Sessions",
-  "hoursMinutesShort": "{hours} Std. {minutes} Min.",
-  "hoursShort": "{hours} Std.",
-  "openDay_progressVisited": "{count} von {total} Stationen besucht",
-  "openDay_trailCompleted": "{trail}-Route abgeschlossen",
-  "openDay_privacyStrip": "Keine Anmeldung nötig · Privat auf deinem Gerät",
-  "openDay_showSuggestedStops": "Vorgeschlagene Stationen anzeigen",
-  "openDay_showSuggestedStopsSemantic": "Vorgeschlagene Stationen auf der Startseite anzeigen",
-  "openDay_suggestedStopsForInterest": "Vorgeschlagene Stationen für {interest}",
-  "openDay_liveNowTitle": "Jetzt live",
-  "openDay_comingUpNextTitle": "Als Nächstes",
-  "openDay_liveNowForInterest": "Passend zu deinem Interesse",
-  "openDay_liveNowAcrossDay": "Für alle Besucher offen",
-  "openDay_yourDayTitle": "Dein Tag",
-  "openDay_yourDayEmpty": "Speichere Sessions, die dir gefallen, und stelle deinen eigenen Plan für den Tag der offenen Tür zusammen.",
-  "openDay_yourDayCount": "{count, plural, =1{1 Session gespeichert} other{{count} Sessions gespeichert}}",
-  "openDay_addToMyDay": "Zu meinem Tag hinzufügen",
-  "openDay_removeFromMyDay": "Aus meinem Tag entfernen",
-  "openDay_savedToMyDay": "Zu deinem Tag hinzugefügt",
-  "openDay_removedFromMyDay": "Aus deinem Tag entfernt",
-  "openDay_clearMyDay": "Meinen Tag leeren",
   "@@locale": "de",
   "clear": "Löschen",
   "routePanelMinimize": "Routenpanel minimieren",
@@ -35,6 +8,7 @@
   "home": "Startseite",
   "map": "Karte",
   "navigation": "Routenführung",
+  "scanTab": "Scannen",
   "settings": "Einstellungen",
   "loading": "Wird geladen...",
   "save": "Speichern",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} Std. {minutes} Min.",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} Std.",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Entwicklerdiagnose",
   "buildVersion": "Build: 2026.04.22-Beta",
   "renderer": "Renderer: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Auswahl löschen",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Studiengang suchen",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Kein passender Studiengang gefunden",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Versuche ein anderes Stichwort",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "TAG DER OFFENEN TÜR · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Noch keine Veranstaltungen zu Ihrem Studieninteresse.",
   "openDay_noEventsNoneSelected": "Interesse wählen für relevante Veranstaltungen.",
+  "openDay_showSuggestedStops": "Vorgeschlagene Stationen anzeigen",
+  "openDay_showSuggestedStopsSemantic": "Vorgeschlagene Stationen auf der Startseite anzeigen",
+  "openDay_suggestedStopsForInterest": "Vorgeschlagene Stationen für {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Jetzt live",
+  "openDay_comingUpNextTitle": "Als Nächstes",
+  "openDay_liveNowForInterest": "Passend zu deinem Interesse",
+  "openDay_liveNowAcrossDay": "Für alle Besucher offen",
+  "openDay_matchedToYourDegree": "Passend zu deinem Studium",
+  "openDay_generalOpenToAll": "Allgemein · Für alle offen",
+  "openDay_allSessionsLabel": "Alle Sessions",
+  "openDay_yourDayTitle": "Dein Tag",
+  "openDay_yourDayEmpty": "Speichere Sessions, die dir gefallen, und stelle deinen eigenen Plan für den Tag der offenen Tür zusammen.",
+  "openDay_yourDayCount": "{count, plural, =1{1 Session gespeichert} other{{count} Sessions gespeichert}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Zu meinem Tag hinzufügen",
+  "openDay_removeFromMyDay": "Aus meinem Tag entfernen",
+  "openDay_savedToMyDay": "Zu deinem Tag hinzugefügt",
+  "openDay_removedFromMyDay": "Aus deinem Tag entfernt",
+  "openDay_clearMyDay": "Meinen Tag leeren",
+  "openDay_clearMyDayConfirm": "Alle gespeicherten Programmpunkte und Stopps aus deinem Tag entfernen? Dies kann nicht rückgängig gemacht werden.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{count} von {total} Stationen besucht",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail}-Route abgeschlossen",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Keine Anmeldung nötig · Privat auf deinem Gerät",
   "faculty_arts_label": "Geisteswissenschaftliche Fakultät",
   "faculty_arts_desc": "Geisteswissenschaften, Recht, Erziehungswissenschaft",
   "faculty_business_label": "Macquarie Business School",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Scannen",
   "scanQrCta": "Scannen",
   "scanPermissionDenied": "Kamerazugriff verweigert",
   "scanPermissionDeniedDesc": "Aktiviere den Kamerazugriff in den Einstellungen, um QR-Codes zu scannen",
   "scanOpenSettings": "Einstellungen öffnen",
   "scanDecodeError": "QR-Code konnte nicht gelesen werden",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Nicht Teil des Rundgangs",
   "scanNotOnTrailDesc": "Dieser QR-Code ist nicht Teil des Open-Day-Rundgangs",
   "arNoBuildingSelected": "Wähle ein Gebäude aus, um das Innere zu sehen",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR-Vorschau",
   "cardNoArPreview": "Keine AR-Vorschau verfügbar",
   "stopLiveNow": "Jetzt live: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Als Nächstes: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Herzlichen Glückwunsch!",
   "stampCelebrationCompleteTitle": "Pass vollständig!",
   "stampCelebrationSubtitle": "Du hast den Stempel {location} gesammelt",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Dein Open-Day-Pass hat begonnen",
   "stampCelebrationKeepExploring": "Weiter entdecken",
   "stampCelebrationViewPassport": "Meinen Pass ansehen",
   "stampAlreadyCollected": "Bereits gesammelt — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Herzlichen Glückwunsch. Du hast den Stempel {location} gesammelt. {count} von {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Meine Stempel",
   "stampsPassportLockedHint": "Scannen zum Sammeln",
   "settingsMyStampsTile": "Meine Stempel",

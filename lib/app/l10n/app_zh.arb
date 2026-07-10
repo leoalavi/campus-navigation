@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "从您的日程中移除所有已保存的场次和站点？此操作无法撤销。",
-  "openDay_searchBachelorHint": "搜索你的学位",
-  "openDay_noBachelorMatch": "未找到匹配的学位",
-  "openDay_noBachelorMatchHint": "试试其他关键词",
-  "openDay_matchedToYourDegree": "与你的学位匹配",
-  "openDay_generalOpenToAll": "通用 · 向所有人开放",
-  "openDay_allSessionsLabel": "所有场次",
-  "hoursMinutesShort": "{hours}小时{minutes}分",
-  "hoursShort": "{hours}小时",
-  "openDay_progressVisited": "已参观 {total} 个站点中的 {count} 个",
-  "openDay_trailCompleted": "已完成 {trail} 路线",
-  "openDay_privacyStrip": "无需登录 · 数据保存在你的设备上",
-  "openDay_showSuggestedStops": "显示推荐站点",
-  "openDay_showSuggestedStopsSemantic": "在主页显示推荐站点",
-  "openDay_suggestedStopsForInterest": "为 {interest} 推荐的站点",
-  "openDay_liveNowTitle": "正在进行",
-  "openDay_comingUpNextTitle": "即将开始",
-  "openDay_liveNowForInterest": "与你的兴趣匹配",
-  "openDay_liveNowAcrossDay": "向所有访客开放",
-  "openDay_yourDayTitle": "你的一天",
-  "openDay_yourDayEmpty": "保存你喜欢的场次，打造属于自己的开放日计划。",
-  "openDay_yourDayCount": "{count, plural, other{已保存 {count} 个场次}}",
-  "openDay_addToMyDay": "添加到我的一天",
-  "openDay_removeFromMyDay": "从我的一天移除",
-  "openDay_savedToMyDay": "已添加到你的一天",
-  "openDay_removedFromMyDay": "已从你的一天移除",
-  "openDay_clearMyDay": "清空我的一天",
   "@@locale": "zh",
   "clear": "清除",
   "routePanelMinimize": "最小化路线面板",
@@ -35,6 +8,7 @@
   "home": "首页",
   "map": "校园地图",
   "navigation": "导航",
+  "scanTab": "扫描",
   "settings": "设置",
   "loading": "加载中...",
   "save": "保存",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours}小时{minutes}分",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours}小时",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "开发诊断",
   "buildVersion": "版本：2026.04.22-beta",
   "renderer": "渲染器：CrsSimple（校园）",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "清除我的选择",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "搜索你的学位",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "未找到匹配的学位",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "试试其他关键词",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "开放日 · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "暂无与您学习兴趣匹配的活动。",
   "openDay_noEventsNoneSelected": "选择您的兴趣以查看相关活动。",
+  "openDay_showSuggestedStops": "显示推荐站点",
+  "openDay_showSuggestedStopsSemantic": "在主页显示推荐站点",
+  "openDay_suggestedStopsForInterest": "为 {interest} 推荐的站点",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "正在进行",
+  "openDay_comingUpNextTitle": "即将开始",
+  "openDay_liveNowForInterest": "与你的兴趣匹配",
+  "openDay_liveNowAcrossDay": "向所有访客开放",
+  "openDay_matchedToYourDegree": "与你的学位匹配",
+  "openDay_generalOpenToAll": "通用 · 向所有人开放",
+  "openDay_allSessionsLabel": "所有场次",
+  "openDay_yourDayTitle": "你的一天",
+  "openDay_yourDayEmpty": "保存你喜欢的场次，打造属于自己的开放日计划。",
+  "openDay_yourDayCount": "{count, plural, other{已保存 {count} 个场次}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "添加到我的一天",
+  "openDay_removeFromMyDay": "从我的一天移除",
+  "openDay_savedToMyDay": "已添加到你的一天",
+  "openDay_removedFromMyDay": "已从你的一天移除",
+  "openDay_clearMyDay": "清空我的一天",
+  "openDay_clearMyDayConfirm": "从您的日程中移除所有已保存的场次和站点？此操作无法撤销。",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "已参观 {total} 个站点中的 {count} 个",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "已完成 {trail} 路线",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "无需登录 · 数据保存在你的设备上",
   "faculty_arts_label": "艺术学院",
   "faculty_arts_desc": "人文、法律、教育、MMCCS",
   "faculty_business_label": "麦格理商学院",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "扫描",
   "scanQrCta": "扫描",
   "scanPermissionDenied": "摄像头权限被拒绝",
   "scanPermissionDeniedDesc": "在设置中启用摄像头权限以扫描二维码",
   "scanOpenSettings": "打开设置",
   "scanDecodeError": "无法读取二维码",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "不属于此路线",
   "scanNotOnTrailDesc": "此二维码不属于开放日路线",
   "arNoBuildingSelected": "选择一栋建筑以查看室内",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR 预览",
   "cardNoArPreview": "没有可用的 AR 预览",
   "stopLiveNow": "正在进行：{title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "接下来：{title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "恭喜！",
   "stampCelebrationCompleteTitle": "护照已集齐！",
   "stampCelebrationSubtitle": "您已收集 {location} 印章",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "您的开放日护照已开始记录",
   "stampCelebrationKeepExploring": "继续探索",
   "stampCelebrationViewPassport": "查看我的护照",
   "stampAlreadyCollected": "已收集 — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "恭喜。您已收集 {location} 印章。共 {total} 个中的第 {count} 个。",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "我的印章",
   "stampsPassportLockedHint": "扫描以收集",
   "settingsMyStampsTile": "我的印章",

@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "هل تريد إزالة جميع الجلسات والمحطات المحفوظة من يومك؟ لا يمكن التراجع عن هذا.",
-  "openDay_searchBachelorHint": "البحث عن تخصصك",
-  "openDay_noBachelorMatch": "لم يتم العثور على تخصص مطابق",
-  "openDay_noBachelorMatchHint": "جرّب كلمة مختلفة",
-  "openDay_matchedToYourDegree": "مطابقة لدرجتك",
-  "openDay_generalOpenToAll": "عام · مفتوح لجميع الزوار",
-  "openDay_allSessionsLabel": "جميع الجلسات",
-  "hoursMinutesShort": "{hours} س {minutes} د",
-  "hoursShort": "{hours} س",
-  "openDay_progressVisited": "زرت {count} من {total} محطات",
-  "openDay_trailCompleted": "أكملت مسار {trail}",
-  "openDay_privacyStrip": "لا حاجة لتسجيل الدخول · خصوصيتك على جهازك",
-  "openDay_showSuggestedStops": "إظهار المحطات المقترحة",
-  "openDay_showSuggestedStopsSemantic": "إظهار المحطات المقترحة في الصفحة الرئيسية",
-  "openDay_suggestedStopsForInterest": "المحطات المقترحة لـ {interest}",
-  "openDay_liveNowTitle": "مباشر الآن",
-  "openDay_comingUpNextTitle": "التالي قريبًا",
-  "openDay_liveNowForInterest": "متطابقة مع اهتمامك",
-  "openDay_liveNowAcrossDay": "مفتوح لجميع الزوار",
-  "openDay_yourDayTitle": "يومك",
-  "openDay_yourDayEmpty": "احفظ الجلسات التي تعجبك لإنشاء خطتك الخاصة ليوم الانفتاح.",
-  "openDay_yourDayCount": "{count, plural, =1{تم حفظ جلسة واحدة} other{تم حفظ {count} جلسة}}",
-  "openDay_addToMyDay": "أضف إلى يومي",
-  "openDay_removeFromMyDay": "إزالة من يومي",
-  "openDay_savedToMyDay": "تمت الإضافة إلى يومك",
-  "openDay_removedFromMyDay": "تمت الإزالة من يومك",
-  "openDay_clearMyDay": "مسح يومي",
   "@@locale": "ar",
   "clear": "مسح",
   "routePanelMinimize": "تصغير لوحة المسار",
@@ -35,6 +8,7 @@
   "home": "الصفحة الرئيسية",
   "map": "خريطة الحرم",
   "navigation": "التنقل",
+  "scanTab": "مسح",
   "settings": "الإعدادات",
   "loading": "جاري التحميل...",
   "save": "حفظ",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} س {minutes} د",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} س",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "تشخيصات المطور",
   "buildVersion": "الإصدار: 2026.04.22-beta",
   "renderer": "العارض: CrsSimple (الحرم)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "مسح اختياري",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "البحث عن تخصصك",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "لم يتم العثور على تخصص مطابق",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "جرّب كلمة مختلفة",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "يوم الانفتاح · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "لا توجد فعاليات تتطابق مع اهتمامك الدراسي بعد.",
   "openDay_noEventsNoneSelected": "اختر ما يهمك لعرض الفعاليات ذات الصلة.",
+  "openDay_showSuggestedStops": "إظهار المحطات المقترحة",
+  "openDay_showSuggestedStopsSemantic": "إظهار المحطات المقترحة في الصفحة الرئيسية",
+  "openDay_suggestedStopsForInterest": "المحطات المقترحة لـ {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "مباشر الآن",
+  "openDay_comingUpNextTitle": "التالي قريبًا",
+  "openDay_liveNowForInterest": "متطابقة مع اهتمامك",
+  "openDay_liveNowAcrossDay": "مفتوح لجميع الزوار",
+  "openDay_matchedToYourDegree": "مطابقة لدرجتك",
+  "openDay_generalOpenToAll": "عام · مفتوح لجميع الزوار",
+  "openDay_allSessionsLabel": "جميع الجلسات",
+  "openDay_yourDayTitle": "يومك",
+  "openDay_yourDayEmpty": "احفظ الجلسات التي تعجبك لإنشاء خطتك الخاصة ليوم الانفتاح.",
+  "openDay_yourDayCount": "{count, plural, =1{تم حفظ جلسة واحدة} other{تم حفظ {count} جلسة}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "أضف إلى يومي",
+  "openDay_removeFromMyDay": "إزالة من يومي",
+  "openDay_savedToMyDay": "تمت الإضافة إلى يومك",
+  "openDay_removedFromMyDay": "تمت الإزالة من يومك",
+  "openDay_clearMyDay": "مسح يومي",
+  "openDay_clearMyDayConfirm": "هل تريد إزالة جميع الجلسات والمحطات المحفوظة من يومك؟ لا يمكن التراجع عن هذا.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "زرت {count} من {total} محطات",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "أكملت مسار {trail}",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "لا حاجة لتسجيل الدخول · خصوصيتك على جهازك",
   "faculty_arts_label": "كلية الآداب",
   "faculty_arts_desc": "العلوم الإنسانية، القانون، التعليم، MMCCS",
   "faculty_business_label": "كلية ماكواري للأعمال",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "مسح",
   "scanQrCta": "مسح",
   "scanPermissionDenied": "تم رفض إذن الكاميرا",
   "scanPermissionDeniedDesc": "فعّل الوصول إلى الكاميرا في الإعدادات لمسح رموز QR",
   "scanOpenSettings": "فتح الإعدادات",
   "scanDecodeError": "تعذّرت قراءة رمز QR",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "ليس جزءًا من المسار",
   "scanNotOnTrailDesc": "رمز QR هذا ليس جزءًا من مسار Open Day",
   "arNoBuildingSelected": "اختر مبنى لعرضه من الداخل",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "معاينة الواقع المعزز",
   "cardNoArPreview": "لا تتوفر معاينة للواقع المعزز",
   "stopLiveNow": "مباشر الآن: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "التالي: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "تهانينا!",
   "stampCelebrationCompleteTitle": "اكتمل جواز السفر!",
   "stampCelebrationSubtitle": "لقد جمعت طابع {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "لقد بدأ جواز سفر Open Day الخاص بك",
   "stampCelebrationKeepExploring": "واصل الاستكشاف",
   "stampCelebrationViewPassport": "عرض جواز سفري",
   "stampAlreadyCollected": "تم جمعها بالفعل — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "تهانينا. لقد جمعت طابع {location}. {count} من {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "طوابعي",
   "stampsPassportLockedHint": "امسح للجمع",
   "settingsMyStampsTile": "طوابعي",

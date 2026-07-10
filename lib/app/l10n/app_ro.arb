@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Elimini toate sesiunile și opririle salvate din ziua ta? Această acțiune nu poate fi anulată.",
-  "openDay_searchBachelorHint": "Caută specializarea ta",
-  "openDay_noBachelorMatch": "Nu s-a găsit o specializare corespunzătoare",
-  "openDay_noBachelorMatchHint": "Încearcă un alt cuvânt cheie",
-  "openDay_matchedToYourDegree": "Potrivit specializării tale",
-  "openDay_generalOpenToAll": "General · Deschis tuturor",
-  "openDay_allSessionsLabel": "Toate sesiunile",
-  "hoursMinutesShort": "{hours} h {minutes} min",
-  "hoursShort": "{hours} h",
-  "openDay_progressVisited": "Vizitate {count} din {total} opriri",
-  "openDay_trailCompleted": "Traseu {trail} finalizat",
-  "openDay_privacyStrip": "Fără autentificare · Privat pe dispozitivul tău",
-  "openDay_showSuggestedStops": "Afișează opririle sugerate",
-  "openDay_showSuggestedStopsSemantic": "Afișează opririle sugerate pe Acasă",
-  "openDay_suggestedStopsForInterest": "Opriri sugerate pentru {interest}",
-  "openDay_liveNowTitle": "În direct acum",
-  "openDay_comingUpNextTitle": "Urmează",
-  "openDay_liveNowForInterest": "Se potrivește cu interesul tău",
-  "openDay_liveNowAcrossDay": "Deschis tuturor vizitatorilor",
-  "openDay_yourDayTitle": "Ziua ta",
-  "openDay_yourDayEmpty": "Salvează sesiunile care îți plac pentru a-ți crea propriul plan pentru Ziua porților deschise.",
-  "openDay_yourDayCount": "{count, plural, =1{1 sesiune salvată} few{{count} sesiuni salvate} other{{count} de sesiuni salvate}}",
-  "openDay_addToMyDay": "Adaugă la ziua mea",
-  "openDay_removeFromMyDay": "Elimină din ziua mea",
-  "openDay_savedToMyDay": "Adăugată la ziua ta",
-  "openDay_removedFromMyDay": "Eliminată din ziua ta",
-  "openDay_clearMyDay": "Golește ziua mea",
   "@@locale": "ro",
   "clear": "Clar",
   "routePanelMinimize": "Minimizați panoul de rută",
@@ -35,6 +8,7 @@
   "home": "Acasă",
   "map": "Hartă",
   "navigation": "Navigare",
+  "scanTab": "Scanează",
   "settings": "Setări",
   "loading": "Se încarcă...",
   "save": "Salvează",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} h {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} h",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Diagnosticarea dezvoltatorilor",
   "buildVersion": "Versiune: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Șterge selecția mea",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Caută specializarea ta",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Nu s-a găsit o specializare corespunzătoare",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Încearcă un alt cuvânt cheie",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "ZIUA PORȚILOR PORTATE · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Niciun eveniment nu corespunde interesului dvs. de studiu încă.",
   "openDay_noEventsNoneSelected": "Alegeți ce vă interesează pentru a vedea evenimentele relevante.",
+  "openDay_showSuggestedStops": "Afișează opririle sugerate",
+  "openDay_showSuggestedStopsSemantic": "Afișează opririle sugerate pe Acasă",
+  "openDay_suggestedStopsForInterest": "Opriri sugerate pentru {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "În direct acum",
+  "openDay_comingUpNextTitle": "Urmează",
+  "openDay_liveNowForInterest": "Se potrivește cu interesul tău",
+  "openDay_liveNowAcrossDay": "Deschis tuturor vizitatorilor",
+  "openDay_matchedToYourDegree": "Potrivit specializării tale",
+  "openDay_generalOpenToAll": "General · Deschis tuturor",
+  "openDay_allSessionsLabel": "Toate sesiunile",
+  "openDay_yourDayTitle": "Ziua ta",
+  "openDay_yourDayEmpty": "Salvează sesiunile care îți plac pentru a-ți crea propriul plan pentru Ziua porților deschise.",
+  "openDay_yourDayCount": "{count, plural, =1{1 sesiune salvată} few{{count} sesiuni salvate} other{{count} de sesiuni salvate}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Adaugă la ziua mea",
+  "openDay_removeFromMyDay": "Elimină din ziua mea",
+  "openDay_savedToMyDay": "Adăugată la ziua ta",
+  "openDay_removedFromMyDay": "Eliminată din ziua ta",
+  "openDay_clearMyDay": "Golește ziua mea",
+  "openDay_clearMyDayConfirm": "Elimini toate sesiunile și opririle salvate din ziua ta? Această acțiune nu poate fi anulată.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Vizitate {count} din {total} opriri",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Traseu {trail} finalizat",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Fără autentificare · Privat pe dispozitivul tău",
   "faculty_arts_label": "Facultatea de Arte",
   "faculty_arts_desc": "Științe umaniste, Drept, Educație, MMCCS",
   "faculty_business_label": "Scoala de afaceri Macquarie",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Scanează",
   "scanQrCta": "Scanează",
   "scanPermissionDenied": "Permisiunea camerei a fost refuzată",
   "scanPermissionDeniedDesc": "Activați accesul la cameră în Setări pentru a scana coduri QR",
   "scanOpenSettings": "Deschide setările",
   "scanDecodeError": "Codul QR nu a putut fi citit",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Nu face parte din traseu",
   "scanNotOnTrailDesc": "Acest cod QR nu face parte din traseul Open Day",
   "arNoBuildingSelected": "Selectați o clădire pentru a vedea interiorul",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "Previzualizare AR",
   "cardNoArPreview": "Nicio previzualizare AR disponibilă",
   "stopLiveNow": "Live acum: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Următorul: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Felicitări!",
   "stampCelebrationCompleteTitle": "Pașaport complet!",
   "stampCelebrationSubtitle": "Ai colectat ștampila {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Pașaportul tău Open Day a început",
   "stampCelebrationKeepExploring": "Continuă să explorezi",
   "stampCelebrationViewPassport": "Vizualizează pașaportul meu",
   "stampAlreadyCollected": "Deja colectat — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Felicitări. Ai colectat ștampila {location}. {count} din {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Ștampilele mele",
   "stampsPassportLockedHint": "Scanează pentru a colecta",
   "settingsMyStampsTile": "Ștampilele mele",

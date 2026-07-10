@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "अपने दिन से सभी सहेजे गए सत्र और स्टॉप हटाएं? इसे पूर्ववत नहीं किया जा सकता।",
-  "openDay_searchBachelorHint": "अपनी डिग्री खोजें",
-  "openDay_noBachelorMatch": "कोई मेल खाती डिग्री नहीं मिली",
-  "openDay_noBachelorMatchHint": "कोई अन्य कीवर्ड आज़माएं",
-  "openDay_matchedToYourDegree": "आपकी डिग्री से मेल",
-  "openDay_generalOpenToAll": "सामान्य · सभी के लिए खुला",
-  "openDay_allSessionsLabel": "सभी सत्र",
-  "hoursMinutesShort": "{hours} घं {minutes} मि",
-  "hoursShort": "{hours} घं",
-  "openDay_progressVisited": "{total} में से {count} पड़ाव देखे",
-  "openDay_trailCompleted": "{trail} ट्रेल पूरा हुआ",
-  "openDay_privacyStrip": "लॉगिन आवश्यक नहीं · आपके डिवाइस पर निजी",
-  "openDay_showSuggestedStops": "सुझाए गए पड़ाव दिखाएँ",
-  "openDay_showSuggestedStopsSemantic": "होम पर सुझाए गए पड़ाव दिखाएँ",
-  "openDay_suggestedStopsForInterest": "{interest} के लिए सुझाए गए पड़ाव",
-  "openDay_liveNowTitle": "अभी लाइव",
-  "openDay_comingUpNextTitle": "आगे आने वाला",
-  "openDay_liveNowForInterest": "आपकी रुचि से मेल खाता है",
-  "openDay_liveNowAcrossDay": "सभी आगंतुकों के लिए खुला",
-  "openDay_yourDayTitle": "आपका दिन",
-  "openDay_yourDayEmpty": "अपनी पसंद के सत्र सहेजें और अपनी खुद की खुला दिन योजना बनाएँ।",
-  "openDay_yourDayCount": "{count, plural, =1{1 सत्र सहेजा गया} other{{count} सत्र सहेजे गए}}",
-  "openDay_addToMyDay": "मेरे दिन में जोड़ें",
-  "openDay_removeFromMyDay": "मेरे दिन से हटाएँ",
-  "openDay_savedToMyDay": "आपके दिन में जोड़ा गया",
-  "openDay_removedFromMyDay": "आपके दिन से हटाया गया",
-  "openDay_clearMyDay": "मेरा दिन साफ़ करें",
   "@@locale": "hi",
   "clear": "साफ़ करें",
   "routePanelMinimize": "मार्ग पैनल छोटा करें",
@@ -35,6 +8,7 @@
   "home": "होम",
   "map": "कैंपस मैप",
   "navigation": "नेविगेशन",
+  "scanTab": "स्कैन",
   "settings": "सेटिंग्स",
   "loading": "लोड हो रहा है...",
   "save": "सेव करें",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} घं {minutes} मि",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} घं",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "देव डायग्नोस्टिक्स",
   "buildVersion": "बिल्ड: 2026.04.22-बीटा",
   "renderer": "रेंडरर: क्रिससिंपल (कैंपस)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "मेरा चयन साफ़ करें",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "अपनी डिग्री खोजें",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "कोई मेल खाती डिग्री नहीं मिली",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "कोई अन्य कीवर्ड आज़माएं",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "खुला दिन · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "अभी तक कोई कार्यक्रम आपकी अध्ययन रुचि से मेल नहीं खाता।",
   "openDay_noEventsNoneSelected": "प्रासंगिक कार्यक्रम देखने के लिए अपनी रुचि चुनें।",
+  "openDay_showSuggestedStops": "सुझाए गए पड़ाव दिखाएँ",
+  "openDay_showSuggestedStopsSemantic": "होम पर सुझाए गए पड़ाव दिखाएँ",
+  "openDay_suggestedStopsForInterest": "{interest} के लिए सुझाए गए पड़ाव",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "अभी लाइव",
+  "openDay_comingUpNextTitle": "आगे आने वाला",
+  "openDay_liveNowForInterest": "आपकी रुचि से मेल खाता है",
+  "openDay_liveNowAcrossDay": "सभी आगंतुकों के लिए खुला",
+  "openDay_matchedToYourDegree": "आपकी डिग्री से मेल",
+  "openDay_generalOpenToAll": "सामान्य · सभी के लिए खुला",
+  "openDay_allSessionsLabel": "सभी सत्र",
+  "openDay_yourDayTitle": "आपका दिन",
+  "openDay_yourDayEmpty": "अपनी पसंद के सत्र सहेजें और अपनी खुद की खुला दिन योजना बनाएँ।",
+  "openDay_yourDayCount": "{count, plural, =1{1 सत्र सहेजा गया} other{{count} सत्र सहेजे गए}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "मेरे दिन में जोड़ें",
+  "openDay_removeFromMyDay": "मेरे दिन से हटाएँ",
+  "openDay_savedToMyDay": "आपके दिन में जोड़ा गया",
+  "openDay_removedFromMyDay": "आपके दिन से हटाया गया",
+  "openDay_clearMyDay": "मेरा दिन साफ़ करें",
+  "openDay_clearMyDayConfirm": "अपने दिन से सभी सहेजे गए सत्र और स्टॉप हटाएं? इसे पूर्ववत नहीं किया जा सकता।",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total} में से {count} पड़ाव देखे",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} ट्रेल पूरा हुआ",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "लॉगिन आवश्यक नहीं · आपके डिवाइस पर निजी",
   "faculty_arts_label": "कला संकाय",
   "faculty_arts_desc": "मानविकी, कानून, शिक्षा, एमएमसीसीएस",
   "faculty_business_label": "मैक्वेरी बिजनेस स्कूल",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "स्कैन",
   "scanQrCta": "स्कैन करें",
   "scanPermissionDenied": "कैमरा अनुमति अस्वीकृत",
   "scanPermissionDeniedDesc": "QR कोड स्कैन करने के लिए सेटिंग्स में कैमरा एक्सेस सक्षम करें",
   "scanOpenSettings": "सेटिंग्स खोलें",
   "scanDecodeError": "QR कोड नहीं पढ़ा जा सका",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "ट्रेल का हिस्सा नहीं",
   "scanNotOnTrailDesc": "यह QR कोड ओपन डे ट्रेल का हिस्सा नहीं है",
   "arNoBuildingSelected": "अंदर देखने के लिए एक भवन चुनें",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "AR पूर्वावलोकन",
   "cardNoArPreview": "कोई AR पूर्वावलोकन उपलब्ध नहीं",
   "stopLiveNow": "अभी लाइव: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "आगे: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "बधाई हो!",
   "stampCelebrationCompleteTitle": "पासपोर्ट पूरा हुआ!",
   "stampCelebrationSubtitle": "आपने {location} स्टैम्प एकत्र किया",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "आपका ओपन डे पासपोर्ट शुरू हो गया है",
   "stampCelebrationKeepExploring": "अन्वेषण जारी रखें",
   "stampCelebrationViewPassport": "मेरा पासपोर्ट देखें",
   "stampAlreadyCollected": "पहले ही एकत्र किया गया — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "बधाई हो। आपने {location} स्टैम्प एकत्र किया। {total} में से {count}।",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "मेरे स्टैम्प",
   "stampsPassportLockedHint": "एकत्र करने के लिए स्कैन करें",
   "settingsMyStampsTile": "मेरे स्टैम्प",

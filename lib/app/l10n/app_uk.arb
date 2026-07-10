@@ -1,31 +1,4 @@
 {
-  "openDay_clearMyDayConfirm": "Видалити всі збережені сесії та зупинки з вашого дня? Цю дію не можна скасувати.",
-  "openDay_searchBachelorHint": "Знайти свою програму",
-  "openDay_noBachelorMatch": "Відповідну програму не знайдено",
-  "openDay_noBachelorMatchHint": "Спробуйте інше слово",
-  "openDay_matchedToYourDegree": "Відповідає вашій програмі",
-  "openDay_generalOpenToAll": "Загальні · Відкрито для всіх",
-  "openDay_allSessionsLabel": "Усі сесії",
-  "hoursMinutesShort": "{hours} год {minutes} хв",
-  "hoursShort": "{hours} год",
-  "openDay_progressVisited": "Відвідано {count} з {total} зупинок",
-  "openDay_trailCompleted": "Маршрут «{trail}» завершено",
-  "openDay_privacyStrip": "Без входу · Приватно на вашому пристрої",
-  "openDay_showSuggestedStops": "Показати рекомендовані зупинки",
-  "openDay_showSuggestedStopsSemantic": "Показувати рекомендовані зупинки на головній",
-  "openDay_suggestedStopsForInterest": "Рекомендовані зупинки для «{interest}»",
-  "openDay_liveNowTitle": "Зараз у прямому ефірі",
-  "openDay_comingUpNextTitle": "Далі",
-  "openDay_liveNowForInterest": "Відповідає вашим інтересам",
-  "openDay_liveNowAcrossDay": "Відкрито для всіх відвідувачів",
-  "openDay_yourDayTitle": "Ваш день",
-  "openDay_yourDayEmpty": "Зберігайте сесії, які вам подобаються, щоб скласти власний план Дня відкритих дверей.",
-  "openDay_yourDayCount": "{count, plural, =1{Збережено 1 сесію} few{Збережено {count} сесії} other{Збережено {count} сесій}}",
-  "openDay_addToMyDay": "Додати до мого дня",
-  "openDay_removeFromMyDay": "Прибрати з мого дня",
-  "openDay_savedToMyDay": "Додано до вашого дня",
-  "openDay_removedFromMyDay": "Прибрано з вашого дня",
-  "openDay_clearMyDay": "Очистити мій день",
   "@@locale": "uk",
   "clear": "ясно",
   "routePanelMinimize": "Згорнути панель маршруту",
@@ -35,6 +8,7 @@
   "home": "Головна",
   "map": "Карта",
   "navigation": "Навігація",
+  "scanTab": "Сканувати",
   "settings": "Налаштування",
   "loading": "Завантаження...",
   "save": "Зберегти",
@@ -281,6 +255,25 @@
       }
     }
   },
+  "hoursMinutesShort": "{hours} год {minutes} хв",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} год",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Діагностика розробника",
   "buildVersion": "Збірка: 2026.04.22-бета",
   "renderer": "Рендерер: CrsSimple (Campus)",
@@ -332,6 +325,18 @@
   "openDay_clearSelection": "Очистити вибір",
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_searchBachelorHint": "Знайти свою програму",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Відповідну програму не знайдено",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Спробуйте інше слово",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
   },
   "openDay_headerWithDate": "ДЕНЬ ВІДКРИТИХ ДВІЙ · {date}",
   "@openDay_headerWithDate": {
@@ -439,6 +444,62 @@
   },
   "openDay_noEventsForSelection": "Наразі немає подій, що відповідають вашим навчальним інтересам.",
   "openDay_noEventsNoneSelected": "Виберіть свій інтерес, щоб побачити відповідні події.",
+  "openDay_showSuggestedStops": "Показати рекомендовані зупинки",
+  "openDay_showSuggestedStopsSemantic": "Показувати рекомендовані зупинки на головній",
+  "openDay_suggestedStopsForInterest": "Рекомендовані зупинки для «{interest}»",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Зараз у прямому ефірі",
+  "openDay_comingUpNextTitle": "Далі",
+  "openDay_liveNowForInterest": "Відповідає вашим інтересам",
+  "openDay_liveNowAcrossDay": "Відкрито для всіх відвідувачів",
+  "openDay_matchedToYourDegree": "Відповідає вашій програмі",
+  "openDay_generalOpenToAll": "Загальні · Відкрито для всіх",
+  "openDay_allSessionsLabel": "Усі сесії",
+  "openDay_yourDayTitle": "Ваш день",
+  "openDay_yourDayEmpty": "Зберігайте сесії, які вам подобаються, щоб скласти власний план Дня відкритих дверей.",
+  "openDay_yourDayCount": "{count, plural, =1{Збережено 1 сесію} few{Збережено {count} сесії} other{Збережено {count} сесій}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Додати до мого дня",
+  "openDay_removeFromMyDay": "Прибрати з мого дня",
+  "openDay_savedToMyDay": "Додано до вашого дня",
+  "openDay_removedFromMyDay": "Прибрано з вашого дня",
+  "openDay_clearMyDay": "Очистити мій день",
+  "openDay_clearMyDayConfirm": "Видалити всі збережені сесії та зупинки з вашого дня? Цю дію не можна скасувати.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Відвідано {count} з {total} зупинок",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Маршрут «{trail}» завершено",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Без входу · Приватно на вашому пристрої",
   "faculty_arts_label": "Факультет мистецтв",
   "faculty_arts_desc": "Гуманітарні науки, право, освіта, MMCCS",
   "faculty_business_label": "Бізнес-школа Macquarie",
@@ -567,12 +628,13 @@
   "safetyQuickActions": "Quick Actions",
   "safetyEmergencyContacts": "Emergency Contacts",
   "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
-  "scanTab": "Сканувати",
   "scanQrCta": "Сканувати",
   "scanPermissionDenied": "У доступі до камери відмовлено",
   "scanPermissionDeniedDesc": "Увімкніть доступ до камери в налаштуваннях, щоб сканувати QR-коди",
   "scanOpenSettings": "Відкрити налаштування",
   "scanDecodeError": "Не вдалося зчитати QR-код",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
   "scanNotOnTrail": "Не входить до маршруту",
   "scanNotOnTrailDesc": "Цей QR-код не входить до маршруту Open Day",
   "arNoBuildingSelected": "Виберіть будівлю, щоб побачити інтер'єр",
@@ -585,15 +647,56 @@
   "cardArPreviewTitle": "Перегляд AR",
   "cardNoArPreview": "Перегляд AR недоступний",
   "stopLiveNow": "Зараз наживо: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stopUpNext": "Далі: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationTitle": "Вітаємо!",
   "stampCelebrationCompleteTitle": "Паспорт заповнено!",
   "stampCelebrationSubtitle": "Ви зібрали штамп {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampCelebrationFirstNote": "Ваш паспорт Open Day розпочато",
   "stampCelebrationKeepExploring": "Продовжуйте досліджувати",
   "stampCelebrationViewPassport": "Переглянути мій паспорт",
   "stampAlreadyCollected": "Вже зібрано — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "stampAnnouncementCongrats": "Вітаємо. Ви зібрали штамп {location}. {count} з {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "stampsPassportTitle": "Мої штампи",
   "stampsPassportLockedHint": "Скануйте, щоб зібрати",
   "settingsMyStampsTile": "Мої штампи",
