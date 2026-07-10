@@ -67,6 +67,12 @@ lib/app/l10n/generated/
 web/google_maps_config.js
 ios/Flutter/Secrets.xcconfig
 
+# Open Day QR signing material must stay outside the repository.
+*.key
+*.pem
+*.seed
+**/mqj-open-day-*-private*
+
 # Firebase config (contains project-specific keys)
 google-services.json
 GoogleService-Info.plist
@@ -87,4 +93,3 @@ docs/superpowers/
 
 # Antigravity CLI workspace metadata
 .antigravitycli/
-
