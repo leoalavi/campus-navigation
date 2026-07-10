@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_journey/features/scan/application/qr_scan_orchestrator.dart';
 import 'package:mq_journey/features/scan/domain/contracts/progress_api.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_journey/features/scan/domain/fakes/fake_progress_api.dart';
 import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_journey/features/scan/domain/qr/qr_public_key_registry.dart';
+import 'package:mq_journey/features/scan/domain/qr/qr_signature_verifier.dart';
 import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
 
 void main() {
@@ -96,6 +101,48 @@ void main() {
     expect(outcome, const QrScanSaveFailed('wallys-1'));
     expect(routes, ['/location/wallys-1']);
     expect(notices, isEmpty);
+  });
+
+  test('all nine production payloads route and award exactly once', () async {
+    final trail = TrailManifest.fromJson(
+      File('assets/data/open_day_trail.json').readAsStringSync(),
+    );
+    final payloadDocument =
+        jsonDecode(
+              File('assets/qr/open_day/2026/manifest.json').readAsStringSync(),
+            )
+            as Map<String, dynamic>;
+    final payloads = (payloadDocument['locations'] as List)
+        .cast<Map<String, dynamic>>();
+    final verifier = QrSignatureVerifier(publicKeys: qrPublicKeys);
+    final progress = FakeProgressApi();
+    addTearDown(progress.dispose);
+
+    for (final entry in payloads) {
+      final locationId = entry['locationId']! as String;
+      final routes = <String>[];
+      final notices = <RecordedQrVisit>[];
+      final subject = QrScanOrchestrator(
+        validate: (raw, allowlist) =>
+            verifier.validate(raw, isAllowlisted: allowlist),
+        loadTrail: () async => trail,
+        progressApi: progress,
+        clock: () => DateTime.utc(2026, 7, 10, 2),
+        navigate: routes.add,
+        onRecorded: notices.add,
+      );
+
+      expect(
+        await subject.handleCandidate(entry['uri']! as String),
+        QrScanAccepted(locationId, isNewVisit: true),
+      );
+      expect(
+        await subject.handleCandidate(entry['uri']! as String),
+        QrScanAccepted(locationId, isNewVisit: false),
+      );
+      expect(routes, ['/location/$locationId', '/location/$locationId']);
+      expect(notices.map((notice) => notice.isNewVisit), [true, false]);
+    }
   });
 }
 

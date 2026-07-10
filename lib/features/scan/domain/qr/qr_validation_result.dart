@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:mq_journey/features/scan/domain/qr/signed_qr_payload.dart';
+import 'package:meta/meta.dart';
 
 enum QrRejectReason {
   malformedUri,

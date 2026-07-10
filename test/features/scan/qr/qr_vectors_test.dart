@@ -20,7 +20,41 @@ void main() {
       final verifier = QrSignatureVerifier(publicKeys: qrPublicKeys);
 
       expect(manifest['schema'], 'mqjourney.open-day.qr-manifest.v1');
-      expect(manifest['keyId'], 'mqj-open-day-2026-01');
+      expect(manifest['keyId'], 'mqj-open-day-2026-02');
+      expect(qrPublicKeys['mqj-open-day-2026-02'], <int>[
+        209,
+        64,
+        20,
+        197,
+        246,
+        35,
+        120,
+        175,
+        228,
+        192,
+        73,
+        158,
+        229,
+        14,
+        92,
+        141,
+        162,
+        201,
+        169,
+        219,
+        228,
+        161,
+        157,
+        171,
+        3,
+        84,
+        209,
+        226,
+        140,
+        108,
+        114,
+        26,
+      ]);
       expect(manifest['count'], 9);
       expect(locations, hasLength(9));
       expect(

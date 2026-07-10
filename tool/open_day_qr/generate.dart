@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:cryptography/cryptography.dart';
 import 'package:crypto/crypto.dart';
 import 'package:mq_journey/features/scan/domain/qr/qr_canonical_message.dart';
+import 'package:mq_journey/features/scan/domain/qr/qr_public_key_registry.dart';
 
 import 'canonical_payload.dart';
+import 'signing_key_validation.dart';
 import 'svg_renderer.dart';
 
 const expectedCensus = <(String, String)>[
@@ -35,6 +37,16 @@ Future<void> main(List<String> arguments) async {
     final seed = _readEd25519Seed(File(keyPath));
     final algorithm = Ed25519();
     final keyPair = await algorithm.newKeyPairFromSeed(seed);
+    final publicKey = await keyPair.extractPublicKey();
+    final publicFingerprint = requireSigningKeyMatch(
+      keyId: options['key-id']!,
+      actualPublicKey: publicKey.bytes,
+      publicKeys: qrPublicKeys,
+    );
+    stdout.writeln(
+      'keyId=${options['key-id']} '
+      'publicSha256=$publicFingerprint MATCH',
+    );
     final output = Directory(options['out']!);
     await output.create(recursive: true);
     final manifestLocations = <Map<String, Object>>[];

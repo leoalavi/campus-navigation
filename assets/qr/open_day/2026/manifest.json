@@ -1,79 +1,79 @@
 {
   "schema": "mqjourney.open-day.qr-manifest.v1",
-  "keyId": "mqj-open-day-2026-01",
+  "keyId": "mqj-open-day-2026-02",
   "count": 9,
   "locations": [
     {
       "locationId": "hadenfeld-10",
       "title": "10 Hadenfeld Avenue",
       "file": "hadenfeld-10.svg",
-      "uri": "io.mqjourney://open-day/location/hadenfeld-10?v=1&kid=mqj-open-day-2026-01&sig=18fTxT3Ht_mwzWrODeiFq1qTUpnns2Nv0kTCZ0lmUBq0RMTil9ItNKvOLMO_nGftMT-BtgI_rNdoJdXE3Oy4BQ",
-      "payloadSha256": "ecd5f6595d2d0811ceabde6799d5fcc5f5f8b2061fafb61c59f3ee4b6cb1e460",
-      "svgSha256": "c6632fbf5abf7365c0fb3b2aa9e44530b0f2750c81b016975f03338e9dbd6f02"
+      "uri": "io.mqjourney://open-day/location/hadenfeld-10?v=1&kid=mqj-open-day-2026-02&sig=PaN-gpKsMAlKKPIzYrr3qJgSFTTKfvftTAeBm68r9qhWVbHT55c8kGyuM6foil-fnqd7YIcnkqOrN6pqZeCBBg",
+      "payloadSha256": "a2a2fbf8ac5311b6af362609460cf52a430877116ccd5d2a5586e78606791361",
+      "svgSha256": "161d81c2190eb6d00e81988930353cfaa48300de50d7f13892ad168260983694"
     },
     {
       "locationId": "wallys-29",
       "title": "29 Wally's Walk",
       "file": "wallys-29.svg",
-      "uri": "io.mqjourney://open-day/location/wallys-29?v=1&kid=mqj-open-day-2026-01&sig=sM2Po2T5xUGSZ2aqPLVfvbaXhyMPaem4knvRFKeJ9oxZ3kBJv79zZr4oI_HadftN7fJqjZcrE_fYv4lHINTTDQ",
-      "payloadSha256": "f2f43403cf12e1a7a0e4aba42e6e09498ad94bf905d84531a99ae0f366cc95bf",
-      "svgSha256": "9e618b62ead426bef309fb6a60d938819ce29055c6c5df6bb252903c5159d81e"
+      "uri": "io.mqjourney://open-day/location/wallys-29?v=1&kid=mqj-open-day-2026-02&sig=WMweW1uQfgtKCvv-I4mFHEaZ4odLT_-aghl8zQvpEYguPzruKIDI-1yJLFayNJ1njCmNDyo45uYyujzTMmFYDQ",
+      "payloadSha256": "f0fcb7eb78dd48798368e73622b93216dac5fcb234e8c9158b73e999f67c3369",
+      "svgSha256": "d7c5b5a1203d77227f9612a15b9bd07bf78df0b736b3b7a2502b514a2ff64821"
     },
     {
       "locationId": "wallys-27",
       "title": "27 Wally's Walk",
       "file": "wallys-27.svg",
-      "uri": "io.mqjourney://open-day/location/wallys-27?v=1&kid=mqj-open-day-2026-01&sig=IGpAs9fpro-c_ZqjKLjR81HjYM9Ir40aEEj053rK5N5xyI6byDEN0CSZW9vC0o0eNsr-QE4UDMEoJshxHKkADA",
-      "payloadSha256": "57b31aa532adbd578550c99354a9c842e6418bc7bff3beace70db74f448fed50",
-      "svgSha256": "e914f3730831895de3669cea5ce618468ac36df4834d649be75e286decf3b717"
+      "uri": "io.mqjourney://open-day/location/wallys-27?v=1&kid=mqj-open-day-2026-02&sig=1oQTaB6w2yOCoGkWYOZ98_F7h6Yh5PMfZCLUEin3qtKUUyq-zDZqTn3JdRhZKAzRq5-nXxb366wLA_AzlZiZCg",
+      "payloadSha256": "bd96bda81f030c1ec506a901cad46f003b3df7f52d70380ef7c63b758738f3c1",
+      "svgSha256": "0d5d70bae30d14992829b481e101d79e052fdaaa7a18c69b8c693788d9d47ddb"
     },
     {
       "locationId": "wallys-23",
       "title": "23 Wally's Walk",
       "file": "wallys-23.svg",
-      "uri": "io.mqjourney://open-day/location/wallys-23?v=1&kid=mqj-open-day-2026-01&sig=lLCePFoO_aNkSq9peYAWsMSqFIW6RlkI0eMzLqrFPSOaoOD4vW-hvvUQUE0ysrrdkKqak3YlVipgQB_3ZBNSDg",
-      "payloadSha256": "9b348b1239b36c335d7ebc717ecb56595a4ab3fc0486b932e0221e72a7069a0d",
-      "svgSha256": "472d5cfd118a6d7c6bb6a627a118b07093e9757e1f989711ea6124741f239582"
+      "uri": "io.mqjourney://open-day/location/wallys-23?v=1&kid=mqj-open-day-2026-02&sig=Rhny8pb4wdIjJNkmBDk_h1u1ia55Hl86i3aZ7ijOpJqa-FO6zvbi4nkEcZ0TDm7YEu2dt9NKQm5psh0iFpHzAw",
+      "payloadSha256": "223723a8f07e5f9a84be7d062494ed74118d6a5ad216c8ed8ce4a71c8cde0c7a",
+      "svgSha256": "8cbbdcec40ff485e67ce5455d357516cf18b86663d7562fc08a39981f2985b24"
     },
     {
       "locationId": "wallys-21",
       "title": "21 Wally's Walk",
       "file": "wallys-21.svg",
-      "uri": "io.mqjourney://open-day/location/wallys-21?v=1&kid=mqj-open-day-2026-01&sig=l2SYgqH4ZUZED0o77KRoOTXi06U0CG8OCfc0KJu-ZfSoPXxZSWoRO1N7seCL82EZ7DL_nsgn9UxnDBKpQzD5CQ",
-      "payloadSha256": "0120bd026006b433cc8844f6d78d9325d448ab31d018a534979851344e9c70a2",
-      "svgSha256": "f4b7635a02f51960e4e9342f60bd4485d1a5a17ed2091f739653df4dd340d32c"
+      "uri": "io.mqjourney://open-day/location/wallys-21?v=1&kid=mqj-open-day-2026-02&sig=HA2Km8mAdfHqMEsQSs5fTIzpT4XIqMB9JHsiUq3kl_wUCdoyXFI-mE4qWUPPgro-HJL_OiZuOD2q15Idyiz1BQ",
+      "payloadSha256": "42f24a7bbcae5db0bd8477b3b6d13a3ec7335bd0db9c78c19b8cea4d29aa0c02",
+      "svgSha256": "08221858ac3e7606236d808d7555d1bbc1909f191a18bfbab17bb1e9a1a4368b"
     },
     {
       "locationId": "wallys-17",
       "title": "17 Wally's Walk",
       "file": "wallys-17.svg",
-      "uri": "io.mqjourney://open-day/location/wallys-17?v=1&kid=mqj-open-day-2026-01&sig=EdOJVECFmuBxFXJl618QLsWMh__7sdQFyXdENEvhIw_IQlSONp9Lg7pKsEeXiJj6dQNXkSMrCvIDzryxeEF1CQ",
-      "payloadSha256": "f0fa3f0f716e8e0d6c776f1f4c44142a151d43c81ce423860a7971c5c269d4e9",
-      "svgSha256": "77010b235bd9c8f830f46884ce295c606f4e7f8531dbd207a9f48b483b872648"
+      "uri": "io.mqjourney://open-day/location/wallys-17?v=1&kid=mqj-open-day-2026-02&sig=wZRXt1kRSVxzJk1F9REgt8BnULWmUzUeLtOj2FF9bLICyPi2nwBNXf5Jj5EpiTqESrYow2P5s9fTnd4MqRckDg",
+      "payloadSha256": "92b0a29b657a319a9a82619b1072a92c61434bd59580bc7f320f527eae0f4f37",
+      "svgSha256": "bbf04e0e309b1b390318b841a96763260e29cbdecf60408e92ddb2556d200bcc"
     },
     {
       "locationId": "ondaatje-14",
       "title": "14 Sir Christopher Ondaatje Avenue",
       "file": "ondaatje-14.svg",
-      "uri": "io.mqjourney://open-day/location/ondaatje-14?v=1&kid=mqj-open-day-2026-01&sig=BJt_1h5GnWUp-BFnOYZAb4JnDKSepWZAQ4iecQ7sXjA019LMi0FLIJUJF5qPK6f-r8RQgjut0lp_W2PRpRw-DQ",
-      "payloadSha256": "30c061c6388325b6bc1546bbe6f2378152c7caa8bce85ec70a388d9cb98d629d",
-      "svgSha256": "9b8dcb91bdd6ae9d1a63698b95a05fef3a40dff9012138e55a194122c9777c40"
+      "uri": "io.mqjourney://open-day/location/ondaatje-14?v=1&kid=mqj-open-day-2026-02&sig=-UU9iSfCBSg9i570zYwCckDqLmoe7-INmsZRrOI91Zbq2vmnGw2ztWPcz_PkiyxP97uI38N_pi2aF4Z4vkdHCw",
+      "payloadSha256": "d579b14082fcb2bb08508329f9e7d62e862c02d7cd46d27ef3b251946e08d073",
+      "svgSha256": "39cc98730b21fc81191692faf6721a5b3fc3e59b60f8e26d2ea5ed5f2f27bf2e"
     },
     {
       "locationId": "wallys-1",
       "title": "1 Wally's Walk",
       "file": "wallys-1.svg",
-      "uri": "io.mqjourney://open-day/location/wallys-1?v=1&kid=mqj-open-day-2026-01&sig=9Hk61FOS0hXuaoggjesvqewOBuLbHqMfOTz2p_7ocwMWFB-pLN8EzBnJLvYoOtOuRMdB7DAmNB9wiVie3ADcBw",
-      "payloadSha256": "19bde973898161006d5dd3d0b556c35fe7d48de64fc0f3d0e2754de99d2c36fb",
-      "svgSha256": "9e4b898569f35a38117ad8251d2daaca48c4039c510b66de4646022c5e31b4c0"
+      "uri": "io.mqjourney://open-day/location/wallys-1?v=1&kid=mqj-open-day-2026-02&sig=g10uApHOaGLdTad_e4hgpT_mleJFQUXL2E1p9kWHDk259FHlYohUECT-m_FncsBF9EcSkw5MvGptgNygmJ5kBg",
+      "payloadSha256": "c5a74b7fbe7c195269d818c5c9e637e22a71be2dce705d5884ed36accbda76ee",
+      "svgSha256": "ecf26760eb189acd1ef9e82f05a440b38fcd3de7cb08a734c4f74ff3adc9b789"
     },
     {
       "locationId": "wallys-25",
       "title": "25 Wally's Walk",
       "file": "wallys-25.svg",
-      "uri": "io.mqjourney://open-day/location/wallys-25?v=1&kid=mqj-open-day-2026-01&sig=luFWcf3UEYbDCaavUxI-8wUyWkvPztEZoBtkXwSrm6wQMOTgEh9RsuhLcqet1rFGgsL5FehED5Ye-SGNdiQ1BQ",
-      "payloadSha256": "23b3825f3ba783eba0e454a7b81ab06dd9df469b66e49950e91d5af1259e26ee",
-      "svgSha256": "6fd101b9bc16df6a873cbbf1196477b7437ddddf6b6640f8e104d0ac144e0cad"
+      "uri": "io.mqjourney://open-day/location/wallys-25?v=1&kid=mqj-open-day-2026-02&sig=J2QKq5bUqUR29XKylqtVUKQtN4tCGTuEkq-EqJZ4n4OD3ghzUmIiGslkvxcg_pJ3PeiO6u9ioMPJvER4zSF1Aw",
+      "payloadSha256": "20806c1457131c11a0a1974d6ca49e3fc37c9e613c827022f9935eac091c4381",
+      "svgSha256": "614f89cb32d7c45c8ffdb0a8cef245560a5ff5c10b925e04afe9a345a02d3a80"
     }
   ]
 }

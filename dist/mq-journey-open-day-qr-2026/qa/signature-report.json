@@ -1,0 +1,78 @@
+{
+  "schema": "mqjourney.open-day.qr-signature-report.v1",
+  "keyId": "mqj-open-day-2026-02",
+  "positives": [
+    {
+      "locationId": "hadenfeld-10",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    },
+    {
+      "locationId": "wallys-29",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    },
+    {
+      "locationId": "wallys-27",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    },
+    {
+      "locationId": "wallys-23",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    },
+    {
+      "locationId": "wallys-21",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    },
+    {
+      "locationId": "wallys-17",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    },
+    {
+      "locationId": "ondaatje-14",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    },
+    {
+      "locationId": "wallys-1",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    },
+    {
+      "locationId": "wallys-25",
+      "accepted": true,
+      "keyId": "mqj-open-day-2026-02"
+    }
+  ],
+  "negativeControls": [
+    {
+      "control": "locationMutation",
+      "result": "signatureMismatch"
+    },
+    {
+      "control": "keyIdMutation",
+      "result": "unknownKeyId"
+    },
+    {
+      "control": "versionMutation",
+      "result": "unsupportedVersion"
+    },
+    {
+      "control": "signatureMutation",
+      "result": "signatureMismatch"
+    },
+    {
+      "control": "duplicateSignature",
+      "result": "duplicateQueryKey"
+    },
+    {
+      "control": "signedUnknownLocation",
+      "result": "locationNotOnTrail"
+    }
+  ],
+  "allPassed": true
+}
