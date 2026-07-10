@@ -5,12 +5,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('trail and stamp catalogues equal the ordered nine-location census', () {
-    final trail = jsonDecode(
-      File('assets/data/open_day_trail.json').readAsStringSync(),
-    ) as Map<String, dynamic>;
-    final stamps = jsonDecode(
-      File('assets/data/open_day_stamps_catalog.json').readAsStringSync(),
-    ) as Map<String, dynamic>;
+    final trail =
+        jsonDecode(File('assets/data/open_day_trail.json').readAsStringSync())
+            as Map<String, dynamic>;
+    final stamps =
+        jsonDecode(
+              File(
+                'assets/data/open_day_stamps_catalog.json',
+              ).readAsStringSync(),
+            )
+            as Map<String, dynamic>;
 
     final trailLocations = (trail['locations'] as List)
         .cast<Map<String, dynamic>>()
