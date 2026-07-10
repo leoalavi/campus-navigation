@@ -73,7 +73,7 @@ void main() {
 
   test('duplicate detections during handling produce one visit', () async {
     final validation = Completer<QrValidationResult>();
-    final subject = orchestrator((_, __) => validation.future);
+    final subject = orchestrator((_, _) => validation.future);
 
     final first = subject.handleCandidate('signed');
     final duplicate = await subject.handleCandidate('signed');
@@ -88,7 +88,7 @@ void main() {
   test('local persistence failure opens card without reward notice', () async {
     progress.error = StateError('disk full');
     final subject = orchestrator(
-      (_, __) async => const ValidTrailQr('wallys-1', 'key'),
+      (_, _) async => const ValidTrailQr('wallys-1', 'key'),
     );
 
     final outcome = await subject.handleCandidate('signed');

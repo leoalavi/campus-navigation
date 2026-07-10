@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -143,7 +145,7 @@ class LocationCardPage extends ConsumerWidget {
     if (notice.isNewVisit) {
       final action = await showStampEarnedSheet(context, award);
       if (action == StampSheetAction.viewPassport && context.mounted) {
-        context.push('/stamps');
+        unawaited(context.push('/stamps'));
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

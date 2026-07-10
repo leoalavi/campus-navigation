@@ -905,8 +905,9 @@ class MapController extends AsyncNotifier<MapState> {
 /// the AR indoor view instead of the map. Bumping this counter tells the map
 /// page "this navigation wants the Campus Map" — without disturbing
 /// selections made from inside AR mode itself (which never bump it).
-final campusMapIntentProvider =
-    NotifierProvider<CampusMapIntentNotifier, int>(CampusMapIntentNotifier.new);
+final campusMapIntentProvider = NotifierProvider<CampusMapIntentNotifier, int>(
+  CampusMapIntentNotifier.new,
+);
 
 class CampusMapIntentNotifier extends Notifier<int> {
   @override

@@ -237,10 +237,13 @@ class _DraggableFooterState extends State<_DraggableFooter>
   @override
   void initState() {
     super.initState();
-    _settle = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 220),
-    )..addListener(() => setState(() => _offset = _settleTween.evaluate(_settle)));
+    _settle =
+        AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 220),
+        )..addListener(
+          () => setState(() => _offset = _settleTween.evaluate(_settle)),
+        );
   }
 
   @override
@@ -259,8 +262,8 @@ class _DraggableFooterState extends State<_DraggableFooter>
 
   void _onDragEnd(DragEndDetails details) {
     final panelHeight = context.size?.height ?? 240;
-    final flungDown = details.primaryVelocity != null &&
-        details.primaryVelocity! > 700;
+    final flungDown =
+        details.primaryVelocity != null && details.primaryVelocity! > 700;
     final draggedFar = _offset > panelHeight * 0.35;
     if ((flungDown || draggedFar) && widget.onDismiss != null) {
       widget.onDismiss!();
