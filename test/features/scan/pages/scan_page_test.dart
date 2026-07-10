@@ -1,16 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_adapter.dart';
+import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
 import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
 import 'package:mq_journey/features/scan/domain/fakes/fake_progress_api.dart';
 import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
 import 'package:mq_journey/features/scan/presentation/pages/scan_page.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/scanner_view.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/stamp_earned_sheet.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 
 const _fixtureManifest = TrailManifest(
@@ -42,6 +45,20 @@ Widget _buildTestApp() {
   );
 }
 
+String _signedUri() {
+  final manifest =
+      jsonDecode(
+            File('assets/qr/open_day/2026/manifest.json').readAsStringSync(),
+          )
+          as Map<String, dynamic>;
+  final locations = (manifest['locations'] as List)
+      .cast<Map<String, dynamic>>();
+  return locations.singleWhere(
+        (entry) => entry['locationId'] == 'wallys-1',
+      )['uri']
+      as String;
+}
+
 void main() {
   testWidgets('renders scan page with app bar', (tester) async {
     await tester.pumpWidget(_buildTestApp());
@@ -62,62 +79,57 @@ void main() {
     expect(find.byType(ScanPage), findsNothing);
   });
 
-  testWidgets(
-    'first scan of a catalogued location shows the celebration sheet',
-    (tester) async {
-      final progressApi = FakeProgressApi();
-      addTearDown(progressApi.dispose);
+  testWidgets('first signed scan routes and queues a first-visit reward', (
+    tester,
+  ) async {
+    final progressApi = FakeProgressApi();
+    addTearDown(progressApi.dispose);
 
-      final router = GoRouter(
-        initialLocation: '/scan',
-        routes: [
-          GoRoute(path: '/scan', builder: (_, _) => const ScanPage()),
-          GoRoute(
-            path: '/location/:locationId',
-            builder: (_, s) => Scaffold(
-              body: Text('location-${s.pathParameters['locationId']}'),
+    final router = GoRouter(
+      initialLocation: '/scan',
+      routes: [
+        GoRoute(path: '/scan', builder: (_, _) => const ScanPage()),
+        GoRoute(
+          path: '/location/:locationId',
+          builder: (_, s) => Consumer(
+            builder: (_, ref, _) => Scaffold(
+              body: Text(
+                'location-${s.pathParameters['locationId']}-'
+                '${ref.watch(pendingStampAwardProvider)?.isNewVisit}',
+              ),
             ),
           ),
-          GoRoute(
-            path: '/stamps',
-            builder: (_, _) => const Scaffold(body: Text('stamps-page')),
-          ),
-        ],
-      );
-
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            progressApiProvider.overrideWithValue(progressApi),
-            stampCatalogProvider.overrideWith((ref) async => _fixtureCatalog),
-            trailManifestProvider.overrideWith((ref) async => _fixtureManifest),
-          ],
-          child: MaterialApp.router(
-            routerConfig: router,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-          ),
         ),
-      );
-      await tester.pump();
+        GoRoute(
+          path: '/stamps',
+          builder: (_, _) => const Scaffold(body: Text('stamps-page')),
+        ),
+      ],
+    );
 
-      final scannerView = tester.widget<ScannerView>(find.byType(ScannerView));
-      scannerView.onDetect('https://mq.edu.au/scan?locationId=wallys-1');
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 400));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          progressApiProvider.overrideWithValue(progressApi),
+          stampCatalogProvider.overrideWith((ref) async => _fixtureCatalog),
+          trailManifestProvider.overrideWith((ref) async => _fixtureManifest),
+        ],
+        child: MaterialApp.router(
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
+      ),
+    );
+    await tester.pump();
 
-      expect(find.byType(StampEarnedSheet), findsOneWidget);
+    final scannerView = tester.widget<ScannerView>(find.byType(ScannerView));
+    scannerView.onDetect(_signedUri());
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
 
-      final l10n = AppLocalizations.of(
-        tester.element(find.byType(StampEarnedSheet)),
-      )!;
-      await tester.tap(find.text(l10n.stampCelebrationKeepExploring));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 400));
-
-      expect(find.text('location-wallys-1'), findsOneWidget);
-    },
-  );
+    expect(find.text('location-wallys-1-true'), findsOneWidget);
+  });
 
   testWidgets('re-scanning an already-collected location skips the sheet', (
     tester,
@@ -135,8 +147,13 @@ void main() {
         GoRoute(path: '/scan', builder: (_, _) => const ScanPage()),
         GoRoute(
           path: '/location/:locationId',
-          builder: (_, s) => Scaffold(
-            body: Text('location-${s.pathParameters['locationId']}'),
+          builder: (_, s) => Consumer(
+            builder: (_, ref, _) => Scaffold(
+              body: Text(
+                'location-${s.pathParameters['locationId']}-'
+                '${ref.watch(pendingStampAwardProvider)?.isNewVisit}',
+              ),
+            ),
           ),
         ),
       ],
@@ -159,11 +176,10 @@ void main() {
     await tester.pump();
 
     final scannerView = tester.widget<ScannerView>(find.byType(ScannerView));
-    scannerView.onDetect('https://mq.edu.au/scan?locationId=wallys-1');
+    scannerView.onDetect(_signedUri());
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
 
-    expect(find.byType(StampEarnedSheet), findsNothing);
-    expect(find.text('location-wallys-1'), findsOneWidget);
+    expect(find.text('location-wallys-1-false'), findsOneWidget);
   });
 }

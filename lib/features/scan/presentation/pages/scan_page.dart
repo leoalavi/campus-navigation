@@ -5,14 +5,13 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
 import 'package:mq_journey/app/router/route_names.dart';
+import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
+import 'package:mq_journey/features/scan/application/qr_scan_orchestrator.dart';
 import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_adapter.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
 import 'package:mq_journey/features/scan/domain/services/scan_branch_lifecycle.dart';
-import 'package:mq_journey/features/scan/domain/services/stamp_award_calculator.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/scanner_view.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/stamp_earned_sheet.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 enum _ScanState { scanning, decoding, denied, notOnTrail, decodeError }
@@ -26,18 +25,40 @@ class ScanPage extends ConsumerStatefulWidget {
 
 class _ScanPageState extends ConsumerState<ScanPage> {
   late final MobileScannerController _scannerController;
+  late final QrScanOrchestrator _orchestrator;
   _ScanState _currentScanState = _ScanState.scanning;
-  int _lastProcessed = 0;
   AppLifecycleListener? _lifecycleListener;
 
   @override
   void initState() {
     super.initState();
-    _scannerController = MobileScannerController();
+    _scannerController = MobileScannerController(autoStart: false);
+    final verifier = ref.read(qrSignatureVerifierProvider);
+    _orchestrator = QrScanOrchestrator(
+      validate: (raw, isAllowlisted) =>
+          verifier.validate(raw, isAllowlisted: isAllowlisted),
+      loadTrail: () => ref.read(trailManifestProvider.future),
+      progressApi: ref.read(progressApiProvider),
+      clock: DateTime.now,
+      navigate: (route) {
+        if (mounted) context.go(route);
+      },
+      onRecorded: (visit) {
+        ref
+            .read(pendingStampAwardProvider.notifier)
+            .setNotice(
+              PendingStampNotice(
+                locationId: visit.locationId,
+                isNewVisit: visit.isNewVisit,
+              ),
+            );
+      },
+    );
     _lifecycleListener = AppLifecycleListener(
       onPause: _onAppPause,
       onResume: _onAppResume,
     );
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startForScanIntent());
   }
 
   @override
@@ -59,83 +80,45 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     _scannerController.start();
   }
 
+  Future<void> _startForScanIntent() async {
+    if (!mounted) return;
+    try {
+      await _scannerController.start();
+    } on MobileScannerException {
+      // ScannerView's errorBuilder owns the localized permission/error state.
+    }
+  }
+
   void _toggleTorch() {
     _scannerController.toggleTorch();
   }
 
-  String? _parseLocationId(String raw) {
-    final uri = Uri.tryParse(raw);
-    if (uri == null) return null;
-    final host = uri.host.toLowerCase();
-    final isMqHost = host == 'mq.edu.au' || host.endsWith('.mq.edu.au');
-    if (isMqHost || uri.scheme == 'io.mqjourney') {
-      return uri.queryParameters['locationId'];
-    }
-    return null;
-  }
-
   Future<void> _onDetectBarcode(String raw) async {
-    final now = DateTime.now().millisecondsSinceEpoch;
-    if (now - _lastProcessed < 1500) return;
-    _lastProcessed = now;
-
     setState(() => _currentScanState = _ScanState.decoding);
-
-    final locationId = _parseLocationId(raw);
-    if (locationId == null) {
-      setState(() => _currentScanState = _ScanState.decodeError);
-      return;
-    }
-
-    final manifest = await ref.read(trailManifestProvider.future);
-    final location = manifest.byId(locationId);
-    if (location == null) {
-      setState(() => _currentScanState = _ScanState.notOnTrail);
-      return;
-    }
-
-    // Carry the building code so the visit is recorded against the building
-    // (the local visited-badge tracking is keyed by building code).
-    final visit = VisitEvent(
-      locationId: locationId,
-      buildingId: location.buildingId,
-      scannedAt: DateTime.now(),
-    );
-    final isNewVisit = await ref.read(progressApiProvider).recordVisit(visit);
-
-    final visitedCode = visit.buildingId ?? visit.locationId;
-    final catalog = await ref.read(stampCatalogProvider.future);
-    final visitedCodesAfter =
-        ref.read(settingsControllerProvider).value?.visitedLocationCodes ??
-        const <String>[];
-    final award = computeStampAward(
-      visitedCode: visitedCode,
-      visitedLocationCodesAfterVisit: visitedCodesAfter,
-      catalog: catalog,
-    );
-
+    final outcome = await _orchestrator.handleCandidate(raw);
     if (!mounted) return;
-
-    if (award != null) {
-      if (isNewVisit) {
-        final action = await showStampEarnedSheet(context, award);
-        if (action == StampSheetAction.viewPassport) {
-          if (!mounted) return;
-          context.push('/stamps');
-          return;
-        }
-      } else {
-        final l10n = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.stampAlreadyCollected(award.stamp.title)),
-          ),
+    switch (outcome) {
+      case QrScanRejected(:final reason):
+        setState(
+          () => _currentScanState = reason == QrRejectReason.locationNotOnTrail
+              ? _ScanState.notOnTrail
+              : _ScanState.decodeError,
         );
-      }
+      case QrScanSaveFailed(:final locationId):
+        ref
+            .read(pendingStampAwardProvider.notifier)
+            .setNotice(
+              PendingStampNotice(
+                locationId: locationId,
+                isNewVisit: false,
+                saveFailed: true,
+              ),
+            );
+      case QrScanIgnored():
+        setState(() => _currentScanState = _ScanState.scanning);
+      case QrScanAccepted():
+        break;
     }
-
-    if (!mounted) return;
-    context.go('/location/$locationId');
   }
 
   @override
@@ -209,9 +192,11 @@ class _ScanPageState extends ConsumerState<ScanPage> {
               Text(l10n.scanDecodeError),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () =>
-                    setState(() => _currentScanState = _ScanState.scanning),
-                child: const Text('Scan again'),
+                onPressed: () {
+                  setState(() => _currentScanState = _ScanState.scanning);
+                  _startForScanIntent();
+                },
+                child: Text(l10n.scanAgain),
               ),
             ],
           ),
@@ -231,9 +216,11 @@ class _ScanPageState extends ConsumerState<ScanPage> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () =>
-                    setState(() => _currentScanState = _ScanState.scanning),
-                child: const Text('Scan again'),
+                onPressed: () {
+                  setState(() => _currentScanState = _ScanState.scanning);
+                  _startForScanIntent();
+                },
+                child: Text(l10n.scanAgain),
               ),
             ],
           ),

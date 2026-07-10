@@ -17,6 +17,8 @@ import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
 import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
 import 'package:mq_journey/features/scan/domain/models/buildings_registry.dart';
 import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
+import 'package:mq_journey/features/scan/domain/qr/qr_public_key_registry.dart';
+import 'package:mq_journey/features/scan/domain/qr/qr_signature_verifier.dart';
 
 final trailRepositoryProvider = Provider<TrailRepository>(
   (ref) => TrailRepository(),
@@ -30,6 +32,10 @@ final buildingsRepositoryProvider = Provider<BuildingsRepository>(
 
 final trailManifestProvider = FutureProvider<TrailManifest>((ref) {
   return ref.read(trailRepositoryProvider).load();
+});
+
+final qrSignatureVerifierProvider = Provider<QrSignatureVerifier>((ref) {
+  return QrSignatureVerifier(publicKeys: qrPublicKeys);
 });
 
 final buildingsRegistryProvider = FutureProvider<BuildingsRegistry>((ref) {
