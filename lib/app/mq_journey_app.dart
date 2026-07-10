@@ -5,6 +5,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_journey/app/bootstrap/app_initialization.dart';
+import 'package:mq_journey/app/app_link_coordinator.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/app_router.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
@@ -12,6 +13,10 @@ import 'package:mq_journey/app/theme/mq_theme.dart';
 import 'package:mq_journey/core/error/error_boundary.dart';
 import 'package:mq_journey/features/notifications/presentation/controllers/notifications_controller.dart';
 import 'package:mq_journey/features/open_day/data/open_day_reminder_scheduler.dart';
+import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
+import 'package:mq_journey/features/scan/application/qr_scan_orchestrator.dart';
+import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_adapter.dart';
+import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:mq_journey/shared/widgets/open_day_wordmark.dart';
 
@@ -30,10 +35,33 @@ class MqJourneyApp extends ConsumerStatefulWidget {
 class _MqJourneyAppState extends ConsumerState<MqJourneyApp> {
   final AppLinks _appLinks = AppLinks();
   StreamSubscription<Uri>? _linkSubscription;
+  late final QrScanOrchestrator _openDayQrOrchestrator;
+  late final AppLinkCoordinator _appLinkCoordinator;
 
   @override
   void initState() {
     super.initState();
+    final verifier = ref.read(qrSignatureVerifierProvider);
+    _openDayQrOrchestrator = QrScanOrchestrator(
+      validate: (raw, isAllowlisted) =>
+          verifier.validate(raw, isAllowlisted: isAllowlisted),
+      loadTrail: () => ref.read(trailManifestProvider.future),
+      progressApi: ref.read(progressApiProvider),
+      clock: DateTime.now,
+      navigate: (route) => ref.read(appRouterProvider).go(route),
+      onRecorded: (visit) => ref
+          .read(pendingStampAwardProvider.notifier)
+          .setNotice(
+            PendingStampNotice(
+              locationId: visit.locationId,
+              isNewVisit: visit.isNewVisit,
+            ),
+          ),
+    );
+    _appLinkCoordinator = AppLinkCoordinator(
+      handleOpenDayQr: _handleOpenDayQr,
+      navigate: (route) => ref.read(appRouterProvider).go(route),
+    );
     _listenForDeepLinks();
   }
 
@@ -43,39 +71,30 @@ class _MqJourneyAppState extends ConsumerState<MqJourneyApp> {
     super.dispose();
   }
 
-  Future<void> _listenForDeepLinks() async {
-    final initial = await _appLinks.getInitialLink();
-    if (initial != null && mounted) {
-      _handleDeepLink(initial);
-    }
+  void _listenForDeepLinks() {
+    // app_links 7 delivers both the initial cold-start URI and warm links on
+    // this one stream. Using getInitialLink as well would create two ingresses.
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       if (!mounted) {
         return;
       }
-      _handleDeepLink(uri);
+      unawaited(_appLinkCoordinator.handle(uri));
     });
   }
 
-  void _handleDeepLink(Uri uri) {
-    if (uri.host != 'meet' ||
-        (uri.scheme != 'io.mqjourney' && uri.scheme != 'io.mqnavigation')) {
-      return;
+  Future<void> _handleOpenDayQr(String raw) async {
+    final outcome = await _openDayQrOrchestrator.handleCandidate(raw);
+    if (outcome case QrScanSaveFailed(:final locationId)) {
+      ref
+          .read(pendingStampAwardProvider.notifier)
+          .setNotice(
+            PendingStampNotice(
+              locationId: locationId,
+              isNewVisit: false,
+              saveFailed: true,
+            ),
+          );
     }
-
-    final latStr = uri.queryParameters['lat'];
-    final lngStr = uri.queryParameters['lng'];
-
-    // Guard: both parameters must be present and parseable.
-    // Previously null values produced '/meet?lat=null&lng=null', which
-    // navigated to MapPage with null coords and silently ignored navigation.
-    final lat = latStr != null ? double.tryParse(latStr) : null;
-    final lng = lngStr != null ? double.tryParse(lngStr) : null;
-    if (lat == null || lng == null) {
-      return;
-    }
-
-    final router = ref.read(appRouterProvider);
-    router.go('/meet?lat=$lat&lng=$lng');
   }
 
   @override

@@ -26,6 +26,10 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data
+              android:name="flutter_deeplinking_enabled"
+              android:value="false"
+              />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -37,6 +41,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="io.mqjourney" android:host="callback"/>
                 <data android:scheme="io.mqjourney" android:host="meet"/>
+                <data android:scheme="io.mqjourney" android:host="open-day"/>
                 <data android:scheme="io.mqnavigation" android:host="callback"/>
                 <data android:scheme="io.mqnavigation" android:host="meet"/>
             </intent-filter>
