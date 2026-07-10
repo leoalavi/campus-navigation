@@ -1,0 +1,17 @@
+{
+  "schema": "mqjourney.qr-rejection-matrix.v1",
+  "result": "pass",
+  "requiredNoEffects": ["progress", "route", "notice", "award"],
+  "cases": [
+    {"input":"malformed text","reason":"malformedUri","noEffects":true},
+    {"input":"wrong scheme","reason":"unsupportedScheme","noEffects":true},
+    {"input":"wrong host","reason":"unsupportedHost","noEffects":true},
+    {"input":"wrong path","reason":"invalidPath","noEffects":true},
+    {"input":"duplicate sig","reason":"duplicateQueryKey","noEffects":true},
+    {"input":"unknown query key","reason":"unknownQueryKey","noEffects":true},
+    {"input":"changed location with original signature","reason":"signatureMismatch","noEffects":true},
+    {"input":"unknown kid","reason":"unknownKeyId","noEffects":true},
+    {"input":"valid signature for off-trail ID","reason":"locationNotOnTrail","noEffects":true},
+    {"input":"verifier throws","reason":"internalFailClosed","noEffects":true}
+  ]
+}

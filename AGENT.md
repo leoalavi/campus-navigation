@@ -43,6 +43,12 @@ lib/
   features/settings/ → Theme, locale, notification preferences (local storage)
 ```
 
+### Raouf: 2026-07-10 (Australia/Sydney) — QR-to-card-to-stamp pipeline proof
+**Scope:** Nine production QR fixtures, identity conservation, scan/card/stamp composition, duplicate and rejection falsifiers, local persistence simulation, evidence reports, and device-closeout templates.
+**Summary:** Added a layered pipeline test harness that loads the committed production QR manifest, trail manifest, stamp catalogue, public-key registry, and root handoff assets. Domain tests now prove exact nine-location census equality, real strict parsing and Ed25519 verification, deterministic visit identity/time, matching route/stamp/passport state, canonical plus three seeded journeys, repeat idempotency, ten-frame single-flight behavior, and fail-closed rejection with zero effects. A full widget journey injects only decoded strings through `ScannerView.onDetect`, then exercises the production verifier, real `SettingsProgressApiAdapter` local path, GoRouter, `LocationCardPage`, pending-award controller, and `StampEarnedSheet` from 1/9 through 9/9 with reduced motion. Added content-safe evidence artifacts that mark isolated Supabase, Android/iPhone camera, and physical-print lanes pending rather than claiming unexecuted coverage.
+**Files Changed:** `docs/qr-card-stamp-pipeline-architecture.md`, `test/features/scan/pipeline/`, `test/features/scan/presentation/qr_to_location_card_widget_test.dart`, `artifacts/qr-card-stamp-pipeline/`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** The focused pipeline/presentation suite passed 12/12 tests; JSON evidence files passed `jq` validation; `flutter analyze --no-fatal-infos` returned zero errors with 19 pre-existing info lints. `bash scripts/check.sh` passed 13/13 gates, including the full Flutter suite, 57.45% coverage, localization, privacy, secret, stale-name, login-route, no-Google guards, and a fresh debug APK.
+**Follow-ups:** Run the isolated local/staging Supabase RLS and uniqueness lane, then complete all nine final PNG and representative paper scans on a physical Android phone and iPhone. Update the pending evidence files only from observed device/staging results.
 
 ### Raouf: 2026-07-10 (Australia/Sydney) — Root QR handoff folder and branch publication
 **Scope:** Human-readable root QR delivery folder, checksums, repository verification, commit, and remote branch publication.
