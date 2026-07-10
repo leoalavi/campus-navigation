@@ -79,6 +79,23 @@ void main() {
     expect(find.byType(ScanPage), findsNothing);
   });
 
+  testWidgets('tampered signed input shows a semantic verification failure', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_buildTestApp());
+    await tester.pump();
+    final scannerView = tester.widget<ScannerView>(find.byType(ScannerView));
+    scannerView.onDetect(_signedUri().replaceFirst('wallys-1', 'wallys-21'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.text('This QR code could not be verified'), findsOneWidget);
+    final semantics = tester.getSemantics(
+      find.text('This QR code could not be verified'),
+    );
+    expect(semantics.flagsCollection.isLiveRegion, isTrue);
+  });
+
   testWidgets('first signed scan routes and queues a first-visit reward', (
     tester,
   ) async {

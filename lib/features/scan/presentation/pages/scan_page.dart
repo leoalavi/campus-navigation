@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,6 +29,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
   late final MobileScannerController _scannerController;
   late final QrScanOrchestrator _orchestrator;
   _ScanState _currentScanState = _ScanState.scanning;
+  QrRejectReason? _lastRejectReason;
   AppLifecycleListener? _lifecycleListener;
 
   @override
@@ -69,15 +72,27 @@ class _ScanPageState extends ConsumerState<ScanPage> {
   }
 
   void _onAppPause() {
-    // Permission dialogs trigger lifecycle changes before the camera is ready;
-    // don't drive the controller until permission has been granted.
-    if (!_scannerController.value.hasCameraPermission) return;
-    _scannerController.pause();
+    unawaited(_stopScanner());
   }
 
   void _onAppResume() {
+    if (ref.read(activeShellBranchIndexProvider) != ShellBranchIndex.scan) {
+      return;
+    }
     if (!_scannerController.value.hasCameraPermission) return;
-    _scannerController.start();
+    unawaited(_startForScanIntent());
+  }
+
+  Future<void> _stopScanner() async {
+    if (!_scannerController.value.hasCameraPermission) return;
+    try {
+      if (_scannerController.value.torchState == TorchState.on) {
+        await _scannerController.toggleTorch();
+      }
+      await _scannerController.stop();
+    } on MobileScannerException {
+      // Lifecycle changes can race platform camera teardown; stay fail-safe.
+    }
   }
 
   Future<void> _startForScanIntent() async {
@@ -99,6 +114,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
     if (!mounted) return;
     switch (outcome) {
       case QrScanRejected(:final reason):
+        _lastRejectReason = reason;
         setState(
           () => _currentScanState = reason == QrRejectReason.locationNotOnTrail
               ? _ScanState.notOnTrail
@@ -183,22 +199,35 @@ class _ScanPageState extends ConsumerState<ScanPage> {
           ),
         );
       case _ScanState.decodeError:
+        final message = switch (_lastRejectReason) {
+          QrRejectReason.unsupportedScheme ||
+          QrRejectReason.unsupportedHost ||
+          QrRejectReason.invalidPath => l10n.scanNotMqCode,
+          QrRejectReason.unsupportedVersion ||
+          QrRejectReason.unknownKeyId => l10n.scanUnsupportedCode,
+          QrRejectReason.invalidSignatureEncoding ||
+          QrRejectReason.signatureMismatch => l10n.scanUnverifiedCode,
+          _ => l10n.scanDecodeError,
+        };
         return Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.error_outline, size: 64, color: Colors.red),
-              const SizedBox(height: 16),
-              Text(l10n.scanDecodeError),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() => _currentScanState = _ScanState.scanning);
-                  _startForScanIntent();
-                },
-                child: Text(l10n.scanAgain),
-              ),
-            ],
+          child: Semantics(
+            liveRegion: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                const SizedBox(height: 16),
+                Text(message),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() => _currentScanState = _ScanState.scanning);
+                    unawaited(_startForScanIntent());
+                  },
+                  child: Text(l10n.scanAgain),
+                ),
+              ],
+            ),
           ),
         );
       case _ScanState.notOnTrail:
@@ -218,7 +247,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
               ElevatedButton(
                 onPressed: () {
                   setState(() => _currentScanState = _ScanState.scanning);
-                  _startForScanIntent();
+                  unawaited(_startForScanIntent());
                 },
                 child: Text(l10n.scanAgain),
               ),
