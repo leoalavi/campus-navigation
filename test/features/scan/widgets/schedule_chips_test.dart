@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_journey/features/scan/domain/contracts/schedule_slot.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/schedule_chips.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 
-Widget _app(Widget child) => MaterialApp(home: Scaffold(body: child));
+Widget _app(Widget child) => MaterialApp(
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  supportedLocales: AppLocalizations.supportedLocales,
+  home: Scaffold(body: child),
+);
 
 final _slotA = ScheduleSlot(
   title: 'Opening Keynote',
@@ -28,8 +33,8 @@ void main() {
   ) async {
     await tester.pumpWidget(_app(ScheduleChips(liveNow: _slotA)));
 
-    expect(find.text('Live Now: Opening Keynote'), findsOneWidget);
-    expect(find.textContaining('Up Next:'), findsNothing);
+    expect(find.text('Live now: Opening Keynote'), findsOneWidget);
+    expect(find.textContaining('Up next:'), findsNothing);
   });
 
   testWidgets('renders both chips when both slots are set', (tester) async {
@@ -37,7 +42,7 @@ void main() {
       _app(ScheduleChips(liveNow: _slotA, comingUpNext: _slotB)),
     );
 
-    expect(find.text('Live Now: Opening Keynote'), findsOneWidget);
-    expect(find.text('Up Next: Campus Tour'), findsOneWidget);
+    expect(find.text('Live now: Opening Keynote'), findsOneWidget);
+    expect(find.text('Up next: Campus Tour'), findsOneWidget);
   });
 }

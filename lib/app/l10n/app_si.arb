@@ -703,5 +703,43 @@
   "stampsPassportTitle": "මගේ මුද්‍රා",
   "stampsPassportLockedHint": "රැස් කිරීමට ස්කෑන් කරන්න",
   "settingsMyStampsTile": "මගේ මුද්‍රා",
-  "settingsMyStampsSubtitle": "ඔබේ Open Day විදේශ ගමන් බලපත්‍රය බලන්න"
+  "settingsMyStampsSubtitle": "ඔබේ Open Day විදේශ ගමන් බලපත්‍රය බලන්න",
+  "indoorNoPreview": "No indoor preview available",
+  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "@indoorPreviewLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "arLoadError": "Could not load AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "@indoorConnections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoGallerySemantics": "Photo {index} of {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Badge earned!",
+  "scanBadgeVisited": "Visited"
 }

@@ -703,5 +703,43 @@
   "stampsPassportTitle": "मेरो स्ट्याम्प",
   "stampsPassportLockedHint": "सङ्कलन गर्न स्क्यान गर्नुहोस्",
   "settingsMyStampsTile": "मेरो स्ट्याम्प",
-  "settingsMyStampsSubtitle": "तपाईंको ओपन डे पासपोर्ट हेर्नुहोस्"
+  "settingsMyStampsSubtitle": "तपाईंको ओपन डे पासपोर्ट हेर्नुहोस्",
+  "indoorNoPreview": "No indoor preview available",
+  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "@indoorPreviewLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "arLoadError": "Could not load AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "@indoorConnections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoGallerySemantics": "Photo {index} of {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Badge earned!",
+  "scanBadgeVisited": "Visited"
 }
