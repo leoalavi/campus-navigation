@@ -64,6 +64,7 @@ dev_dependencies:
   crypto: ^3.0.6
   qr: ^4.0.0
 
+  riverpod: any
 flutter:
   uses-material-design: true
   generate: true

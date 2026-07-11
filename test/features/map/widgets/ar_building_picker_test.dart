@@ -13,7 +13,7 @@ import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
 
 class _MultiFakeTrailRepository extends TrailRepository {
   @override
-  Future<TrailManifest> load() async => TrailManifest(
+  Future<TrailManifest> load() async => const TrailManifest(
     locations: [
       TrailLocation(locationId: 'lib-01', buildingId: 'C3A', title: 'Library'),
       TrailLocation(
@@ -32,7 +32,7 @@ class _MultiFakeTrailRepository extends TrailRepository {
 
 class _SingleFakeTrailRepository extends TrailRepository {
   @override
-  Future<TrailManifest> load() async => TrailManifest(
+  Future<TrailManifest> load() async => const TrailManifest(
     locations: [
       TrailLocation(locationId: 'lib-01', buildingId: 'C3A', title: 'Library'),
       TrailLocation(
@@ -48,14 +48,14 @@ class _FakeIndoorRepository extends IndoorRepository {
   @override
   Future<IndoorManifest?> load(String buildingId) async {
     if (buildingId.toLowerCase() == 'c3a') {
-      return IndoorManifest(
+      return const IndoorManifest(
         nodes: [
           IndoorNode(id: 'lobby', image: 'c3a/lobby.jpg', description: 'Lobby'),
         ],
       );
     }
     if (buildingId.toLowerCase() == 'e7a') {
-      return IndoorManifest(
+      return const IndoorManifest(
         nodes: [
           IndoorNode(
             id: 'entrance',

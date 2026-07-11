@@ -16,10 +16,10 @@ class _FakeMapController extends MapController {
 Widget _app() {
   return ProviderScope(
     overrides: [mapControllerProvider.overrideWith(() => _FakeMapController())],
-    child: MaterialApp(
+    child: const MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const Scaffold(body: OverlayPickerSheet()),
+      home: Scaffold(body: OverlayPickerSheet()),
     ),
   );
 }

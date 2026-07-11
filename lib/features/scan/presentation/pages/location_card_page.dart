@@ -45,7 +45,46 @@ class LocationCardPage extends ConsumerWidget {
     }
 
     if (content == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      // Null means either "datasets still loading" or "no such location".
+      // Distinguish them: once the trail manifest has loaded, a null content
+      // is a genuinely unknown id (stale QR poster, mistyped deep link) —
+      // show a friendly dead-end instead of an infinite spinner.
+      final trailLoaded = ref.watch(trailManifestProvider).hasValue;
+      if (!trailLoaded) {
+        return const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        );
+      }
+      final l10n = AppLocalizations.of(context)!;
+      return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.location_off_outlined, size: 56),
+                const SizedBox(height: 16),
+                Text(l10n.scanNotOnTrail, textAlign: TextAlign.center),
+                const SizedBox(height: 8),
+                Text(
+                  l10n.scanNotOnTrailDesc,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: () => context.canPop()
+                      ? context.pop()
+                      : context.goNamed(RouteNames.home),
+                  child: Text(l10n.back),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
     }
 
     final loc = trail?.byId(locationId);

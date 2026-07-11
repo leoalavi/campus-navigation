@@ -21,6 +21,7 @@ import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/features/settings/data/repositories/settings_repository.dart';
 import 'package:mq_journey/shared/models/user_preferences.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/misc.dart' show Override;
 
 class _NoSchedule implements ScheduleProvider {
   @override
@@ -56,8 +57,8 @@ Widget _app() {
 }
 
 void main() {
-  final trail = TrailManifest(
-    locations: const [
+  const trail = TrailManifest(
+    locations: [
       TrailLocation(
         locationId: 'wallys-1',
         buildingId: 'wallys-1',
@@ -89,7 +90,7 @@ void main() {
   );
 
   // Inferred return type is List<Override> — never named explicitly.
-  baseOverrides({String? scheduleUrl, bool overrideVisitedState = true}) => [
+  List<Override> baseOverrides({String? scheduleUrl, bool overrideVisitedState = true}) => [
     trailManifestProvider.overrideWith((ref) async => trail),
     buildingsRegistryProvider.overrideWith((ref) async => registry),
     locationContentProvider.overrideWith(
@@ -129,8 +130,8 @@ void main() {
   });
 
   testWidgets('hides AR button when no scene anywhere', (tester) async {
-    final t = TrailManifest(
-      locations: const [
+    const t = TrailManifest(
+      locations: [
         TrailLocation(
           locationId: 'wallys-1',
           buildingId: 'wallys-1',

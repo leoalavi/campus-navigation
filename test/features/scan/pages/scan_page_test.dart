@@ -36,11 +36,11 @@ const _fixtureCatalog = [
 ];
 
 Widget _buildTestApp() {
-  return ProviderScope(
+  return const ProviderScope(
     child: MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const ScanPage(),
+      home: ScanPage(),
     ),
   );
 }

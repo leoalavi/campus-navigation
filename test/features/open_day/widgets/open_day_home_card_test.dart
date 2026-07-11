@@ -58,10 +58,10 @@ Widget _app({
         ),
       ),
     ],
-    child: MaterialApp(
+    child: const MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const Scaffold(body: OpenDayHomeCard()),
+      home: Scaffold(body: OpenDayHomeCard()),
     ),
   );
 }
