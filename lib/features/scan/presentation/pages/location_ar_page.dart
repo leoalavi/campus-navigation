@@ -33,7 +33,7 @@ class LocationArPage extends ConsumerWidget {
       appBar: AppBar(title: Text(l10n.cardArPreviewTitle)),
       body: trailAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Could not load AR: $e')),
+        error: (e, _) => Center(child: Text(l10n.arLoadError(e.toString()))),
         data: (trail) {
           final loc = trail.byId(locationId);
           final buildingId = loc?.buildingId;
@@ -43,7 +43,8 @@ class LocationArPage extends ConsumerWidget {
           final manifestAsync = ref.watch(indoorManifestProvider(buildingId));
           return manifestAsync.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, _) => Center(child: Text('Could not load AR: $e')),
+            error: (e, _) =>
+                Center(child: Text(l10n.arLoadError(e.toString()))),
             data: (manifest) {
               if (manifest == null || manifest.isEmpty) {
                 return Center(child: Text(l10n.cardNoArPreview));

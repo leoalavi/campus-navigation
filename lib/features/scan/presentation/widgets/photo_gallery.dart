@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 
 class PhotoGallery extends StatefulWidget {
   const PhotoGallery({
@@ -28,6 +29,7 @@ class _PhotoGalleryState extends State<PhotoGallery> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final images = _images;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -39,7 +41,7 @@ class _PhotoGalleryState extends State<PhotoGallery> {
             itemCount: images.length,
             onPageChanged: (i) => setState(() => _index = i),
             itemBuilder: (context, i) => Semantics(
-              label: 'Photo ${i + 1} of ${images.length}',
+              label: l10n.photoGallerySemantics(i + 1, images.length),
               image: true,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),

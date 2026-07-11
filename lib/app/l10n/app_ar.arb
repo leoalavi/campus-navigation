@@ -703,5 +703,43 @@
   "stampsPassportTitle": "طوابعي",
   "stampsPassportLockedHint": "امسح للجمع",
   "settingsMyStampsTile": "طوابعي",
-  "settingsMyStampsSubtitle": "اعرض جواز سفر Open Day الخاص بك"
+  "settingsMyStampsSubtitle": "اعرض جواز سفر Open Day الخاص بك",
+  "indoorNoPreview": "No indoor preview available",
+  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "@indoorPreviewLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "arLoadError": "Could not load AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "@indoorConnections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoGallerySemantics": "Photo {index} of {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Badge earned!",
+  "scanBadgeVisited": "Visited"
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
 
 class IndoorStopList extends StatelessWidget {
@@ -7,8 +8,9 @@ class IndoorStopList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (manifest.isEmpty) {
-      return const Center(child: Text('No indoor preview available'));
+      return Center(child: Text(l10n.indoorNoPreview));
     }
     return ListView.separated(
       itemCount: manifest.nodes.length,
@@ -19,7 +21,7 @@ class IndoorStopList extends StatelessWidget {
           leading: const Icon(Icons.location_on),
           title: Text(node.description.isNotEmpty ? node.description : node.id),
           subtitle: node.neighbours.isNotEmpty
-              ? Text('${node.neighbours.length} connection(s)')
+              ? Text(l10n.indoorConnections(node.neighbours.length))
               : null,
         );
       },

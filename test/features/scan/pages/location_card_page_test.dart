@@ -90,7 +90,10 @@ void main() {
   );
 
   // Inferred return type is List<Override> — never named explicitly.
-  List<Override> baseOverrides({String? scheduleUrl, bool overrideVisitedState = true}) => [
+  List<Override> baseOverrides({
+    String? scheduleUrl,
+    bool overrideVisitedState = true,
+  }) => [
     trailManifestProvider.overrideWith((ref) async => trail),
     buildingsRegistryProvider.overrideWith((ref) async => registry),
     locationContentProvider.overrideWith(

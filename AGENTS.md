@@ -65,7 +65,21 @@ Known pre-existing non-blockers: the no-Google guard false-positive and a Gradle
 ## 7. Workflow rules (Raouf change protocol)
 
 1. **Before changing code:** read `AGENT.md` + changelogs (`CHANGELOG.md`).
-2. **After changing code:** add a `### Raouf: <YYYY-MM-DD> (Australia/Sydney) — <title>` entry to **both** `AGENT.md` and `CHANGELOG.md` (newest-first, at the top), with **Scope / Summary / Files Changed / Verification / Follow-ups**.
+2. **After changing code:** add a `### Raouf: 2026-07-12 (Australia/Sydney) — Supplementary i18n audit and badge strings migration
+**Scope:** Supplementary sweep for unlocalized user-facing strings across all presentation widgets and logic.
+**Summary:** Conducted an exhaustive secondary audit of the codebase following the initial i18n migration. Found one remaining presentation widget (`card_visit_badge.dart`) containing unlocalized hardcoded strings ("Badge earned!" and "Visited"). Added new `scanBadgeEarned` and `scanBadgeVisited` keys to `app_en.arb`, backfilled them across all 35 non-English locale ARB files using a Python script, and regenerated the `app_localizations.dart` bundle. Injected `AppLocalizations` into `CardVisitBadge` and its corresponding test wrapper to finalize the migration. Noted that some background schedulers and controllers return English strings but safely deferred them as they lack `BuildContext`.
+**Files Changed:** `lib/app/l10n/app_*.arb` (35 files), `lib/features/scan/presentation/widgets/card_visit_badge.dart`, `test/features/scan/widgets/card_visit_badge_test.dart`, `AGENT.md`, `AGENTS.md`, and `CHANGELOG.md`.
+**Verification:** `flutter test test/features/scan/widgets/card_visit_badge_test.dart` passed. Generated l10n successfully.
+**Follow-ups:** Native speakers should translate the newly added `scanBadgeEarned` and `scanBadgeVisited` fallback strings in the 34 non-English ARB files.
+
+### Raouf: 2026-07-12 (Australia/Sydney) — Full repository-wide i18n audit and hardcoded strings migration
+**Scope:** Repository-wide i18n audit, non-English locale backfilling, and hardcoded string migration across all scan/AR presentation files.
+**Summary:** Conducted a full i18n audit across 35 supported locales. Identified `app_en.arb` as the canonical source. All existing keys perfectly matched across all locales. Audited the codebase for user-facing hardcoded strings and migrated them to the localization system. Replaced hardcoded strings in `indoor_preview_page.dart`, `location_ar_page.dart`, `indoor_stop_list.dart`, `scanner_view.dart`, `schedule_chips.dart`, and `photo_gallery.dart` with ARB keys (e.g., `indoorNoPreview`, `arLoadError`, `photoGallerySemantics`). Backfilled all 35 ARB files with the new English fallback strings to ensure identical structural key coverage across all locales and regenerated the `app_localizations.dart` bundle.
+**Files Changed:** `lib/app/l10n/app_*.arb` (35 files), `lib/features/scan/presentation/pages/indoor_preview_page.dart`, `lib/features/scan/presentation/pages/location_ar_page.dart`, `lib/features/scan/presentation/widgets/indoor_stop_list.dart`, `lib/features/scan/presentation/widgets/scanner_view.dart`, `lib/features/scan/presentation/widgets/schedule_chips.dart`, `lib/features/scan/presentation/widgets/photo_gallery.dart`, `AGENTS.md`, and `CHANGELOG.md`.
+**Verification:** `flutter analyze --no-fatal-infos` passed with 0 new issues. `flutter test` passed all tests. Generated l10n successfully. `python` script verified all 35 ARB files have exactly the same key coverage as the canonical English source. No structural breaks or pluralisation issues detected. 
+**Follow-ups:** Native speakers should translate the newly added English fallback strings in the 34 non-English ARB files.
+
+### Raouf: <YYYY-MM-DD> (Australia/Sydney) — <title>` entry to **both** `AGENT.md` and `CHANGELOG.md` (newest-first, at the top), with **Scope / Summary / Files Changed / Verification / Follow-ups**.
 3. When blocked or touching a library, fetch the **latest official docs** (Context7 MCP — mobile_scanner, flutter_inappwebview, riverpod, go_router, supabase, etc.) before guessing.
 4. Don't commit/push unless asked. If on `main`, branch first. Co-author trailer: `Co-Authored-By: Codex Opus 4.8 <noreply@anthropic.com>`.
 

@@ -19,6 +19,7 @@ class IndoorPreviewPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final manifestAsync = ref.watch(indoorManifestProvider(buildingId));
 
     // Prefer the building's friendly name from the Open Day trail (e.g.
@@ -51,7 +52,7 @@ class IndoorPreviewPage extends ConsumerWidget {
       body: manifestAsync.when(
         data: (manifest) {
           if (manifest == null || manifest.isEmpty) {
-            return const Center(child: Text('No indoor preview available'));
+            return Center(child: Text(l10n.indoorNoPreview));
           }
           return Column(
             children: [
@@ -63,7 +64,7 @@ class IndoorPreviewPage extends ConsumerWidget {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) =>
-            Center(child: Text('Could not load indoor preview: $e')),
+            Center(child: Text(l10n.indoorPreviewLoadError(e.toString()))),
       ),
     );
   }

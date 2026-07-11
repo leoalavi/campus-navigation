@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 
 class ScannerView extends StatelessWidget {
   const ScannerView({
@@ -23,6 +24,7 @@ class ScannerView extends StatelessWidget {
         if (raw != null) onDetect(raw);
       },
       errorBuilder: (context, error) {
+        final l10n = AppLocalizations.of(context)!;
         if (error.errorCode == MobileScannerErrorCode.permissionDenied) {
           return Center(
             child: Column(
@@ -32,7 +34,7 @@ class ScannerView extends StatelessWidget {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: onPermissionDenied,
-                  child: const Text('Open Settings'),
+                  child: Text(l10n.scanOpenSettings),
                 ),
               ],
             ),

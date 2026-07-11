@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/photo_gallery.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 
 void main() {
   testWidgets('renders one page per photo with dots', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: PhotoGallery(
             photos: [
@@ -25,6 +28,8 @@ void main() {
   testWidgets('falls back to fallbackAsset when photos empty', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: PhotoGallery(
             photos: [],

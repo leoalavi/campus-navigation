@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/domain/contracts/schedule_slot.dart';
 
 class ScheduleChips extends StatelessWidget {
@@ -8,12 +9,13 @@ class ScheduleChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final chips = <Widget>[];
     if (liveNow != null) {
       chips.add(
         Chip(
           avatar: const Icon(Icons.play_circle, size: 18),
-          label: Text('Live Now: ${liveNow!.title}'),
+          label: Text(l10n.stopLiveNow(liveNow!.title)),
           backgroundColor: Colors.green[50],
         ),
       );
@@ -22,7 +24,7 @@ class ScheduleChips extends StatelessWidget {
       chips.add(
         Chip(
           avatar: const Icon(Icons.schedule, size: 18),
-          label: Text('Up Next: ${comingUpNext!.title}'),
+          label: Text(l10n.stopUpNext(comingUpNext!.title)),
         ),
       );
     }

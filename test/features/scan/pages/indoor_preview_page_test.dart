@@ -17,7 +17,11 @@ void main() {
         overrides: [
           indoorManifestProvider.overrideWith((ref, id) => completer.future),
         ],
-        child: const MaterialApp(home: IndoorPreviewPage(buildingId: 'C3A')),
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: IndoorPreviewPage(buildingId: 'C3A'),
+        ),
       ),
     );
     await tester.pump();
@@ -31,7 +35,11 @@ void main() {
         overrides: [
           indoorManifestProvider.overrideWith((ref, id) async => null),
         ],
-        child: const MaterialApp(home: IndoorPreviewPage(buildingId: 'C3A')),
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: IndoorPreviewPage(buildingId: 'C3A'),
+        ),
       ),
     );
     await tester.pump();
@@ -46,7 +54,11 @@ void main() {
             (ref, id) async => const IndoorManifest(nodes: []),
           ),
         ],
-        child: const MaterialApp(home: IndoorPreviewPage(buildingId: 'C3A')),
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: IndoorPreviewPage(buildingId: 'C3A'),
+        ),
       ),
     );
     await tester.pump();
@@ -61,7 +73,11 @@ void main() {
         overrides: [
           indoorManifestProvider.overrideWith((ref, id) async => null),
         ],
-        child: const MaterialApp(home: IndoorPreviewPage(buildingId: 'C3A')),
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: IndoorPreviewPage(buildingId: 'C3A'),
+        ),
       ),
     );
     await tester.pump();

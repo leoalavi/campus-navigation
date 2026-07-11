@@ -43,6 +43,13 @@ lib/
   features/settings/ → Theme, locale, notification preferences (local storage)
 ```
 
+### Raouf: 2026-07-12 (Australia/Sydney) — Supplementary i18n audit and badge strings migration
+**Scope:** Supplementary sweep for unlocalized user-facing strings across all presentation widgets and logic.
+**Summary:** Conducted an exhaustive secondary audit of the codebase following the initial i18n migration. Found one remaining presentation widget (`card_visit_badge.dart`) containing unlocalized hardcoded strings ("Badge earned!" and "Visited"). Added new `scanBadgeEarned` and `scanBadgeVisited` keys to `app_en.arb`, backfilled them across all 35 non-English locale ARB files using a Python script, and regenerated the `app_localizations.dart` bundle. Injected `AppLocalizations` into `CardVisitBadge` and its corresponding test wrapper to finalize the migration. Noted that some background schedulers and controllers return English strings but safely deferred them as they lack `BuildContext`.
+**Files Changed:** `lib/app/l10n/app_*.arb` (35 files), `lib/features/scan/presentation/widgets/card_visit_badge.dart`, `test/features/scan/widgets/card_visit_badge_test.dart`, `AGENT.md`, `AGENTS.md`, and `CHANGELOG.md`.
+**Verification:** `flutter test test/features/scan/widgets/card_visit_badge_test.dart` passed. Generated l10n successfully.
+**Follow-ups:** Native speakers should translate the newly added `scanBadgeEarned` and `scanBadgeVisited` fallback strings in the 34 non-English ARB files.
+
 ### Raouf: 2026-07-10 (Australia/Sydney) — QR-to-card-to-stamp pipeline proof
 **Scope:** Nine production QR fixtures, identity conservation, scan/card/stamp composition, duplicate and rejection falsifiers, local persistence simulation, evidence reports, and device-closeout templates.
 **Summary:** Added a layered pipeline test harness that loads the committed production QR manifest, trail manifest, stamp catalogue, public-key registry, and root handoff assets. Domain tests now prove exact nine-location census equality, real strict parsing and Ed25519 verification, deterministic visit identity/time, matching route/stamp/passport state, canonical plus three seeded journeys, repeat idempotency, ten-frame single-flight behavior, and fail-closed rejection with zero effects. A full widget journey injects only decoded strings through `ScannerView.onDetect`, then exercises the production verifier, real `SettingsProgressApiAdapter` local path, GoRouter, `LocationCardPage`, pending-award controller, and `StampEarnedSheet` from 1/9 through 9/9 with reduced motion. Added content-safe evidence artifacts that mark isolated Supabase, Android/iPhone camera, and physical-print lanes pending rather than claiming unexecuted coverage.

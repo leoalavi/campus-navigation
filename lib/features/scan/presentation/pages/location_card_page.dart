@@ -51,9 +51,7 @@ class LocationCardPage extends ConsumerWidget {
       // show a friendly dead-end instead of an infinite spinner.
       final trailLoaded = ref.watch(trailManifestProvider).hasValue;
       if (!trailLoaded) {
-        return const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        );
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
       }
       final l10n = AppLocalizations.of(context)!;
       return Scaffold(

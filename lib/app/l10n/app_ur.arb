@@ -703,5 +703,43 @@
   "stampsPassportTitle": "میرے اسٹیمپ",
   "stampsPassportLockedHint": "جمع کرنے کے لیے اسکین کریں",
   "settingsMyStampsTile": "میرے اسٹیمپ",
-  "settingsMyStampsSubtitle": "اپنا اوپن ڈے پاسپورٹ دیکھیں"
+  "settingsMyStampsSubtitle": "اپنا اوپن ڈے پاسپورٹ دیکھیں",
+  "indoorNoPreview": "No indoor preview available",
+  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "@indoorPreviewLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "arLoadError": "Could not load AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "@indoorConnections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoGallerySemantics": "Photo {index} of {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Badge earned!",
+  "scanBadgeVisited": "Visited"
 }

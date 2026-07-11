@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/card_visit_badge.dart';
+import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 
-Widget _app(Widget child) => MaterialApp(home: Scaffold(body: child));
+Widget _app(Widget child) => MaterialApp(
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  supportedLocales: AppLocalizations.supportedLocales,
+  home: Scaffold(body: child),
+);
 
 void main() {
   testWidgets('renders nothing when the location has not been visited', (

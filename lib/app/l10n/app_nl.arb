@@ -703,5 +703,43 @@
   "stampsPassportTitle": "Mijn stempels",
   "stampsPassportLockedHint": "Scan om te verzamelen",
   "settingsMyStampsTile": "Mijn stempels",
-  "settingsMyStampsSubtitle": "Bekijk je Open Day-paspoort"
+  "settingsMyStampsSubtitle": "Bekijk je Open Day-paspoort",
+  "indoorNoPreview": "No indoor preview available",
+  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "@indoorPreviewLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "arLoadError": "Could not load AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "@indoorConnections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "photoGallerySemantics": "Photo {index} of {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Badge earned!",
+  "scanBadgeVisited": "Visited"
 }
