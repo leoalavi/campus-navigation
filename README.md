@@ -398,17 +398,6 @@ MQ Navigation began as a standalone Flutter campus wayfinding prototype, origina
 
 The original project report — written to satisfy the unit's assignment brief (app description, core features, audience personas, competitor advantages, technical credentials) — is kept for historical reference: [`PROJECT_REPORT.md`](PROJECT_REPORT.md).
 
-### Demo access
-
-For local evaluation against the test Supabase project referenced in `.env.example`, a demo account is available:
-
-```
-Email:    marker@mq-navigation.test
-Password: OpenDay2026!
-```
-
-These are **test-only credentials** for a non-production Supabase project. They are not connected to any real Macquarie University system, and email confirmation is disabled on that project so a fresh account can also be registered instantly from the Sign Up screen.
-
 <br/>
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=0:0f172a,30:a6192e,60:fbbf24,100:0f172a&height=2" width="100%"/>
