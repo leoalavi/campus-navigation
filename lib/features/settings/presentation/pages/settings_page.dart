@@ -1034,9 +1034,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   static List<String?> _orderedLocaleCodes(AppLocalizations l10n) {
     final languages = _localeCodes.where((c) => c != null).toList()
       ..sort(
-        (a, b) => _languageLabel(a, l10n).toLowerCase().compareTo(
-          _languageLabel(b, l10n).toLowerCase(),
-        ),
+        (a, b) => _languageLabel(
+          a,
+          l10n,
+        ).toLowerCase().compareTo(_languageLabel(b, l10n).toLowerCase()),
       );
     return <String?>[null, ...languages];
   }
