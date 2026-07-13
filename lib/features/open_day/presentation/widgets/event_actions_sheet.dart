@@ -13,11 +13,30 @@ import 'package:mq_journey/shared/extensions/context_extensions.dart';
 import 'package:mq_journey/shared/widgets/mq_bottom_sheet.dart';
 
 class EventActionsSheet extends ConsumerWidget {
-  const EventActionsSheet({super.key, required this.event});
+  const EventActionsSheet({
+    super.key,
+    required this.event,
+    required this.resolvedBuilding,
+  });
 
   final OpenDayEvent event;
+  final Building? resolvedBuilding;
 
   static Future<void> show(BuildContext context, OpenDayEvent event) async {
+    final container = ProviderScope.containerOf(context);
+    Building? resolvedBuilding;
+    if (event.buildingCode != null) {
+      try {
+        final buildings = await container.read(buildingRegistryProvider.future);
+        resolvedBuilding = _resolveBuilding(buildings, event.buildingCode);
+      } catch (_) {
+        // The final, stable sheet can still explain that no map location is
+        // available. Do not present a loading/fallback frame that later
+        // mutates into a different action sheet.
+      }
+    }
+    if (!context.mounted) return;
+
     // The sheet pops with `true` only when the user explicitly chooses the
     // map action. Swipe-dismiss / tap-outside pops with null — navigating on
     // that would yank the user to the Map tab they never asked for (and, for
@@ -26,17 +45,15 @@ class EventActionsSheet extends ConsumerWidget {
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => EventActionsSheet(event: event),
+      builder: (_) =>
+          EventActionsSheet(event: event, resolvedBuilding: resolvedBuilding),
     );
 
     if (openMap != true || !context.mounted || event.buildingCode == null) {
       return;
     }
 
-    final container = ProviderScope.containerOf(context);
-    final buildings = container.read(buildingRegistryProvider).value;
-    final resolved = _resolveBuilding(buildings, event.buildingCode);
-    final targetBuildingId = resolved?.id ?? event.buildingCode!;
+    final targetBuildingId = resolvedBuilding?.id ?? event.buildingCode!;
 
     // Re-emit the selection imperatively so the marker re-shows even when
     // the same building URL was opened before (go_router same-URL no-op).
@@ -55,9 +72,8 @@ class EventActionsSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
-    final buildingsAsync = ref.watch(buildingRegistryProvider);
-    final building = _resolveBuilding(buildingsAsync.value, event.buildingCode);
-    final hasResolvedBuilding = event.buildingCode != null && building != null;
+    final hasResolvedBuilding =
+        event.buildingCode != null && resolvedBuilding != null;
 
     return MqBottomSheet(
       child: Padding(

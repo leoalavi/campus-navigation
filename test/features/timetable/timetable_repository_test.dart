@@ -26,7 +26,7 @@ void main() {
         const classes = [
           TimetableClass(
             location: 'C3A',
-            name: 'COMP3130 Lecture',
+            name: 'Open Day Welcome Session',
             startIso: '2026-08-10T09:00:00.000',
           ),
           TimetableClass(
@@ -40,7 +40,7 @@ void main() {
         final loaded = await repository.loadClasses();
 
         expect(loaded.length, 2);
-        expect(loaded[0].name, 'COMP3130 Lecture');
+        expect(loaded[0].name, 'Open Day Welcome Session');
         expect(loaded[1].name, 'Tutorial');
       },
     );

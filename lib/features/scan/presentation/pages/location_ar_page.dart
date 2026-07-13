@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/indoor_webview.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/indoor_stop_list.dart';
+import 'package:mq_journey/features/scan/presentation/widgets/indoor_tour_view.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 
 /// Pure scene resolution (spec refinement #3): a valid stop scene wins;
@@ -61,18 +60,9 @@ class LocationArPage extends ConsumerWidget {
                 stopSceneId: stopScene,
                 entranceSceneId: loc.arSceneId,
               );
-              return Column(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: IndoorWebView(
-                      manifest: manifest,
-                      firstSceneId: firstScene,
-                    ),
-                  ),
-                  const Divider(height: 1),
-                  Expanded(flex: 2, child: IndoorStopList(manifest: manifest)),
-                ],
+              return IndoorTourView(
+                manifest: manifest,
+                firstSceneId: firstScene,
               );
             },
           );
