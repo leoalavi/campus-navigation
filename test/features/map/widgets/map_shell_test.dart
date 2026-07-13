@@ -50,4 +50,27 @@ void main() {
     await tester.tap(find.text('Campus Map'));
     expect(changed, MapMode.campusMap);
   });
+
+  testWidgets(
+    'hides the AR-mode toggle when showArModeToggle is false (indoor preview)',
+    (tester) async {
+      await tester.pumpWidget(
+        _wrap(
+          MapShell(
+            mapView: const SizedBox.shrink(),
+            onCenterOnLocation: () {},
+            onOpenSearch: () {},
+            mapMode: MapMode.ar,
+            onMapModeChanged: (_) {},
+            showArModeToggle: false,
+            arContent: const Text('indoor-preview'),
+          ),
+        ),
+      );
+
+      // The preview owns the top bar, so the floating toggle must not overlap it.
+      expect(find.text('indoor-preview'), findsOneWidget);
+      expect(find.byType(MapModeToggle), findsNothing);
+    },
+  );
 }
