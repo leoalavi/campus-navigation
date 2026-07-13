@@ -68,6 +68,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  config:
+    enable-swift-package-manager: false
   assets:
     - assets/data/
     - assets/data/indoor/
