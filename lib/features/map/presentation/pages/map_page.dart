@@ -612,6 +612,13 @@ class _MapPageState extends ConsumerState<MapPage> {
             mapMode: _mapMode,
             onMapModeChanged: (mode) => setState(() => _mapMode = mode),
             arContent: _buildArContent(),
+            // In AR mode the selected-building indoor preview owns its own
+            // AppBar (with the location name); don't float the mode toggle
+            // over it, or the two overlap. The preview's Back button returns
+            // to the picker, where the toggle is shown again.
+            showArModeToggle:
+                !(_mapMode == MapMode.ar &&
+                    mapState.selectedBuilding?.code != null),
           );
         },
         error: (error, _) => Center(

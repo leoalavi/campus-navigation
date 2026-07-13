@@ -21,6 +21,7 @@ class MapShell extends StatelessWidget {
     this.mapMode,
     this.onMapModeChanged,
     this.arContent,
+    this.showArModeToggle = true,
   });
 
   final Widget mapView;
@@ -37,6 +38,12 @@ class MapShell extends StatelessWidget {
   final MapMode? mapMode;
   final ValueChanged<MapMode>? onMapModeChanged;
   final Widget? arContent;
+
+  /// Whether to float the Campus Map / AR toggle over AR content. Set false
+  /// when the AR content is a full page that already owns the top bar (e.g.
+  /// the selected-building indoor preview, whose AppBar shows the location
+  /// name) — otherwise the floating toggle overlaps that title.
+  final bool showArModeToggle;
 
   static const double _bottomControlsReservedHeight = 80;
   static const double _topOverlayHeight = 180;
@@ -181,7 +188,10 @@ class MapShell extends StatelessWidget {
 
         // In AR mode the campus overlay above is hidden, so surface the mode
         // toggle on its own — otherwise there is no way back to Campus Map.
-        if (!isCampusMap && mapMode != null && onMapModeChanged != null)
+        if (!isCampusMap &&
+            showArModeToggle &&
+            mapMode != null &&
+            onMapModeChanged != null)
           Positioned(
             top: safeTop + MqSpacing.space4,
             left: MqSpacing.space4,
