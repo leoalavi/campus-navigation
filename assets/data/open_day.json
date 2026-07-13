@@ -1,5 +1,5 @@
 {
-  "//": "Open Day dataset for MQ Navigation. SOURCE OF TRUTH: official 'Macquarie University Open Day 2026 — Open Day info sessions' PDF. Sessions run 45 minutes. Faculties: FoA=arts, FMHHS=fmhhs, FSE=fse, MQBS=mbs. General/topic sessions have empty bachelorIds (open to everyone). NOTE: the PDF does not state the Open Day calendar date; openDayDate is carried from the previously confirmed 2026-08-15 (a Saturday) and should be reconfirmed against the official date when published.",
+  "//": "Open Day dataset for MQ Journey. SOURCE OF TRUTH: official 'Macquarie University Open Day 2026 — Open Day info sessions' PDF. Sessions run 45 minutes. Faculties: FoA=arts, FMHHS=fmhhs, FSE=fse, MQBS=mbs. General/topic sessions have empty bachelorIds (open to everyone). NOTE: the PDF does not state the Open Day calendar date; openDayDate is carried from the previously confirmed 2026-08-15 (a Saturday) and should be reconfirmed against the official date when published.",
   "openDayDate": "2026-08-15",
   "lastUpdated": "2026-06-29",
   "studyAreas": [

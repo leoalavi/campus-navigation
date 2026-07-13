@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -33,7 +35,11 @@ final _unmappableEvent = OpenDayEvent(
   bachelorIds: const [],
 );
 
-Widget _app({required OpenDayEvent event, required List<Building> buildings}) {
+Widget _app({
+  required OpenDayEvent event,
+  required List<Building> buildings,
+  Future<List<Building>>? buildingsFuture,
+}) {
   final router = GoRouter(
     initialLocation: '/open-day',
     routes: [
@@ -58,7 +64,9 @@ Widget _app({required OpenDayEvent event, required List<Building> buildings}) {
 
   return ProviderScope(
     overrides: [
-      buildingRegistryProvider.overrideWith((ref) async => buildings),
+      buildingRegistryProvider.overrideWith(
+        (ref) => buildingsFuture ?? Future.value(buildings),
+      ),
     ],
     child: MaterialApp.router(
       routerConfig: router,
@@ -84,6 +92,38 @@ void main() {
       expect(find.text(l10n.openDay_viewInCampusMap), findsOneWidget);
     },
   );
+
+  testWidgets('waits for venue resolution before showing one stable sheet', (
+    tester,
+  ) async {
+    final buildings = Completer<List<Building>>();
+    await tester.pumpWidget(
+      _app(
+        event: _mappableEvent,
+        buildings: const [],
+        buildingsFuture: buildings.future,
+      ),
+    );
+
+    await tester.tap(find.text('open'));
+    await tester.pump();
+
+    expect(find.byType(EventActionsSheet), findsNothing);
+    expect(
+      find.text('No map location is available for this event yet.'),
+      findsNothing,
+    );
+
+    buildings.complete(const [_building]);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(EventActionsSheet), findsOneWidget);
+    expect(find.text('View in Campus Map'), findsOneWidget);
+    expect(
+      find.text('No map location is available for this event yet.'),
+      findsNothing,
+    );
+  });
 
   testWidgets(
     'shows the no-mappable-venue copy when the venue cannot be resolved',
@@ -118,6 +158,23 @@ void main() {
       expect(find.text('open'), findsOneWidget);
     },
   );
+
+  testWidgets('can dismiss and reopen the same event sheet', (tester) async {
+    await tester.pumpWidget(
+      _app(event: _mappableEvent, buildings: const [_building]),
+    );
+
+    for (var cycle = 0; cycle < 2; cycle++) {
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+      expect(find.byType(EventActionsSheet), findsOneWidget);
+
+      await tester.tapAt(const Offset(400, 40));
+      await tester.pumpAndSettle();
+      expect(find.byType(EventActionsSheet), findsNothing);
+      expect(tester.takeException(), isNull);
+    }
+  });
 
   testWidgets(
     'dismissing the sheet for an unmappable event does not crash or navigate',

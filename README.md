@@ -18,13 +18,13 @@
 
 <br/>
 
-# MQ Journey — Privacy-First Campus Companion
+# MQ Journey — Macquarie University Open Day Companion
 
 > **Find your way around Macquarie — without selling your data.**
 
-A production-ready Flutter client for Macquarie University's campus — flutter_map illustrated campus, turn-by-turn routing, compass mode, campus safety toolkit, transit countdowns, and 35-language i18n. **Privacy by design: no account needed, zero tracking, no location history.**
+A production-ready Open Day campus companion for Macquarie University visitors — with an illustrated campus map, personalised sessions, indoor previews, transit countdowns, and 35-language i18n. **Privacy by design: no account needed, zero tracking, no location history.**
 
-Part of a **two frontends, one backend** architecture sharing a Supabase backend with the [Syllabus Sync](https://github.com/mrpouyaalavi/syllabus-sync) Next.js web application. Submitted for **COMP3130 Mobile App Development — Major Project (May 2026)** and pitched as the official navigation companion for the **Macquarie University Open Day** experience.
+Part of a **two frontends, one backend** architecture sharing a Supabase backend with the companion Next.js web application. MQ Journey is built specifically for the **Macquarie University Open Day** visitor experience.
 
 **[📖 Project Report](PROJECT_REPORT.md)** &nbsp;·&nbsp; **[📸 Screenshots](screenshots/)** &nbsp;·&nbsp; **[🏗️ Architecture](docs/ARCHITECTURE.md)** &nbsp;·&nbsp; **[🔐 Security Posture](docs/SECURITY_POSTURE.md)**
 
@@ -400,7 +400,7 @@ Built with the support of the open-source community. This project benefits from:
 ```text
 > Authors    : Pouya Alavi Naeini — Software Engineer | Raouf Abedini — Back-End Developer
 > University : Macquarie University, Sydney, NSW
-> Unit       : COMP3130 Mobile App Development — Major Project (50%)
+> Product    : Macquarie University Open Day campus companion
 > Submission : [●] READY — 295 tests passing · 0 analyzer issues
 ```
 

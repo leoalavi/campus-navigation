@@ -137,6 +137,22 @@ void main() {
       expect(find.text(l10n.dangerZone.toUpperCase()), findsOneWidget);
     });
 
+    testWidgets('positions MQ Journey as an Open Day companion', (
+      tester,
+    ) async {
+      setupLargeViewport(tester);
+      await tester.pumpWidget(buildTestApp());
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Macquarie University Open Day companion'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('MQ Journey Open Day team'), findsOneWidget);
+      expect(find.textContaining('Campus Management'), findsNothing);
+      expect(find.textContaining('COMP3130'), findsNothing);
+    });
+
     testWidgets('toggling haptics switch invokes repository savePreferences', (
       tester,
     ) async {

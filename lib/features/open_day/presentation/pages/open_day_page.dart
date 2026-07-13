@@ -469,9 +469,7 @@ class _EventTile extends ConsumerWidget {
               ),
             ),
           ),
-          // Direction action: opens an action sheet rather than going
-          // straight to a single destination, since we want the user to
-          // consciously choose between in-app context and external nav.
+          // Venue action: opens the stable in-app Campus Map handoff sheet.
           Semantics(
             button: true,
             label: l10n.openDay_directionsTo(event.venueName),

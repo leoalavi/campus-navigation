@@ -78,6 +78,24 @@
       hotSpotDiv.appendChild(label);
     }
 
+    var mqViewer = null;
+
+    function reportSceneChange(sceneId) {
+      if (window.flutter_inappwebview &&
+          window.flutter_inappwebview.callHandler) {
+        window.flutter_inappwebview.callHandler(
+          'indoorSceneChanged',
+          sceneId
+        );
+      }
+    }
+
+    function selectScene(sceneId) {
+      if (mqViewer && mqViewer.getScene() !== sceneId) {
+        mqViewer.loadScene(sceneId);
+      }
+    }
+
     function loadTour(config) {
       try {
         var scenes = (config && config.scenes) || {};
@@ -90,7 +108,8 @@
             delete hs.text;
           });
         });
-        pannellum.viewer('panorama', config);
+        mqViewer = pannellum.viewer('panorama', config);
+        mqViewer.on('scenechange', reportSceneChange);
       } catch (e) {
         console.error('Pannellum load failed:', e);
       }

@@ -2,7 +2,7 @@ import FirebaseCore
 import Flutter
 import UIKit
 
-/// App delegate for MQ Navigation.
+/// App delegate for MQ Journey.
 ///
 /// Plugin registration is performed by calling
 /// `GeneratedPluginRegistrant.register(with: self)` at the top of
@@ -33,7 +33,7 @@ import UIKit
 
     // ── Firebase (optional) ───────────────────────────────────────────────
     // Firebase is used exclusively for FCM push notifications.
-    // MQ Navigation's primary backend is Supabase; Firebase can be absent when
+    // MQ Journey's primary backend is Supabase; Firebase can be absent when
     // GoogleService-Info.plist is not in the bundle (dev builds / CI without
     // secrets). The file-existence guard prevents a fatal crash so the app
     // launches normally even without a Firebase config.

@@ -6,7 +6,7 @@ void main() {
     test('toJson/fromJson round-trips all fields', () {
       const original = TimetableClass(
         location: 'C3A',
-        name: 'COMP3130 Lecture',
+        name: 'Open Day Welcome Session',
         startIso: '2026-08-10T09:00:00.000',
       );
 
@@ -14,7 +14,7 @@ void main() {
       final restored = TimetableClass.fromJson(json);
 
       expect(restored.location, 'C3A');
-      expect(restored.name, 'COMP3130 Lecture');
+      expect(restored.name, 'Open Day Welcome Session');
       expect(restored.startIso, '2026-08-10T09:00:00.000');
     });
 

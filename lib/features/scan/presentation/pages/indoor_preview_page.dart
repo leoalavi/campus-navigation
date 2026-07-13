@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/indoor_webview.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/indoor_stop_list.dart';
+import 'package:mq_journey/features/scan/presentation/widgets/indoor_tour_view.dart';
 
 class IndoorPreviewPage extends ConsumerWidget {
   const IndoorPreviewPage({super.key, required this.buildingId, this.onBack});
@@ -54,13 +53,7 @@ class IndoorPreviewPage extends ConsumerWidget {
           if (manifest == null || manifest.isEmpty) {
             return Center(child: Text(l10n.indoorNoPreview));
           }
-          return Column(
-            children: [
-              Expanded(flex: 3, child: IndoorWebView(manifest: manifest)),
-              const Divider(height: 1),
-              Expanded(flex: 2, child: IndoorStopList(manifest: manifest)),
-            ],
-          );
+          return IndoorTourView(manifest: manifest);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) =>

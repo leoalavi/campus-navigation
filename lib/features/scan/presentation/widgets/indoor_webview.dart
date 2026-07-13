@@ -23,12 +23,24 @@ Future<void> _ensureIndoorServer() =>
     _indoorServerStart ??= _indoorAssetServer.start();
 
 class IndoorWebView extends StatefulWidget {
-  const IndoorWebView({super.key, required this.manifest, this.firstSceneId});
+  const IndoorWebView({
+    super.key,
+    required this.manifest,
+    this.firstSceneId,
+    this.sceneId,
+    this.onSceneChanged,
+  });
   final IndoorManifest manifest;
 
   /// Scene id Pannellum should open on first. When null (or not a known node)
   /// the viewer opens the manifest's first node.
   final String? firstSceneId;
+
+  /// Scene the existing viewer should switch to after initial load.
+  final String? sceneId;
+
+  /// Reports scene changes made inside Pannellum, including hotspot taps.
+  final ValueChanged<String>? onSceneChanged;
 
   @override
   State<IndoorWebView> createState() => _IndoorWebViewState();
@@ -37,6 +49,9 @@ class IndoorWebView extends StatefulWidget {
 class _IndoorWebViewState extends State<IndoorWebView> {
   bool _serverReady = kIsWeb;
   bool _serverFailed = false;
+  InAppWebViewController? _webViewController;
+  String? _currentSceneId;
+  bool _tourLoaded = false;
 
   @override
   void initState() {
@@ -58,6 +73,29 @@ class _IndoorWebViewState extends State<IndoorWebView> {
       // reads as a hang.
       if (mounted) setState(() => _serverFailed = true);
     }
+  }
+
+  @override
+  void didUpdateWidget(covariant IndoorWebView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.sceneId != oldWidget.sceneId) {
+      _loadScene(widget.sceneId);
+    }
+  }
+
+  Future<void> _loadScene(String? sceneId) async {
+    final controller = _webViewController;
+    if (!_tourLoaded ||
+        controller == null ||
+        sceneId == null ||
+        sceneId == _currentSceneId ||
+        !widget.manifest.nodes.any((node) => node.id == sceneId)) {
+      return;
+    }
+    _currentSceneId = sceneId;
+    await controller.evaluateJavascript(
+      source: 'selectScene(${jsonEncode(sceneId)});',
+    );
   }
 
   /// Base URL the viewer page + panorama images are served from.
@@ -94,6 +132,22 @@ class _IndoorWebViewState extends State<IndoorWebView> {
         url: WebUri('$_viewerBase/web/indoor_viewer.html'),
       ),
       initialSettings: _settings,
+      onWebViewCreated: (controller) {
+        _webViewController = controller;
+        controller.addJavaScriptHandler(
+          handlerName: 'indoorSceneChanged',
+          callback: (arguments) {
+            if (arguments.isEmpty || arguments.first is! String) return null;
+            final sceneId = arguments.first as String;
+            if (!widget.manifest.nodes.any((node) => node.id == sceneId)) {
+              return null;
+            }
+            _currentSceneId = sceneId;
+            widget.onSceneChanged?.call(sceneId);
+            return null;
+          },
+        );
+      },
       onLoadStop: (controller, _) async {
         // Manifest `image` values already include the `indoor/` segment
         // (e.g. `indoor/c3a_entrance.jpg`), which maps to
@@ -105,6 +159,9 @@ class _IndoorWebViewState extends State<IndoorWebView> {
         await controller.evaluateJavascript(
           source: 'loadTour(${jsonEncode(config)});',
         );
+        _tourLoaded = true;
+        _currentSceneId = widget.sceneId ?? widget.firstSceneId;
+        await _loadScene(widget.sceneId);
       },
     );
   }

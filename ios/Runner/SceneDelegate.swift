@@ -1,7 +1,7 @@
 import Flutter
 import UIKit
 
-/// Scene lifecycle delegate for MQ Navigation.
+/// Scene lifecycle delegate for MQ Journey.
 ///
 /// `FlutterSceneDelegate` (Flutter 3.24+) handles:
 ///   • Creating the `UIWindow` and loading `Main.storyboard`.
