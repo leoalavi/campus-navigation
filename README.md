@@ -56,25 +56,19 @@ Most Open Day experiences are a printed map and a generic PDF timetable. MQ Jour
 
 ## Screenshots
 
-> ⚠️ **TODO:** The screenshots below are from an earlier 3-tab build (pre-Scan/AR, old crimson theme) and no longer reflect the current 4-tab Open Day UI or magenta/plum branding. Replace with fresh captures of Home, the study-interest picker, Open Day schedule, Your Day, Journey map, AR/indoor preview, Scan, and Settings.
-
 <div align="center">
 
-| Home *(outdated — TODO: replace)* | Journey / Campus Map *(outdated — TODO: replace)* |
+| Home | Journey / Campus Map |
 |:---:|:---:|
-| <img width="320" alt="Home dashboard (outdated screenshot)" src="screenshots/02_home_page.png"/> | <img width="320" alt="Journey campus map (outdated screenshot)" src="screenshots/03_map_page.png"/> |
+| <img width="320" alt="Home dashboard with Open Day hero, Scan QR CTA and study-interest card" src="screenshots/Home Page.png"/> | <img width="320" alt="Journey tab showing the Campus Map with faculty results" src="screenshots/Campus map.png"/> |
 
-| Study interest picker | Open Day schedule |
+| AR / Indoor locations | Scan QR Code |
 |:---:|:---:|
-| _TODO: add screenshot_ | _TODO: add screenshot_ |
+| <img width="320" alt="AR tab listing indoor-tour locations" src="screenshots/AR.png"/> | <img width="320" alt="QR code scanner view" src="screenshots/QR code Scanner.png"/> |
 
-| Your Day | Scan / AR preview |
+| Settings | |
 |:---:|:---:|
-| _TODO: add screenshot_ | _TODO: add screenshot_ |
-
-| Settings *(outdated — TODO: replace)* | |
-|:---:|:---:|
-| <img width="320" alt="Settings (outdated screenshot)" src="screenshots/07_settings_page.png"/> | |
+| <img width="320" alt="Settings screen with Open Day preferences" src="screenshots/Settings.png"/> | |
 
 </div>
 
@@ -215,7 +209,7 @@ supabase/functions/    Edge Functions (tfnsw-proxy, notify, cleanup-cron, maps-r
 assets/data/           open_day.json, buildings.json, indoor/ (panorama manifests + images)
 assets/web/            indoor_viewer.html + vendored Pannellum assets
 docs/                  Reference documents (architecture, security, inventories)
-screenshots/           Screen captures used in this README (see TODOs above)
+screenshots/           Screen captures used in this README
 scripts/               run.sh, check.sh (quality gate)
 ```
 
