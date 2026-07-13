@@ -274,7 +274,7 @@
       }
     }
   },
-  "devDiagnostics": "تشخيصات المطور",
+  "devDiagnostics": "تشخيصات المطوّر",
   "buildVersion": "الإصدار: 2026.04.22-beta",
   "renderer": "العارض: CrsSimple (الحرم)",
   "edgeProxy": "الوكيل الطرفي: maps-places (نشط)",
@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "اختر برنامج بكالوريوس — يبقى على جهازك ويخصص فعاليات يوم الانفتاح.",
+  "openDay_pickerSubtitle": "اختر برنامجًا أو مجال اهتمام — يبقى على جهازك ويخصص فعاليات يوم الانفتاح.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "البحث عن تخصصك",
+  "openDay_searchBachelorHint": "ابحث عن البرامج والاهتمامات",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "لم يتم العثور على تخصص مطابق",
+  "openDay_noBachelorMatch": "لم يتم العثور على برنامج أو اهتمام مطابق",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "التالي",
   "onboardingStart": "ابدأ الاستكشاف",
   "openDay_interestedInStudying": "ما الذي تهتم بدراسته؟",
-  "openDay_pickBachelorCta": "اختر درجة بكالوريوس لتخصيص يومك.",
+  "openDay_pickBachelorCta": "اختر اهتمامًا دراسيًا لتخصيص يومك.",
   "openDay_noSessionsYet": "لا توجد جلسات معلوماتية متطابقة بعد — انقر لعرض الجدول الكامل.",
   "openDay_pageTitle": "يوم الانفتاح",
   "openDay_loadError": "تعذّر تحميل بيانات يوم الانفتاح. يرجى المحاولة مرة أخرى لاحقاً.",
   "openDay_pickInterest": "اختر ما يهمك",
-  "openDay_chooseBachelorFilter": "اختر درجة بكالوريوس لتصفية الجدول. يبقى على جهازك.",
+  "openDay_chooseBachelorFilter": "اختر اهتمامًا دراسيًا لتصفية الجدول. يبقى على جهازك.",
   "openDay_showingMatchedSessions": "عرض الجلسات المعلوماتية المتطابقة مع اهتمامك الدراسي.",
   "openDay_chooseInterest": "اختر الاهتمام",
   "openDay_changeInterest": "تغيير",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "انتقل إلى الأمان",
   "safetyPrivacyNote": "لا تتم مشاركة موقعك تلقائيًا أبدًا. يمكنك اختيار وقت الاتصال أو التنقل.",
   "privacyBadge": "خاص حسب التصميم: لا يوجد حساب، ولا تتبع، ولا يوجد سجل للمواقع.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "المفضلة",
+  "favoritesEmpty": "لا توجد مبانٍ محفوظة بعد.\nتصفح الخريطة لإضافة بعضها.",
+  "favoritesAddNote": "إضافة ملاحظة",
+  "favoritesEditNote": "تعديل الملاحظة",
+  "favoritesRemove": "إزالة",
+  "favoritesDeleteConfirm": "إزالة هذه المفضلة؟",
+  "favoritesDeleteConfirmBody": "سيؤدي هذا إلى إزالة {buildingName} من مفضلتك.",
+  "favoritesDeleteYes": "نعم، إزالة",
+  "favoritesDeleteCancel": "إلغاء",
+  "favoritesNoteHint": "أضف ملاحظة...",
+  "favoritesSaveNote": "حفظ",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "الطوارئ (الشرطة، الإطفاء، الإسعاف)",
+  "safetyEmergencyDesc": "لحالات الطوارئ المهددة للحياة فقط",
+  "safetySecurityLabel": "أمن الحرم الجامعي",
+  "safetySecurityDesc": "أمن الحرم على مدار الساعة، حافلة مكوكية، إسعافات أولية",
+  "safetyHealthLabel": "الخدمة الصحية",
+  "safetyHealthDesc": "مواعيد الخدمة الصحية الجامعية",
+  "safetySupportLabel": "دعم MQ خارج أوقات الدوام",
+  "safetySupportDesc": "‏1800 CRISIS — خط دعم الصحة النفسية",
+  "safetyNoLocations": "لا تتوفر مواقع",
+  "safetyFlashlightDesc": "استخدام فلاش كاميرا الجهاز كمصباح",
+  "safetyNavigateToSecurityDesc": "فتح خريطة الحرم إلى مكتب الأمن",
+  "safetyNavigateToSecurityToast": "التوجه إلى الأمن — يتم فتح خريطة الحرم",
+  "safetyQuickActions": "إجراءات سريعة",
+  "safetyEmergencyContacts": "جهات اتصال الطوارئ",
+  "safetyFlashlightUnavailable": "المصباح غير متاح على هذا الجهاز",
   "scanQrCta": "مسح",
   "scanPermissionDenied": "تم رفض إذن الكاميرا",
   "scanPermissionDeniedDesc": "فعّل الوصول إلى الكاميرا في الإعدادات لمسح رموز QR",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "امسح للجمع",
   "settingsMyStampsTile": "طوابعي",
   "settingsMyStampsSubtitle": "اعرض جواز سفر Open Day الخاص بك",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "لا تتوفر معاينة داخلية",
+  "indoorPreviewLoadError": "تعذر تحميل المعاينة الداخلية: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "تعذر تحميل الواقع المعزز: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{اتصال واحد} other{{count} اتصالات}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "الصورة {index} من {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "حصلت على شارة!",
+  "scanBadgeVisited": "تمت الزيارة"
 }

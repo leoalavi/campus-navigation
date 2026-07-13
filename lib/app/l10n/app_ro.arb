@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Alegeți un program de licență — rămâne pe dispozitivul dvs. și personalizează evenimentele Open Day.",
+  "openDay_pickerSubtitle": "Alegeți un program sau un domeniu de interes — rămâne pe dispozitivul dvs. și personalizează evenimentele Open Day.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Caută specializarea ta",
+  "openDay_searchBachelorHint": "Căutați programe și interese",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Nu s-a găsit o specializare corespunzătoare",
+  "openDay_noBachelorMatch": "Nu s-a găsit niciun program sau interes corespunzător",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Înainte",
   "onboardingStart": "Începeți explorarea",
   "openDay_interestedInStudying": "Ce vă interesează să studiați?",
-  "openDay_pickBachelorCta": "Alegeți o licență pentru a personaliza ziua.",
+  "openDay_pickBachelorCta": "Alegeți un interes de studiu pentru a personaliza ziua.",
   "openDay_noSessionsYet": "Nicio sesiune informativă potrivită încă — atingeți pentru a vedea programul complet.",
   "openDay_pageTitle": "Ziua porților deschise",
   "openDay_loadError": "Nu s-au putut încărca datele Open Day. Încercați din nou mai târziu.",
   "openDay_pickInterest": "Alegeți ce vă interesează",
-  "openDay_chooseBachelorFilter": "Alegeți o licență pentru a filtra programul. Rămâne pe acest dispozitiv.",
+  "openDay_chooseBachelorFilter": "Alegeți un interes de studiu pentru a filtra programul. Rămâne pe acest dispozitiv.",
   "openDay_showingMatchedSessions": "Se afișează sesiunile informative care corespund interesului dvs. de studiu.",
   "openDay_chooseInterest": "Alegeți interesul",
   "openDay_changeInterest": "Modifică",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Navigați la Securitate",
   "safetyPrivacyNote": "Locația dvs. nu este niciodată partajată automat. Tu alegi când să apelezi sau să navighezi.",
   "privacyBadge": "Privat prin design: fără cont, fără urmărire, fără istoric de locație.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Favorite",
+  "favoritesEmpty": "Încă nu există clădiri salvate.\nRăsfoiți harta pentru a adăuga.",
+  "favoritesAddNote": "Adăugați o notă",
+  "favoritesEditNote": "Editați nota",
+  "favoritesRemove": "Eliminați",
+  "favoritesDeleteConfirm": "Eliminați acest favorit?",
+  "favoritesDeleteConfirmBody": "Aceasta va elimina {buildingName} din favorite.",
+  "favoritesDeleteYes": "Da, eliminați",
+  "favoritesDeleteCancel": "Anulați",
+  "favoritesNoteHint": "Adăugați o notă...",
+  "favoritesSaveNote": "Salvați",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Urgență (poliție, pompieri, ambulanță)",
+  "safetyEmergencyDesc": "Doar pentru urgențe care pun viața în pericol",
+  "safetySecurityLabel": "Securitatea campusului",
+  "safetySecurityDesc": "Securitatea campusului 24/7, navetă, prim ajutor",
+  "safetyHealthLabel": "Serviciu medical",
+  "safetyHealthDesc": "Programări la serviciul medical al universității",
+  "safetySupportLabel": "Asistență MQ în afara programului",
+  "safetySupportDesc": "1800 CRISIS — Linie de asistență pentru sănătate mintală",
+  "safetyNoLocations": "Nicio locație disponibilă",
+  "safetyFlashlightDesc": "Folosiți blițul camerei dispozitivului ca lanternă",
+  "safetyNavigateToSecurityDesc": "Deschideți harta campusului spre biroul de securitate",
+  "safetyNavigateToSecurityToast": "Navigare către securitate — se deschide harta campusului",
+  "safetyQuickActions": "Acțiuni rapide",
+  "safetyEmergencyContacts": "Contacte de urgență",
+  "safetyFlashlightUnavailable": "Lanterna nu este disponibilă pe acest dispozitiv",
   "scanQrCta": "Scanează",
   "scanPermissionDenied": "Permisiunea camerei a fost refuzată",
   "scanPermissionDeniedDesc": "Activați accesul la cameră în Setări pentru a scana coduri QR",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Scanează pentru a colecta",
   "settingsMyStampsTile": "Ștampilele mele",
   "settingsMyStampsSubtitle": "Vizualizează-ți pașaportul Open Day",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Nicio previzualizare interioară disponibilă",
+  "indoorPreviewLoadError": "Nu s-a putut încărca previzualizarea interioară: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "Nu s-a putut încărca AR: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{1 conexiune} few{{count} conexiuni} other{{count} de conexiuni}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Fotografia {index} din {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Insignă obținută!",
+  "scanBadgeVisited": "Vizitat"
 }

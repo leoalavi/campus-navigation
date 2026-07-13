@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "بیچلر پروگرام منتخب کریں — آپ کے ڈیوائس پر رہتا ہے اور Open Day پروگراموں کو ذاتی بناتا ہے۔",
+  "openDay_pickerSubtitle": "کوئی پروگرام یا دلچسپی منتخب کریں — آپ کے ڈیوائس پر رہتا ہے اور Open Day پروگراموں کو ذاتی بناتا ہے۔",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "اپنی ڈگری تلاش کریں",
+  "openDay_searchBachelorHint": "پروگرام اور دلچسپیاں تلاش کریں",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "کوئی مماثل ڈگری نہیں ملی",
+  "openDay_noBachelorMatch": "کوئی مماثل پروگرام یا دلچسپی نہیں ملی",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "اگلا",
   "onboardingStart": "دریافت شروع کریں",
   "openDay_interestedInStudying": "آپ کیا پڑھنا چاہتے ہیں؟",
-  "openDay_pickBachelorCta": "اپنا دن ذاتی بنانے کے لیے بیچلر منتخب کریں۔",
+  "openDay_pickBachelorCta": "اپنا دن ذاتی بنانے کے لیے مطالعے کی دلچسپی منتخب کریں۔",
   "openDay_noSessionsYet": "ابھی کوئی ملنے والا معلوماتی سیشن نہیں — پورا شیڈول دیکھنے کے لیے ٹیپ کریں۔",
   "openDay_pageTitle": "کھلے دن",
   "openDay_loadError": "Open Day ڈیٹا لوڈ نہیں ہو سکا۔ براہ کرم بعد میں دوبارہ کوشش کریں۔",
   "openDay_pickInterest": "اپنی دلچسپی منتخب کریں",
-  "openDay_chooseBachelorFilter": "شیڈول فلٹر کرنے کے لیے بیچلر منتخب کریں۔ اس ڈیوائس پر محفوظ رہتا ہے۔",
+  "openDay_chooseBachelorFilter": "شیڈول فلٹر کرنے کے لیے مطالعے کی دلچسپی منتخب کریں۔ اس ڈیوائس پر محفوظ رہتا ہے۔",
   "openDay_showingMatchedSessions": "آپ کی تعلیمی دلچسپی سے ملتے معلوماتی سیشن دکھائے جا رہے ہیں۔",
   "openDay_chooseInterest": "دلچسپی منتخب کریں",
   "openDay_changeInterest": "تبدیل کریں",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "سیکیورٹی پر جائیں۔",
   "safetyPrivacyNote": "آپ کا مقام کبھی بھی خود بخود شیئر نہیں ہوتا ہے۔ آپ انتخاب کرتے ہیں کہ کب کال کرنا ہے یا نیویگیٹ کرنا ہے۔",
   "privacyBadge": "ڈیزائن کے لحاظ سے نجی: کوئی اکاؤنٹ نہیں، کوئی ٹریکنگ نہیں، مقام کی تاریخ نہیں۔",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "پسندیدہ",
+  "favoritesEmpty": "ابھی تک کوئی عمارت محفوظ نہیں کی گئی۔\nشامل کرنے کے لیے نقشہ دیکھیں۔",
+  "favoritesAddNote": "نوٹ شامل کریں",
+  "favoritesEditNote": "نوٹ میں ترمیم کریں",
+  "favoritesRemove": "ہٹائیں",
+  "favoritesDeleteConfirm": "یہ پسندیدہ ہٹائیں؟",
+  "favoritesDeleteConfirmBody": "اس سے {buildingName} آپ کی پسندیدہ فہرست سے ہٹ جائے گا۔",
+  "favoritesDeleteYes": "ہاں، ہٹائیں",
+  "favoritesDeleteCancel": "منسوخ کریں",
+  "favoritesNoteHint": "ایک نوٹ شامل کریں...",
+  "favoritesSaveNote": "محفوظ کریں",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "ہنگامی (پولیس، فائر، ایمبولینس)",
+  "safetyEmergencyDesc": "صرف جان لیوا ہنگامی صورتحال کے لیے",
+  "safetySecurityLabel": "کیمپس سیکیورٹی",
+  "safetySecurityDesc": "24/7 کیمپس سیکیورٹی، شٹل، ابتدائی طبی امداد",
+  "safetyHealthLabel": "صحت کی خدمت",
+  "safetyHealthDesc": "یونیورسٹی ہیلتھ سروس کی ملاقاتیں",
+  "safetySupportLabel": "MQ اوقات کار کے بعد معاونت",
+  "safetySupportDesc": "1800 CRISIS — ذہنی صحت معاونت لائن",
+  "safetyNoLocations": "کوئی مقام دستیاب نہیں",
+  "safetyFlashlightDesc": "ڈیوائس کیمرہ فلیش کو روشنی کے طور پر استعمال کریں",
+  "safetyNavigateToSecurityDesc": "سیکیورٹی آفس تک کیمپس کا نقشہ کھولیں",
+  "safetyNavigateToSecurityToast": "سیکیورٹی کی طرف نیویگیٹ کریں — کیمپس کا نقشہ کھل رہا ہے",
+  "safetyQuickActions": "فوری اقدامات",
+  "safetyEmergencyContacts": "ہنگامی رابطے",
+  "safetyFlashlightUnavailable": "اس ڈیوائس پر فلیش لائٹ دستیاب نہیں",
   "scanQrCta": "اسکین کریں",
   "scanPermissionDenied": "کیمرے کی اجازت مسترد کر دی گئی",
   "scanPermissionDeniedDesc": "QR کوڈز اسکین کرنے کے لیے ترتیبات میں کیمرے تک رسائی فعال کریں",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "جمع کرنے کے لیے اسکین کریں",
   "settingsMyStampsTile": "میرے اسٹیمپ",
   "settingsMyStampsSubtitle": "اپنا اوپن ڈے پاسپورٹ دیکھیں",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "کوئی انڈور پیش منظر دستیاب نہیں",
+  "indoorPreviewLoadError": "انڈور پیش منظر لوڈ نہیں ہو سکا: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR لوڈ نہیں ہو سکا: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, one{1 کنکشن} other{{count} کنکشنز}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "{total} میں سے تصویر {index}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "بیج حاصل کیا!",
+  "scanBadgeVisited": "دیکھا گیا"
 }

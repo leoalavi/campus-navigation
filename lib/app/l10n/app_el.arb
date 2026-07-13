@@ -274,7 +274,7 @@
       }
     }
   },
-  "devDiagnostics": "Dev Diagnostics",
+  "devDiagnostics": "Διαγνωστικά προγραμματιστή",
   "buildVersion": "Κατασκευή: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: χάρτες-μέρη (Ενεργό)",
@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Επιλέξτε πρόγραμμα πτυχίου — παραμένει στη συσκευή και εξατομικεύει τις εκδηλώσεις Open Day.",
+  "openDay_pickerSubtitle": "Επιλέξτε ένα πρόγραμμα ή ενδιαφέρον — παραμένει στη συσκευή και εξατομικεύει τις εκδηλώσεις Open Day.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Αναζήτηση πτυχίου",
+  "openDay_searchBachelorHint": "Αναζήτηση προγραμμάτων και ενδιαφερόντων",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Δεν βρέθηκε αντίστοιχο πτυχίο",
+  "openDay_noBachelorMatch": "Δεν βρέθηκε αντίστοιχο πρόγραμμα ή ενδιαφέρον",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Επόμενο",
   "onboardingStart": "Ξεκινήστε την εξερεύνηση",
   "openDay_interestedInStudying": "Τι σας ενδιαφέρει να σπουδάσετε;",
-  "openDay_pickBachelorCta": "Επιλέξτε πτυχίο για εξατομίκευση της ημέρας σας.",
+  "openDay_pickBachelorCta": "Επιλέξτε ενδιαφέρον σπουδών για να εξατομικεύσετε την ημέρα σας.",
   "openDay_noSessionsYet": "Δεν υπάρχουν αντίστοιχες ενημερωτικές συνεδρίες — πατήστε για το πλήρες πρόγραμμα.",
   "openDay_pageTitle": "Open Day",
   "openDay_loadError": "Δεν ήταν δυνατή η φόρτωση δεδομένων Open Day. Δοκιμάστε ξανά αργότερα.",
   "openDay_pickInterest": "Επιλέξτε το ενδιαφέρον σας",
-  "openDay_chooseBachelorFilter": "Επιλέξτε πτυχίο για φιλτράρισμα του προγράμματος. Παραμένει στη συσκευή.",
+  "openDay_chooseBachelorFilter": "Επιλέξτε ενδιαφέρον σπουδών για φιλτράρισμα του προγράμματος. Παραμένει στη συσκευή.",
   "openDay_showingMatchedSessions": "Εμφάνιση ενημερωτικών συνεδριών που αντιστοιχούν στο σπουδαστικό σας ενδιαφέρον.",
   "openDay_chooseInterest": "Επιλογή ενδιαφέροντος",
   "openDay_changeInterest": "Αλλαγή",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Πλοήγηση στην ασφάλεια",
   "safetyPrivacyNote": "Η τοποθεσία σας δεν κοινοποιείται ποτέ αυτόματα. Εσείς επιλέγετε πότε θα καλέσετε ή θα πλοηγηθείτε.",
   "privacyBadge": "Απόρρητο εξ ορισμού: χωρίς λογαριασμό, χωρίς παρακολούθηση, χωρίς ιστορικό τοποθεσίας.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Αγαπημένα",
+  "favoritesEmpty": "Δεν υπάρχουν αποθηκευμένα κτίρια ακόμη.\nΠεριηγηθείτε στον χάρτη για να προσθέσετε.",
+  "favoritesAddNote": "Προσθήκη σημείωσης",
+  "favoritesEditNote": "Επεξεργασία σημείωσης",
+  "favoritesRemove": "Αφαίρεση",
+  "favoritesDeleteConfirm": "Αφαίρεση αυτού του αγαπημένου;",
+  "favoritesDeleteConfirmBody": "Αυτό θα αφαιρέσει το {buildingName} από τα αγαπημένα σας.",
+  "favoritesDeleteYes": "Ναι, αφαίρεση",
+  "favoritesDeleteCancel": "Ακύρωση",
+  "favoritesNoteHint": "Προσθέστε μια σημείωση...",
+  "favoritesSaveNote": "Αποθήκευση",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Έκτακτη ανάγκη (Αστυνομία, Πυροσβεστική, Ασθενοφόρο)",
+  "safetyEmergencyDesc": "Μόνο για επείγοντα περιστατικά απειλητικά για τη ζωή",
+  "safetySecurityLabel": "Ασφάλεια πανεπιστημιούπολης",
+  "safetySecurityDesc": "Ασφάλεια πανεπιστημιούπολης 24/7, λεωφορείο, πρώτες βοήθειες",
+  "safetyHealthLabel": "Υπηρεσία υγείας",
+  "safetyHealthDesc": "Ραντεβού στην Υπηρεσία Υγείας του πανεπιστημίου",
+  "safetySupportLabel": "Υποστήριξη MQ εκτός ωραρίου",
+  "safetySupportDesc": "1800 CRISIS — Γραμμή υποστήριξης ψυχικής υγείας",
+  "safetyNoLocations": "Δεν υπάρχουν διαθέσιμες τοποθεσίες",
+  "safetyFlashlightDesc": "Χρήση φλας κάμερας συσκευής ως φακό",
+  "safetyNavigateToSecurityDesc": "Άνοιγμα χάρτη πανεπιστημιούπολης προς το γραφείο ασφαλείας",
+  "safetyNavigateToSecurityToast": "Πλοήγηση στην Ασφάλεια — άνοιγμα χάρτη πανεπιστημιούπολης",
+  "safetyQuickActions": "Γρήγορες ενέργειες",
+  "safetyEmergencyContacts": "Επαφές έκτακτης ανάγκης",
+  "safetyFlashlightUnavailable": "Ο φακός δεν είναι διαθέσιμος σε αυτή τη συσκευή",
   "scanQrCta": "Σάρωση",
   "scanPermissionDenied": "Η άδεια κάμερας απορρίφθηκε",
   "scanPermissionDeniedDesc": "Ενεργοποιήστε την πρόσβαση στην κάμερα στις ρυθμίσεις για να σαρώσετε κωδικούς QR",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Σαρώστε για συλλογή",
   "settingsMyStampsTile": "Τα σφραγίδια μου",
   "settingsMyStampsSubtitle": "Δείτε το διαβατήριο Open Day σας",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Δεν υπάρχει διαθέσιμη προεπισκόπηση εσωτερικού χώρου",
+  "indoorPreviewLoadError": "Αδυναμία φόρτωσης προεπισκόπησης εσωτερικού χώρου: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "Αδυναμία φόρτωσης AR: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{1 σύνδεση} other{{count} συνδέσεις}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Φωτογραφία {index} από {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Κερδίσατε σήμα!",
+  "scanBadgeVisited": "Επισκεφθήκατε"
 }

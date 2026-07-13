@@ -274,7 +274,7 @@
       }
     }
   },
-  "devDiagnostics": "Dev Diagnostics",
+  "devDiagnostics": "සංවර්ධක රෝග විනිශ්චය",
   "buildVersion": "ගොඩනැගීම: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: සිතියම්-ස්ථාන (ක්‍රියාකාරී)",
@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "ශාස්ත්‍රවේදී කාර්යක්‍රමයක් තෝරන්න — ඔබේ උපාංගයේ රැඳෙයි, Open Day සිදුවීම් පෞද්ගලීකරණය කරයි.",
+  "openDay_pickerSubtitle": "වැඩසටහනක් හෝ උනන්දුවක් තෝරන්න — ඔබේ උපාංගයේ රැඳෙයි, Open Day සිදුවීම් පෞද්ගලීකරණය කරයි.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "ඔබේ උපාධිය සොයන්න",
+  "openDay_searchBachelorHint": "වැඩසටහන් සහ උනන්දු සොයන්න",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "ගැළපෙන උපාධියක් හමු නොවුණි",
+  "openDay_noBachelorMatch": "ගැළපෙන වැඩසටහනක් හෝ උනන්දුවක් හමු නොවුණි",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "ඊළඟ",
   "onboardingStart": "ගවේෂණය අරඹන්න",
   "openDay_interestedInStudying": "ඔබ කුමක් ඉගෙනීමට කැමතිද?",
-  "openDay_pickBachelorCta": "ඔබේ දිනය පෞද්ගලීකරණය කිරීමට ශාස්ත්‍රවේදී මාලාවක් තෝරන්න.",
+  "openDay_pickBachelorCta": "ඔබේ දිනය පෞද්ගලීකරණය කිරීමට අධ්‍යයන උනන්දුවක් තෝරන්න.",
   "openDay_noSessionsYet": "ගැළපෙන තොරතුරු සැසි තවම නොමැත — සම්පූර්ණ කාලසටහන බැලීමට තාප් කරන්න.",
   "openDay_pageTitle": "විවෘත දිනය",
   "openDay_loadError": "Open Day දත්ත පූරණය කළ නොහැකි විය. කරුණාකර පසුව නැවත උත්සාහ කරන්න.",
   "openDay_pickInterest": "ඔබේ කැමැත්ත තෝරන්න",
-  "openDay_chooseBachelorFilter": "කාලසටහන පෙරීමට ශාස්ත්‍රවේදී (Bachelor) මාලාවක් තෝරන්න. මෙම උපාංගයේ සුරැකෙයි.",
+  "openDay_chooseBachelorFilter": "කාලසටහන පෙරීමට අධ්‍යයන උනන්දුවක් තෝරන්න. මෙම උපාංගයේ සුරැකෙයි.",
   "openDay_showingMatchedSessions": "ඔබේ අධ්‍යයන කැමැත්ත සමඟ ගැළපෙන තොරතුරු සැසි පෙන්වෙයි.",
   "openDay_chooseInterest": "කැමැත්ත තෝරන්න",
   "openDay_changeInterest": "වෙනස් කරන්න",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "ආරක්ෂාව වෙත සංචාලනය කරන්න",
   "safetyPrivacyNote": "ඔබගේ ස්ථානය කිසි විටෙක ස්වයංක්‍රීයව බෙදා නොගනී. ඔබ ඇමතීමට හෝ සැරිසැරීමට කවදාද යන්න තෝරන්න.",
   "privacyBadge": "සැලසුම අනුව පුද්ගලිකයි: ගිණුමක් නැත, ලුහුබැඳීමක් නැත, ස්ථාන ඉතිහාසයක් නැත.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "ප්‍රියතමයන්",
+  "favoritesEmpty": "තවම සුරකින ලද ගොඩනැගිලි නැත.\nඑකතු කිරීමට සිතියම බලන්න.",
+  "favoritesAddNote": "සටහනක් එක් කරන්න",
+  "favoritesEditNote": "සටහන සංස්කරණය කරන්න",
+  "favoritesRemove": "ඉවත් කරන්න",
+  "favoritesDeleteConfirm": "මෙම ප්‍රියතමය ඉවත් කරන්නද?",
+  "favoritesDeleteConfirmBody": "මෙය ඔබේ ප්‍රියතමයන්ගෙන් {buildingName} ඉවත් කරයි.",
+  "favoritesDeleteYes": "ඔව්, ඉවත් කරන්න",
+  "favoritesDeleteCancel": "අවලංගු කරන්න",
+  "favoritesNoteHint": "සටහනක් එක් කරන්න...",
+  "favoritesSaveNote": "සුරකින්න",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "හදිසි (පොලිස්, ගිනි නිවීම්, ගිලන්රථ)",
+  "safetyEmergencyDesc": "ජීවිතයට තර්ජනයක් වන හදිසි අවස්ථා සඳහා පමණි",
+  "safetySecurityLabel": "කැම්පස් ආරක්ෂාව",
+  "safetySecurityDesc": "පැය 24/7 කැම්පස් ආරක්ෂාව, ෂටල්, ප්‍රථමාධාර",
+  "safetyHealthLabel": "සෞඛ්‍ය සේවාව",
+  "safetyHealthDesc": "විශ්වවිද්‍යාල සෞඛ්‍ය සේවා නියමයන්",
+  "safetySupportLabel": "MQ වේලාවෙන් පසු සහාය",
+  "safetySupportDesc": "1800 CRISIS — මානසික සෞඛ්‍ය සහාය මාර්ගය",
+  "safetyNoLocations": "ස්ථාන නොමැත",
+  "safetyFlashlightDesc": "උපාංගයේ කැමරා ෆ්ලෑෂ් ආලෝකයක් ලෙස භාවිත කරන්න",
+  "safetyNavigateToSecurityDesc": "ආරක්ෂක කාර්යාලය දක්වා කැම්පස් සිතියම විවෘත කරන්න",
+  "safetyNavigateToSecurityToast": "ආරක්ෂාව වෙත සංචලනය — කැම්පස් සිතියම විවෘත වෙමින්",
+  "safetyQuickActions": "ඉක්මන් ක්‍රියා",
+  "safetyEmergencyContacts": "හදිසි සම්බන්ධතා",
+  "safetyFlashlightUnavailable": "මෙම උපාංගයේ ෆ්ලෑෂ්ලයිට් නොමැත",
   "scanQrCta": "ස්කෑන් කරන්න",
   "scanPermissionDenied": "කැමරා අවසරය ප්‍රතික්ෂේප විය",
   "scanPermissionDeniedDesc": "QR කේත ස්කෑන් කිරීමට සැකසීම්වල කැමරා ප්‍රවේශය සක්‍රීය කරන්න",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "රැස් කිරීමට ස්කෑන් කරන්න",
   "settingsMyStampsTile": "මගේ මුද්‍රා",
   "settingsMyStampsSubtitle": "ඔබේ Open Day විදේශ ගමන් බලපත්‍රය බලන්න",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "අභ්‍යන්තර පෙරදසුනක් නොමැත",
+  "indoorPreviewLoadError": "අභ්‍යන්තර පෙරදසුන පූරණය කළ නොහැක: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR පූරණය කළ නොහැක: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, one{සම්බන්ධතා 1} other{සම්බන්ධතා {count}}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "{total} න් {index} වන ඡායාරූපය",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "ලාංඡනය දිනා ගත්තා!",
+  "scanBadgeVisited": "බැලුවා"
 }

@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "学部プログラムを選択 — デバイスに保存され、Open Dayのイベントをカスタマイズします。",
+  "openDay_pickerSubtitle": "プログラムまたは興味のある分野を選択 — デバイスに保存され、Open Dayのイベントをカスタマイズします。",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "学位を検索",
+  "openDay_searchBachelorHint": "プログラムや分野を検索",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "該当する学位が見つかりません",
+  "openDay_noBachelorMatch": "一致するプログラムや分野が見つかりません",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "次へ",
   "onboardingStart": "さあ始める",
   "openDay_interestedInStudying": "何を学びたいですか？",
-  "openDay_pickBachelorCta": "学部を選択して、一日をカスタマイズしましょう。",
+  "openDay_pickBachelorCta": "興味のある分野を選んで、一日をカスタマイズしましょう。",
   "openDay_noSessionsYet": "一致する情報セッションはまだありません — タップして全スケジュールを表示。",
   "openDay_pageTitle": "オープンデー",
   "openDay_loadError": "Open Dayデータを読み込めませんでした。後でもう一度お試しください。",
   "openDay_pickInterest": "興味を選んでください",
-  "openDay_chooseBachelorFilter": "スケジュールをフィルタリングする学部を選択してください。このデバイスに保存されます。",
+  "openDay_chooseBachelorFilter": "スケジュールを絞り込む分野を選択してください。このデバイスに保存されます。",
   "openDay_showingMatchedSessions": "学習の関心に一致する情報セッションを表示中。",
   "openDay_chooseInterest": "興味を選ぶ",
   "openDay_changeInterest": "変更",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "「セキュリティ」に移動します",
   "safetyPrivacyNote": "あなたの位置情報が自動的に共有されることはありません。電話をかけたり、ナビゲートしたりするタイミングはお客様が選択します。",
   "privacyBadge": "設計による非公開: アカウントなし、追跡なし、位置履歴なし。",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "お気に入り",
+  "favoritesEmpty": "保存された建物はまだありません。\n地図を見て追加しましょう。",
+  "favoritesAddNote": "メモを追加",
+  "favoritesEditNote": "メモを編集",
+  "favoritesRemove": "削除",
+  "favoritesDeleteConfirm": "このお気に入りを削除しますか？",
+  "favoritesDeleteConfirmBody": "{buildingName} をお気に入りから削除します。",
+  "favoritesDeleteYes": "はい、削除",
+  "favoritesDeleteCancel": "キャンセル",
+  "favoritesNoteHint": "メモを追加...",
+  "favoritesSaveNote": "保存",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "緊急（警察・消防・救急）",
+  "safetyEmergencyDesc": "生命に関わる緊急時のみ",
+  "safetySecurityLabel": "キャンパスセキュリティ",
+  "safetySecurityDesc": "24時間対応のキャンパス警備、シャトル、応急処置",
+  "safetyHealthLabel": "健康サービス",
+  "safetyHealthDesc": "大学健康サービスの予約",
+  "safetySupportLabel": "MQ 時間外サポート",
+  "safetySupportDesc": "1800 CRISIS — メンタルヘルス相談窓口",
+  "safetyNoLocations": "利用可能な場所がありません",
+  "safetyFlashlightDesc": "デバイスのカメラフラッシュをライトとして使用",
+  "safetyNavigateToSecurityDesc": "警備室までのキャンパスマップを開く",
+  "safetyNavigateToSecurityToast": "警備室へ案内 — キャンパスマップを開いています",
+  "safetyQuickActions": "クイックアクション",
+  "safetyEmergencyContacts": "緊急連絡先",
+  "safetyFlashlightUnavailable": "このデバイスでは懐中電灯を利用できません",
   "scanQrCta": "スキャン",
   "scanPermissionDenied": "カメラの権限が拒否されました",
   "scanPermissionDeniedDesc": "設定でカメラへのアクセスを有効にしてQRコードをスキャンしてください",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "スキャンして収集",
   "settingsMyStampsTile": "マイスタンプ",
   "settingsMyStampsSubtitle": "Open Dayパスポートを見る",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "屋内プレビューは利用できません",
+  "indoorPreviewLoadError": "屋内プレビューを読み込めませんでした: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "ARを読み込めませんでした: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, other{{count} 件の接続}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "写真 {index}/{total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "バッジを獲得しました！",
+  "scanBadgeVisited": "訪問済み"
 }

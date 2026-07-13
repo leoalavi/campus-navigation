@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Pilih program sarjana — tersimpan di perangkat Anda dan mempersonalisasi acara Open Day.",
+  "openDay_pickerSubtitle": "Pilih program atau minat — tersimpan di perangkat Anda dan mempersonalisasi acara Open Day.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Cari program Anda",
+  "openDay_searchBachelorHint": "Cari program dan minat",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Tidak ada program yang cocok",
+  "openDay_noBachelorMatch": "Tidak ada program atau minat yang cocok",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Berikutnya",
   "onboardingStart": "Mulai jelajahi",
   "openDay_interestedInStudying": "Apa yang ingin Anda pelajari?",
-  "openDay_pickBachelorCta": "Pilih sarjana untuk mempersonalisasi hari Anda.",
+  "openDay_pickBachelorCta": "Pilih minat studi untuk mempersonalisasi hari Anda.",
   "openDay_noSessionsYet": "Belum ada sesi info yang cocok — ketuk untuk melihat jadwal lengkap.",
   "openDay_pageTitle": "Hari Terbuka",
   "openDay_loadError": "Tidak dapat memuat data Open Day. Silakan coba lagi nanti.",
   "openDay_pickInterest": "Pilih minat Anda",
-  "openDay_chooseBachelorFilter": "Pilih sarjana untuk memfilter jadwal. Tersimpan di perangkat ini.",
+  "openDay_chooseBachelorFilter": "Pilih minat studi untuk memfilter jadwal. Tersimpan di perangkat ini.",
   "openDay_showingMatchedSessions": "Menampilkan sesi info yang cocok dengan minat studi Anda.",
   "openDay_chooseInterest": "Pilih minat",
   "openDay_changeInterest": "Ubah",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Navigasi ke Keamanan",
   "safetyPrivacyNote": "Lokasi Anda tidak pernah dibagikan secara otomatis. Anda memilih kapan harus menelepon atau bernavigasi.",
   "privacyBadge": "Secara pribadi dirancang: tanpa akun, tanpa pelacakan, tanpa riwayat lokasi.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Favorit",
+  "favoritesEmpty": "Belum ada gedung yang disimpan.\nJelajahi peta untuk menambahkan.",
+  "favoritesAddNote": "Tambah catatan",
+  "favoritesEditNote": "Edit catatan",
+  "favoritesRemove": "Hapus",
+  "favoritesDeleteConfirm": "Hapus favorit ini?",
+  "favoritesDeleteConfirmBody": "Ini akan menghapus {buildingName} dari favorit Anda.",
+  "favoritesDeleteYes": "Ya, hapus",
+  "favoritesDeleteCancel": "Batal",
+  "favoritesNoteHint": "Tambahkan catatan...",
+  "favoritesSaveNote": "Simpan",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Darurat (Polisi, Pemadam, Ambulans)",
+  "safetyEmergencyDesc": "Hanya untuk keadaan darurat yang mengancam jiwa",
+  "safetySecurityLabel": "Keamanan Kampus",
+  "safetySecurityDesc": "Keamanan kampus 24/7, antar-jemput, pertolongan pertama",
+  "safetyHealthLabel": "Layanan Kesehatan",
+  "safetyHealthDesc": "Janji temu Layanan Kesehatan universitas",
+  "safetySupportLabel": "Dukungan MQ di Luar Jam Kerja",
+  "safetySupportDesc": "1800 CRISIS — Saluran dukungan kesehatan mental",
+  "safetyNoLocations": "Tidak ada lokasi tersedia",
+  "safetyFlashlightDesc": "Gunakan lampu kilat kamera perangkat sebagai senter",
+  "safetyNavigateToSecurityDesc": "Buka peta kampus ke kantor keamanan",
+  "safetyNavigateToSecurityToast": "Navigasi ke Keamanan — membuka peta kampus",
+  "safetyQuickActions": "Tindakan Cepat",
+  "safetyEmergencyContacts": "Kontak Darurat",
+  "safetyFlashlightUnavailable": "Senter tidak tersedia di perangkat ini",
   "scanQrCta": "Pindai",
   "scanPermissionDenied": "Izin kamera ditolak",
   "scanPermissionDeniedDesc": "Aktifkan akses kamera di Pengaturan untuk memindai kode QR",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Pindai untuk mengumpulkan",
   "settingsMyStampsTile": "Stempel Saya",
   "settingsMyStampsSubtitle": "Lihat paspor Open Day Anda",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Pratinjau dalam ruangan tidak tersedia",
+  "indoorPreviewLoadError": "Tidak dapat memuat pratinjau dalam ruangan: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "Tidak dapat memuat AR: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, other{{count} koneksi}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Foto {index} dari {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Lencana diperoleh!",
+  "scanBadgeVisited": "Dikunjungi"
 }

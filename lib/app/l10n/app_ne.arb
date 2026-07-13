@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "स्नातक कार्यक्रम छान्नुहोस् — तपाईंको यन्त्रमा बाँकी रहन्छ र Open Day कार्यक्रमहरू व्यक्तिगत बनाउँछ।",
+  "openDay_pickerSubtitle": "कुनै कार्यक्रम वा रुचि छान्नुहोस् — तपाईंको यन्त्रमा रहन्छ र Open Day कार्यक्रमहरू व्यक्तिगत बनाउँछ।",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "आफ्नो डिग्री खोज्नुहोस्",
+  "openDay_searchBachelorHint": "कार्यक्रम र रुचिहरू खोज्नुहोस्",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "कुनै मिल्दो डिग्री फेला परेन",
+  "openDay_noBachelorMatch": "मिल्दो कार्यक्रम वा रुचि फेला परेन",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "अर्को",
   "onboardingStart": "अन्वेषण सुरु गर्नुहोस्",
   "openDay_interestedInStudying": "तपाईं के पढ्न चाहनुहुन्छ?",
-  "openDay_pickBachelorCta": "आफ्नो दिन व्यक्तिगत बनाउन स्नातक छान्नुहोस्।",
+  "openDay_pickBachelorCta": "आफ्नो दिन व्यक्तिगत बनाउन अध्ययन रुचि छान्नुहोस्।",
   "openDay_noSessionsYet": "अहिलेसम्म मेल खाने जानकारी सत्र छैन — पूर्ण तालिका हेर्न ट्याप गर्नुहोस्।",
   "openDay_pageTitle": "खुल्ला दिन",
   "openDay_loadError": "Open Day डेटा लोड गर्न सकिएन। कृपया पछि पुनः प्रयास गर्नुहोस्।",
   "openDay_pickInterest": "आफ्नो रुचि छान्नुहोस्",
-  "openDay_chooseBachelorFilter": "तालिका फिल्टर गर्न स्नातक छान्नुहोस्। यस यन्त्रमा बाँकी रहन्छ।",
+  "openDay_chooseBachelorFilter": "तालिका फिल्टर गर्न अध्ययन रुचि छान्नुहोस्। यस यन्त्रमा रहन्छ।",
   "openDay_showingMatchedSessions": "तपाईंको अध्ययन रुचिसँग मेल खाने जानकारी सत्रहरू देखाइँदैछ।",
   "openDay_chooseInterest": "रुचि छान्नुहोस्",
   "openDay_changeInterest": "परिवर्तन गर्नुहोस्",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "सुरक्षामा नेभिगेट गर्नुहोस्",
   "safetyPrivacyNote": "तपाईंको स्थान कहिल्यै स्वचालित रूपमा साझेदारी गरिएको छैन। तपाईले कहिले कल गर्ने वा नेभिगेट गर्ने छनौट गर्नुहुन्छ।",
   "privacyBadge": "डिजाइन द्वारा निजी: कुनै खाता छैन, कुनै ट्र्याकिङ छैन, कुनै स्थान इतिहास छैन।",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "मनपर्ने",
+  "favoritesEmpty": "अझै कुनै भवन सुरक्षित गरिएको छैन।\nथप्न नक्सा हेर्नुहोस्।",
+  "favoritesAddNote": "टिप्पणी थप्नुहोस्",
+  "favoritesEditNote": "टिप्पणी सम्पादन गर्नुहोस्",
+  "favoritesRemove": "हटाउनुहोस्",
+  "favoritesDeleteConfirm": "यो मनपर्ने हटाउने?",
+  "favoritesDeleteConfirmBody": "यसले {buildingName} लाई तपाईंको मनपर्नेबाट हटाउनेछ।",
+  "favoritesDeleteYes": "हो, हटाउनुहोस्",
+  "favoritesDeleteCancel": "रद्द गर्नुहोस्",
+  "favoritesNoteHint": "एउटा टिप्पणी थप्नुहोस्...",
+  "favoritesSaveNote": "सुरक्षित गर्नुहोस्",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "आपतकाल (प्रहरी, दमकल, एम्बुलेन्स)",
+  "safetyEmergencyDesc": "ज्यान जोखिममा पर्ने आपत्‌कालका लागि मात्र",
+  "safetySecurityLabel": "क्याम्पस सुरक्षा",
+  "safetySecurityDesc": "२४/७ क्याम्पस सुरक्षा, शटल, प्राथमिक उपचार",
+  "safetyHealthLabel": "स्वास्थ्य सेवा",
+  "safetyHealthDesc": "विश्वविद्यालय स्वास्थ्य सेवा अपोइन्टमेन्ट",
+  "safetySupportLabel": "MQ कार्यालय-समयबाहिर सहयोग",
+  "safetySupportDesc": "1800 CRISIS — मानसिक स्वास्थ्य सहयोग लाइन",
+  "safetyNoLocations": "कुनै स्थान उपलब्ध छैन",
+  "safetyFlashlightDesc": "यन्त्रको क्यामेरा फ्ल्यासलाई प्रकाशका रूपमा प्रयोग गर्नुहोस्",
+  "safetyNavigateToSecurityDesc": "सुरक्षा कार्यालयसम्म क्याम्पस नक्सा खोल्नुहोस्",
+  "safetyNavigateToSecurityToast": "सुरक्षातर्फ नेभिगेट गर्नुहोस् — क्याम्पस नक्सा खोल्दै",
+  "safetyQuickActions": "द्रुत कार्यहरू",
+  "safetyEmergencyContacts": "आपतकालीन सम्पर्कहरू",
+  "safetyFlashlightUnavailable": "यस यन्त्रमा फ्ल्यासलाइट उपलब्ध छैन",
   "scanQrCta": "स्क्यान गर्नुहोस्",
   "scanPermissionDenied": "क्यामेरा अनुमति अस्वीकृत भयो",
   "scanPermissionDeniedDesc": "QR कोड स्क्यान गर्न सेटिङमा क्यामेरा पहुँच सक्षम गर्नुहोस्",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "सङ्कलन गर्न स्क्यान गर्नुहोस्",
   "settingsMyStampsTile": "मेरो स्ट्याम्प",
   "settingsMyStampsSubtitle": "तपाईंको ओपन डे पासपोर्ट हेर्नुहोस्",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "कुनै भित्री पूर्वावलोकन उपलब्ध छैन",
+  "indoorPreviewLoadError": "भित्री पूर्वावलोकन लोड गर्न सकिएन: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR लोड गर्न सकिएन: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, other{{count} जडान}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "{total} मध्ये फोटो {index}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "ब्याज प्राप्त भयो!",
+  "scanBadgeVisited": "भ्रमण गरियो"
 }

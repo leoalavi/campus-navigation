@@ -274,7 +274,7 @@
       }
     }
   },
-  "devDiagnostics": "দেব ডায়াগনস্টিকস",
+  "devDiagnostics": "ডেভেলপার ডায়াগনস্টিকস",
   "buildVersion": "বিল্ড: 2026.04.22-বিটা",
   "renderer": "রেন্ডারার: ​​CrsSimple (ক্যাম্পাস)",
   "edgeProxy": "প্রান্ত প্রক্সি: মানচিত্র-স্থান (সক্রিয়)",
@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "একটি স্নাতক প্রোগ্রাম বেছে নিন — আপনার ডিভাইসে থাকে এবং Open Day ইভেন্টগুলো ব্যক্তিগত করে।",
+  "openDay_pickerSubtitle": "একটি প্রোগ্রাম বা আগ্রহ বেছে নিন — আপনার ডিভাইসে থাকে এবং Open Day ইভেন্টগুলো ব্যক্তিগত করে।",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "আপনার ডিগ্রি অনুসন্ধান করুন",
+  "openDay_searchBachelorHint": "প্রোগ্রাম ও আগ্রহ খুঁজুন",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "কোনো মিল পাওয়া যায়নি",
+  "openDay_noBachelorMatch": "কোনো মিলে যাওয়া প্রোগ্রাম বা আগ্রহ পাওয়া যায়নি",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "পরবর্তী",
   "onboardingStart": "অন্বেষণ শুরু করুন",
   "openDay_interestedInStudying": "আপনি কী পড়তে আগ্রহী?",
-  "openDay_pickBachelorCta": "আপনার দিনটি ব্যক্তিগত করতে স্নাতক বেছে নিন।",
+  "openDay_pickBachelorCta": "আপনার দিনটি ব্যক্তিগত করতে একটি পড়াশোনার আগ্রহ বেছে নিন।",
   "openDay_noSessionsYet": "এখনও কোনো মিলে যাওয়া তথ্য সেশন নেই — পুরো শিডিউল দেখতে ট্যাপ করুন।",
   "openDay_pageTitle": "খোলা দিন",
   "openDay_loadError": "Open Day ডেটা লোড করা সম্ভব হয়নি। পরে আবার চেষ্টা করুন।",
   "openDay_pickInterest": "আপনার আগ্রহ বেছে নিন",
-  "openDay_chooseBachelorFilter": "শিডিউল ফিল্টার করতে স্নাতক বেছে নিন। এই ডিভাইসে সংরক্ষিত থাকে।",
+  "openDay_chooseBachelorFilter": "শিডিউল ফিল্টার করতে একটি পড়াশোনার আগ্রহ বেছে নিন। এই ডিভাইসে সংরক্ষিত থাকে।",
   "openDay_showingMatchedSessions": "আপনার পড়াশোনার আগ্রহের সাথে মেলে তথ্য সেশন দেখানো হচ্ছে।",
   "openDay_chooseInterest": "আগ্রহ বেছে নিন",
   "openDay_changeInterest": "পরিবর্তন করুন",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "নিরাপত্তায় নেভিগেট করুন",
   "safetyPrivacyNote": "আপনার অবস্থান কখনও স্বয়ংক্রিয়ভাবে শেয়ার করা হয় না। আপনি কখন কল বা নেভিগেট করবেন তা আপনি বেছে নেন।",
   "privacyBadge": "ডিজাইন দ্বারা গোপনীয়: কোনো অ্যাকাউন্ট নেই, কোনো ট্র্যাকিং নেই, কোনো অবস্থান ইতিহাস নেই।",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "পছন্দসমূহ",
+  "favoritesEmpty": "এখনো কোনো ভবন সংরক্ষিত নেই।\nযোগ করতে মানচিত্র ব্রাউজ করুন।",
+  "favoritesAddNote": "নোট যোগ করুন",
+  "favoritesEditNote": "নোট সম্পাদনা করুন",
+  "favoritesRemove": "সরান",
+  "favoritesDeleteConfirm": "এই পছন্দটি সরাবেন?",
+  "favoritesDeleteConfirmBody": "এটি {buildingName} আপনার পছন্দ থেকে সরিয়ে দেবে।",
+  "favoritesDeleteYes": "হ্যাঁ, সরান",
+  "favoritesDeleteCancel": "বাতিল",
+  "favoritesNoteHint": "একটি নোট যোগ করুন...",
+  "favoritesSaveNote": "সংরক্ষণ",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "জরুরি (পুলিশ, ফায়ার, অ্যাম্বুলেন্স)",
+  "safetyEmergencyDesc": "শুধুমাত্র জীবন-হুমকির জরুরি অবস্থার জন্য",
+  "safetySecurityLabel": "ক্যাম্পাস নিরাপত্তা",
+  "safetySecurityDesc": "২৪/৭ ক্যাম্পাস নিরাপত্তা, শাটল, প্রাথমিক চিকিৎসা",
+  "safetyHealthLabel": "স্বাস্থ্য পরিষেবা",
+  "safetyHealthDesc": "বিশ্ববিদ্যালয় স্বাস্থ্য পরিষেবার অ্যাপয়েন্টমেন্ট",
+  "safetySupportLabel": "MQ অফিস-সময়ের-পরে সহায়তা",
+  "safetySupportDesc": "1800 CRISIS — মানসিক স্বাস্থ্য সহায়তা লাইন",
+  "safetyNoLocations": "কোনো অবস্থান উপলব্ধ নেই",
+  "safetyFlashlightDesc": "ডিভাইসের ক্যামেরা ফ্ল্যাশ আলো হিসেবে ব্যবহার করুন",
+  "safetyNavigateToSecurityDesc": "নিরাপত্তা অফিসে যেতে ক্যাম্পাস মানচিত্র খুলুন",
+  "safetyNavigateToSecurityToast": "নিরাপত্তায় নেভিগেট করুন — ক্যাম্পাস মানচিত্র খোলা হচ্ছে",
+  "safetyQuickActions": "দ্রুত পদক্ষেপ",
+  "safetyEmergencyContacts": "জরুরি যোগাযোগ",
+  "safetyFlashlightUnavailable": "এই ডিভাইসে ফ্ল্যাশলাইট উপলব্ধ নয়",
   "scanQrCta": "স্ক্যান",
   "scanPermissionDenied": "ক্যামেরার অনুমতি প্রত্যাখ্যাত হয়েছে",
   "scanPermissionDeniedDesc": "QR কোড স্ক্যান করতে সেটিংসে ক্যামেরা অ্যাক্সেস সক্ষম করুন",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "সংগ্রহ করতে স্ক্যান করুন",
   "settingsMyStampsTile": "আমার স্ট্যাম্প",
   "settingsMyStampsSubtitle": "আপনার ওপেন ডে পাসপোর্ট দেখুন",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "কোনো ইনডোর প্রিভিউ উপলব্ধ নেই",
+  "indoorPreviewLoadError": "ইনডোর প্রিভিউ লোড করা যায়নি: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR লোড করা যায়নি: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{১টি সংযোগ} other{{count}টি সংযোগ}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "{total}টির মধ্যে {index} নম্বর ছবি",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "ব্যাজ অর্জিত!",
+  "scanBadgeVisited": "পরিদর্শন করা হয়েছে"
 }

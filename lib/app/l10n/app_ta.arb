@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "இளங்கலை நிரல் தேர்ந்தெடுக்கவும் — உங்கள் சாதனத்தில் இருக்கும், Open Day நிகழ்வுகளை தனிப்பயனாக்கும்.",
+  "openDay_pickerSubtitle": "ஒரு நிரல் அல்லது ஆர்வத்தைத் தேர்ந்தெடுக்கவும் — உங்கள் சாதனத்தில் இருக்கும், Open Day நிகழ்வுகளைத் தனிப்பயனாக்கும்.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "உங்கள் பட்டத்தைத் தேடுங்கள்",
+  "openDay_searchBachelorHint": "நிரல்களையும் ஆர்வங்களையும் தேடுங்கள்",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "பொருந்தும் பட்டம் இல்லை",
+  "openDay_noBachelorMatch": "பொருந்தும் நிரல் அல்லது ஆர்வம் எதுவும் இல்லை",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "அடுத்து",
   "onboardingStart": "ஆராயத் தொடங்கு",
   "openDay_interestedInStudying": "நீங்கள் என்ன படிக்க ஆர்வமாக இருக்கிறீர்கள்?",
-  "openDay_pickBachelorCta": "உங்கள் நாளை தனிப்பயனாக்க இளங்கலை தேர்ந்தெடுக்கவும்.",
+  "openDay_pickBachelorCta": "உங்கள் நாளைத் தனிப்பயனாக்க ஒரு படிப்பு ஆர்வத்தைத் தேர்ந்தெடுக்கவும்.",
   "openDay_noSessionsYet": "இன்னும் பொருத்தமான தகவல் அமர்வுகள் இல்லை — முழு அட்டவணையைக் காண தட்டவும்.",
   "openDay_pageTitle": "திறந்த நாள்",
   "openDay_loadError": "Open Day தரவை ஏற்ற முடியவில்லை. பிறகு மீண்டும் முயற்சிக்கவும்.",
   "openDay_pickInterest": "உங்கள் ஆர்வத்தை தேர்ந்தெடுக்கவும்",
-  "openDay_chooseBachelorFilter": "அட்டவணையை வடிகட்ட இளங்கலை தேர்ந்தெடுக்கவும். இந்த சாதனத்தில் சேமிக்கப்படுகிறது.",
+  "openDay_chooseBachelorFilter": "அட்டவணையை வடிகட்ட ஒரு படிப்பு ஆர்வத்தைத் தேர்ந்தெடுக்கவும். இந்தச் சாதனத்தில் சேமிக்கப்படுகிறது.",
   "openDay_showingMatchedSessions": "உங்கள் படிப்பு ஆர்வத்திற்கு பொருத்தமான தகவல் அமர்வுகள் காட்டப்படுகின்றன.",
   "openDay_chooseInterest": "ஆர்வம் தேர்ந்தெடுக்கவும்",
   "openDay_changeInterest": "மாற்று",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "பாதுகாப்புக்கு செல்லவும்",
   "safetyPrivacyNote": "உங்கள் இருப்பிடம் தானாக பகிரப்படாது. எப்போது அழைக்க வேண்டும் அல்லது செல்ல வேண்டும் என்பதை நீங்கள் தேர்வு செய்யலாம்.",
   "privacyBadge": "வடிவமைப்பு மூலம் தனிப்பட்டது: கணக்கு இல்லை, கண்காணிப்பு இல்லை, இருப்பிட வரலாறு இல்லை.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "பிடித்தவை",
+  "favoritesEmpty": "இதுவரை சேமித்த கட்டிடங்கள் இல்லை.\nசேர்க்க வரைபடத்தை உலாவவும்.",
+  "favoritesAddNote": "குறிப்பைச் சேர்",
+  "favoritesEditNote": "குறிப்பைத் திருத்து",
+  "favoritesRemove": "அகற்று",
+  "favoritesDeleteConfirm": "இந்தப் பிடித்ததை அகற்றவா?",
+  "favoritesDeleteConfirmBody": "இது {buildingName} ஐ உங்கள் பிடித்தவற்றிலிருந்து அகற்றும்.",
+  "favoritesDeleteYes": "ஆம், அகற்று",
+  "favoritesDeleteCancel": "ரத்து",
+  "favoritesNoteHint": "ஒரு குறிப்பைச் சேர்க்கவும்...",
+  "favoritesSaveNote": "சேமி",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "அவசரம் (காவல், தீயணைப்பு, ஆம்புலன்ஸ்)",
+  "safetyEmergencyDesc": "உயிருக்கு ஆபத்தான அவசர நிலைகளுக்கு மட்டும்",
+  "safetySecurityLabel": "வளாக பாதுகாப்பு",
+  "safetySecurityDesc": "24/7 வளாக பாதுகாப்பு, ஷட்டில், முதலுதவி",
+  "safetyHealthLabel": "சுகாதார சேவை",
+  "safetyHealthDesc": "பல்கலைக்கழக சுகாதார சேவை சந்திப்புகள்",
+  "safetySupportLabel": "MQ நேரத்திற்குப் பிந்தைய ஆதரவு",
+  "safetySupportDesc": "1800 CRISIS — மனநல ஆதரவு தொலைபேசி வழி",
+  "safetyNoLocations": "இடங்கள் எதுவும் இல்லை",
+  "safetyFlashlightDesc": "சாதனத்தின் கேமரா ஃபிளாஷை விளக்காகப் பயன்படுத்தவும்",
+  "safetyNavigateToSecurityDesc": "பாதுகாப்பு அலுவலகம் வரை வளாக வரைபடத்தைத் திறக்கவும்",
+  "safetyNavigateToSecurityToast": "பாதுகாப்புக்கு வழிசெலுத்து — வளாக வரைபடம் திறக்கிறது",
+  "safetyQuickActions": "விரைவு செயல்கள்",
+  "safetyEmergencyContacts": "அவசரத் தொடர்புகள்",
+  "safetyFlashlightUnavailable": "இந்தச் சாதனத்தில் ஒளிவிளக்கு இல்லை",
   "scanQrCta": "ஸ்கேன் செய்யவும்",
   "scanPermissionDenied": "கேமரா அனுமதி மறுக்கப்பட்டது",
   "scanPermissionDeniedDesc": "QR குறியீடுகளை ஸ்கேன் செய்ய அமைப்புகளில் கேமரா அணுகலை இயக்கவும்",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "சேகரிக்க ஸ்கேன் செய்யவும்",
   "settingsMyStampsTile": "எனது முத்திரைகள்",
   "settingsMyStampsSubtitle": "உங்கள் ஓபன் டே பாஸ்போர்ட்டைப் பார்க்கவும்",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "உட்புற முன்னோட்டம் இல்லை",
+  "indoorPreviewLoadError": "உட்புற முன்னோட்டத்தை ஏற்ற முடியவில்லை: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR ஐ ஏற்ற முடியவில்லை: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, one{1 இணைப்பு} other{{count} இணைப்புகள்}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "{total} இல் புகைப்படம் {index}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "பேட்ஜ் பெற்றீர்கள்!",
+  "scanBadgeVisited": "பார்வையிட்டது"
 }

@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Выберите программу бакалавриата — сохраняется на устройстве и персонализирует мероприятия Open Day.",
+  "openDay_pickerSubtitle": "Выберите программу или область интересов — сохраняется на устройстве и персонализирует мероприятия Open Day.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Найти программу",
+  "openDay_searchBachelorHint": "Поиск программ и интересов",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Подходящая программа не найдена",
+  "openDay_noBachelorMatch": "Подходящая программа или интерес не найдены",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Далее",
   "onboardingStart": "Начать изучение",
   "openDay_interestedInStudying": "Что вас интересует изучать?",
-  "openDay_pickBachelorCta": "Выберите направление бакалавриата, чтобы персонализировать день.",
+  "openDay_pickBachelorCta": "Выберите учебный интерес, чтобы персонализировать день.",
   "openDay_noSessionsYet": "Пока нет подходящих информационных сессий — нажмите, чтобы увидеть полное расписание.",
   "openDay_pageTitle": "День открытых дверей",
   "openDay_loadError": "Не удалось загрузить данные Open Day. Повторите попытку позже.",
   "openDay_pickInterest": "Выберите интересующее направление",
-  "openDay_chooseBachelorFilter": "Выберите направление бакалавриата для фильтрации расписания. Сохраняется на устройстве.",
+  "openDay_chooseBachelorFilter": "Выберите учебный интерес для фильтрации расписания. Сохраняется на устройстве.",
   "openDay_showingMatchedSessions": "Показаны информационные сессии, соответствующие вашим учебным интересам.",
   "openDay_chooseInterest": "Выбрать интерес",
   "openDay_changeInterest": "Изменить",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Перейдите в раздел «Безопасность».",
   "safetyPrivacyNote": "Ваше местоположение никогда не передается автоматически. Вы сами выбираете, когда звонить или перемещаться.",
   "privacyBadge": "Конфиденциальность по задумке: нет учетной записи, нет отслеживания, нет истории местоположений.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Избранное",
+  "favoritesEmpty": "Пока нет сохранённых зданий.\nПросмотрите карту, чтобы добавить.",
+  "favoritesAddNote": "Добавить заметку",
+  "favoritesEditNote": "Изменить заметку",
+  "favoritesRemove": "Удалить",
+  "favoritesDeleteConfirm": "Удалить из избранного?",
+  "favoritesDeleteConfirmBody": "Это удалит {buildingName} из избранного.",
+  "favoritesDeleteYes": "Да, удалить",
+  "favoritesDeleteCancel": "Отмена",
+  "favoritesNoteHint": "Добавьте заметку...",
+  "favoritesSaveNote": "Сохранить",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Экстренные службы (полиция, пожарная, скорая)",
+  "safetyEmergencyDesc": "Только для угрожающих жизни ситуаций",
+  "safetySecurityLabel": "Охрана кампуса",
+  "safetySecurityDesc": "Круглосуточная охрана кампуса, трансфер, первая помощь",
+  "safetyHealthLabel": "Медицинская служба",
+  "safetyHealthDesc": "Запись в университетскую медицинскую службу",
+  "safetySupportLabel": "Поддержка MQ в нерабочее время",
+  "safetySupportDesc": "1800 CRISIS — линия психологической поддержки",
+  "safetyNoLocations": "Нет доступных местоположений",
+  "safetyFlashlightDesc": "Использовать вспышку камеры как фонарик",
+  "safetyNavigateToSecurityDesc": "Открыть карту кампуса до офиса охраны",
+  "safetyNavigateToSecurityToast": "Навигация к охране — открывается карта кампуса",
+  "safetyQuickActions": "Быстрые действия",
+  "safetyEmergencyContacts": "Экстренные контакты",
+  "safetyFlashlightUnavailable": "Фонарик недоступен на этом устройстве",
   "scanQrCta": "Сканировать",
   "scanPermissionDenied": "Доступ к камере отклонён",
   "scanPermissionDeniedDesc": "Включите доступ к камере в настройках, чтобы сканировать QR-коды",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Сканируйте, чтобы собрать",
   "settingsMyStampsTile": "Мои штампы",
   "settingsMyStampsSubtitle": "Посмотреть ваш паспорт Open Day",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Предпросмотр помещений недоступен",
+  "indoorPreviewLoadError": "Не удалось загрузить предпросмотр помещений: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "Не удалось загрузить AR: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, one{{count} соединение} few{{count} соединения} many{{count} соединений} other{{count} соединения}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Фото {index} из {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Значок получен!",
+  "scanBadgeVisited": "Посещено"
 }

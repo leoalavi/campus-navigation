@@ -274,7 +274,7 @@
       }
     }
   },
-  "devDiagnostics": "Diagnostika pro vývojáře",
+  "devDiagnostics": "Vývojářská diagnostika",
   "buildVersion": "Sestavení: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: mapy-místa (aktivní)",
@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Vyberte bakalářský program — zůstane v zařízení a přizpůsobí vaše akce Open Day.",
+  "openDay_pickerSubtitle": "Vyberte program nebo oblast zájmu — zůstane v zařízení a přizpůsobí vaše akce Open Day.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Vyhledejte svůj obor",
+  "openDay_searchBachelorHint": "Hledat programy a zájmy",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Žádný odpovídající obor nenalezen",
+  "openDay_noBachelorMatch": "Žádný odpovídající program ani zájem nenalezen",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Další",
   "onboardingStart": "Začít prozkoumávat",
   "openDay_interestedInStudying": "Co vás zajímá studovat?",
-  "openDay_pickBachelorCta": "Vyberte bakalářský obor a přizpůsobte si svůj den.",
+  "openDay_pickBachelorCta": "Vyberte studijní zájem a přizpůsobte si svůj den.",
   "openDay_noSessionsYet": "Zatím žádné odpovídající infosessioner — klepnutím zobrazte celý program.",
   "openDay_pageTitle": "Den otevřených dveří",
   "openDay_loadError": "Data Open Day se nepodařilo načíst. Zkuste to prosím znovu.",
   "openDay_pickInterest": "Vyberte svůj zájem",
-  "openDay_chooseBachelorFilter": "Vyberte bakalářský obor pro filtrování programu. Zůstane v tomto zařízení.",
+  "openDay_chooseBachelorFilter": "Vyberte studijní zájem pro filtrování programu. Zůstane v tomto zařízení.",
   "openDay_showingMatchedSessions": "Zobrazují se infosessioner odpovídající vašemu studijnímu zájmu.",
   "openDay_chooseInterest": "Vybrat zájem",
   "openDay_changeInterest": "Změnit",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Navigovat k bezpečnostní službě",
   "safetyPrivacyNote": "Vaše poloha se nikdy nesdílí automaticky. Sami rozhodujete, kdy zavolat nebo navigovat.",
   "privacyBadge": "Soukromí jako základ: žádné účty, žádné sledování, žádná historie polohy.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Oblíbené",
+  "favoritesEmpty": "Zatím žádné uložené budovy.\nProcházejte mapu a nějaké přidejte.",
+  "favoritesAddNote": "Přidat poznámku",
+  "favoritesEditNote": "Upravit poznámku",
+  "favoritesRemove": "Odebrat",
+  "favoritesDeleteConfirm": "Odebrat tuto oblíbenou položku?",
+  "favoritesDeleteConfirmBody": "Tím odeberete {buildingName} z oblíbených.",
+  "favoritesDeleteYes": "Ano, odebrat",
+  "favoritesDeleteCancel": "Zrušit",
+  "favoritesNoteHint": "Přidejte poznámku...",
+  "favoritesSaveNote": "Uložit",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Tísňové linky (policie, hasiči, záchranka)",
+  "safetyEmergencyDesc": "Pouze pro život ohrožující situace",
+  "safetySecurityLabel": "Ostraha kampusu",
+  "safetySecurityDesc": "Nepřetržitá ostraha kampusu, kyvadlová doprava, první pomoc",
+  "safetyHealthLabel": "Zdravotní služba",
+  "safetyHealthDesc": "Objednání do univerzitní zdravotní služby",
+  "safetySupportLabel": "Podpora MQ mimo pracovní dobu",
+  "safetySupportDesc": "1800 CRISIS — linka podpory duševního zdraví",
+  "safetyNoLocations": "Žádná místa nejsou k dispozici",
+  "safetyFlashlightDesc": "Použít blesk fotoaparátu jako svítilnu",
+  "safetyNavigateToSecurityDesc": "Otevřít mapu kampusu ke kanceláři ostrahy",
+  "safetyNavigateToSecurityToast": "Navigace k ostraze — otevírá se mapa kampusu",
+  "safetyQuickActions": "Rychlé akce",
+  "safetyEmergencyContacts": "Tísňové kontakty",
+  "safetyFlashlightUnavailable": "Svítilna není na tomto zařízení k dispozici",
   "scanQrCta": "Skenovat",
   "scanPermissionDenied": "Přístup ke kameře byl zamítnut",
   "scanPermissionDeniedDesc": "Povolte přístup ke kameře v nastavení, abyste mohli skenovat QR kódy",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Naskenováním získáte",
   "settingsMyStampsTile": "Moje razítka",
   "settingsMyStampsSubtitle": "Zobrazte svůj pas Open Day",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Náhled interiéru není k dispozici",
+  "indoorPreviewLoadError": "Náhled interiéru se nepodařilo načíst: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR se nepodařilo načíst: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{1 propojení} few{{count} propojení} other{{count} propojení}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Fotka {index} z {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Odznak získán!",
+  "scanBadgeVisited": "Navštíveno"
 }

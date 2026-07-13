@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Kies een bachelorprogramma — blijft op je apparaat en personaliseert je Open Day evenementen.",
+  "openDay_pickerSubtitle": "Kies een programma of interessegebied — blijft op je apparaat en personaliseert je Open Day-evenementen.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Zoek je opleiding",
+  "openDay_searchBachelorHint": "Zoek programma's en interesses",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Geen overeenkomende opleiding gevonden",
+  "openDay_noBachelorMatch": "Geen overeenkomend programma of interesse gevonden",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Volgende",
   "onboardingStart": "Begin met ontdekken",
   "openDay_interestedInStudying": "Wat wil je graag studeren?",
-  "openDay_pickBachelorCta": "Kies een bachelor om je dag te personaliseren.",
+  "openDay_pickBachelorCta": "Kies een studie-interesse om je dag te personaliseren.",
   "openDay_noSessionsYet": "Nog geen bijpassende infosessies — tik om het volledige programma te zien.",
   "openDay_pageTitle": "Open dag",
   "openDay_loadError": "Kan Open Day gegevens niet laden. Probeer het later opnieuw.",
   "openDay_pickInterest": "Kies je interesse",
-  "openDay_chooseBachelorFilter": "Kies een bachelor om het programma te filteren. Blijft op dit apparaat.",
+  "openDay_chooseBachelorFilter": "Kies een studie-interesse om het programma te filteren. Blijft op dit apparaat.",
   "openDay_showingMatchedSessions": "Infosessies passend bij je studieinteresse worden weergegeven.",
   "openDay_chooseInterest": "Interesse kiezen",
   "openDay_changeInterest": "Wijzigen",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Navigeer naar Beveiliging",
   "safetyPrivacyNote": "Uw locatie wordt nooit automatisch gedeeld. Jij kiest wanneer je belt of navigeert.",
   "privacyBadge": "Privé door ontwerp: geen account, geen tracking, geen locatiegeschiedenis.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Favorieten",
+  "favoritesEmpty": "Nog geen opgeslagen gebouwen.\nBlader door de kaart om er toe te voegen.",
+  "favoritesAddNote": "Notitie toevoegen",
+  "favoritesEditNote": "Notitie bewerken",
+  "favoritesRemove": "Verwijderen",
+  "favoritesDeleteConfirm": "Deze favoriet verwijderen?",
+  "favoritesDeleteConfirmBody": "Hiermee wordt {buildingName} uit je favorieten verwijderd.",
+  "favoritesDeleteYes": "Ja, verwijderen",
+  "favoritesDeleteCancel": "Annuleren",
+  "favoritesNoteHint": "Voeg een notitie toe...",
+  "favoritesSaveNote": "Opslaan",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Noodgeval (politie, brandweer, ambulance)",
+  "safetyEmergencyDesc": "Alleen voor levensbedreigende noodgevallen",
+  "safetySecurityLabel": "Campusbeveiliging",
+  "safetySecurityDesc": "24/7 campusbeveiliging, shuttle, eerste hulp",
+  "safetyHealthLabel": "Gezondheidsdienst",
+  "safetyHealthDesc": "Afspraken bij de gezondheidsdienst van de universiteit",
+  "safetySupportLabel": "MQ-ondersteuning buiten kantooruren",
+  "safetySupportDesc": "1800 CRISIS — Hulplijn voor geestelijke gezondheid",
+  "safetyNoLocations": "Geen locaties beschikbaar",
+  "safetyFlashlightDesc": "Gebruik de cameraflits van het apparaat als licht",
+  "safetyNavigateToSecurityDesc": "Open de campuskaart naar het beveiligingskantoor",
+  "safetyNavigateToSecurityToast": "Navigeren naar beveiliging — campuskaart wordt geopend",
+  "safetyQuickActions": "Snelle acties",
+  "safetyEmergencyContacts": "Noodcontacten",
+  "safetyFlashlightUnavailable": "Zaklamp niet beschikbaar op dit apparaat",
   "scanQrCta": "Scannen",
   "scanPermissionDenied": "Cameratoegang geweigerd",
   "scanPermissionDeniedDesc": "Schakel camera-toegang in via Instellingen om QR-codes te scannen",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Scan om te verzamelen",
   "settingsMyStampsTile": "Mijn stempels",
   "settingsMyStampsSubtitle": "Bekijk je Open Day-paspoort",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Geen binnenvoorbeeld beschikbaar",
+  "indoorPreviewLoadError": "Kan binnenvoorbeeld niet laden: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "Kan AR niet laden: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{1 verbinding} other{{count} verbindingen}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Foto {index} van {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Badge verdiend!",
+  "scanBadgeVisited": "Bezocht"
 }

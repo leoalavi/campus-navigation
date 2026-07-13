@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "选择本科专业——保存在您的设备上，并个性化您的开放日活动。",
+  "openDay_pickerSubtitle": "选择专业或感兴趣的领域——保存在您的设备上，并个性化您的开放日活动。",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "搜索你的学位",
+  "openDay_searchBachelorHint": "搜索专业和兴趣",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "未找到匹配的学位",
+  "openDay_noBachelorMatch": "未找到匹配的专业或兴趣",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "下一步",
   "onboardingStart": "开始探索",
   "openDay_interestedInStudying": "您对学习什么感兴趣？",
-  "openDay_pickBachelorCta": "选择本科专业以个性化您的一天。",
+  "openDay_pickBachelorCta": "选择一个学习兴趣以个性化您的一天。",
   "openDay_noSessionsYet": "暂无匹配的信息会话——点击查看完整日程。",
   "openDay_pageTitle": "开放日",
   "openDay_loadError": "无法加载开放日数据。请稍后重试。",
   "openDay_pickInterest": "选择您的兴趣",
-  "openDay_chooseBachelorFilter": "选择本科专业以过滤日程。保存在此设备上。",
+  "openDay_chooseBachelorFilter": "选择一个学习兴趣以筛选日程。保存在此设备上。",
   "openDay_showingMatchedSessions": "显示与您学习兴趣匹配的信息会话。",
   "openDay_chooseInterest": "选择兴趣",
   "openDay_changeInterest": "更改",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "导航至安全",
   "safetyPrivacyNote": "您的位置永远不会自动共享。您可以选择何时拨打电话或导航。",
   "privacyBadge": "隐私设计：无帐户、无跟踪、无位置历史记录。",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "收藏",
+  "favoritesEmpty": "尚无已保存的建筑。\n浏览地图以添加。",
+  "favoritesAddNote": "添加备注",
+  "favoritesEditNote": "编辑备注",
+  "favoritesRemove": "移除",
+  "favoritesDeleteConfirm": "移除此收藏？",
+  "favoritesDeleteConfirmBody": "这将从您的收藏中移除 {buildingName}。",
+  "favoritesDeleteYes": "是，移除",
+  "favoritesDeleteCancel": "取消",
+  "favoritesNoteHint": "添加备注...",
+  "favoritesSaveNote": "保存",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "紧急情况（警察、消防、救护车）",
+  "safetyEmergencyDesc": "仅限危及生命的紧急情况",
+  "safetySecurityLabel": "校园安保",
+  "safetySecurityDesc": "24/7 校园安保、班车、急救",
+  "safetyHealthLabel": "健康服务",
+  "safetyHealthDesc": "大学健康服务预约",
+  "safetySupportLabel": "MQ 非办公时间支持",
+  "safetySupportDesc": "1800 CRISIS — 心理健康支持热线",
+  "safetyNoLocations": "没有可用的位置",
+  "safetyFlashlightDesc": "使用设备相机闪光灯作为照明",
+  "safetyNavigateToSecurityDesc": "打开前往安保办公室的校园地图",
+  "safetyNavigateToSecurityToast": "导航至安保处——正在打开校园地图",
+  "safetyQuickActions": "快速操作",
+  "safetyEmergencyContacts": "紧急联系人",
+  "safetyFlashlightUnavailable": "此设备无法使用手电筒",
   "scanQrCta": "扫描",
   "scanPermissionDenied": "摄像头权限被拒绝",
   "scanPermissionDeniedDesc": "在设置中启用摄像头权限以扫描二维码",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "扫描以收集",
   "settingsMyStampsTile": "我的印章",
   "settingsMyStampsSubtitle": "查看你的开放日护照",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "无室内预览",
+  "indoorPreviewLoadError": "无法加载室内预览：{error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "无法加载 AR：{error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, other{{count} 个连接}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "第 {index} 张照片，共 {total} 张",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "获得徽章！",
+  "scanBadgeVisited": "已访问"
 }

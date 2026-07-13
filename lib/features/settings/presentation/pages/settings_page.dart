@@ -299,7 +299,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           context: context,
                           title: l10n.language,
                           current: preferences.localeCode,
-                          items: _localeCodes,
+                          items: _orderedLocaleCodes(l10n),
                           labelOf: (v) => _languageLabel(v, l10n),
                           onSelect: (v) => ref
                               .read(settingsControllerProvider.notifier)
@@ -1021,6 +1021,25 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     'vi',
     'zh',
   ];
+
+  /// Locale codes ordered for the language picker: `System` (null) pinned
+  /// first, then every language sorted alphabetically by its **native display
+  /// name** (endonym). Endonyms are identical across every ARB, so this order
+  /// is stable no matter which language the app is currently showing.
+  ///
+  /// Sorting by label — rather than by the raw ISO code order of
+  /// [_localeCodes] — is what makes the list feel predictable: users scan for
+  /// "Deutsch"/"Español"/"Français" alphabetically instead of hunting through
+  /// an apparently-random `de, el, es, fa…` sequence.
+  static List<String?> _orderedLocaleCodes(AppLocalizations l10n) {
+    final languages = _localeCodes.where((c) => c != null).toList()
+      ..sort(
+        (a, b) => _languageLabel(a, l10n).toLowerCase().compareTo(
+          _languageLabel(b, l10n).toLowerCase(),
+        ),
+      );
+    return <String?>[null, ...languages];
+  }
 
   static String _preferredStopLabel(
     UserPreferences preferences,

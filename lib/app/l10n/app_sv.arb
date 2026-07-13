@@ -274,7 +274,7 @@
       }
     }
   },
-  "devDiagnostics": "Dev Diagnostics",
+  "devDiagnostics": "Utvecklardiagnostik",
   "buildVersion": "Bygg: 2026.04.22-beta",
   "renderer": "Renderare: CrsSimple (Campus)",
   "edgeProxy": "Edge Proxy: maps-places (aktiv)",
@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Välj ett kandidatprogram — sparas på enheten och anpassar dina Open Day-evenemang.",
+  "openDay_pickerSubtitle": "Välj ett program eller intresseområde — sparas på enheten och anpassar dina Open Day-evenemang.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Sök efter din utbildning",
+  "openDay_searchBachelorHint": "Sök program och intressen",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Ingen matchande utbildning hittades",
+  "openDay_noBachelorMatch": "Inget matchande program eller intresse hittades",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Nästa",
   "onboardingStart": "Börja utforska",
   "openDay_interestedInStudying": "Vad är du intresserad av att studera?",
-  "openDay_pickBachelorCta": "Välj en kandidatexamen för att anpassa din dag.",
+  "openDay_pickBachelorCta": "Välj ett studieintresse för att anpassa din dag.",
   "openDay_noSessionsYet": "Inga matchande infosessioner ännu — tryck för att se hela programmet.",
   "openDay_pageTitle": "Öppen dag",
   "openDay_loadError": "Det gick inte att ladda Open Day-data. Försök igen senare.",
   "openDay_pickInterest": "Välj ditt intresse",
-  "openDay_chooseBachelorFilter": "Välj en kandidatexamen för att filtrera programmet. Sparas på enheten.",
+  "openDay_chooseBachelorFilter": "Välj ett studieintresse för att filtrera programmet. Sparas på enheten.",
   "openDay_showingMatchedSessions": "Visar infosessioner som matchar ditt studieintresse.",
   "openDay_chooseInterest": "Välj intresse",
   "openDay_changeInterest": "Ändra",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Navigera till Säkerhet",
   "safetyPrivacyNote": "Din plats delas aldrig automatiskt. Du väljer när du vill ringa eller navigera.",
   "privacyBadge": "Privat genom design: inget konto, ingen spårning, ingen platshistorik.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Favoriter",
+  "favoritesEmpty": "Inga sparade byggnader ännu.\nBläddra i kartan för att lägga till några.",
+  "favoritesAddNote": "Lägg till anteckning",
+  "favoritesEditNote": "Redigera anteckning",
+  "favoritesRemove": "Ta bort",
+  "favoritesDeleteConfirm": "Ta bort denna favorit?",
+  "favoritesDeleteConfirmBody": "Detta tar bort {buildingName} från dina favoriter.",
+  "favoritesDeleteYes": "Ja, ta bort",
+  "favoritesDeleteCancel": "Avbryt",
+  "favoritesNoteHint": "Lägg till en anteckning...",
+  "favoritesSaveNote": "Spara",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Nödsituation (polis, brandkår, ambulans)",
+  "safetyEmergencyDesc": "Endast vid livshotande nödsituationer",
+  "safetySecurityLabel": "Campussäkerhet",
+  "safetySecurityDesc": "Campussäkerhet dygnet runt, skyttel, första hjälpen",
+  "safetyHealthLabel": "Hälsotjänst",
+  "safetyHealthDesc": "Tidsbokning hos universitetets hälsotjänst",
+  "safetySupportLabel": "MQ-stöd utanför kontorstid",
+  "safetySupportDesc": "1800 CRISIS — stödlinje för psykisk hälsa",
+  "safetyNoLocations": "Inga platser tillgängliga",
+  "safetyFlashlightDesc": "Använd enhetens kamerablixt som ljus",
+  "safetyNavigateToSecurityDesc": "Öppna campuskartan till säkerhetskontoret",
+  "safetyNavigateToSecurityToast": "Navigera till säkerhet — öppnar campuskartan",
+  "safetyQuickActions": "Snabbåtgärder",
+  "safetyEmergencyContacts": "Nödkontakter",
+  "safetyFlashlightUnavailable": "Ficklampa är inte tillgänglig på den här enheten",
   "scanQrCta": "Skanna",
   "scanPermissionDenied": "Kameraåtkomst nekad",
   "scanPermissionDeniedDesc": "Aktivera kameraåtkomst i inställningarna för att skanna QR-koder",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Skanna för att samla",
   "settingsMyStampsTile": "Mina stämplar",
   "settingsMyStampsSubtitle": "Visa ditt Open Day-pass",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Ingen inomhusförhandsvisning tillgänglig",
+  "indoorPreviewLoadError": "Kunde inte ladda inomhusförhandsvisning: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "Kunde inte ladda AR: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{1 anslutning} other{{count} anslutningar}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Foto {index} av {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Märke intjänat!",
+  "scanBadgeVisited": "Besökt"
 }

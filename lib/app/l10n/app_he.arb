@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "בחר תוכנית לתואר ראשון — נשמר במכשיר שלך ומתאים אישית את אירועי ה-Open Day שלך.",
+  "openDay_pickerSubtitle": "בחר תוכנית או תחום עניין — נשמר במכשיר שלך ומתאים אישית את אירועי ה-Open Day שלך.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "חפש את התואר שלך",
+  "openDay_searchBachelorHint": "חפש תוכניות ותחומי עניין",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "לא נמצא תואר מתאים",
+  "openDay_noBachelorMatch": "לא נמצאה תוכנית או תחום עניין תואם",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "הבא",
   "onboardingStart": "התחילו לחקור",
   "openDay_interestedInStudying": "מה מעניין אותך ללמוד?",
-  "openDay_pickBachelorCta": "בחר תואר ראשון להתאמה אישית של יומך.",
+  "openDay_pickBachelorCta": "בחר תחום לימודים כדי להתאים אישית את היום שלך.",
   "openDay_noSessionsYet": "עדיין אין מפגשי מידע תואמים — הקש לצפייה בלוח הזמנים המלא.",
   "openDay_pageTitle": "יום פתוח",
   "openDay_loadError": "לא ניתן לטעון נתוני Open Day. נסה שוב מאוחר יותר.",
   "openDay_pickInterest": "בחר מה שמעניין אותך",
-  "openDay_chooseBachelorFilter": "בחר תואר ראשון לסינון הלוח. נשמר במכשיר זה.",
+  "openDay_chooseBachelorFilter": "בחר תחום לימודים לסינון הלוח. נשמר במכשיר זה.",
   "openDay_showingMatchedSessions": "מציג מפגשי מידע התואמים את תחום העניין הלימודי שלך.",
   "openDay_chooseInterest": "בחר עניין",
   "openDay_changeInterest": "שנה",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "נווט אל אבטחה",
   "safetyPrivacyNote": "המיקום שלך לעולם אינו משותף באופן אוטומטי. אתה בוחר מתי להתקשר או לנווט.",
   "privacyBadge": "פרטי בעיצוב: ללא חשבון, ללא מעקב, ללא היסטוריית מיקומים.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "מועדפים",
+  "favoritesEmpty": "אין עדיין מבנים שמורים.\nעיין במפה כדי להוסיף.",
+  "favoritesAddNote": "הוסף הערה",
+  "favoritesEditNote": "ערוך הערה",
+  "favoritesRemove": "הסר",
+  "favoritesDeleteConfirm": "להסיר מועדף זה?",
+  "favoritesDeleteConfirmBody": "פעולה זו תסיר את {buildingName} מהמועדפים שלך.",
+  "favoritesDeleteYes": "כן, הסר",
+  "favoritesDeleteCancel": "ביטול",
+  "favoritesNoteHint": "הוסף הערה...",
+  "favoritesSaveNote": "שמור",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "חירום (משטרה, כיבוי אש, אמבולנס)",
+  "safetyEmergencyDesc": "למקרי חירום מסכני חיים בלבד",
+  "safetySecurityLabel": "אבטחת הקמפוס",
+  "safetySecurityDesc": "אבטחת קמפוס 24/7, הסעה, עזרה ראשונה",
+  "safetyHealthLabel": "שירות הבריאות",
+  "safetyHealthDesc": "תורים לשירות הבריאות של האוניברסיטה",
+  "safetySupportLabel": "תמיכת MQ מחוץ לשעות הפעילות",
+  "safetySupportDesc": "1800 CRISIS — קו תמיכה לבריאות הנפש",
+  "safetyNoLocations": "אין מיקומים זמינים",
+  "safetyFlashlightDesc": "השתמש בפלאש מצלמת המכשיר כתאורה",
+  "safetyNavigateToSecurityDesc": "פתח את מפת הקמפוס אל משרד האבטחה",
+  "safetyNavigateToSecurityToast": "ניווט לאבטחה — פותח את מפת הקמפוס",
+  "safetyQuickActions": "פעולות מהירות",
+  "safetyEmergencyContacts": "אנשי קשר לחירום",
+  "safetyFlashlightUnavailable": "פנס אינו זמין במכשיר זה",
   "scanQrCta": "סרוק",
   "scanPermissionDenied": "הגישה למצלמה נדחתה",
   "scanPermissionDeniedDesc": "אפשר גישה למצלמה בהגדרות כדי לסרוק קודי QR",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "סרוק כדי לאסוף",
   "settingsMyStampsTile": "החותמות שלי",
   "settingsMyStampsSubtitle": "צפה בדרכון ה-Open Day שלך",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "אין תצוגה מקדימה של פנים המבנה",
+  "indoorPreviewLoadError": "לא ניתן לטעון את תצוגת הפנים: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "לא ניתן לטעון AR: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, one{חיבור אחד} two{{count} חיבורים} many{{count} חיבורים} other{{count} חיבורים}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "תמונה {index} מתוך {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "זכית בתג!",
+  "scanBadgeVisited": "ביקרת"
 }

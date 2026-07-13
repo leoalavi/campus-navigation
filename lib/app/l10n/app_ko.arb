@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "학과 프로그램 선택 — 기기에 저장되며 오픈 데이 행사를 개인화합니다.",
+  "openDay_pickerSubtitle": "프로그램 또는 관심 분야 선택 — 기기에 저장되며 오픈 데이 행사를 개인화합니다.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "학위 검색",
+  "openDay_searchBachelorHint": "프로그램 및 관심 분야 검색",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "일치하는 학위가 없습니다",
+  "openDay_noBachelorMatch": "일치하는 프로그램 또는 관심 분야가 없습니다",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "다음",
   "onboardingStart": "탐색 시작",
   "openDay_interestedInStudying": "무엇을 공부하고 싶으신가요?",
-  "openDay_pickBachelorCta": "하루를 개인화하려면 학과를 선택하세요.",
+  "openDay_pickBachelorCta": "하루를 개인화하려면 학습 관심 분야를 선택하세요.",
   "openDay_noSessionsYet": "아직 일치하는 정보 세션이 없습니다 — 전체 일정을 보려면 탭하세요.",
   "openDay_pageTitle": "오픈 데이",
   "openDay_loadError": "오픈 데이 데이터를 불러올 수 없습니다. 나중에 다시 시도해주세요.",
   "openDay_pickInterest": "관심사를 선택하세요",
-  "openDay_chooseBachelorFilter": "일정을 필터링할 학과를 선택하세요. 이 기기에 저장됩니다.",
+  "openDay_chooseBachelorFilter": "일정을 필터링할 학습 관심 분야를 선택하세요. 이 기기에 저장됩니다.",
   "openDay_showingMatchedSessions": "학습 관심사와 일치하는 정보 세션 표시 중.",
   "openDay_chooseInterest": "관심사 선택",
   "openDay_changeInterest": "변경",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "보안으로 이동",
   "safetyPrivacyNote": "귀하의 위치는 자동으로 공유되지 않습니다. 전화를 걸거나 탐색할 시기를 선택합니다.",
   "privacyBadge": "비공개 설계: 계정 없음, 추적 없음, 위치 기록 없음.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "즐겨찾기",
+  "favoritesEmpty": "아직 저장된 건물이 없습니다.\n지도를 둘러보고 추가하세요.",
+  "favoritesAddNote": "메모 추가",
+  "favoritesEditNote": "메모 편집",
+  "favoritesRemove": "제거",
+  "favoritesDeleteConfirm": "이 즐겨찾기를 제거하시겠습니까?",
+  "favoritesDeleteConfirmBody": "{buildingName}이(가) 즐겨찾기에서 제거됩니다.",
+  "favoritesDeleteYes": "예, 제거",
+  "favoritesDeleteCancel": "취소",
+  "favoritesNoteHint": "메모를 추가하세요...",
+  "favoritesSaveNote": "저장",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "긴급 (경찰, 소방, 구급)",
+  "safetyEmergencyDesc": "생명이 위급한 응급 상황에만 해당",
+  "safetySecurityLabel": "캠퍼스 보안",
+  "safetySecurityDesc": "24시간 캠퍼스 보안, 셔틀, 응급 처치",
+  "safetyHealthLabel": "보건 서비스",
+  "safetyHealthDesc": "대학 보건 서비스 예약",
+  "safetySupportLabel": "MQ 시간 외 지원",
+  "safetySupportDesc": "1800 CRISIS — 정신 건강 지원 상담 전화",
+  "safetyNoLocations": "이용 가능한 위치가 없습니다",
+  "safetyFlashlightDesc": "기기 카메라 플래시를 조명으로 사용",
+  "safetyNavigateToSecurityDesc": "보안 사무실까지 캠퍼스 지도 열기",
+  "safetyNavigateToSecurityToast": "보안실로 이동 — 캠퍼스 지도를 여는 중",
+  "safetyQuickActions": "빠른 작업",
+  "safetyEmergencyContacts": "비상 연락처",
+  "safetyFlashlightUnavailable": "이 기기에서는 손전등을 사용할 수 없습니다",
   "scanQrCta": "스캔",
   "scanPermissionDenied": "카메라 권한이 거부되었습니다",
   "scanPermissionDeniedDesc": "설정에서 카메라 액세스를 활성화하여 QR 코드를 스캔하세요",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "스캔하여 수집",
   "settingsMyStampsTile": "내 스탬프",
   "settingsMyStampsSubtitle": "Open Day 여권 보기",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "실내 미리보기를 사용할 수 없습니다",
+  "indoorPreviewLoadError": "실내 미리보기를 불러올 수 없습니다: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR을 불러올 수 없습니다: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, other{연결 {count}개}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "사진 {index}/{total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "배지 획득!",
+  "scanBadgeVisited": "방문함"
 }

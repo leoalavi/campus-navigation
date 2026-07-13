@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Valitse kandidaattiohjelma — tallentuu laitteellesi ja mukauttaa Open Day -tapahtumasi.",
+  "openDay_pickerSubtitle": "Valitse ohjelma tai kiinnostuksen kohde — tallentuu laitteellesi ja mukauttaa Open Day -tapahtumasi.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Hae tutkintoa",
+  "openDay_searchBachelorHint": "Hae ohjelmia ja kiinnostuksen kohteita",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Vastaavaa tutkintoa ei löytynyt",
+  "openDay_noBachelorMatch": "Vastaavaa ohjelmaa tai kiinnostuksen kohdetta ei löytynyt",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Seuraava",
   "onboardingStart": "Aloita tutkiminen",
   "openDay_interestedInStudying": "Mitä olet kiinnostunut opiskelemaan?",
-  "openDay_pickBachelorCta": "Valitse kandidaattiohjelma muokataksesi päivääsi.",
+  "openDay_pickBachelorCta": "Valitse kiinnostuksen kohde muokataksesi päivääsi.",
   "openDay_noSessionsYet": "Ei vastaavia infosessioita vielä — napauta nähdäksesi koko ohjelman.",
   "openDay_pageTitle": "Avointen ovien päivä",
   "openDay_loadError": "Open Day -tietoja ei voitu ladata. Yritä uudelleen myöhemmin.",
   "openDay_pickInterest": "Valitse kiinnostuksesi",
-  "openDay_chooseBachelorFilter": "Valitse kandidaattiohjelma ohjelman suodattamiseksi. Tallennetaan tälle laitteelle.",
+  "openDay_chooseBachelorFilter": "Valitse kiinnostuksen kohde ohjelman suodattamiseksi. Tallennetaan tälle laitteelle.",
   "openDay_showingMatchedSessions": "Näytetään opiskelukiinnostustasi vastaavat infosessiot.",
   "openDay_chooseInterest": "Valitse kiinnostus",
   "openDay_changeInterest": "Muuta",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Siirry kohtaan Suojaus",
   "safetyPrivacyNote": "Sijaintiasi ei koskaan jaeta automaattisesti. Voit valita milloin soitat tai navigoit.",
   "privacyBadge": "Suunniteltu yksityinen: ei tiliä, ei seurantaa, ei sijaintihistoriaa.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Suosikit",
+  "favoritesEmpty": "Ei vielä tallennettuja rakennuksia.\nSelaa karttaa lisätäksesi niitä.",
+  "favoritesAddNote": "Lisää muistiinpano",
+  "favoritesEditNote": "Muokkaa muistiinpanoa",
+  "favoritesRemove": "Poista",
+  "favoritesDeleteConfirm": "Poistetaanko tämä suosikki?",
+  "favoritesDeleteConfirmBody": "Tämä poistaa kohteen {buildingName} suosikeistasi.",
+  "favoritesDeleteYes": "Kyllä, poista",
+  "favoritesDeleteCancel": "Peruuta",
+  "favoritesNoteHint": "Lisää muistiinpano...",
+  "favoritesSaveNote": "Tallenna",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Hätätilanne (poliisi, palokunta, ambulanssi)",
+  "safetyEmergencyDesc": "Vain henkeä uhkaavissa hätätilanteissa",
+  "safetySecurityLabel": "Kampuksen turvallisuus",
+  "safetySecurityDesc": "Kampuksen turvapalvelu 24/7, kuljetus, ensiapu",
+  "safetyHealthLabel": "Terveyspalvelu",
+  "safetyHealthDesc": "Yliopiston terveyspalvelun ajanvaraukset",
+  "safetySupportLabel": "MQ:n tuki aukioloaikojen ulkopuolella",
+  "safetySupportDesc": "1800 CRISIS — mielenterveyden tukipuhelin",
+  "safetyNoLocations": "Ei sijainteja saatavilla",
+  "safetyFlashlightDesc": "Käytä laitteen kameran salamaa valona",
+  "safetyNavigateToSecurityDesc": "Avaa kampuskartta turvatoimiston luo",
+  "safetyNavigateToSecurityToast": "Navigoi turvapalveluun — avataan kampuskartta",
+  "safetyQuickActions": "Pikatoiminnot",
+  "safetyEmergencyContacts": "Hätäyhteystiedot",
+  "safetyFlashlightUnavailable": "Taskulamppu ei ole käytettävissä tällä laitteella",
   "scanQrCta": "Skannaa",
   "scanPermissionDenied": "Kameran käyttöoikeus evätty",
   "scanPermissionDeniedDesc": "Ota kameran käyttöoikeus käyttöön asetuksista QR-koodien skannaamiseksi",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Skannaa kerätäksesi",
   "settingsMyStampsTile": "Omat leimani",
   "settingsMyStampsSubtitle": "Näytä Open Day -passisi",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Sisätilan esikatselua ei ole saatavilla",
+  "indoorPreviewLoadError": "Sisätilan esikatselua ei voitu ladata: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR:ää ei voitu ladata: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{1 yhteys} other{{count} yhteyttä}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Kuva {index}/{total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Ansaitsit merkin!",
+  "scanBadgeVisited": "Vierailtu"
 }

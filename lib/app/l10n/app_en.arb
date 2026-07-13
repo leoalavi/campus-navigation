@@ -320,7 +320,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Pick a bachelor program — this stays on your device and personalises your Open Day events.",
+  "openDay_pickerSubtitle": "Choose a program or interest — this stays on your device and personalises your Open Day events.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -328,11 +328,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Search for your degree",
+  "openDay_searchBachelorHint": "Search programs and interests",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "No matching degree found",
+  "openDay_noBachelorMatch": "No matching program or interest found",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -436,12 +436,12 @@
   "onboardingNext": "Next",
   "onboardingStart": "Start Exploring",
   "openDay_interestedInStudying": "What are you interested in studying?",
-  "openDay_pickBachelorCta": "Pick a bachelor to personalise your day.",
+  "openDay_pickBachelorCta": "Choose a study interest to personalise your day.",
   "openDay_noSessionsYet": "No info sessions matched yet — tap to view the full schedule.",
   "openDay_pageTitle": "Open Day",
   "openDay_loadError": "Couldn't load Open Day data. Please try again later.",
   "openDay_pickInterest": "Pick what you're interested in",
-  "openDay_chooseBachelorFilter": "Choose a bachelor to filter the schedule. Stays on this device.",
+  "openDay_chooseBachelorFilter": "Choose a study interest to filter the schedule. Stays on this device.",
   "openDay_showingMatchedSessions": "Showing info sessions matched to your study interest.",
   "openDay_chooseInterest": "Choose interest",
   "openDay_changeInterest": "Change",

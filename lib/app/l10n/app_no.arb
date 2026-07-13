@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Velg et bachelorprogram — lagres på enheten og tilpasser Open Day-arrangementene dine.",
+  "openDay_pickerSubtitle": "Velg et program eller interesseområde — lagres på enheten og tilpasser Open Day-arrangementene dine.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Søk etter graden din",
+  "openDay_searchBachelorHint": "Søk etter programmer og interesser",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Ingen samsvarende grad funnet",
+  "openDay_noBachelorMatch": "Fant ingen samsvarende program eller interesse",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Neste",
   "onboardingStart": "Begynn å utforske",
   "openDay_interestedInStudying": "Hva er du interessert i å studere?",
-  "openDay_pickBachelorCta": "Velg en bachelor for å tilpasse dagen din.",
+  "openDay_pickBachelorCta": "Velg en studieinteresse for å tilpasse dagen din.",
   "openDay_noSessionsYet": "Ingen matchende infosesjoner ennå — trykk for å se hele programmet.",
   "openDay_pageTitle": "Åpen dag",
   "openDay_loadError": "Kunne ikke laste Open Day-data. Prøv igjen senere.",
   "openDay_pickInterest": "Velg din interesse",
-  "openDay_chooseBachelorFilter": "Velg en bachelor for å filtrere programmet. Lagres på enheten.",
+  "openDay_chooseBachelorFilter": "Velg en studieinteresse for å filtrere programmet. Lagres på enheten.",
   "openDay_showingMatchedSessions": "Viser infosesjoner som matcher studieinteressen din.",
   "openDay_chooseInterest": "Velg interesse",
   "openDay_changeInterest": "Endre",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Naviger til Sikkerhet",
   "safetyPrivacyNote": "Posisjonen din deles aldri automatisk. Du velger når du skal ringe eller navigere.",
   "privacyBadge": "Privat av design: ingen konto, ingen sporing, ingen posisjonshistorikk.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Favoritter",
+  "favoritesEmpty": "Ingen lagrede bygninger ennå.\nBla gjennom kartet for å legge til noen.",
+  "favoritesAddNote": "Legg til notat",
+  "favoritesEditNote": "Rediger notat",
+  "favoritesRemove": "Fjern",
+  "favoritesDeleteConfirm": "Fjerne denne favoritten?",
+  "favoritesDeleteConfirmBody": "Dette fjerner {buildingName} fra favorittene dine.",
+  "favoritesDeleteYes": "Ja, fjern",
+  "favoritesDeleteCancel": "Avbryt",
+  "favoritesNoteHint": "Legg til et notat...",
+  "favoritesSaveNote": "Lagre",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Nødstilfelle (politi, brann, ambulanse)",
+  "safetyEmergencyDesc": "Kun ved livstruende nødstilfeller",
+  "safetySecurityLabel": "Campussikkerhet",
+  "safetySecurityDesc": "Døgnbemannet campussikkerhet, skyttelbuss, førstehjelp",
+  "safetyHealthLabel": "Helsetjeneste",
+  "safetyHealthDesc": "Timeavtaler ved universitetets helsetjeneste",
+  "safetySupportLabel": "MQ-støtte utenom åpningstid",
+  "safetySupportDesc": "1800 CRISIS — støttelinje for psykisk helse",
+  "safetyNoLocations": "Ingen steder tilgjengelig",
+  "safetyFlashlightDesc": "Bruk enhetens kamerablits som lys",
+  "safetyNavigateToSecurityDesc": "Åpne campuskartet til sikkerhetskontoret",
+  "safetyNavigateToSecurityToast": "Naviger til sikkerhet — åpner campuskartet",
+  "safetyQuickActions": "Hurtighandlinger",
+  "safetyEmergencyContacts": "Nødkontakter",
+  "safetyFlashlightUnavailable": "Lommelykt er ikke tilgjengelig på denne enheten",
   "scanQrCta": "Skann",
   "scanPermissionDenied": "Kameratilgang nektet",
   "scanPermissionDeniedDesc": "Aktiver kameratilgang i innstillingene for å skanne QR-koder",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Skann for å samle",
   "settingsMyStampsTile": "Mine stempler",
   "settingsMyStampsSubtitle": "Se Open Day-passet ditt",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Ingen innendørs forhåndsvisning tilgjengelig",
+  "indoorPreviewLoadError": "Kunne ikke laste innendørs forhåndsvisning: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "Kunne ikke laste AR: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{1 forbindelse} other{{count} forbindelser}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Bilde {index} av {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Merke opptjent!",
+  "scanBadgeVisited": "Besøkt"
 }

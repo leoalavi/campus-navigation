@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Elige un programa de grado — se guarda en tu dispositivo y personaliza tus eventos del Open Day.",
+  "openDay_pickerSubtitle": "Elige un programa o área de interés — se guarda en tu dispositivo y personaliza tus eventos del Open Day.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Busca tu carrera",
+  "openDay_searchBachelorHint": "Busca programas e intereses",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "No se encontró ninguna carrera coincidente",
+  "openDay_noBachelorMatch": "No se encontró ningún programa o interés coincidente",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "Siguiente",
   "onboardingStart": "Empezar a explorar",
   "openDay_interestedInStudying": "¿Qué te interesa estudiar?",
-  "openDay_pickBachelorCta": "Elige un grado para personalizar tu día.",
+  "openDay_pickBachelorCta": "Elige un área de interés para personalizar tu día.",
   "openDay_noSessionsYet": "Aún no hay sesiones informativas — toca para ver el programa completo.",
   "openDay_pageTitle": "Jornada de puertas abiertas",
   "openDay_loadError": "No se pudieron cargar los datos del Open Day. Inténtalo más tarde.",
   "openDay_pickInterest": "Elige lo que te interesa",
-  "openDay_chooseBachelorFilter": "Elige un grado para filtrar el programa. Se guarda en este dispositivo.",
+  "openDay_chooseBachelorFilter": "Elige un área de interés para filtrar el programa. Se guarda en este dispositivo.",
   "openDay_showingMatchedSessions": "Mostrando sesiones que coinciden con tu interés de estudio.",
   "openDay_chooseInterest": "Elegir interés",
   "openDay_changeInterest": "Cambiar",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Navegar a seguridad",
   "safetyPrivacyNote": "Tu ubicación nunca se comparte automáticamente. Tú decides cuándo llamar o navegar.",
   "privacyBadge": "Privacidad por diseño: sin cuenta, sin rastreo, sin historial de ubicación.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Favoritos",
+  "favoritesEmpty": "Aún no hay edificios guardados.\nExplora el mapa para añadir algunos.",
+  "favoritesAddNote": "Añadir nota",
+  "favoritesEditNote": "Editar nota",
+  "favoritesRemove": "Quitar",
+  "favoritesDeleteConfirm": "¿Quitar este favorito?",
+  "favoritesDeleteConfirmBody": "Esto quitará {buildingName} de tus favoritos.",
+  "favoritesDeleteYes": "Sí, quitar",
+  "favoritesDeleteCancel": "Cancelar",
+  "favoritesNoteHint": "Añade una nota...",
+  "favoritesSaveNote": "Guardar",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Emergencia (Policía, Bomberos, Ambulancia)",
+  "safetyEmergencyDesc": "Solo para emergencias que amenazan la vida",
+  "safetySecurityLabel": "Seguridad del campus",
+  "safetySecurityDesc": "Seguridad del campus 24/7, transporte, primeros auxilios",
+  "safetyHealthLabel": "Servicio de salud",
+  "safetyHealthDesc": "Citas del Servicio de Salud universitario",
+  "safetySupportLabel": "Apoyo MQ fuera de horario",
+  "safetySupportDesc": "1800 CRISIS — Línea de apoyo de salud mental",
+  "safetyNoLocations": "No hay ubicaciones disponibles",
+  "safetyFlashlightDesc": "Usar el flash de la cámara del dispositivo como luz",
+  "safetyNavigateToSecurityDesc": "Abrir el mapa del campus hacia la oficina de seguridad",
+  "safetyNavigateToSecurityToast": "Navegar a Seguridad — abriendo el mapa del campus",
+  "safetyQuickActions": "Acciones rápidas",
+  "safetyEmergencyContacts": "Contactos de emergencia",
+  "safetyFlashlightUnavailable": "Linterna no disponible en este dispositivo",
   "scanQrCta": "Escanear",
   "scanPermissionDenied": "Permiso de cámara denegado",
   "scanPermissionDeniedDesc": "Habilita el acceso a la cámara en configuración para escanear códigos QR",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Escanea para recoger",
   "settingsMyStampsTile": "Mis sellos",
   "settingsMyStampsSubtitle": "Ver tu pasaporte de Open Day",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "No hay vista previa de interiores disponible",
+  "indoorPreviewLoadError": "No se pudo cargar la vista previa de interiores: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "No se pudo cargar la RA: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, =1{1 conexión} other{{count} conexiones}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "Foto {index} de {total}",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "¡Insignia obtenida!",
+  "scanBadgeVisited": "Visitado"
 }

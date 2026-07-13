@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_journey/features/open_day/presentation/widgets/open_day_home_sections.dart';
 
 /// Integrity guard for the official Open Day dataset
 /// (`assets/data/open_day.json`, sourced from the MQ Open Day 2026 PDF).
@@ -80,6 +82,30 @@ void main() {
       for (final id in s.bachelorIds) {
         expect(ids.contains(id), isTrue, reason: 'stop ${s.id} -> $id');
       }
+    }
+  });
+
+  test('every suggested stop icon resolves to a real glyph', () {
+    // iconForStop falls back to Icons.place for unknown names, which would
+    // silently render a generic pin on a mistyped icon. No stop uses "place",
+    // so hitting the fallback means the dataset drifted from the icon switch.
+    for (final s in data.suggestedStops) {
+      expect(
+        iconForStop(s.icon),
+        isNot(Icons.place),
+        reason: 'stop ${s.id} -> unknown icon "${s.icon}"',
+      );
+    }
+  });
+
+  test('every suggested stop has a non-empty title and description', () {
+    for (final s in data.suggestedStops) {
+      expect(s.title.trim(), isNotEmpty, reason: '${s.id} missing title');
+      expect(
+        s.description.trim(),
+        isNotEmpty,
+        reason: '${s.id} missing description',
+      );
     }
   });
 

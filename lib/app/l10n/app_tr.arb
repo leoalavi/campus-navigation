@@ -318,7 +318,7 @@
   "@openDay_noMappableVenue": {
     "description": "Shown in the event actions sheet when the event has no geocoded venue."
   },
-  "openDay_pickerSubtitle": "Bir lisans programı seçin — cihazınızda kalır ve Open Day etkinliklerinizi kişiselleştirir.",
+  "openDay_pickerSubtitle": "Bir program veya ilgi alanı seçin — cihazınızda kalır ve Open Day etkinliklerinizi kişiselleştirir.",
   "@openDay_pickerSubtitle": {
     "description": "Subtitle in the bachelor-picker bottom sheet."
   },
@@ -326,11 +326,11 @@
   "@openDay_clearSelection": {
     "description": "Label on the button that removes the selected bachelor."
   },
-  "openDay_searchBachelorHint": "Bölümünü ara",
+  "openDay_searchBachelorHint": "Programları ve ilgi alanlarını ara",
   "@openDay_searchBachelorHint": {
     "description": "Placeholder text in the bachelor-picker search field."
   },
-  "openDay_noBachelorMatch": "Eşleşen bölüm bulunamadı",
+  "openDay_noBachelorMatch": "Eşleşen program veya ilgi alanı bulunamadı",
   "@openDay_noBachelorMatch": {
     "description": "Empty state title shown when the bachelor-picker search has no results."
   },
@@ -425,12 +425,12 @@
   "onboardingNext": "İleri",
   "onboardingStart": "Keşfetmeye başla",
   "openDay_interestedInStudying": "Ne okumak istiyorsunuz?",
-  "openDay_pickBachelorCta": "Gününüzü kişiselleştirmek için bir lisans seçin.",
+  "openDay_pickBachelorCta": "Gününüzü kişiselleştirmek için bir çalışma ilgi alanı seçin.",
   "openDay_noSessionsYet": "Henüz eşleşen bilgi oturumu yok — tam programı görmek için dokunun.",
   "openDay_pageTitle": "Açık Gün",
   "openDay_loadError": "Open Day verileri yüklenemedi. Lütfen daha sonra tekrar deneyin.",
   "openDay_pickInterest": "İlgi alanınızı seçin",
-  "openDay_chooseBachelorFilter": "Programı filtrelemek için bir lisans seçin. Bu cihazda kalır.",
+  "openDay_chooseBachelorFilter": "Programı filtrelemek için bir çalışma ilgi alanı seçin. Bu cihazda kalır.",
   "openDay_showingMatchedSessions": "Çalışma ilginizle eşleşen bilgi oturumları gösteriliyor.",
   "openDay_chooseInterest": "İlgi alanı seç",
   "openDay_changeInterest": "Değiştir",
@@ -567,17 +567,17 @@
   "safetyNavigateToSecurity": "Güvenlik'e gidin",
   "safetyPrivacyNote": "Konumunuz hiçbir zaman otomatik olarak paylaşılmaz. Ne zaman arayacağınızı veya gezineceğinizi siz seçersiniz.",
   "privacyBadge": "Tasarım gereği özel: hesap yok, izleme yok, konum geçmişi yok.",
-  "favoritesTitle": "Favourites",
-  "favoritesEmpty": "No saved buildings yet.\nBrowse the map to add some.",
-  "favoritesAddNote": "Add note",
-  "favoritesEditNote": "Edit note",
-  "favoritesRemove": "Remove",
-  "favoritesDeleteConfirm": "Remove this favourite?",
-  "favoritesDeleteConfirmBody": "This will remove {buildingName} from your favourites.",
-  "favoritesDeleteYes": "Yes, remove",
-  "favoritesDeleteCancel": "Cancel",
-  "favoritesNoteHint": "Add a note...",
-  "favoritesSaveNote": "Save",
+  "favoritesTitle": "Favoriler",
+  "favoritesEmpty": "Henüz kaydedilmiş bina yok.\nEklemek için haritaya göz atın.",
+  "favoritesAddNote": "Not ekle",
+  "favoritesEditNote": "Notu düzenle",
+  "favoritesRemove": "Kaldır",
+  "favoritesDeleteConfirm": "Bu favori kaldırılsın mı?",
+  "favoritesDeleteConfirmBody": "Bu işlem {buildingName} öğesini favorilerinizden kaldıracak.",
+  "favoritesDeleteYes": "Evet, kaldır",
+  "favoritesDeleteCancel": "İptal",
+  "favoritesNoteHint": "Bir not ekleyin...",
+  "favoritesSaveNote": "Kaydet",
   "lang_ar": "العربية",
   "lang_bn": "বাংলা",
   "lang_cs": "Čeština",
@@ -613,21 +613,21 @@
   "lang_ur": "اردو",
   "lang_vi": "Tiếng Việt",
   "lang_zh": "中文",
-  "safetyEmergencyLabel": "Emergency (Police, Fire, Ambulance)",
-  "safetyEmergencyDesc": "Life-threatening emergencies only",
-  "safetySecurityLabel": "Campus Security",
-  "safetySecurityDesc": "24/7 campus security, shuttle, first aid",
-  "safetyHealthLabel": "Health Service",
-  "safetyHealthDesc": "University Health Service appointments",
-  "safetySupportLabel": "MQ Afterhours Support",
-  "safetySupportDesc": "1800 CRISIS — Mental health support line",
-  "safetyNoLocations": "No locations available",
-  "safetyFlashlightDesc": "Use device camera flash as light",
-  "safetyNavigateToSecurityDesc": "Open campus map to security office",
-  "safetyNavigateToSecurityToast": "Navigate to Security — opening campus map",
-  "safetyQuickActions": "Quick Actions",
-  "safetyEmergencyContacts": "Emergency Contacts",
-  "safetyFlashlightUnavailable": "Flashlight unavailable on this device",
+  "safetyEmergencyLabel": "Acil (Polis, İtfaiye, Ambulans)",
+  "safetyEmergencyDesc": "Yalnızca hayati tehlike içeren acil durumlar için",
+  "safetySecurityLabel": "Kampüs Güvenliği",
+  "safetySecurityDesc": "7/24 kampüs güvenliği, servis, ilk yardım",
+  "safetyHealthLabel": "Sağlık Hizmeti",
+  "safetyHealthDesc": "Üniversite Sağlık Hizmeti randevuları",
+  "safetySupportLabel": "MQ Mesai Dışı Destek",
+  "safetySupportDesc": "1800 CRISIS — Ruh sağlığı destek hattı",
+  "safetyNoLocations": "Kullanılabilir konum yok",
+  "safetyFlashlightDesc": "Cihaz kamera flaşını ışık olarak kullan",
+  "safetyNavigateToSecurityDesc": "Güvenlik ofisine giden kampüs haritasını aç",
+  "safetyNavigateToSecurityToast": "Güvenliğe yönlendiriliyor — kampüs haritası açılıyor",
+  "safetyQuickActions": "Hızlı İşlemler",
+  "safetyEmergencyContacts": "Acil Durum Kişileri",
+  "safetyFlashlightUnavailable": "Bu cihazda el feneri kullanılamıyor",
   "scanQrCta": "Tara",
   "scanPermissionDenied": "Kamera izni reddedildi",
   "scanPermissionDeniedDesc": "QR kodlarını taramak için Ayarlar'dan kamera erişimini etkinleştirin",
@@ -704,8 +704,8 @@
   "stampsPassportLockedHint": "Toplamak için tarayın",
   "settingsMyStampsTile": "Damgalarım",
   "settingsMyStampsSubtitle": "Open Day pasaportunuzu görüntüleyin",
-  "indoorNoPreview": "No indoor preview available",
-  "indoorPreviewLoadError": "Could not load indoor preview: {error}",
+  "indoorNoPreview": "Kapalı alan önizlemesi yok",
+  "indoorPreviewLoadError": "Kapalı alan önizlemesi yüklenemedi: {error}",
   "@indoorPreviewLoadError": {
     "placeholders": {
       "error": {
@@ -713,7 +713,7 @@
       }
     }
   },
-  "arLoadError": "Could not load AR: {error}",
+  "arLoadError": "AR yüklenemedi: {error}",
   "@arLoadError": {
     "placeholders": {
       "error": {
@@ -721,7 +721,7 @@
       }
     }
   },
-  "indoorConnections": "{count, plural, =1{1 connection} other{{count} connections}}",
+  "indoorConnections": "{count, plural, other{{count} bağlantı}}",
   "@indoorConnections": {
     "placeholders": {
       "count": {
@@ -729,7 +729,7 @@
       }
     }
   },
-  "photoGallerySemantics": "Photo {index} of {total}",
+  "photoGallerySemantics": "{total} fotoğraftan {index}. fotoğraf",
   "@photoGallerySemantics": {
     "placeholders": {
       "index": {
@@ -740,6 +740,6 @@
       }
     }
   },
-  "scanBadgeEarned": "Badge earned!",
-  "scanBadgeVisited": "Visited"
+  "scanBadgeEarned": "Rozet kazanıldı!",
+  "scanBadgeVisited": "Ziyaret edildi"
 }
