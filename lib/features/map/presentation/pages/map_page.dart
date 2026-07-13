@@ -94,6 +94,9 @@ class _MapPageState extends ConsumerState<MapPage> {
     final building = await showModalBottomSheet<Building>(
       context: context,
       isScrollControlled: true,
+      // Cover the full height so the map's search pill can never show through
+      // behind the sheet — a single search surface, never two at once.
+      useSafeArea: true,
       backgroundColor: Colors.transparent,
       builder: (_) => const BuildingSearchSheet(),
     );
