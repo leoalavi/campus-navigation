@@ -37,6 +37,14 @@ void main() {
       expect(() => TrailManifest.fromJson('not json'), throwsFormatException);
     });
 
+    test('parses description and defaults it to null when absent', () {
+      final withDesc = TrailManifest.fromJson(
+        '{"locations":[{"locationId":"wallys-1","title":"1 Wally\'s Walk","description":"Three sentence blurb."}]}',
+      );
+      expect(withDesc.byId('wallys-1')?.description, 'Three sentence blurb.');
+      expect(manifest.byId('lib-01')?.description, isNull);
+    });
+
     test('parses mapBuildingCode and defaults it to null when absent', () {
       final withCode = TrailManifest.fromJson(
         '{"locations":[{"locationId":"wallys-29","buildingId":"wallys-29","mapBuildingCode":"29WW","title":"29 Wally\'s Walk"}]}',

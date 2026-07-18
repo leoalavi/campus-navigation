@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_journey/features/scan/data/repositories/trail_repository.dart';
 import 'package:mq_journey/features/scan/data/repositories/indoor_repository.dart';
@@ -21,6 +22,36 @@ void main() {
       containsAll(['theatre-g03', 'theatre-102', 'theatre-202']),
     );
   });
+
+  test(
+    'every location has a real bundled photo and a description (cards not empty)',
+    () async {
+      final manifest = await TrailRepository().load();
+      for (final loc in manifest.locations) {
+        // Description present and reasonably sized (the curated 2-3 sentences).
+        expect(
+          loc.description,
+          isNotNull,
+          reason: 'no description for ${loc.locationId}',
+        );
+        expect(loc.description!.trim().length, greaterThan(40));
+        // Photo is set, not the placeholder, and actually bundles.
+        expect(
+          loc.photos,
+          isNotEmpty,
+          reason: 'no photo for ${loc.locationId}',
+        );
+        final photo = loc.photos.first;
+        expect(
+          photo.contains('_placeholder'),
+          isFalse,
+          reason: '${loc.locationId} still on placeholder photo',
+        );
+        // rootBundle.load throws if the asset is missing from the bundle.
+        await expectLater(rootBundle.load(photo), completes);
+      }
+    },
+  );
 
   test(
     'every location bridges to a campus-map building with real coordinates',

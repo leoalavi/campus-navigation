@@ -24,6 +24,7 @@ class TrailLocation {
   final String?
   mapBuildingCode; // campus-map building code with real coords, e.g. "29WW"
   final String title;
+  final String? description; // short 2-3 sentence blurb shown on the card
   final List<String> photos;
   final String? arSceneId; // this location's own entrance scene (a node id)
   final List<OpenDayStop> stops;
@@ -33,6 +34,7 @@ class TrailLocation {
     this.buildingId,
     this.mapBuildingCode,
     required this.title,
+    this.description,
     this.photos = const [],
     this.arSceneId,
     this.stops = const [],
@@ -65,6 +67,7 @@ class TrailManifest {
             buildingId: m['buildingId'] as String?,
             mapBuildingCode: m['mapBuildingCode'] as String?,
             title: m['title'] as String,
+            description: m['description'] as String?,
             photos: ((m['photos'] as List?) ?? const [])
                 .map((p) => p as String)
                 .toList(growable: false),
