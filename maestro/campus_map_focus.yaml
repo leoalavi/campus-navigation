@@ -1,0 +1,53 @@
+# MQ Journey — campus map focuses a specific building
+#
+# Exercises the SAME map-focus behaviour the location card's "View on Campus
+# Map" button drives (MapController.selectBuildingById → camera focus), but via
+# the map's own search entry point (the only path reachable without a QR scan
+# on a simulator). Search a real venue → tap the result → the map centres on it.
+#
+# Prerequisites:
+# - App installed on the target device (iOS bundle id: com.pouya.mqnavigation).
+appId: com.pouya.mqnavigation
+name: "MQ Journey — campus map building focus"
+tags:
+  - map
+  - ios
+---
+- launchApp:
+    permissions:
+      camera: allow
+- swipe:
+    direction: DOWN
+    duration: 100
+- runFlow:
+    when:
+      visible: "Skip"
+    commands:
+      - tapOn: "Skip"
+- extendedWaitUntil:
+    visible: "Home"
+    timeout: 20000
+
+# Open the Campus Map.
+- tapOn: "Journey"
+- extendedWaitUntil:
+    visible: "Campus Map"
+    timeout: 12000
+- takeScreenshot: 01-map-initial
+
+# Open search and look up a real Open Day venue.
+- tapOn:
+    text: "Search"
+    optional: true
+- tapOn:
+    text: "Search buildings..."
+    optional: true
+- inputText: "29 Wally's Walk"
+- waitForAnimationToEnd
+- takeScreenshot: 02-search-results
+
+# Select the result → the map should focus/centre on that building.
+- tapOn:
+    text: "29 Wally's Walk.*"
+- waitForAnimationToEnd
+- takeScreenshot: 03-building-focused

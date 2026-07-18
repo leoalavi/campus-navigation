@@ -1,0 +1,51 @@
+# MQ Journey — scan-entry + campus-map smoke
+#
+# Tests the on-device surface of the QR journey that DOESN'T require a physical
+# QR in front of the camera: app launch → Home → the Scan (camera) screen →
+# the Campus Map. The actual QR decode → location card → stamp leg cannot be
+# driven on a simulator (no camera feed) and deep links are disabled
+# (FlutterDeepLinkingEnabled=false), so that leg is covered by the Dart e2e
+# (test/features/scan/e2e/scan_to_map_e2e_test.dart).
+#
+# Prerequisites:
+# - A simulator/emulator (or Maestro Cloud device) with the app installed.
+# - iOS bundle id: com.pouya.mqnavigation
+appId: com.pouya.mqnavigation
+name: "MQ Journey — scan-entry + campus-map smoke"
+tags:
+  - smoke
+  - ios
+---
+# STEP 1 — launch + iOS cold-boot preflight (skill: post-launch swipe avoids
+# the XCTest kAXErrorInvalidUIElement crash) + grant camera up front.
+- launchApp:
+    permissions:
+      camera: allow
+- swipe:
+    direction: DOWN
+    duration: 100
+
+# Onboarding shows on a fresh install — skip it if present (adaptive).
+- runFlow:
+    when:
+      visible: "Skip"
+    commands:
+      - tapOn: "Skip"
+
+# STEP 2 — Home tab is the landing surface.
+- extendedWaitUntil:
+    visible: "Home"
+    timeout: 20000
+- takeScreenshot: 01-home
+
+# STEP 3 — open the Scan tab (the QR-scan entry / camera screen).
+- tapOn: "Scan"
+- waitForAnimationToEnd
+- takeScreenshot: 02-scan-screen
+
+# STEP 4 — open the Campus Map (Journey tab hosts the map shell).
+- tapOn: "Journey"
+- extendedWaitUntil:
+    visible: "Campus Map"
+    timeout: 12000
+- takeScreenshot: 03-campus-map
