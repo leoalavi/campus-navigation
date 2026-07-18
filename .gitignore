@@ -93,3 +93,6 @@ docs/superpowers/
 
 # Antigravity CLI workspace metadata
 .antigravitycli/
+
+# Maestro run artifacts (screenshots)
+/*.png

@@ -20,10 +20,15 @@ final registryLocationContentProvider =
             ? building!.name
             : location.title,
         heroImageAsset: 'assets/images/placeholder_hero.png',
-        shortDescription: building?.description.isNotEmpty == true
-            ? building!.description
-            : 'A featured Macquarie University location.',
+        // Prefer the trail's own blurb (the curated Open Day copy); fall back to
+        // the building registry description, then a generic line.
+        shortDescription: location.description?.isNotEmpty == true
+            ? location.description!
+            : (building?.description.isNotEmpty == true
+                  ? building!.description
+                  : 'A featured Macquarie University location.'),
         buildingId: location.buildingId,
+        mapBuildingCode: location.mapBuildingCode,
         fullScheduleUrl: null,
       );
     });

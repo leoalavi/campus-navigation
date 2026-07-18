@@ -46,11 +46,14 @@ class LocationCardPage extends ConsumerWidget {
 
     if (content == null) {
       // Null means either "datasets still loading" or "no such location".
-      // Distinguish them: once the trail manifest has loaded, a null content
-      // is a genuinely unknown id (stale QR poster, mistyped deep link) —
-      // show a friendly dead-end instead of an infinite spinner.
+      // Distinguish them: content resolves from BOTH the trail manifest and the
+      // buildings registry, so only treat a null as a genuinely unknown id
+      // (stale QR poster, mistyped deep link) once BOTH have loaded — otherwise
+      // a valid scan flashes the "not on trail" dead-end while the (large)
+      // buildings.json is still loading. Show a spinner until then.
       final trailLoaded = ref.watch(trailManifestProvider).hasValue;
-      if (!trailLoaded) {
+      final registryLoaded = ref.watch(buildingsRegistryProvider).hasValue;
+      if (!trailLoaded || !registryLoaded) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       }
       final l10n = AppLocalizations.of(context)!;
@@ -88,10 +91,12 @@ class LocationCardPage extends ConsumerWidget {
     final loc = trail?.byId(locationId);
     // Campus-Map button is enabled only when the building resolves to a real
     // entry in buildings.json (spec §5: "a building with entrance coords"),
-    // never just because a buildingId string is present.
-    final mapEnabled =
-        content.buildingId != null &&
-        registry?.byCode(content.buildingId!) != null;
+    // never just because a buildingId string is present. Prefer the explicit
+    // mapBuildingCode (the campus-map code with real coordinates, e.g. "29WW")
+    // over the trail buildingId slug ("wallys-29"), which resolves only to a
+    // coordinate-less Open Day stub and would land the map on the (0,0) corner.
+    final mapCode = content.mapBuildingCode ?? content.buildingId;
+    final mapEnabled = mapCode != null && registry?.byCode(mapCode) != null;
     final visitedAsync = ref.watch(
       visitedStateProvider(content.buildingId ?? locationId),
     );
@@ -212,11 +217,16 @@ class _PrimaryButtons extends ConsumerWidget {
             onPressed: mapEnabled
                 ? () {
                     // "View on Campus Map" must always show the map —
-                    // never a remembered AR view on the Journey tab.
+                    // never a remembered AR view on the Journey tab. Pass the
+                    // resolved campus-map code (real coords), not the trail
+                    // buildingId slug, so the map focuses the actual building.
                     ref.read(campusMapIntentProvider.notifier).bump();
                     context.goNamed(
                       RouteNames.map,
-                      queryParameters: {'building': content.buildingId!},
+                      queryParameters: {
+                        'building':
+                            content.mapBuildingCode ?? content.buildingId!,
+                      },
                     );
                   }
                 : null,
