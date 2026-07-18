@@ -46,11 +46,14 @@ class LocationCardPage extends ConsumerWidget {
 
     if (content == null) {
       // Null means either "datasets still loading" or "no such location".
-      // Distinguish them: once the trail manifest has loaded, a null content
-      // is a genuinely unknown id (stale QR poster, mistyped deep link) —
-      // show a friendly dead-end instead of an infinite spinner.
+      // Distinguish them: content resolves from BOTH the trail manifest and the
+      // buildings registry, so only treat a null as a genuinely unknown id
+      // (stale QR poster, mistyped deep link) once BOTH have loaded — otherwise
+      // a valid scan flashes the "not on trail" dead-end while the (large)
+      // buildings.json is still loading. Show a spinner until then.
       final trailLoaded = ref.watch(trailManifestProvider).hasValue;
-      if (!trailLoaded) {
+      final registryLoaded = ref.watch(buildingsRegistryProvider).hasValue;
+      if (!trailLoaded || !registryLoaded) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       }
       final l10n = AppLocalizations.of(context)!;
