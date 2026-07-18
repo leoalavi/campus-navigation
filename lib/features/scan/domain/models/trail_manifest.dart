@@ -21,6 +21,8 @@ class TrailLocation {
   final String locationId;
   final String?
   buildingId; // stable address slug, e.g. "wallys-23" — NOT a map grid ref
+  final String?
+  mapBuildingCode; // campus-map building code with real coords, e.g. "29WW"
   final String title;
   final List<String> photos;
   final String? arSceneId; // this location's own entrance scene (a node id)
@@ -29,6 +31,7 @@ class TrailLocation {
   const TrailLocation({
     required this.locationId,
     this.buildingId,
+    this.mapBuildingCode,
     required this.title,
     this.photos = const [],
     this.arSceneId,
@@ -60,6 +63,7 @@ class TrailManifest {
           return TrailLocation(
             locationId: m['locationId'] as String,
             buildingId: m['buildingId'] as String?,
+            mapBuildingCode: m['mapBuildingCode'] as String?,
             title: m['title'] as String,
             photos: ((m['photos'] as List?) ?? const [])
                 .map((p) => p as String)

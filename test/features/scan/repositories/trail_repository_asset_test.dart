@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_journey/features/scan/data/repositories/trail_repository.dart';
 import 'package:mq_journey/features/scan/data/repositories/indoor_repository.dart';
+import 'package:mq_journey/features/scan/data/repositories/buildings_repository.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,38 @@ void main() {
       containsAll(['theatre-g03', 'theatre-102', 'theatre-202']),
     );
   });
+
+  test(
+    'every location bridges to a campus-map building with real coordinates',
+    () async {
+      // Regression: the trail buildingId slugs ("wallys-29") resolve only to
+      // coordinate-less Open Day stubs in buildings.json, so "View on Campus
+      // Map" used to land on the overlay (0,0) corner. Each location must now
+      // carry a mapBuildingCode pointing at a real, placed building.
+      final manifest = await TrailRepository().load();
+      final registry = await BuildingsRepository().load();
+      for (final loc in manifest.locations) {
+        final code = loc.mapBuildingCode;
+        expect(
+          code,
+          isNotNull,
+          reason: 'no mapBuildingCode for ${loc.locationId}',
+        );
+        final building = registry.byCode(code!);
+        expect(
+          building,
+          isNotNull,
+          reason: '$code (for ${loc.locationId}) missing from buildings.json',
+        );
+        final hasRealCoords = building!.campusX != 0 || building.campusY != 0;
+        expect(
+          hasRealCoords,
+          isTrue,
+          reason: '$code has no campus coordinates (would focus 0,0)',
+        );
+      }
+    },
+  );
 
   test(
     'every building has a loadable indoor manifest with an entrance node',

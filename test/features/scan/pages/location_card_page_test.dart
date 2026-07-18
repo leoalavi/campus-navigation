@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
+import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
 import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
 import 'package:mq_journey/features/scan/domain/contracts/schedule_provider.dart';
@@ -258,6 +259,119 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(StampEarnedSheet), findsNothing);
   });
+
+  testWidgets(
+    'Campus Map button navigates with mapBuildingCode, not the trail slug',
+    (tester) async {
+      // The registry holds BOTH the coordinate-less trail stub ("wallys-29")
+      // and the real placed building ("29WW"). The button must open the map on
+      // the real code so the camera focuses the building, not the (0,0) corner.
+      String? capturedBuilding;
+      final router = GoRouter(
+        initialLocation: '/location/wallys-29',
+        routes: [
+          GoRoute(
+            path: '/location/:locationId',
+            builder: (_, s) =>
+                LocationCardPage(locationId: s.pathParameters['locationId']!),
+          ),
+          GoRoute(
+            name: RouteNames.map,
+            path: '/map',
+            builder: (_, s) {
+              capturedBuilding = s.uri.queryParameters['building'];
+              return const Scaffold(body: Text('MAP'));
+            },
+          ),
+        ],
+      );
+
+      const twoBuildingRegistry = BuildingsRegistry(
+        buildings: [
+          BuildingEntry(
+            code: 'wallys-29', // Open Day stub — no coords
+            name: "29 Wally's Walk",
+            campusX: 0,
+            campusY: 0,
+            entranceLatitude: 0,
+            entranceLongitude: 0,
+          ),
+          BuildingEntry(
+            code: '29WW', // real placed building
+            name: "29 Wally's Walk (Faculty of Arts)",
+            campusX: 1496,
+            campusY: 1875,
+            entranceLatitude: -33.774,
+            entranceLongitude: 151.1135,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            trailManifestProvider.overrideWith(
+              (ref) async => const TrailManifest(
+                locations: [
+                  TrailLocation(
+                    locationId: 'wallys-29',
+                    buildingId: 'wallys-29',
+                    mapBuildingCode: '29WW',
+                    title: "29 Wally's Walk",
+                  ),
+                ],
+              ),
+            ),
+            buildingsRegistryProvider.overrideWith(
+              (ref) async => twoBuildingRegistry,
+            ),
+            locationContentProvider.overrideWith(
+              (ref, id) => const LocationContent(
+                locationId: 'wallys-29',
+                title: "29 Wally's Walk",
+                heroImageAsset: 'assets/images/placeholder_hero.png',
+                shortDescription: 'One. Two. Three.',
+                buildingId: 'wallys-29',
+                mapBuildingCode: '29WW',
+              ),
+            ),
+            scheduleProvider.overrideWith((ref) => _NoSchedule()),
+            visitedStateProvider.overrideWith(
+              (ref, id) => Stream.value(
+                const VisitedState(visited: false, rewardEarned: false),
+              ),
+            ),
+            myDayApiProvider.overrideWith((ref) => FakeMyDayApi()),
+          ],
+          child: MaterialApp.router(
+            routerConfig: router,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final button = tester.widget<OutlinedButton>(
+        find.widgetWithText(OutlinedButton, 'View on Campus Map'),
+      );
+      expect(button.onPressed, isNotNull); // enabled (29WW resolves)
+
+      final mapButton = find.widgetWithText(
+        OutlinedButton,
+        'View on Campus Map',
+      );
+      await tester.ensureVisible(mapButton);
+      await tester.tap(mapButton, warnIfMissed: false);
+      await tester.pumpAndSettle();
+
+      expect(capturedBuilding, '29WW'); // real code, not "wallys-29"
+    },
+  );
 
   testWidgets('Full schedule link shows when fullScheduleUrl is set', (
     tester,

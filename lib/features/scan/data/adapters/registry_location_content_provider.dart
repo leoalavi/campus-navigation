@@ -24,6 +24,7 @@ final registryLocationContentProvider =
             ? building!.description
             : 'A featured Macquarie University location.',
         buildingId: location.buildingId,
+        mapBuildingCode: location.mapBuildingCode,
         fullScheduleUrl: null,
       );
     });

@@ -37,6 +37,15 @@ void main() {
       expect(() => TrailManifest.fromJson('not json'), throwsFormatException);
     });
 
+    test('parses mapBuildingCode and defaults it to null when absent', () {
+      final withCode = TrailManifest.fromJson(
+        '{"locations":[{"locationId":"wallys-29","buildingId":"wallys-29","mapBuildingCode":"29WW","title":"29 Wally\'s Walk"}]}',
+      );
+      expect(withCode.byId('wallys-29')?.mapBuildingCode, '29WW');
+      // Absent key → null (the trail slug stays the only bridge, button gates off).
+      expect(manifest.byId('lib-01')?.mapBuildingCode, isNull);
+    });
+
     test('parses photos, arSceneId and stops', () {
       const raw = '''
       {"locations":[{
