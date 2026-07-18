@@ -23,7 +23,11 @@ class SettingsProgressApiAdapter implements ProgressApi {
 
   @override
   Future<bool> recordVisit(VisitEvent event) async {
-    await ensureAnonSession(supabaseClient: _supabaseClient);
+    // Record the visit LOCALLY first — local storage is the source of truth
+    // for stamps and Your Day. Previously this awaited a network anon-session
+    // sign-in before recording; on a weak Open Day connection that throw
+    // aborted the whole record, so stamps never filled. Local recording must
+    // never depend on the network.
     var isNewVisit = false;
     if (event.buildingId != null) {
       isNewVisit = await _ref
@@ -31,11 +35,21 @@ class SettingsProgressApiAdapter implements ProgressApi {
           .recordLocationVisit(event.buildingId!);
     }
 
+    // Best-effort remote sync — must never block or fail the local award.
     if (isNewVisit) {
-      await _enqueueStampUpsert(event.locationId);
+      unawaited(_syncRemoteStamp(event.locationId));
     }
 
     return isNewVisit;
+  }
+
+  Future<void> _syncRemoteStamp(String locationId) async {
+    try {
+      await ensureAnonSession(supabaseClient: _supabaseClient);
+      await _enqueueStampUpsert(locationId);
+    } catch (e, s) {
+      AppLogger.warning('Remote stamp sync skipped (offline?)', e, s);
+    }
   }
 
   Future<void> _enqueueStampUpsert(String locationId) async {

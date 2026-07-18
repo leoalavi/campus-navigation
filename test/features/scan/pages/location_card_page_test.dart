@@ -117,7 +117,8 @@ void main() {
     myDayApiProvider.overrideWith((ref) => FakeMyDayApi()),
   ];
 
-  testWidgets('renders gallery, 3-sentence read, both buttons and stops', (
+  testWidgets('renders gallery, 3-sentence read, primary buttons; no stops '
+      'table (duplicate AR row removed)', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -128,8 +129,12 @@ void main() {
     expect(find.text('One. Two. Three.'), findsOneWidget);
     expect(find.text('View on Campus Map'), findsOneWidget);
     expect(find.text('View AR map'), findsOneWidget);
-    expect(find.byType(OpenDayStopsTable), findsOneWidget);
-    expect(find.text('Theatre G03'), findsOneWidget);
+    // The per-scene "stops" list (e.g. "Theatre G03") is intentionally gone
+    // from the venue card — scene selection lives inside the AR viewer.
+    expect(find.byType(OpenDayStopsTable), findsNothing);
+    expect(find.text('Theatre G03'), findsNothing);
+    // Simple venue card: Add to Your Day present, no full-schedule link.
+    expect(find.text('Add to Your Day'), findsOneWidget);
     expect(find.text('Full schedule'), findsNothing); // fullScheduleUrl null
   });
 

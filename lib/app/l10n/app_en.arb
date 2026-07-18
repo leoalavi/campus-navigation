@@ -473,7 +473,7 @@
   "openDay_generalOpenToAll": "General · Open to all visitors",
   "openDay_allSessionsLabel": "All sessions",
   "openDay_yourDayTitle": "Your day",
-  "openDay_yourDayEmpty": "Save sessions you like to build your personal Open Day plan.",
+  "openDay_yourDayEmpty": "Save sessions and places you like to build your personal Open Day plan.",
   "openDay_yourDayCount": "{count, plural, =1{1 session saved} other{{count} sessions saved}}",
   "@openDay_yourDayCount": {
     "placeholders": {

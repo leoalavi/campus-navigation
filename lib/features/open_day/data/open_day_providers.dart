@@ -6,6 +6,7 @@ import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart'
 import 'package:mq_journey/features/open_day/domain/entities/open_day_progress.dart';
 import 'package:mq_journey/features/open_day/domain/services/open_day_gamification.dart';
 import 'package:mq_journey/features/open_day/domain/services/open_day_personalisation.dart';
+import 'package:mq_journey/features/scan/providers/trail_providers.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
 
 /// Bundles the Open Day dataset asset path so it can be overridden in
@@ -142,10 +143,36 @@ final userDayItemsProvider = Provider<List<UserDayItem>>((ref) {
 
   final savedStopIds = prefs?.savedStopIds ?? const <String>[];
   final stopById = {for (final s in data.suggestedStops) s.id: s};
-  final stops = [
-    for (final id in savedStopIds)
-      if (stopById[id] != null) stopById[id]!,
-  ];
+
+  // Scanned QR venues save their trail locationId (e.g. "wallys-29") into the
+  // SAME savedStopIds list. Those ids aren't Open Day suggested stops, so
+  // resolve any leftover ids against the scanned trail so they still render
+  // in Your Day (and count on the Home card) instead of vanishing silently.
+  final trail = ref.watch(trailManifestProvider).value;
+  final trailById = {
+    if (trail != null)
+      for (final loc in trail.locations) loc.locationId: loc,
+  };
+
+  final stops = <OpenDaySuggestedStop>[];
+  for (final id in savedStopIds) {
+    final stop = stopById[id];
+    if (stop != null) {
+      stops.add(stop);
+      continue;
+    }
+    final loc = trailById[id];
+    if (loc != null) {
+      stops.add(
+        OpenDaySuggestedStop(
+          id: loc.locationId,
+          title: loc.title,
+          description: loc.description ?? '',
+          buildingCode: loc.mapBuildingCode ?? loc.buildingId,
+        ),
+      );
+    }
+  }
 
   return <UserDayItem>[
     for (final e in sessions) UserDaySession(e),
