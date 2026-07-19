@@ -97,6 +97,7 @@ Widget _buildApp({
   required TrailRepository trailRepo,
   required IndoorRepository indoorRepo,
   required void Function(String) onSelect,
+  Brightness brightness = Brightness.light,
 }) {
   return ProviderScope(
     overrides: [
@@ -107,11 +108,31 @@ Widget _buildApp({
       ),
     ],
     child: MaterialApp(
+      theme: ThemeData(brightness: brightness),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(body: ArBuildingPicker(onSelect: onSelect)),
     ),
   );
+}
+
+/// Pumps the multi-manifest picker (C3A + E7A available, 18WW locked) and
+/// settles the async manifest/registry loads.
+Future<void> _pumpMultiPicker(
+  WidgetTester tester, {
+  required void Function(String) onSelect,
+  Brightness brightness = Brightness.light,
+}) async {
+  await tester.pumpWidget(
+    _buildApp(
+      trailRepo: _MultiFakeTrailRepository(),
+      indoorRepo: _FakeIndoorRepository(),
+      onSelect: onSelect,
+      brightness: brightness,
+    ),
+  );
+  await tester.pump();
+  await tester.pump(const Duration(milliseconds: 100));
 }
 
 void main() {
@@ -153,5 +174,59 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
 
     expect(selected, 'C3A');
+  });
+
+  testWidgets('available card taps report the exact building id', (
+    tester,
+  ) async {
+    String? selected;
+    await _pumpMultiPicker(tester, onSelect: (id) => selected = id);
+    // C3A has a manifest → available and tappable.
+    await tester.tap(find.text('Waranara Library'));
+    expect(selected, 'C3A');
+  });
+
+  testWidgets('locked card shows the Soon pill and no chevron', (tester) async {
+    await _pumpMultiPicker(tester, onSelect: (_) {});
+    // 18WW has no manifest → locked.
+    expect(find.text('Soon'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find
+            .ancestor(
+              of: find.text("18 Wally's Walk"),
+              matching: find.byType(Semantics),
+            )
+            .first,
+        matching: find.byIcon(Icons.chevron_right_rounded),
+      ),
+      findsNothing,
+    );
+  });
+
+  testWidgets('renders the header eyebrow, title and subtitle', (tester) async {
+    await _pumpMultiPicker(tester, onSelect: (_) {});
+    expect(find.text('360° campus tours'), findsOneWidget);
+    expect(find.text('Explore in 360°'), findsOneWidget);
+    expect(
+      find.text('Step inside campus spaces before you arrive.'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('available card shows the scene count', (tester) async {
+    await _pumpMultiPicker(tester, onSelect: (_) {});
+    // Both C3A and E7A have one scene each.
+    expect(find.textContaining('360° tour'), findsWidgets);
+  });
+
+  testWidgets('picker meets contrast + tap-target guidelines (light & dark)', (
+    tester,
+  ) async {
+    for (final b in [Brightness.light, Brightness.dark]) {
+      await _pumpMultiPicker(tester, onSelect: (_) {}, brightness: b);
+      await expectLater(tester, meetsGuideline(textContrastGuideline));
+      await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+    }
   });
 }
