@@ -87,6 +87,35 @@ void main() {
         GlassRenderMode.shader,
       );
     });
+    test('allowShader:false forces frost even when supported', () {
+      expect(
+        resolveGlassRenderMode(
+          variant: GlassVariant.control,
+          highContrast: false,
+          disableAnimations: false,
+          shaderSupported: true,
+          allowShader: false,
+        ),
+        GlassRenderMode.frost,
+      );
+    });
+  });
+
+  testWidgets('allowShader:false still renders a frost BackdropFilter', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _host(
+        child: const GlassSurface(
+          variant: GlassVariant.control,
+          allowShader: false,
+          child: SizedBox(width: 40, height: 40),
+        ),
+      ),
+    );
+    // A BackdropFilter is still present (frost blur); the resolver just never
+    // selects the shader path.
+    expect(find.byType(BackdropFilter), findsOneWidget);
   });
 
   testWidgets('content tier is solid — no BackdropFilter', (tester) async {

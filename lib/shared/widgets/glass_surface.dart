@@ -17,11 +17,12 @@ GlassRenderMode resolveGlassRenderMode({
   required bool highContrast,
   required bool disableAnimations,
   required bool shaderSupported,
+  bool allowShader = true,
 }) {
   if (variant == GlassVariant.content || highContrast) {
     return GlassRenderMode.solid;
   }
-  if (disableAnimations || !shaderSupported) {
+  if (disableAnimations || !shaderSupported || !allowShader) {
     return GlassRenderMode.frost;
   }
   return GlassRenderMode.shader;
@@ -45,6 +46,7 @@ class GlassSurface extends StatelessWidget {
     this.borderWidth,
     this.constraints,
     this.boxShadow,
+    this.allowShader = true,
   });
 
   final Widget child;
@@ -62,6 +64,12 @@ class GlassSurface extends StatelessWidget {
   final double? borderWidth;
   final BoxConstraints? constraints;
   final List<BoxShadow>? boxShadow;
+
+  /// When false, the surface never takes the refraction-shader path (frost or
+  /// solid only). Use for glass floating over a platform view (e.g. an
+  /// `InAppWebView` panorama), whose pixels a `BackdropFilter` shader cannot
+  /// sample — running the shader there wastes GPU and samples nothing.
+  final bool allowShader;
 
   bool _shaderSupported(BuildContext context) => GlassShaderCache.ready;
 
@@ -83,6 +91,7 @@ class GlassSurface extends StatelessWidget {
       highContrast: highContrast,
       disableAnimations: disableAnimations,
       shaderSupported: _shaderSupported(context),
+      allowShader: allowShader,
     );
 
     switch (mode) {
