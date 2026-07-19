@@ -6,11 +6,11 @@ import 'package:mq_journey/shared/widgets/glass_surface.dart';
 void main() {
   testWidgets('GlassPane renders a control-tier GlassSurface', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: Scaffold(
           body: GlassPane(
             isDark: false,
-            child: const SizedBox(width: 80, height: 30),
+            child: SizedBox(width: 80, height: 30),
           ),
         ),
       ),
