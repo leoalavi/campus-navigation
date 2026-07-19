@@ -14,6 +14,7 @@ import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
 import 'package:mq_journey/features/scan/domain/services/scan_branch_lifecycle.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/scanner_view.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_journey/shared/widgets/glass_app_bar.dart';
 import 'package:mq_journey/shared/widgets/glass_surface.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -156,7 +157,9 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       }
     });
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.scanQrCta)),
+      // The camera feed runs behind the glass island and refracts through it.
+      extendBodyBehindAppBar: true,
+      appBar: GlassAppBar(title: Text(l10n.scanQrCta)),
       body: _buildBody(l10n),
     );
   }

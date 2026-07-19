@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/indoor_tour_view.dart';
+import 'package:mq_journey/shared/widgets/glass_app_bar.dart';
 
 class IndoorPreviewPage extends ConsumerWidget {
   const IndoorPreviewPage({super.key, required this.buildingId, this.onBack});
@@ -38,7 +39,9 @@ class IndoorPreviewPage extends ConsumerWidget {
     final title = friendlyName ?? '$buildingId Indoor';
 
     return Scaffold(
-      appBar: AppBar(
+      // The 360° panorama runs behind the glass island title bar.
+      extendBodyBehindAppBar: true,
+      appBar: GlassAppBar(
         leading: onBack != null
             ? IconButton(
                 icon: const Icon(Icons.arrow_back),

@@ -2,8 +2,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-/// Per-icon flourish played when a tab becomes selected.
-enum TabFx { bounce, rotateOpen, pulse, spin }
+/// Per-icon flourish played when a tab becomes selected. `scanline` is the
+/// QR tab's signature move: a laser line sweeps the icon while viewfinder
+/// corners lock on — like the icon itself gets scanned.
+enum TabFx { bounce, rotateOpen, scanline, spin }
 
 /// One destination of the [LiquidTabBar].
 class LiquidNavItem {
@@ -30,6 +32,7 @@ class LiquidTabBar extends StatefulWidget {
     required this.onSelected,
     required this.items,
     required this.color,
+    this.accent,
     this.height = 66,
   });
 
@@ -37,6 +40,10 @@ class LiquidTabBar extends StatefulWidget {
   final ValueChanged<int> onSelected;
   final List<LiquidNavItem> items;
   final Color color;
+
+  /// Highlight colour for fx that read as *light* (the scanline laser and
+  /// viewfinder lock). Defaults to [color].
+  final Color? accent;
   final double height;
 
   @override
@@ -195,7 +202,12 @@ class _LiquidTabBarState extends State<LiquidTabBar>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _TabIcon(item: item, selected: selected, color: widget.color),
+              _TabIcon(
+                item: item,
+                selected: selected,
+                color: widget.color,
+                accent: widget.accent ?? widget.color,
+              ),
               AnimatedSize(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOut,
@@ -229,11 +241,13 @@ class _TabIcon extends StatefulWidget {
     required this.item,
     required this.selected,
     required this.color,
+    required this.accent,
   });
 
   final LiquidNavItem item;
   final bool selected;
   final Color color;
+  final Color accent;
 
   @override
   State<_TabIcon> createState() => _TabIconState();
@@ -243,7 +257,10 @@ class _TabIconState extends State<_TabIcon>
     with SingleTickerProviderStateMixin {
   late final AnimationController _c = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 620),
+    // The scan sequence (sweep → lock → pop) needs room to read as a story.
+    duration: widget.item.fx == TabFx.scanline
+        ? const Duration(milliseconds: 900)
+        : const Duration(milliseconds: 620),
   );
 
   @override
@@ -270,13 +287,17 @@ class _TabIconState extends State<_TabIcon>
 
   @override
   Widget build(BuildContext context) {
+    final icon = Icon(
+      widget.selected ? widget.item.activeIcon : widget.item.icon,
+      color: widget.color,
+      size: 25,
+    );
+    if (widget.item.fx == TabFx.scanline) {
+      return _ScanlineFx(controller: _c, accent: widget.accent, child: icon);
+    }
     return AnimatedBuilder(
       animation: _c,
-      child: Icon(
-        widget.selected ? widget.item.activeIcon : widget.item.icon,
-        color: widget.color,
-        size: 25,
-      ),
+      child: icon,
       builder: (context, child) {
         final t = _c.value;
         double scale = 1.0, angle = 0.0;
@@ -290,8 +311,8 @@ class _TabIconState extends State<_TabIcon>
           case TabFx.bounce:
             // Pure spring scale — no vertical jump (keeps it inside the lens).
             scale = 0.78 + 0.24 * Curves.elasticOut.transform(t);
-          case TabFx.pulse:
-            scale = 1.0 + 0.22 * math.sin(math.pi * t);
+          case TabFx.scanline:
+            break; // handled above with its own widget
         }
         return Transform.rotate(
           angle: angle,
@@ -300,4 +321,144 @@ class _TabIconState extends State<_TabIcon>
       },
     );
   }
+}
+
+/// The QR tab's signature flourish, staged like a real scan:
+///  1. 0–70%: a glowing laser line sweeps down the icon and back up while
+///     viewfinder corner brackets converge from outside ("acquiring").
+///  2. ~50–85%: the brackets snap tight with an ease-out-back overshoot
+///     ("lock-on").
+///  3. 70–100%: laser dies, the icon gives a small success pop, brackets fade.
+/// Idle (t == 0 or 1) renders the bare icon — no overlays linger.
+class _ScanlineFx extends StatelessWidget {
+  const _ScanlineFx({
+    required this.controller,
+    required this.accent,
+    required this.child,
+  });
+
+  final AnimationController controller;
+  final Color accent;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      child: child,
+      builder: (context, icon) {
+        final t = controller.value;
+        final active = t > 0 && t < 1;
+        // Triangle wave over the first 70%: laser goes down, then back up.
+        final phase = (t / 0.7).clamp(0.0, 1.0);
+        final sweep = 1.0 - (1.0 - 2.0 * phase).abs();
+        final laserOn = active && t < 0.7;
+        final lock = Curves.easeOutBack.transform(
+          ((t - 0.5) / 0.35).clamp(0.0, 1.0),
+        );
+        final cornerOpacity = !active
+            ? 0.0
+            : (t < 0.8 ? 1.0 : (1.0 - t) / 0.2).clamp(0.0, 1.0);
+        final pop =
+            1.0 + 0.12 * math.sin(math.pi * ((t - 0.7) / 0.3).clamp(0.0, 1.0));
+        return SizedBox(
+          width: 30,
+          height: 28,
+          child: Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: [
+              Transform.scale(scale: pop, child: icon),
+              if (active)
+                Opacity(
+                  opacity: cornerOpacity,
+                  child: Transform.scale(
+                    scale: 1.45 - 0.45 * lock,
+                    child: CustomPaint(
+                      size: const Size(30, 28),
+                      painter: _ViewfinderPainter(color: accent),
+                    ),
+                  ),
+                ),
+              if (laserOn)
+                Positioned(
+                  top: 2.0 + sweep * 22.0,
+                  left: 1,
+                  right: 1,
+                  child: Container(
+                    height: 2,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(1),
+                      gradient: LinearGradient(
+                        colors: [
+                          accent.withValues(alpha: 0.0),
+                          accent,
+                          accent.withValues(alpha: 0.0),
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: accent.withValues(alpha: 0.85),
+                          blurRadius: 6,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Four L-shaped viewfinder corner brackets (the camera "focus lock" glyph).
+class _ViewfinderPainter extends CustomPainter {
+  const _ViewfinderPainter({required this.color});
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.2
+      ..strokeCap = StrokeCap.round;
+    const len = 7.0;
+    final w = size.width, h = size.height;
+    canvas.drawPath(
+      Path()
+        ..moveTo(0, len)
+        ..lineTo(0, 0)
+        ..lineTo(len, 0),
+      p,
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(w - len, 0)
+        ..lineTo(w, 0)
+        ..lineTo(w, len),
+      p,
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(0, h - len)
+        ..lineTo(0, h)
+        ..lineTo(len, h),
+      p,
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(w - len, h)
+        ..lineTo(w, h)
+        ..lineTo(w, h - len),
+      p,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _ViewfinderPainter old) => old.color != color;
 }

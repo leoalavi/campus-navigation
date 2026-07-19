@@ -5,6 +5,7 @@ import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
 import 'package:mq_journey/app/router/liquid_tab_bar.dart';
 import 'package:mq_journey/app/router/route_names.dart';
+import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
 /// Persistent bottom navigation shell wrapping the main tab destinations.
@@ -45,6 +46,8 @@ class AppShell extends ConsumerWidget {
             animated: true, // the hero island gets the living highlights
             child: LiquidTabBar(
               color: navLabelColor,
+              accent: MqColors.red, // scanline laser + viewfinder lock
+
               currentIndex: navigationShell.currentIndex,
               onSelected: (index) {
                 // Navigate to the chosen branch. If the user taps the active
@@ -78,7 +81,7 @@ class AppShell extends ConsumerWidget {
                   icon: Icons.qr_code_scanner_outlined,
                   activeIcon: Icons.qr_code_scanner,
                   label: l10n.scanTab,
-                  fx: TabFx.pulse,
+                  fx: TabFx.scanline,
                 ),
                 LiquidNavItem(
                   icon: Icons.settings_outlined,
