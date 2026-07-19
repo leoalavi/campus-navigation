@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
@@ -10,6 +8,7 @@ import 'package:mq_journey/features/map/domain/entities/building.dart';
 import 'package:mq_journey/features/map/domain/entities/nav_instruction.dart';
 import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
 import 'package:mq_journey/shared/extensions/context_extensions.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
 /// Floating bottom sheet displaying routing instructions and status.
 ///
@@ -119,288 +118,265 @@ class _RoutePanelState extends State<RoutePanel> {
       );
     }
 
-    return ClipRRect(
+    return GlassSurface(
+      variant: GlassVariant.content,
       borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: MqSpacing.space3,
-          sigmaY: MqSpacing.space3,
+      borderColor: isDark
+          ? Colors.white.withValues(alpha: 0.08)
+          : MqColors.charcoal800.withValues(alpha: 0.06),
+      borderWidth: 0.6,
+      padding: const EdgeInsets.all(MqSpacing.space6),
+      boxShadow: [
+        BoxShadow(
+          color: MqColors.charcoal800.withValues(alpha: isDark ? 0.30 : 0.10),
+          blurRadius: 18,
+          offset: const Offset(0, -6),
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark
-                ? MqColors.charcoal800.withValues(alpha: 0.94)
-                : Colors.white.withValues(alpha: 0.94),
-            borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : MqColors.charcoal800.withValues(alpha: 0.06),
-              width: 0.6,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: MqColors.charcoal800.withValues(
-                  alpha: isDark ? 0.30 : 0.10,
+      ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Handle bar — interactive when navigating: a downward
+            // drag or a tap collapses the panel to the compact bar
+            // so the user can see the map without stopping nav.
+            Center(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: widget.isNavigating ? _toggleMinimized : null,
+                onVerticalDragEnd: widget.isNavigating
+                    ? (details) {
+                        // Positive Y velocity = swipe down → minimise.
+                        if (details.primaryVelocity != null &&
+                            details.primaryVelocity! > 120) {
+                          setState(() => _minimized = true);
+                        }
+                      }
+                    : null,
+                child: Padding(
+                  // Generous touch padding so the small visual handle
+                  // becomes a comfortable drag/tap target.
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: MqSpacing.space8,
+                    vertical: MqSpacing.space2,
+                  ),
+                  child: Container(
+                    width: 48,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.2)
+                          : MqColors.black12,
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ),
                 ),
-                blurRadius: 18,
-                offset: const Offset(0, -6),
               ),
-            ],
-          ),
-          padding: const EdgeInsets.all(MqSpacing.space6),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            ),
+            const SizedBox(height: MqSpacing.space6),
+
+            // Building name + close button
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Handle bar — interactive when navigating: a downward
-                // drag or a tap collapses the panel to the compact bar
-                // so the user can see the map without stopping nav.
-                Center(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: widget.isNavigating ? _toggleMinimized : null,
-                    onVerticalDragEnd: widget.isNavigating
-                        ? (details) {
-                            // Positive Y velocity = swipe down → minimise.
-                            if (details.primaryVelocity != null &&
-                                details.primaryVelocity! > 120) {
-                              setState(() => _minimized = true);
-                            }
-                          }
-                        : null,
-                    child: Padding(
-                      // Generous touch padding so the small visual handle
-                      // becomes a comfortable drag/tap target.
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: MqSpacing.space8,
-                        vertical: MqSpacing.space2,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.selectedBuilding!.name,
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
+                              color: isDark
+                                  ? Colors.white
+                                  : MqColors.contentPrimary,
+                              letterSpacing: -0.5,
+                            ),
                       ),
-                      child: Container(
-                        width: 48,
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? Colors.white.withValues(alpha: 0.2)
-                              : MqColors.black12,
-                          borderRadius: BorderRadius.circular(3),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: MqSpacing.space6),
-
-                // Building name + close button
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: MqSpacing.space1),
+                      Row(
                         children: [
-                          Text(
-                            widget.selectedBuilding!.name,
-                            style: Theme.of(context).textTheme.headlineMedium
-                                ?.copyWith(
-                                  color: isDark
-                                      ? Colors.white
-                                      : MqColors.contentPrimary,
-                                  letterSpacing: -0.5,
-                                ),
-                          ),
-                          const SizedBox(height: MqSpacing.space1),
-                          Row(
-                            children: [
-                              Flexible(
-                                child: Text.rich(
+                          Flexible(
+                            child: Text.rich(
+                              TextSpan(
+                                text: '${l10n.buildingCode}: ',
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: isDark
+                                          ? Colors.white
+                                          : MqColors.contentTertiary,
+                                    ),
+                                children: [
                                   TextSpan(
-                                    text: '${l10n.buildingCode}: ',
-                                    style: Theme.of(context).textTheme.bodySmall
-                                        ?.copyWith(
-                                          color: isDark
-                                              ? Colors.white
-                                              : MqColors.contentTertiary,
-                                        ),
-                                    children: [
-                                      TextSpan(
-                                        text: widget.selectedBuilding!.code,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          color: isDark
-                                              ? Colors.white
-                                              : MqColors.contentPrimary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              if (widget.selectedBuilding!.category !=
-                                  BuildingCategory.other) ...[
-                                const SizedBox(width: MqSpacing.space2),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: MqSpacing.space3,
-                                    vertical: MqSpacing.space1,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: MqColors.red.withValues(alpha: 0.15),
-                                    borderRadius: BorderRadius.circular(
-                                      MqSpacing.radiusFull,
+                                    text: widget.selectedBuilding!.code,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: isDark
+                                          ? Colors.white
+                                          : MqColors.contentPrimary,
                                     ),
                                   ),
-                                  child: Text(
-                                    widget.selectedBuilding!.category.name
-                                        .toUpperCase(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: MqColors.red,
-                                          letterSpacing: 1.2,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ],
+                                ],
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
+                          if (widget.selectedBuilding!.category !=
+                              BuildingCategory.other) ...[
+                            const SizedBox(width: MqSpacing.space2),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: MqSpacing.space3,
+                                vertical: MqSpacing.space1,
+                              ),
+                              decoration: BoxDecoration(
+                                color: MqColors.red.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(
+                                  MqSpacing.radiusFull,
+                                ),
+                              ),
+                              child: Text(
+                                widget.selectedBuilding!.category.name
+                                    .toUpperCase(),
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      color: MqColors.red,
+                                      letterSpacing: 1.2,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
-                    ),
-                    // Close / minimise affordance.
-                    //
-                    // **During navigation**: this now MINIMISES the panel
-                    // to the compact peek bar instead of stopping
-                    // navigation. The user previously had no way to see
-                    // the map without ending their trip — the X was a
-                    // hidden tripwire. Stopping nav is now an explicit
-                    // dedicated action ("Stop navigation" button below).
-                    //
-                    // **Outside navigation**: still clears the building
-                    // selection as before.
-                    IconButton(
-                      icon: Icon(
-                        widget.isNavigating ? Icons.expand_more : Icons.close,
-                        size: MqSpacing.iconMd,
-                        color: isDark
-                            ? Colors.white.withValues(alpha: 0.5)
-                            : MqColors.contentTertiary,
-                      ),
-                      tooltip: widget.isNavigating
-                          ? l10n.routePanelMinimize
-                          : l10n.clear,
-                      onPressed: widget.isNavigating
-                          ? _toggleMinimized
-                          : widget.onClearSelection,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-
-                // Route info row (when route is loaded)
-                if (widget.route != null) ...[
-                  const SizedBox(height: MqSpacing.space4),
-                  _RouteInfoRow(
-                    route: widget.route!,
-                    l10n: l10n,
-                    isDark: isDark,
+                // Close / minimise affordance.
+                //
+                // **During navigation**: this now MINIMISES the panel
+                // to the compact peek bar instead of stopping
+                // navigation. The user previously had no way to see
+                // the map without ending their trip — the X was a
+                // hidden tripwire. Stopping nav is now an explicit
+                // dedicated action ("Stop navigation" button below).
+                //
+                // **Outside navigation**: still clears the building
+                // selection as before.
+                IconButton(
+                  icon: Icon(
+                    widget.isNavigating ? Icons.expand_more : Icons.close,
+                    size: MqSpacing.iconMd,
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.5)
+                        : MqColors.contentTertiary,
                   ),
-                ],
-
-                // Travel mode selector (hidden during navigation)
-                if (!widget.isNavigating) ...[
-                  const SizedBox(height: MqSpacing.space4),
-                  _TravelModePills(
-                    supportedTravelModes: widget.supportedTravelModes,
-                    travelMode: widget.travelMode,
-                    isDark: isDark,
-                    l10n: l10n,
-                    onChanged: widget.onTravelModeChanged,
-                  ),
-                ],
-
-                // Next instruction (during navigation)
-                if (widget.isNavigating &&
-                    widget.route != null &&
-                    widget.route!.instructions.isNotEmpty) ...[
-                  const SizedBox(height: MqSpacing.space4),
-                  _NextInstructionCard(
-                    instruction: widget.route!.instructions.first,
-                    isDark: isDark,
-                  ),
-                ],
-
-                // Expandable steps
-                if (widget.route != null &&
-                    widget.route!.instructions.isNotEmpty) ...[
-                  const SizedBox(height: MqSpacing.space2),
-                  _ExpandableStepList(
-                    instructions: widget.route!.instructions,
-                    isNavigating: widget.isNavigating,
-                    isExpanded: _stepsExpanded,
-                    isDark: isDark,
-                    onToggle: () =>
-                        setState(() => _stepsExpanded = !_stepsExpanded),
-                  ),
-                ],
-
-                const SizedBox(height: MqSpacing.space4),
-
-                // Action buttons
-                if (widget.route != null) ...[
-                  if (widget.isNavigating)
-                    _GlassOutlinedButton(
-                      label: l10n.stopNavigation,
-                      isDark: isDark,
-                      onPressed: widget.onStopNavigation,
-                    )
-                  else ...[
-                    _BrandActionButton(
-                      label: l10n.startTurnByTurn,
-                      icon: Icons.double_arrow_rounded,
-                      onPressed: widget.onStartNavigation,
-                    ),
-                    const SizedBox(height: MqSpacing.space2),
-                    // Action row — Clear only.
-                    //
-                    // Prior iterations of this row stacked optional icon
-                    // buttons here (Street View, Compass Mode, Open in
-                    // Google Maps). The earlier two were removed during
-                    // the first cleanup pass for being either redundant
-                    // (Open in Google Maps when the user is already in
-                    // Google Maps mode) or unlocalised/experimental
-                    // (Compass Mode). Street View is now also removed:
-                    // tappable peeks at the destination are a "weak"
-                    // nice-to-have, and shipping them alongside Clear
-                    // creates the same unlabelled-icon ambiguity the
-                    // user called out. The final route panel is now a
-                    // single primary action (Clear) with no mystery
-                    // controls.
-                    _GlassOutlinedButton(
-                      label: l10n.clear,
-                      isDark: isDark,
-                      onPressed: widget.onClearRoute,
-                    ),
-                  ],
-                ] else ...[
-                  // No route yet — show "Get Directions" button
-                  _BrandActionButton(
-                    label: widget.isLoading
-                        ? l10n.loadingRoute
-                        : _directionsLabel(l10n),
-                    icon: Icons.double_arrow_rounded,
-                    isLoading: widget.isLoading,
-                    onPressed: widget.selectedBuilding == null
-                        ? null
-                        : () => widget.onLoadRoute(),
-                  ),
-                ],
+                  tooltip: widget.isNavigating
+                      ? l10n.routePanelMinimize
+                      : l10n.clear,
+                  onPressed: widget.isNavigating
+                      ? _toggleMinimized
+                      : widget.onClearSelection,
+                ),
               ],
             ),
-          ),
+
+            // Route info row (when route is loaded)
+            if (widget.route != null) ...[
+              const SizedBox(height: MqSpacing.space4),
+              _RouteInfoRow(route: widget.route!, l10n: l10n, isDark: isDark),
+            ],
+
+            // Travel mode selector (hidden during navigation)
+            if (!widget.isNavigating) ...[
+              const SizedBox(height: MqSpacing.space4),
+              _TravelModePills(
+                supportedTravelModes: widget.supportedTravelModes,
+                travelMode: widget.travelMode,
+                isDark: isDark,
+                l10n: l10n,
+                onChanged: widget.onTravelModeChanged,
+              ),
+            ],
+
+            // Next instruction (during navigation)
+            if (widget.isNavigating &&
+                widget.route != null &&
+                widget.route!.instructions.isNotEmpty) ...[
+              const SizedBox(height: MqSpacing.space4),
+              _NextInstructionCard(
+                instruction: widget.route!.instructions.first,
+                isDark: isDark,
+              ),
+            ],
+
+            // Expandable steps
+            if (widget.route != null &&
+                widget.route!.instructions.isNotEmpty) ...[
+              const SizedBox(height: MqSpacing.space2),
+              _ExpandableStepList(
+                instructions: widget.route!.instructions,
+                isNavigating: widget.isNavigating,
+                isExpanded: _stepsExpanded,
+                isDark: isDark,
+                onToggle: () =>
+                    setState(() => _stepsExpanded = !_stepsExpanded),
+              ),
+            ],
+
+            const SizedBox(height: MqSpacing.space4),
+
+            // Action buttons
+            if (widget.route != null) ...[
+              if (widget.isNavigating)
+                _GlassOutlinedButton(
+                  label: l10n.stopNavigation,
+                  isDark: isDark,
+                  onPressed: widget.onStopNavigation,
+                )
+              else ...[
+                _BrandActionButton(
+                  label: l10n.startTurnByTurn,
+                  icon: Icons.double_arrow_rounded,
+                  onPressed: widget.onStartNavigation,
+                ),
+                const SizedBox(height: MqSpacing.space2),
+                // Action row — Clear only.
+                //
+                // Prior iterations of this row stacked optional icon
+                // buttons here (Street View, Compass Mode, Open in
+                // Google Maps). The earlier two were removed during
+                // the first cleanup pass for being either redundant
+                // (Open in Google Maps when the user is already in
+                // Google Maps mode) or unlocalised/experimental
+                // (Compass Mode). Street View is now also removed:
+                // tappable peeks at the destination are a "weak"
+                // nice-to-have, and shipping them alongside Clear
+                // creates the same unlabelled-icon ambiguity the
+                // user called out. The final route panel is now a
+                // single primary action (Clear) with no mystery
+                // controls.
+                _GlassOutlinedButton(
+                  label: l10n.clear,
+                  isDark: isDark,
+                  onPressed: widget.onClearRoute,
+                ),
+              ],
+            ] else ...[
+              // No route yet — show "Get Directions" button
+              _BrandActionButton(
+                label: widget.isLoading
+                    ? l10n.loadingRoute
+                    : _directionsLabel(l10n),
+                icon: Icons.double_arrow_rounded,
+                isLoading: widget.isLoading,
+                onPressed: widget.selectedBuilding == null
+                    ? null
+                    : () => widget.onLoadRoute(),
+              ),
+            ],
+          ],
         ),
       ),
     );
@@ -967,68 +943,53 @@ class _MinimizedNavBar extends StatelessWidget {
             onExpand();
           }
         },
-        child: ClipRRect(
+        child: GlassSurface(
+          variant: GlassVariant.content,
           borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: MqSpacing.space3,
-              sigmaY: MqSpacing.space3,
+          borderColor: isDark
+              ? Colors.white.withValues(alpha: 0.08)
+              : MqColors.charcoal800.withValues(alpha: 0.06),
+          borderWidth: 0.6,
+          padding: const EdgeInsets.symmetric(
+            horizontal: MqSpacing.space5,
+            vertical: MqSpacing.space3,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: MqColors.charcoal800.withValues(
+                alpha: isDark ? 0.30 : 0.10,
+              ),
+              blurRadius: 18,
+              offset: const Offset(0, -6),
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: isDark
-                    ? MqColors.charcoal800.withValues(alpha: 0.94)
-                    : Colors.white.withValues(alpha: 0.94),
-                borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-                border: Border.all(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.08)
-                      : MqColors.charcoal800.withValues(alpha: 0.06),
-                  width: 0.6,
+          ],
+          child: Row(
+            children: [
+              const Icon(
+                Icons.navigation_rounded,
+                size: 22,
+                color: MqColors.red,
+              ),
+              const SizedBox(width: MqSpacing.space3),
+              Expanded(
+                child: Text(
+                  nextInstructionText,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white : MqColors.contentPrimary,
+                  ),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: MqColors.charcoal800.withValues(
-                      alpha: isDark ? 0.30 : 0.10,
-                    ),
-                    blurRadius: 18,
-                    offset: const Offset(0, -6),
-                  ),
-                ],
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: MqSpacing.space5,
-                vertical: MqSpacing.space3,
+              const SizedBox(width: MqSpacing.space2),
+              Icon(
+                Icons.expand_less,
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.7)
+                    : MqColors.contentSecondary,
               ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.navigation_rounded,
-                    size: 22,
-                    color: MqColors.red,
-                  ),
-                  const SizedBox(width: MqSpacing.space3),
-                  Expanded(
-                    child: Text(
-                      nextInstructionText,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: isDark ? Colors.white : MqColors.contentPrimary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: MqSpacing.space2),
-                  Icon(
-                    Icons.expand_less,
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.7)
-                        : MqColors.contentSecondary,
-                  ),
-                ],
-              ),
-            ),
+            ],
           ),
         ),
       ),
@@ -1055,71 +1016,55 @@ class _ArrivalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
+    return GlassSurface(
+      variant: GlassVariant.content,
       borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: MqSpacing.space3,
-          sigmaY: MqSpacing.space3,
+      color: isDark ? MqColors.arrivalBgDark : MqColors.arrivalBgLight,
+      borderColor: isDark
+          ? MqColors.arrivalBorderDark
+          : MqColors.arrivalBorderLight,
+      borderWidth: 0.6,
+      padding: const EdgeInsets.all(MqSpacing.space6),
+      boxShadow: [
+        BoxShadow(
+          color: MqColors.charcoal800.withValues(alpha: isDark ? 0.30 : 0.10),
+          blurRadius: 18,
+          offset: const Offset(0, -6),
         ),
-        child: Container(
-          padding: const EdgeInsets.all(MqSpacing.space6),
-          decoration: BoxDecoration(
+      ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.check_circle,
+            size: 40,
             color: isDark
-                ? MqColors.arrivalBgDark.withValues(alpha: 0.94)
-                : MqColors.arrivalBgLight.withValues(alpha: 0.94),
-            borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-            border: Border.all(
-              color: isDark
-                  ? MqColors.arrivalBorderDark
-                  : MqColors.arrivalBorderLight,
-              width: 0.6,
+                ? MqColors.arrivalIconDark
+                : MqColors.arrivalIconLight,
+          ),
+          const SizedBox(height: MqSpacing.space3),
+          Text(
+            arrivedLabel,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: isDark ? Colors.white : MqColors.arrivalTextLight,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: MqColors.charcoal800.withValues(
-                  alpha: isDark ? 0.30 : 0.10,
-                ),
-                blurRadius: 18,
-                offset: const Offset(0, -6),
-              ),
-            ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.check_circle,
-                size: 40,
-                color: isDark
-                    ? MqColors.arrivalIconDark
-                    : MqColors.arrivalIconLight,
+          if (buildingName.isNotEmpty) ...[
+            const SizedBox(height: MqSpacing.space1),
+            Text(
+              buildingName,
+              style: TextStyle(
+                fontSize: 14,
+                color: isDark ? Colors.white : MqColors.arrivalSubtextLight,
               ),
-              const SizedBox(height: MqSpacing.space3),
-              Text(
-                arrivedLabel,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : MqColors.arrivalTextLight,
-                ),
-              ),
-              if (buildingName.isNotEmpty) ...[
-                const SizedBox(height: MqSpacing.space1),
-                Text(
-                  buildingName,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: isDark ? Colors.white : MqColors.arrivalSubtextLight,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-              const SizedBox(height: MqSpacing.space4),
-              _BrandActionButton(label: doneLabel, onPressed: onDismiss),
-            ],
-          ),
-        ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+          const SizedBox(height: MqSpacing.space4),
+          _BrandActionButton(label: doneLabel, onPressed: onDismiss),
+        ],
       ),
     );
   }

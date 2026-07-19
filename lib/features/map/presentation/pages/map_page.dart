@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -809,166 +807,137 @@ class _CategoryBuildingList extends StatelessWidget {
         .where((b) => b.latitude != null && b.longitude != null)
         .toList();
 
-    return ClipRRect(
+    return GlassSurface(
+      variant: GlassVariant.content,
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(MqSpacing.radiusXl),
         bottom: Radius.circular(MqSpacing.radiusXl),
       ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: MqSpacing.space3,
-          sigmaY: MqSpacing.space3,
+      borderColor: isDark
+          ? Colors.white.withValues(alpha: 0.08)
+          : MqColors.charcoal800.withValues(alpha: 0.06),
+      borderWidth: 0.6,
+      constraints: const BoxConstraints(maxHeight: 240),
+      boxShadow: [
+        BoxShadow(
+          color: MqColors.charcoal800.withValues(alpha: isDark ? 0.30 : 0.10),
+          blurRadius: 18,
+          offset: const Offset(0, -6),
         ),
-        child: Container(
-          constraints: const BoxConstraints(maxHeight: 240),
-          decoration: BoxDecoration(
-            color: isDark
-                ? MqColors.charcoal800.withValues(alpha: 0.94)
-                : Colors.white.withValues(alpha: 0.94),
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(MqSpacing.radiusXl),
-              bottom: Radius.circular(MqSpacing.radiusXl),
-            ),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : MqColors.charcoal800.withValues(alpha: 0.06),
-              width: 0.6,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: MqColors.charcoal800.withValues(
-                  alpha: isDark ? 0.30 : 0.10,
+      ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(top: MqSpacing.space3),
+            child: Center(
+              child: Container(
+                width: 48,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.2)
+                      : MqColors.black12,
+                  borderRadius: BorderRadius.circular(3),
                 ),
-                blurRadius: 18,
-                offset: const Offset(0, -6),
               ),
-            ],
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  top: MqSpacing.space3,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 48,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.2)
-                          : MqColors.black12,
-                      borderRadius: BorderRadius.circular(3),
+
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(
+              onBack != null ? MqSpacing.space2 : MqSpacing.space4,
+              MqSpacing.space3,
+              MqSpacing.space2,
+              0,
+            ),
+            child: Row(
+              children: [
+                if (onBack != null)
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      size: 20,
+                      color: isDark ? Colors.white : MqColors.contentSecondary,
+                    ),
+                    tooltip: l10n.back,
+                    onPressed: onBack,
+                  ),
+                Expanded(
+                  child: Text(
+                    '${_capitalize(searchQuery.trim())} (${validBuildings.length})',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : MqColors.contentPrimary,
                     ),
                   ),
                 ),
-              ),
-
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                  onBack != null ? MqSpacing.space2 : MqSpacing.space4,
-                  MqSpacing.space3,
-                  MqSpacing.space2,
-                  0,
-                ),
-                child: Row(
-                  children: [
-                    if (onBack != null)
-                      IconButton(
-                        icon: Icon(
-                          Icons.arrow_back,
-                          size: 20,
-                          color: isDark
-                              ? Colors.white
-                              : MqColors.contentSecondary,
-                        ),
-                        tooltip: l10n.back,
-                        onPressed: onBack,
-                      ),
-                    Expanded(
-                      child: Text(
-                        '${_capitalize(searchQuery.trim())} (${validBuildings.length})',
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: isDark
-                                  ? Colors.white
-                                  : MqColors.contentPrimary,
-                            ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        size: 20,
-                        color: isDark ? Colors.white : MqColors.contentTertiary,
-                      ),
-                      tooltip: l10n.clear,
-                      onPressed: onClear,
-                    ),
-                  ],
-                ),
-              ),
-
-              Flexible(
-                child: ListView.separated(
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                    MqSpacing.space2,
-                    0,
-                    MqSpacing.space2,
-                    MqSpacing.space3,
+                IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    size: 20,
+                    color: isDark ? Colors.white : MqColors.contentTertiary,
                   ),
-                  itemCount: validBuildings.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 0),
-                  itemBuilder: (context, index) {
-                    final building = validBuildings[index];
-                    return ListTile(
-                      dense: true,
-                      leading: const Icon(
-                        Icons.location_on,
-                        color: MqColors.red,
-                        size: 20,
-                      ),
-                      title: Text(
-                        building.name,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: isDark
-                              ? Colors.white
-                              : MqColors.contentPrimary,
-                        ),
-                      ),
-                      subtitle: building.address != null
-                          ? Text(
-                              building.address!,
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: isDark
-                                        ? Colors.white
-                                        : MqColors.charcoal600,
-                                  ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )
-                          : null,
-                      trailing: Icon(
-                        Icons.chevron_right,
-                        size: 20,
-                        color: isDark ? Colors.white : MqColors.charcoal600,
-                      ),
-                      onTap: () => onSelectBuilding(building),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
-                      ),
-                    );
-                  },
+                  tooltip: l10n.clear,
+                  onPressed: onClear,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+
+          Flexible(
+            child: ListView.separated(
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                MqSpacing.space2,
+                0,
+                MqSpacing.space2,
+                MqSpacing.space3,
+              ),
+              itemCount: validBuildings.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 0),
+              itemBuilder: (context, index) {
+                final building = validBuildings[index];
+                return ListTile(
+                  dense: true,
+                  leading: const Icon(
+                    Icons.location_on,
+                    color: MqColors.red,
+                    size: 20,
+                  ),
+                  title: Text(
+                    building.name,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: isDark ? Colors.white : MqColors.contentPrimary,
+                    ),
+                  ),
+                  subtitle: building.address != null
+                      ? Text(
+                          building.address!,
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: isDark
+                                    ? Colors.white
+                                    : MqColors.charcoal600,
+                              ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        )
+                      : null,
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    size: 20,
+                    color: isDark ? Colors.white : MqColors.charcoal600,
+                  ),
+                  onTap: () => onSelectBuilding(building),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1001,153 +970,127 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final countsByGroup = countByGroup;
 
-    return ClipRRect(
+    return GlassSurface(
+      variant: GlassVariant.content,
+      // Matches the compact Food & Drink / Parking results panel (240)
+      // instead of the previous 360, so these category lists no longer
+      // dominate the map.
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(MqSpacing.radiusXl),
         bottom: Radius.circular(MqSpacing.radiusXl),
       ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: MqSpacing.space3,
-          sigmaY: MqSpacing.space3,
+      borderColor: isDark
+          ? Colors.white.withValues(alpha: 0.08)
+          : MqColors.charcoal800.withValues(alpha: 0.06),
+      borderWidth: 0.6,
+      constraints: const BoxConstraints(maxHeight: 240),
+      boxShadow: [
+        BoxShadow(
+          color: MqColors.charcoal800.withValues(alpha: isDark ? 0.30 : 0.10),
+          blurRadius: 18,
+          offset: const Offset(0, -6),
         ),
-        child: Container(
-          // Matches the compact Food & Drink / Parking results panel (240)
-          // instead of the previous 360, so these category lists no longer
-          // dominate the map.
-          constraints: const BoxConstraints(maxHeight: 240),
-          decoration: BoxDecoration(
-            color: isDark
-                ? MqColors.charcoal800.withValues(alpha: 0.94)
-                : Colors.white.withValues(alpha: 0.94),
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(MqSpacing.radiusXl),
-              bottom: Radius.circular(MqSpacing.radiusXl),
-            ),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : MqColors.charcoal800.withValues(alpha: 0.06),
-              width: 0.6,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: MqColors.charcoal800.withValues(
-                  alpha: isDark ? 0.30 : 0.10,
+      ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(top: MqSpacing.space3),
+            child: Center(
+              child: Container(
+                width: 48,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.2)
+                      : MqColors.black12,
+                  borderRadius: BorderRadius.circular(3),
                 ),
-                blurRadius: 18,
-                offset: const Offset(0, -6),
               ),
-            ],
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  top: MqSpacing.space3,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 48,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.2)
-                          : MqColors.black12,
-                      borderRadius: BorderRadius.circular(3),
+
+          Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              MqSpacing.space4,
+              MqSpacing.space2,
+              MqSpacing.space2,
+              0,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? Colors.white : MqColors.contentPrimary,
                     ),
                   ),
                 ),
-              ),
-
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(
-                  MqSpacing.space4,
-                  MqSpacing.space2,
-                  MqSpacing.space2,
-                  0,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: isDark
-                              ? Colors.white
-                              : MqColors.contentPrimary,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      visualDensity: VisualDensity.compact,
-                      icon: Icon(
-                        Icons.close,
-                        size: 20,
-                        color: isDark ? Colors.white : MqColors.contentTertiary,
-                      ),
-                      tooltip: l10n.clear,
-                      onPressed: onClear,
-                    ),
-                  ],
-                ),
-              ),
-
-              Flexible(
-                child: ListView.separated(
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                    MqSpacing.space2,
-                    0,
-                    MqSpacing.space2,
-                    MqSpacing.space3,
+                IconButton(
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(
+                    Icons.close,
+                    size: 20,
+                    color: isDark ? Colors.white : MqColors.contentTertiary,
                   ),
-                  itemCount: groups.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 0),
-                  itemBuilder: (context, index) {
-                    final group = groups[index];
-                    final count = countsByGroup[group] ?? 0;
-                    return ListTile(
-                      dense: true,
-                      visualDensity: VisualDensity.compact,
-                      contentPadding: const EdgeInsetsDirectional.symmetric(
-                        horizontal: MqSpacing.space3,
-                      ),
-                      leading: Icon(leadingIcon, color: MqColors.red, size: 20),
-                      title: Text(
-                        labelOf(group),
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: isDark
-                              ? Colors.white
-                              : MqColors.contentPrimary,
-                        ),
-                      ),
-                      subtitle: Text(
-                        '${descriptionOf(group)}  ·  $count',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: isDark ? Colors.white : MqColors.charcoal600,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Icon(
-                        Icons.chevron_right,
-                        size: 20,
-                        color: isDark ? Colors.white : MqColors.charcoal600,
-                      ),
-                      onTap: () => onSelectGroup(group),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
-                      ),
-                    );
-                  },
+                  tooltip: l10n.clear,
+                  onPressed: onClear,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+
+          Flexible(
+            child: ListView.separated(
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                MqSpacing.space2,
+                0,
+                MqSpacing.space2,
+                MqSpacing.space3,
+              ),
+              itemCount: groups.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 0),
+              itemBuilder: (context, index) {
+                final group = groups[index];
+                final count = countsByGroup[group] ?? 0;
+                return ListTile(
+                  dense: true,
+                  visualDensity: VisualDensity.compact,
+                  contentPadding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: MqSpacing.space3,
+                  ),
+                  leading: Icon(leadingIcon, color: MqColors.red, size: 20),
+                  title: Text(
+                    labelOf(group),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : MqColors.contentPrimary,
+                    ),
+                  ),
+                  subtitle: Text(
+                    '${descriptionOf(group)}  ·  $count',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: isDark ? Colors.white : MqColors.charcoal600,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    size: 20,
+                    color: isDark ? Colors.white : MqColors.charcoal600,
+                  ),
+                  onTap: () => onSelectGroup(group),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1301,137 +1244,117 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
     final isDark = context.isDarkMode;
     final l10n = AppLocalizations.of(context)!;
 
-    return ClipRRect(
+    return GlassSurface(
+      variant: GlassVariant.content,
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(MqSpacing.radiusXl),
         bottom: Radius.circular(MqSpacing.radiusXl),
       ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: MqSpacing.space3,
-          sigmaY: MqSpacing.space3,
+      borderColor: isDark
+          ? Colors.white.withValues(alpha: 0.08)
+          : MqColors.charcoal800.withValues(alpha: 0.06),
+      borderWidth: 0.6,
+      padding: const EdgeInsets.all(MqSpacing.space6),
+      boxShadow: [
+        BoxShadow(
+          color: MqColors.charcoal800.withValues(alpha: isDark ? 0.30 : 0.10),
+          blurRadius: 18,
+          offset: const Offset(0, -6),
         ),
-        child: Container(
-          padding: const EdgeInsets.all(MqSpacing.space6),
-          decoration: BoxDecoration(
-            color: isDark
-                ? MqColors.charcoal800.withValues(alpha: 0.94)
-                : Colors.white.withValues(alpha: 0.94),
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(MqSpacing.radiusXl),
-              bottom: Radius.circular(MqSpacing.radiusXl),
-            ),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : MqColors.charcoal800.withValues(alpha: 0.06),
-              width: 0.6,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: MqColors.charcoal800.withValues(
-                  alpha: isDark ? 0.30 : 0.10,
-                ),
-                blurRadius: 18,
-                offset: const Offset(0, -6),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+      ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      selectedBuilding.name,
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            color: isDark
+                                ? Colors.white
+                                : MqColors.contentPrimary,
+                            letterSpacing: -0.5,
+                          ),
+                    ),
+                    const SizedBox(height: MqSpacing.space1),
+                    Row(
                       children: [
-                        Text(
-                          selectedBuilding.name,
-                          style: Theme.of(context).textTheme.headlineMedium
-                              ?.copyWith(
-                                color: isDark
-                                    ? Colors.white
-                                    : MqColors.contentPrimary,
-                                letterSpacing: -0.5,
-                              ),
-                        ),
-                        const SizedBox(height: MqSpacing.space1),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Text.rich(
+                        Flexible(
+                          child: Text.rich(
+                            TextSpan(
+                              text: '${l10n.buildingCode}: ',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: isDark
+                                        ? Colors.white
+                                        : MqColors.contentTertiary,
+                                  ),
+                              children: [
                                 TextSpan(
-                                  text: '${l10n.buildingCode}: ',
-                                  style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(
-                                        color: isDark
-                                            ? Colors.white
-                                            : MqColors.contentTertiary,
-                                      ),
-                                  children: [
-                                    TextSpan(
-                                      text: selectedBuilding.code,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: isDark
-                                            ? Colors.white
-                                            : MqColors.contentPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (selectedBuilding.category !=
-                                BuildingCategory.other) ...[
-                              const SizedBox(width: MqSpacing.space2),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: MqSpacing.space3,
-                                  vertical: MqSpacing.space1,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: MqColors.red.withValues(alpha: 0.15),
-                                  borderRadius: BorderRadius.circular(
-                                    MqSpacing.radiusFull,
+                                  text: selectedBuilding.code,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? Colors.white
+                                        : MqColors.contentPrimary,
                                   ),
                                 ),
-                                child: Text(
-                                  selectedBuilding.category.name.toUpperCase(),
-                                  style: Theme.of(context).textTheme.labelSmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: MqColors.red,
-                                        letterSpacing: 1.2,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ],
+                              ],
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
+                        if (selectedBuilding.category !=
+                            BuildingCategory.other) ...[
+                          const SizedBox(width: MqSpacing.space2),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: MqSpacing.space3,
+                              vertical: MqSpacing.space1,
+                            ),
+                            decoration: BoxDecoration(
+                              color: MqColors.red.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(
+                                MqSpacing.radiusFull,
+                              ),
+                            ),
+                            child: Text(
+                              selectedBuilding.category.name.toUpperCase(),
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: MqColors.red,
+                                    letterSpacing: 1.2,
+                                  ),
+                            ),
+                          ),
+                        ],
                       ],
                     ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      size: MqSpacing.iconMd,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.5)
-                          : MqColors.contentTertiary,
-                    ),
-                    tooltip: l10n.clear,
-                    onPressed: onClearSelection,
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.close,
+                  size: MqSpacing.iconMd,
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.5)
+                      : MqColors.contentTertiary,
+                ),
+                tooltip: l10n.clear,
+                onPressed: onClearSelection,
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
