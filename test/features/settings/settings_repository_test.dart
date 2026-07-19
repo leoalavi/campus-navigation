@@ -13,6 +13,7 @@ void main() {
   setUp(() {
     storage = MockSecureStorageService();
     repository = LocalSettingsRepository(storage: storage);
+    when(() => storage.readAll()).thenAnswer((_) async => const {});
     when(() => storage.write(any(), any())).thenAnswer((_) async {});
     when(() => storage.delete(any())).thenAnswer((_) async {});
   });
@@ -45,16 +46,15 @@ void main() {
     });
 
     test('loads favorite stop id and name', () async {
-      when((() => storage.read(any()))).thenAnswer((invocation) async {
-        return switch (invocation.positionalArguments.first as String) {
-          'settings.commute_mode' => 'bus',
-          'settings.favorite_direction' => 'Tallawong',
-          'settings.favorite_route' => '525',
-          'settings.favorite_stop_id' => '10101403',
-          'settings.favorite_stop_name' => 'Macquarie University Station',
-          _ => null,
-        };
-      });
+      when(() => storage.readAll()).thenAnswer(
+        (_) async => const {
+          'settings.commute_mode': 'bus',
+          'settings.favorite_direction': 'Tallawong',
+          'settings.favorite_route': '525',
+          'settings.favorite_stop_id': '10101403',
+          'settings.favorite_stop_name': 'Macquarie University Station',
+        },
+      );
 
       final preferences = await repository.loadPreferences();
 
@@ -63,15 +63,14 @@ void main() {
       expect(preferences.favoriteRoute, '525');
       expect(preferences.favoriteStopId, '10101403');
       expect(preferences.favoriteStopName, 'Macquarie University Station');
+      verify(() => storage.readAll()).called(1);
+      verifyNever(() => storage.read(any()));
     });
 
     test('normalizes invalid stored commute mode to none', () async {
-      when((() => storage.read(any()))).thenAnswer((invocation) async {
-        return switch (invocation.positionalArguments.first as String) {
-          'settings.commute_mode' => 'ferry',
-          _ => null,
-        };
-      });
+      when(
+        () => storage.readAll(),
+      ).thenAnswer((_) async => const {'settings.commute_mode': 'ferry'});
 
       final preferences = await repository.loadPreferences();
 

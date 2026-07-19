@@ -53,50 +53,34 @@ class LocalSettingsRepository implements SettingsRepository {
   @override
   Future<UserPreferences> loadPreferences() async {
     try {
-      final themeModeString = await _storage.read(_themeModeKey);
-      final localeCode = await _storage.read(_localeCodeKey);
-      final notificationsEnabled = await _storage.read(
-        _notificationsEnabledKey,
-      );
-      final defaultTravelModeString = await _storage.read(
-        _defaultTravelModeKey,
-      );
-      final lowDataMode = await _storage.read(_lowDataModeKey);
-      final reducedMotion = await _storage.read(_reducedMotionKey);
-      final hapticsEnabled = await _storage.read(_hapticsEnabledKey);
-      final quietHoursEnabled = await _storage.read(_quietHoursEnabledKey);
-      final quietHoursStart = await _storage.read(_quietHoursStartKey);
-      final quietHoursEnd = await _storage.read(_quietHoursEndKey);
-      final highContrastMap = await _storage.read(_highContrastMapKey);
-      final offlineCampusMapsEnabled = await _storage.read(
-        _offlineCampusMapsEnabledKey,
-      );
-      final offlineCampusMapsDownloaded = await _storage.read(
-        _offlineCampusMapsDownloadedKey,
-      );
-      final commuteMode = await _storage.read(_commuteModeKey);
-      final favoriteDirection = await _storage.read(_favoriteDirectionKey);
-      final favoriteRoute = await _storage.read(_favoriteRouteKey);
-      final favoriteStopId = await _storage.read(_favoriteStopIdKey);
-      final favoriteStopName = await _storage.read(_favoriteStopNameKey);
-      final selectedBachelorId = await _storage.read(_selectedBachelorIdKey);
-      final openDayRemindersEnabled = await _storage.read(
-        _openDayRemindersEnabledKey,
-      );
-      final openDayReminderMinutes = await _storage.read(
-        _openDayReminderMinutesKey,
-      );
-      final showSuggestedStops = await _storage.read(_showSuggestedStopsKey);
-      final savedOpenDayEventIds = await _storage.read(
-        _savedOpenDayEventIdsKey,
-      );
-      final savedStopIds = await _storage.read(_savedStopIdsKey);
-      final visitedLocationCodes = await _storage.read(
-        _visitedLocationCodesKey,
-      );
-      final hasCompletedOnboarding = await _storage.read(
-        _hasCompletedOnboardingKey,
-      );
+      final values = await _storage.readAll();
+      final themeModeString = values[_themeModeKey];
+      final localeCode = values[_localeCodeKey];
+      final notificationsEnabled = values[_notificationsEnabledKey];
+      final defaultTravelModeString = values[_defaultTravelModeKey];
+      final lowDataMode = values[_lowDataModeKey];
+      final reducedMotion = values[_reducedMotionKey];
+      final hapticsEnabled = values[_hapticsEnabledKey];
+      final quietHoursEnabled = values[_quietHoursEnabledKey];
+      final quietHoursStart = values[_quietHoursStartKey];
+      final quietHoursEnd = values[_quietHoursEndKey];
+      final highContrastMap = values[_highContrastMapKey];
+      final offlineCampusMapsEnabled = values[_offlineCampusMapsEnabledKey];
+      final offlineCampusMapsDownloaded =
+          values[_offlineCampusMapsDownloadedKey];
+      final commuteMode = values[_commuteModeKey];
+      final favoriteDirection = values[_favoriteDirectionKey];
+      final favoriteRoute = values[_favoriteRouteKey];
+      final favoriteStopId = values[_favoriteStopIdKey];
+      final favoriteStopName = values[_favoriteStopNameKey];
+      final selectedBachelorId = values[_selectedBachelorIdKey];
+      final openDayRemindersEnabled = values[_openDayRemindersEnabledKey];
+      final openDayReminderMinutes = values[_openDayReminderMinutesKey];
+      final showSuggestedStops = values[_showSuggestedStopsKey];
+      final savedOpenDayEventIds = values[_savedOpenDayEventIdsKey];
+      final savedStopIds = values[_savedStopIdsKey];
+      final visitedLocationCodes = values[_visitedLocationCodesKey];
+      final hasCompletedOnboarding = values[_hasCompletedOnboardingKey];
 
       final localThemeMode = ThemeMode.values.firstWhere(
         (mode) => mode.name == themeModeString,

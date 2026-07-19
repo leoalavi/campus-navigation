@@ -63,6 +63,27 @@ class SecureStorageService {
     }
   }
 
+  /// Reads the service's string entries in one platform operation.
+  ///
+  /// Startup preferences use many independent keys. Fetching the complete
+  /// small key-value set avoids one native method-channel round trip per key
+  /// while preserving the platform's encrypted storage boundary.
+  Future<Map<String, String>> readAll() async {
+    try {
+      if (_useFallback) {
+        final prefs = await _getPrefs();
+        return {
+          for (final key in prefs.getKeys())
+            if (prefs.get(key) case final String value) key: value,
+        };
+      }
+      return await _secure.readAll();
+    } catch (e, s) {
+      AppLogger.error('SecureStorage readAll failed', e, s);
+      throw StorageException('Failed to read all keys', e);
+    }
+  }
+
   Future<void> write(String key, String value) async {
     try {
       if (_useFallback) {
