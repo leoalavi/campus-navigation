@@ -19,9 +19,12 @@ const double _chipGap = 9;
 /// and passes 0.
 const double kTabBarIslandClearance = 78;
 
-/// A floating dark-glass rail of indoor scene chips. Controlled:
-/// [selectedSceneId] in, [onSceneSelected] out. Frost-forced (no shader) — it
-/// floats over a platform-view panorama that a shader cannot sample.
+/// A floating, collapsible glass rail of indoor scene chips, anchored to the
+/// bottom-left. Controlled: [selectedSceneId] in, [onSceneSelected] out.
+///
+/// Tapping the leading round button collapses the rail to just that button (a
+/// circle on the left); tapping the circle expands it again. Frost-forced (no
+/// shader) — it floats over a platform-view panorama a shader cannot sample.
 class SceneRail extends StatefulWidget {
   const SceneRail({
     super.key,
@@ -40,6 +43,7 @@ class SceneRail extends StatefulWidget {
 
 class _SceneRailState extends State<SceneRail> {
   final ScrollController _controller = ScrollController();
+  bool _expanded = true;
 
   @override
   void initState() {
@@ -65,8 +69,18 @@ class _SceneRailState extends State<SceneRail> {
     }
   }
 
+  void _toggle() {
+    setState(() => _expanded = !_expanded);
+    if (_expanded) {
+      // The list is rebuilt when re-expanding — re-centre on the selection.
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _scrollToSelected(animate: false),
+      );
+    }
+  }
+
   void _scrollToSelected({required bool animate}) {
-    if (!mounted || !_controller.hasClients) return;
+    if (!mounted || !_expanded || !_controller.hasClients) return;
     final index = widget.manifest.nodes.indexWhere(
       (n) => n.id == widget.selectedSceneId,
     );
@@ -97,80 +111,144 @@ class _SceneRailState extends State<SceneRail> {
     final l10n = AppLocalizations.of(context)!;
     if (widget.manifest.isEmpty) return const SizedBox.shrink();
 
+    // Anchored bottom-left, snug above the tab bar. AnimatedSize morphs the
+    // box between the wide pill and the collapsed circle, growing from the
+    // bottom-left corner.
     return SafeArea(
       top: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-        child: GlassSurface(
-          variant: GlassVariant.control,
-          allowShader: false, // platform-view overlay: frost, never shader
-          color: Colors.black, // dark tint keeps white chips legible
-          borderRadius: BorderRadius.circular(24),
-          // A dark scrim inside the rail so white text stays legible over ANY
-          // backdrop — the panorama could be bright, and the frost alone isn't
-          // opaque enough to guarantee contrast.
-          child: ColoredBox(
-            color: Colors.black.withValues(alpha: 0.4),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      start: 2,
-                      bottom: 8,
-                    ),
-                    child: Text(
-                      l10n.indoorScenesLabel,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.4,
-                      ),
-                    ),
-                  ),
-                  // A horizontal list needs a bounded cross-axis (height); a
-                  // bare minHeight leaves it unbounded. Reserve two text lines and
-                  // let the height grow with the text scaler so large-text users
-                  // never clip.
-                  SizedBox(
-                    height:
-                        (MediaQuery.textScalerOf(context).scale(13) * 1.3 +
-                                MediaQuery.textScalerOf(context).scale(10.5) *
-                                    1.3 +
-                                24)
-                            .clamp(52.0, 140.0),
-                    child: ListView.separated(
-                      controller: _controller,
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: widget.manifest.nodes.length,
-                      separatorBuilder: (_, _) =>
-                          const SizedBox(width: _chipGap),
-                      itemBuilder: (context, i) {
-                        final node = widget.manifest.nodes[i];
-                        return _SceneChip(
-                          name: node.description.isNotEmpty
-                              ? node.description
-                              : node.id,
-                          subtitle: node.neighbours.isNotEmpty
-                              ? l10n.indoorConnections(node.neighbours.length)
-                              : null,
-                          selected: node.id == widget.selectedSceneId,
-                          onTap: () => widget.onSceneSelected(node.id),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+        padding: const EdgeInsetsDirectional.only(
+          start: 12,
+          end: 12,
+          bottom: 8,
+        ),
+        child: Align(
+          alignment: AlignmentDirectional.bottomStart,
+          child: AnimatedSize(
+            duration: const Duration(milliseconds: 240),
+            curve: Curves.easeOutCubic,
+            alignment: AlignmentDirectional.bottomStart,
+            child: _expanded ? _buildExpanded(l10n) : _buildCollapsed(l10n),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCollapsed(AppLocalizations l10n) {
+    return _RailRoundButton(
+      icon: Icons.grid_view_rounded,
+      label: l10n.indoorScenesLabel,
+      glassBacking: true,
+      onTap: _toggle,
+    );
+  }
+
+  Widget _buildExpanded(AppLocalizations l10n) {
+    final chipHeight =
+        (MediaQuery.textScalerOf(context).scale(13) * 1.3 +
+                MediaQuery.textScalerOf(context).scale(10.5) * 1.3 +
+                24)
+            .clamp(52.0, 140.0);
+    return GlassSurface(
+      variant: GlassVariant.control,
+      allowShader: false, // platform-view overlay: frost, never shader
+      borderRadius: BorderRadius.circular(30),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _RailRoundButton(
+              icon: Icons.close_rounded,
+              label: MaterialLocalizations.of(context).closeButtonLabel,
+              glassBacking: false,
+              onTap: _toggle,
+            ),
+            const SizedBox(width: 8),
+            Flexible(
+              child: SizedBox(
+                height: chipHeight,
+                child: ListView.separated(
+                  controller: _controller,
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: widget.manifest.nodes.length,
+                  separatorBuilder: (_, _) => const SizedBox(width: _chipGap),
+                  itemBuilder: (context, i) {
+                    final node = widget.manifest.nodes[i];
+                    return _SceneChip(
+                      name: node.description.isNotEmpty
+                          ? node.description
+                          : node.id,
+                      subtitle: node.neighbours.isNotEmpty
+                          ? l10n.indoorConnections(node.neighbours.length)
+                          : null,
+                      selected: node.id == widget.selectedSceneId,
+                      onTap: () => widget.onSceneSelected(node.id),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A round red control. When [glassBacking] is true it sits inside a glass
+/// disc (the collapsed state, floating over the panorama); otherwise it's the
+/// bare red core (already on the expanded glass pill).
+class _RailRoundButton extends StatelessWidget {
+  const _RailRoundButton({
+    required this.icon,
+    required this.label,
+    required this.glassBacking,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool glassBacking;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    // Brand-red core keeps the icon legible over any backdrop and gives a
+    // 44px+ tap target (56 with the glass disc).
+    final core = Container(
+      width: 48,
+      height: 48,
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: [MqColors.red, MqColors.deepRed],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Icon(icon, color: Colors.white, size: 22),
+    );
+
+    final Widget button = glassBacking
+        ? GlassSurface(
+            variant: GlassVariant.control,
+            allowShader: false,
+            borderRadius: BorderRadius.circular(28),
+            padding: const EdgeInsets.all(6),
+            child: core,
+          )
+        : core;
+
+    return Semantics(
+      button: true,
+      excludeSemantics: true,
+      label: label,
+      onTap: onTap,
+      child: GestureDetector(onTap: onTap, child: button),
     );
   }
 }
@@ -209,8 +287,9 @@ class _SceneChip extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            // Contrast-safe: white on red(#C6006F)→deepRed passes 4.5:1
-            // (vivid #FF2D96 did not).
+            // Solid chips (dark / brand-red) carry their own contrast so white
+            // labels stay legible over the translucent glass tray — the tray,
+            // not the chip, is what reads as glass.
             gradient: selected
                 ? const LinearGradient(
                     colors: [MqColors.red, MqColors.deepRed],
@@ -218,9 +297,9 @@ class _SceneChip extends StatelessWidget {
                     end: Alignment.bottomRight,
                   )
                 : null,
-            color: selected ? null : Colors.white.withValues(alpha: 0.08),
+            color: selected ? null : Colors.black.withValues(alpha: 0.78),
             border: Border.all(
-              color: Colors.white.withValues(alpha: selected ? 0.4 : 0.14),
+              color: Colors.white.withValues(alpha: selected ? 0.4 : 0.16),
             ),
           ),
           child: Column(

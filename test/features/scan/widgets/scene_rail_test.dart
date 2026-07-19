@@ -140,4 +140,30 @@ void main() {
     );
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('collapsing hides the chips, leaving the round button', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _host(manifest: _manifest(3), selected: 's0', onSel: (_) {}),
+    );
+    expect(find.text('Scene 0'), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.close_rounded));
+    await tester.pumpAndSettle();
+    expect(find.text('Scene 0'), findsNothing);
+    expect(find.byIcon(Icons.grid_view_rounded), findsOneWidget);
+  });
+
+  testWidgets('re-expanding from the collapsed circle restores the chips', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _host(manifest: _manifest(3), selected: 's0', onSel: (_) {}),
+    );
+    await tester.tap(find.byIcon(Icons.close_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.grid_view_rounded));
+    await tester.pumpAndSettle();
+    expect(find.text('Scene 0'), findsOneWidget);
+  });
 }
