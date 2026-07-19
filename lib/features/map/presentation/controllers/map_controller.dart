@@ -437,11 +437,13 @@ class MapController extends AsyncNotifier<MapState> {
 
   Future<void> loadRoute() async {
     final current = state.value;
-    if (current?.selectedBuilding == null) {
+    if (current == null ||
+        current.selectedBuilding == null ||
+        current.isLoadingRoute) {
       return;
     }
     final requestId = _beginRouteRequest();
-    final selectedBuildingId = current!.selectedBuilding!.id;
+    final selectedBuildingId = current.selectedBuilding!.id;
     final travelMode = current.travelMode;
 
     state = AsyncData(current.copyWith(isLoadingRoute: true, clearError: true));
@@ -861,7 +863,7 @@ class MapController extends AsyncNotifier<MapState> {
       routeDistanceMeters: current.route?.distanceMeters,
     );
 
-    if (isOffRoute) {
+    if (isOffRoute && !current.isLoadingRoute) {
       AppLogger.info('Navigation route recalculation triggered', {
         'distFromLastFetchMetres': distFromLastFetch.toStringAsFixed(1),
         'distToDestinationMetres': distToDestination.toStringAsFixed(1),

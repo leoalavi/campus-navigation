@@ -396,6 +396,59 @@ void main() {
     });
 
     test(
+      'coalesces off-route samples while recalculation is pending',
+      () async {
+        final locationStream = StreamController<LocationSample>.broadcast();
+        addTearDown(locationStream.close);
+        final repository = _FakeMapRepository(
+          buildings: [building],
+          locationStream: locationStream.stream,
+        );
+        final container = ProviderContainer(
+          overrides: [
+            mapRepositoryProvider.overrideWithValue(repository),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        await container.read(mapControllerProvider.future);
+        final notifier = container.read(mapControllerProvider.notifier);
+        notifier.selectBuilding(building);
+        await notifier.loadRoute();
+        notifier.startNavigation();
+        final initialRouteCalls = repository.routeCallCount;
+        final pendingRoute = Completer<MapRoute>();
+        repository.pendingRouteCompleter = pendingRoute;
+        addTearDown(() {
+          if (!pendingRoute.isCompleted) {
+            pendingRoute.complete(_testRoute());
+          }
+        });
+
+        const offRouteLocation = LocationSample(
+          latitude: -33.7700,
+          longitude: 151.1200,
+          accuracy: 5,
+        );
+        locationStream.add(offRouteLocation);
+        await _waitUntil(
+          () => repository.routeCallCount == initialRouteCalls + 1,
+        );
+        locationStream.add(offRouteLocation);
+        await Future<void>.delayed(Duration.zero);
+        await Future<void>.delayed(Duration.zero);
+
+        expect(repository.routeCallCount, initialRouteCalls + 1);
+
+        pendingRoute.complete(_testRoute());
+        await Future<void>.delayed(Duration.zero);
+      },
+    );
+
+    test(
       'clearSelection from focused-with-query state preserves the query (back-to-list)',
       () async {
         final repository = _FakeMapRepository(
@@ -490,6 +543,26 @@ void main() {
 class _FakeSettingsController extends SettingsController {
   @override
   Future<UserPreferences> build() async => const UserPreferences();
+}
+
+MapRoute _testRoute() {
+  return MapRoute(
+    travelMode: TravelMode.walk,
+    distanceMeters: 220,
+    durationSeconds: 180,
+    encodedPolyline: '_p~iF~ps|U_ulLnnqC_mqNvxq`@',
+    instructions: const [
+      NavInstruction(text: 'Head north', distanceMeters: 80),
+    ],
+  );
+}
+
+Future<void> _waitUntil(bool Function() predicate) async {
+  for (var attempt = 0; attempt < 100; attempt += 1) {
+    if (predicate()) return;
+    await Future<void>.delayed(const Duration(milliseconds: 5));
+  }
+  fail('Condition was not reached before the test deadline');
 }
 
 class _FakeMapRepository implements MapRepository {

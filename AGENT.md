@@ -43,6 +43,13 @@ lib/
   features/settings/ → Theme, locale, notification preferences (local storage)
 ```
 
+### Raouf: 2026-07-19 (Australia/Sydney) — Coalesce pending route recalculations
+**Scope:** Journey off-route detection and campus route Edge Function request amplification.
+**Summary:** Added an in-flight route-load guard and suppressed redundant off-route triggers while a recalculation is already pending. New destination and travel-mode changes still invalidate stale results through the existing request-version checks, while repeated GPS samples for the same pending recalculation now share the single active request.
+**Files Changed:** `lib/features/map/presentation/controllers/map_controller.dart`, `test/features/map/map_controller_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** With one route request held pending, two successive off-route samples produced two additional backend calls before the fix (route count 1 → 3). After the guard, the same sequence produces exactly one additional call (1 → 2), and the pending result remains accepted. Focused analysis reported no issues, all 17 `MapController`/`MapState` tests passed, and the complete map suite passed 126/126.
+**Follow-ups:** Confirm request counts and off-route responsiveness with a physical-device GPS trace and staging Edge Function logs; tune distance thresholds only with route-quality evidence.
+
 ### Raouf: 2026-07-19 (Australia/Sydney) — Bound TfNSW proxy request latency
 **Scope:** Home departures and commute stop-search HTTP requests.
 **Summary:** Replaced per-call top-level HTTP helpers with one provider-owned `http.Client` and applied a configurable 10-second `Future.timeout` to both TfNSW proxy request paths. A stalled proxy now resolves through the existing typed empty-state/error handling instead of leaving Home refresh or stop search pending indefinitely. Authentication headers, anonymous-session behavior, payload parsing, polling cadence, and Edge Function contracts are unchanged.
