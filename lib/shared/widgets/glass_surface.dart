@@ -5,7 +5,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_glass.dart';
 import 'package:mq_journey/shared/widgets/glass_shader.dart';
-import 'package:mq_journey/shared/widgets/glass_tilt.dart';
 
 /// Variants of the Liquid Glass-inspired ("Glass UI layer") material.
 enum GlassVariant { bar, control, content }
@@ -54,8 +53,8 @@ class GlassSurface extends StatelessWidget {
   final GlassVariant variant;
 
   /// When true (shader path only), the surface plays the living highlights
-  /// (light sweep / iridescence / tilt-tracked glare) — a per-frame repaint.
-  /// Leave false for small/static controls to avoid needless repaints.
+  /// (light sweep / iridescence / slowly orbiting glare) — a per-frame
+  /// repaint. Leave false for small/static controls to avoid needless repaints.
   final bool animated;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
@@ -317,9 +316,6 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
     shader.setFloat(12, MqGlass.glare); // uGlare
     shader.setFloat(13, MqGlass.refractIntensity); // uRefractIntensity
     shader.setFloat(14, _time); // uTime (0 when not animated)
-    final tilt = widget.animated ? GlassTilt.value.value : Offset.zero;
-    shader.setFloat(15, tilt.dx); // uTilt.x
-    shader.setFloat(16, tilt.dy); // uTilt.y
 
     return BackdropFilter(
       filter: ui.ImageFilter.shader(shader),

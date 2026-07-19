@@ -13,7 +13,6 @@ uniform float uFresnel;          // rim reflection / edge brightening (0..1)
 uniform float uGlare;            // directional glare highlight (0..1)
 uniform float uRefractIntensity; // physical refraction march strength
 uniform float uTime;             // seconds, monotonic — drives the living highlights
-uniform vec2 uTilt;              // device tilt (gravity), ~[-1,1] — glare tracks it
 uniform sampler2D uTexture;
 
 out vec4 fragColor;
@@ -106,12 +105,11 @@ void main() {
   // ── Living highlights (time-driven) ───────────────────────────────────────
   float axis = (fragCoord.x + fragCoord.y) / (uSize.x + uSize.y); // 0..1 diagonal
 
-  // Directional glare: tracks device tilt (like light on real glass), with a
-  // gentle time sway layered in. Concentrated at the rim.
+  // Directional glare with a gentle time sway, concentrated at the rim.
   vec2 gdir = normalize(grad + vec2(1e-5));
   vec2 lightDir = normalize(vec2(
-    -0.45 + 0.28 * sin(uTime * 0.6) + uTilt.x * 1.6,
-    -0.85 + uTilt.y * 1.6
+    -0.45 + 0.28 * sin(uTime * 0.6),
+    -0.85 + 0.18 * cos(uTime * 0.5)
   ));
   float ndl = max(dot(gdir, lightDir), 0.0);
   float glare = pow(ndl, 7.0) * (0.35 + 0.65 * edge) * uGlare;
@@ -124,11 +122,13 @@ void main() {
   float shade = pow(max(dot(gdir, -lightDir), 0.0), 5.0) * edge;
   color *= 1.0 - shade * 0.22;
 
-  // Motion highlight: a broad soft illumination spot that physically slides
-  // across the surface as the device tilts (Apple's motion-tracked layer).
-  // Paired with a mirrored counter-shade so the travel is visible on any
-  // backdrop, light or dark.
-  vec2 hlPos = uSize * vec2(0.5 - uTilt.x * 0.6, 0.35 - uTilt.y * 0.8);
+  // Motion highlight: a broad soft illumination spot that slowly orbits the
+  // surface over time (the ambient "living" layer). Paired with a mirrored
+  // counter-shade so the travel is visible on any backdrop, light or dark.
+  vec2 hlPos = uSize * vec2(
+    0.5 + 0.28 * sin(uTime * 0.35),
+    0.35 + 0.18 * cos(uTime * 0.45)
+  );
   float spotR = 0.9 * min(uSize.x, uSize.y);
   vec2 hp = fragCoord - hlPos;
   float spot = exp(-dot(hp, hp) / (spotR * spotR));

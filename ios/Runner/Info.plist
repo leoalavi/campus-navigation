@@ -42,8 +42,6 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>MQ Journey uses your camera to scan Open Day QR codes at campus locations.</string>
-	<key>NSMotionUsageDescription</key>
-	<string>MQ Journey uses device motion to make the glass interface react to how you hold your phone.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>MQ Journey uses your location to navigate you around campus.</string>
 	<key>UIApplicationSceneManifest</key>
