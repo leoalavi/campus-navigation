@@ -260,7 +260,15 @@ class _GlassShaderBackdrop extends StatefulWidget {
 
 class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
     with SingleTickerProviderStateMixin {
-  late final ui.FragmentShader _shader = GlassShaderCache.newShader();
+  // TWO shaders, alternated every build. dart:ui's _FragmentShaderImageFilter
+  // compares by shader identity ("so that widgets can check for ImageFilter
+  // equality to avoid repainting" — painting.dart), so wrapping one mutated
+  // shader yields ==-equal filters and RenderBackdropFilter never repaints:
+  // every animated uniform (time/tilt) freezes at its first frame. Alternating
+  // buffers makes consecutive filters unequal, forcing the repaint.
+  late final ui.FragmentShader _shaderA = GlassShaderCache.newShader();
+  late final ui.FragmentShader _shaderB = GlassShaderCache.newShader();
+  bool _useB = false;
   Ticker? _ticker;
   double _time = 0;
 
@@ -279,39 +287,42 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
   @override
   void dispose() {
     _ticker?.dispose();
-    _shader.dispose();
+    _shaderA.dispose();
+    _shaderB.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _useB = !_useB; // flip buffers so the new ImageFilter is never ==-equal
+    final shader = _useB ? _shaderB : _shaderA;
     final dpr = widget.devicePixelRatio;
     // Float indices 0/1 (uSize) + the sampler are engine-owned — never set them.
-    _shader.setFloat(2, widget.radius.topLeft.x * dpr); // uRadius
-    _shader.setFloat(3, MqGlass.rimWidth * dpr); // uRimPx
-    _shader.setFloat(4, MqGlass.refractiveIndex); // uIor
-    _shader.setFloat(
+    shader.setFloat(2, widget.radius.topLeft.x * dpr); // uRadius
+    shader.setFloat(3, MqGlass.rimWidth * dpr); // uRimPx
+    shader.setFloat(4, MqGlass.refractiveIndex); // uIor
+    shader.setFloat(
       5,
       MqGlass.aberration * MqGlass.rimWidth * dpr,
     ); // uAberrationPx
-    _shader.setFloat(6, MqGlass.blurCoeff * MqGlass.rimWidth * dpr); // uBlurPx
+    shader.setFloat(6, MqGlass.blurCoeff * MqGlass.rimWidth * dpr); // uBlurPx
     final r = widget.tint.r * widget.alpha;
     final g = widget.tint.g * widget.alpha;
     final b = widget.tint.b * widget.alpha;
-    _shader.setFloat(7, r); // uTint.r (premultiplied)
-    _shader.setFloat(8, g);
-    _shader.setFloat(9, b);
-    _shader.setFloat(10, widget.alpha);
-    _shader.setFloat(11, MqGlass.fresnel); // uFresnel
-    _shader.setFloat(12, MqGlass.glare); // uGlare
-    _shader.setFloat(13, MqGlass.refractIntensity); // uRefractIntensity
-    _shader.setFloat(14, _time); // uTime (0 when not animated)
+    shader.setFloat(7, r); // uTint.r (premultiplied)
+    shader.setFloat(8, g);
+    shader.setFloat(9, b);
+    shader.setFloat(10, widget.alpha);
+    shader.setFloat(11, MqGlass.fresnel); // uFresnel
+    shader.setFloat(12, MqGlass.glare); // uGlare
+    shader.setFloat(13, MqGlass.refractIntensity); // uRefractIntensity
+    shader.setFloat(14, _time); // uTime (0 when not animated)
     final tilt = widget.animated ? GlassTilt.value.value : Offset.zero;
-    _shader.setFloat(15, tilt.dx); // uTilt.x
-    _shader.setFloat(16, tilt.dy); // uTilt.y
+    shader.setFloat(15, tilt.dx); // uTilt.x
+    shader.setFloat(16, tilt.dy); // uTilt.y
 
     return BackdropFilter(
-      filter: ui.ImageFilter.shader(_shader),
+      filter: ui.ImageFilter.shader(shader),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.transparent, // shader supplies the tint

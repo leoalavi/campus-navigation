@@ -24,7 +24,7 @@ void main() {
                 icon: Icons.home_outlined,
                 activeIcon: Icons.home,
                 label: 'Home',
-                fx: TabFx.bounce,
+                fx: TabFx.homecoming,
               ),
               LiquidNavItem(
                 icon: Icons.qr_code_scanner_outlined,
@@ -58,4 +58,32 @@ void main() {
     await tester.pumpAndSettle();
     expect(viewfinder(), findsNothing); // sequence ends clean
   });
+
+  testWidgets(
+    'homecoming fx plays on re-select and leaves no overlays behind',
+    (tester) async {
+      Finder sunrise() => find.byWidgetPredicate(
+        (w) =>
+            w is CustomPaint &&
+            w.painter.runtimeType.toString() == '_SunrisePainter',
+      );
+
+      await tester.pumpWidget(host());
+      expect(sunrise(), findsNothing); // initially selected but idle
+
+      // Leave home, then come back — the flourish plays on becoming selected.
+      await tester.tap(
+        find.byIcon(Icons.qr_code_scanner_outlined),
+        warnIfMissed: false,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.home_outlined), warnIfMissed: false);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 550)); // ray-burst stage
+      expect(sunrise(), findsOneWidget);
+
+      await tester.pumpAndSettle();
+      expect(sunrise(), findsNothing);
+    },
+  );
 }

@@ -69,7 +69,7 @@ class AppShell extends ConsumerWidget {
                   icon: Icons.home_outlined,
                   activeIcon: Icons.home,
                   label: l10n.home,
-                  fx: TabFx.bounce,
+                  fx: TabFx.homecoming,
                 ),
                 LiquidNavItem(
                   icon: Icons.map_outlined,

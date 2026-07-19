@@ -3,9 +3,10 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 /// Per-icon flourish played when a tab becomes selected. `scanline` is the
-/// QR tab's signature move: a laser line sweeps the icon while viewfinder
-/// corners lock on — like the icon itself gets scanned.
-enum TabFx { bounce, rotateOpen, scanline, spin }
+/// QR tab's signature move (a laser scans the icon while viewfinder corners
+/// lock on); `homecoming` is Home's (spring landing + warm porch-light bloom +
+/// sunrise rays bursting from behind the roof).
+enum TabFx { bounce, homecoming, rotateOpen, scanline, spin }
 
 /// One destination of the [LiquidTabBar].
 class LiquidNavItem {
@@ -157,11 +158,14 @@ class _LiquidTabBarState extends State<LiquidTabBar>
                       width: indW,
                       height: indH,
                       child: DecoratedBox(
+                        // Lens tint follows the bar's foreground colour: white
+                        // glow on dark glass, smoked glass on light glass — a
+                        // white-on-white lens was invisible in light mode.
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.22),
+                          color: widget.color.withValues(alpha: 0.14),
                           borderRadius: BorderRadius.circular(indH / 2),
                           border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.30),
+                            color: widget.color.withValues(alpha: 0.26),
                           ),
                         ),
                       ),
@@ -257,8 +261,9 @@ class _TabIconState extends State<_TabIcon>
     with SingleTickerProviderStateMixin {
   late final AnimationController _c = AnimationController(
     vsync: this,
-    // The scan sequence (sweep → lock → pop) needs room to read as a story.
-    duration: widget.item.fx == TabFx.scanline
+    // Staged signature sequences need room to read as a story.
+    duration:
+        widget.item.fx == TabFx.scanline || widget.item.fx == TabFx.homecoming
         ? const Duration(milliseconds: 900)
         : const Duration(milliseconds: 620),
   );
@@ -295,6 +300,9 @@ class _TabIconState extends State<_TabIcon>
     if (widget.item.fx == TabFx.scanline) {
       return _ScanlineFx(controller: _c, accent: widget.accent, child: icon);
     }
+    if (widget.item.fx == TabFx.homecoming) {
+      return _HomecomingFx(controller: _c, accent: widget.accent, child: icon);
+    }
     return AnimatedBuilder(
       animation: _c,
       child: icon,
@@ -312,7 +320,8 @@ class _TabIconState extends State<_TabIcon>
             // Pure spring scale — no vertical jump (keeps it inside the lens).
             scale = 0.78 + 0.24 * Curves.elasticOut.transform(t);
           case TabFx.scanline:
-            break; // handled above with its own widget
+          case TabFx.homecoming:
+            break; // handled above with their own widgets
         }
         return Transform.rotate(
           angle: angle,
@@ -412,6 +421,108 @@ class _ScanlineFx extends StatelessWidget {
       },
     );
   }
+}
+
+/// Home's signature flourish, staged like a homecoming at dusk:
+///  1. 0–60%: the house lands with an elastic spring squash.
+///  2. 20–75%: a warm porch-light glow blooms behind it, then breathes out.
+///  3. 45–100%: short sunrise rays burst from behind the roof, expanding
+///     outward as they fade.
+/// Idle (t == 0 or 1) renders the bare icon — no overlays linger.
+class _HomecomingFx extends StatelessWidget {
+  const _HomecomingFx({
+    required this.controller,
+    required this.accent,
+    required this.child,
+  });
+
+  final AnimationController controller;
+  final Color accent;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      child: child,
+      builder: (context, icon) {
+        final t = controller.value;
+        final active = t > 0 && t < 1;
+        final spring =
+            0.78 +
+            0.24 * Curves.elasticOut.transform((t / 0.6).clamp(0.0, 1.0));
+        final bloomIn = Curves.easeInOut.transform(
+          ((t - 0.2) / 0.35).clamp(0.0, 1.0),
+        );
+        final bloomOut = Curves.easeIn.transform(
+          ((t - 0.75) / 0.25).clamp(0.0, 1.0),
+        );
+        final glow = active ? bloomIn * (1.0 - bloomOut) : 0.0;
+        final rays = Curves.easeOut.transform(
+          ((t - 0.45) / 0.55).clamp(0.0, 1.0),
+        );
+        return SizedBox(
+          width: 30,
+          height: 28,
+          child: Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: [
+              if (glow > 0)
+                Container(
+                  width: 27,
+                  height: 27,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        accent.withValues(alpha: 0.42 * glow),
+                        accent.withValues(alpha: 0.0),
+                      ],
+                    ),
+                  ),
+                ),
+              Transform.scale(scale: spring, child: icon),
+              if (active && rays > 0 && rays < 1)
+                CustomPaint(
+                  size: const Size(34, 30),
+                  painter: _SunrisePainter(progress: rays, color: accent),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Five short rays fanned over the roof, pushing outward as they fade.
+class _SunrisePainter extends CustomPainter {
+  const _SunrisePainter({required this.progress, required this.color});
+
+  final double progress;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()
+      ..color = color.withValues(alpha: (1.0 - progress).clamp(0.0, 1.0))
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round;
+    final c = Offset(size.width / 2, size.height * 0.62);
+    for (var i = 0; i < 5; i++) {
+      // Fan from 160° to 20° above the horizon (over the roof).
+      final angle = -math.pi * (20 + 35 * i) / 180;
+      final dir = Offset(math.cos(angle), math.sin(angle));
+      final inner = 9.0 + 8.0 * progress;
+      final len = 4.5 * (1.0 - 0.5 * progress);
+      canvas.drawLine(c + dir * inner, c + dir * (inner + len), p);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _SunrisePainter old) =>
+      old.progress != progress || old.color != color;
 }
 
 /// Four L-shaped viewfinder corner brackets (the camera "focus lock" glyph).
