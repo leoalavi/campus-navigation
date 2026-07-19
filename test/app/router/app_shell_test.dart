@@ -104,7 +104,7 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.map_outlined));
+    await tester.tap(find.byIcon(Icons.map_outlined), warnIfMissed: false);
     await tester.pumpAndSettle();
 
     expect(find.text('map-branch'), findsOneWidget);
@@ -117,7 +117,10 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.qr_code_scanner_outlined));
+    await tester.tap(
+      find.byIcon(Icons.qr_code_scanner_outlined),
+      warnIfMissed: false,
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('scan-branch'), findsOneWidget);
@@ -130,11 +133,11 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.settings_outlined));
+    await tester.tap(find.byIcon(Icons.settings_outlined), warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(find.text('settings-branch'), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.home_outlined));
+    await tester.tap(find.byIcon(Icons.home_outlined), warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(find.text('home-branch'), findsOneWidget);
   });
