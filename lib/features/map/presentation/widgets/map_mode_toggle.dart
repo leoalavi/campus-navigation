@@ -27,7 +27,7 @@ class MapModeToggle extends StatelessWidget {
     return GlassSurface(
       variant: GlassVariant.control,
       borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
-      padding: const EdgeInsets.all(2),
+      padding: const EdgeInsets.all(4),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -71,8 +71,8 @@ class _SegmentButton extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: MqSpacing.space4,
-            vertical: MqSpacing.space2,
+            horizontal: MqSpacing.space5,
+            vertical: MqSpacing.space3,
           ),
           child: Text(
             label,
@@ -80,8 +80,8 @@ class _SegmentButton extends StatelessWidget {
               color: isSelected
                   ? Colors.white
                   : (isDark ? Colors.white70 : MqColors.charcoal800),
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
             ),
           ),
         ),

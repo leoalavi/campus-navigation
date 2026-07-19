@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -85,12 +87,21 @@ class AppShell extends ConsumerWidget {
               destinations: [
                 NavigationDestination(
                   icon: Icon(Icons.home_outlined, color: navLabelColor),
-                  selectedIcon: Icon(Icons.home, color: navLabelColor),
+                  // Springy bounce-in on select.
+                  selectedIcon: _TabIconFx(
+                    icon: Icons.home,
+                    color: navLabelColor,
+                  ),
                   label: l10n.home,
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.map_outlined, color: navLabelColor),
-                  selectedIcon: Icon(Icons.map, color: navLabelColor),
+                  // "Opens" with a quarter turn.
+                  selectedIcon: _TabIconFx(
+                    icon: Icons.map,
+                    color: navLabelColor,
+                    turns: 0.25,
+                  ),
                   label: l10n.navigation,
                 ),
                 NavigationDestination(
@@ -98,15 +109,20 @@ class AppShell extends ConsumerWidget {
                     Icons.qr_code_scanner_outlined,
                     color: navLabelColor,
                   ),
-                  selectedIcon: Icon(
-                    Icons.qr_code_scanner,
+                  selectedIcon: _TabIconFx(
+                    icon: Icons.qr_code_scanner,
                     color: navLabelColor,
                   ),
                   label: l10n.scanTab,
                 ),
                 NavigationDestination(
                   icon: Icon(Icons.settings_outlined, color: navLabelColor),
-                  selectedIcon: Icon(Icons.settings, color: navLabelColor),
+                  // The gear spins a full turn.
+                  selectedIcon: _TabIconFx(
+                    icon: Icons.settings,
+                    color: navLabelColor,
+                    turns: 1.0,
+                  ),
                   label: l10n.settings,
                 ),
               ],
@@ -114,6 +130,59 @@ class AppShell extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// A tab icon that plays a one-shot spring animation whenever it is mounted —
+/// which, as a `NavigationDestination.selectedIcon`, is exactly the moment its
+/// tab becomes selected. Bounces in; optionally spins [turns] full rotations
+/// (e.g. the settings gear).
+class _TabIconFx extends StatefulWidget {
+  const _TabIconFx({required this.icon, required this.color, this.turns = 0.0});
+
+  final IconData icon;
+  final Color color;
+  final double turns;
+
+  @override
+  State<_TabIconFx> createState() => _TabIconFxState();
+}
+
+class _TabIconFxState extends State<_TabIconFx>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 560),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _c.forward();
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _c,
+      child: Icon(widget.icon, color: widget.color),
+      builder: (context, child) {
+        final t = _c.value;
+        final scale = 0.7 + 0.3 * Curves.easeOutBack.transform(t);
+        final angle =
+            widget.turns * 2 * math.pi * Curves.easeOutCubic.transform(t);
+        return Transform.rotate(
+          angle: angle,
+          child: Transform.scale(scale: scale, child: child),
+        );
+      },
     );
   }
 }

@@ -325,6 +325,8 @@ class _GlassIconButton extends StatelessWidget {
         shape: const CircleBorder(),
         child: IconButton(
           icon: Icon(icon, color: isDark ? Colors.white : MqColors.black87),
+          iconSize: 26,
+          padding: const EdgeInsets.all(14),
           tooltip: tooltip,
           onPressed: onPressed,
         ),
