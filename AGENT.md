@@ -43,6 +43,13 @@ lib/
   features/settings/ → Theme, locale, notification preferences (local storage)
 ```
 
+### Raouf: 2026-07-19 (Australia/Sydney) — Suspend Home transit polling off-screen
+**Scope:** Retained Home shell branch, TfNSW location acquisition, and Edge Function polling.
+**Summary:** Made the 20-second transit stream depend on the centralized active-shell index. Configured commute polling now returns immediately without location or network work while Home is off-screen, then restarts when Home becomes active. Added narrow fetcher and interval provider seams so request cadence and lifecycle can be tested without production credentials or timing.
+**Files Changed:** `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `test/features/transit/tfnsw_metro_provider_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** With the accelerated test interval and the old behavior, off-screen fetches increased from 4 to 8 during the observation window. After the lifecycle gate, both location and fetch counters remain unchanged off-screen and increase again on returning Home. Focused analysis reported no issues and the complete transit suite passed 10/10. At the production 20-second cadence this removes ongoing off-screen polling (up to three location/fetch cycles per minute); no external Edge Function latency claim is made.
+**Follow-ups:** Measure request traces with staging credentials and consider pushed full-screen routes separately; an already-started HTTP request is allowed to finish but its result is discarded and no next poll is scheduled.
+
 ### Raouf: 2026-07-19 (Australia/Sydney) — Pause Journey GPS off-screen
 **Scope:** Journey shell-tab lifecycle and `MapController` location-stream ownership.
 **Summary:** Connected the retained Journey branch to the centralized active-shell index. Its best-for-navigation location subscription now cancels when another tab becomes active and resumes when Journey returns. A request-version guard prevents overlapping asynchronous starts from attaching stale or duplicate listeners; route resets, arrival, and provider disposal use the same cancellation path. Navigation state remains in Riverpod and resumes without changing route, permission, privacy, or map behavior.

@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/core/config/env_config.dart';
 import 'package:mq_journey/core/logging/app_logger.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
@@ -11,9 +13,32 @@ import 'package:mq_journey/features/transit/domain/entities/metro_departure.dart
 import 'package:mq_journey/features/transit/domain/entities/transit_stop.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+typedef TfnswDeparturesFetcher =
+    Future<List<MetroDeparture>> Function({
+      required String favoriteDirection,
+      required String favoriteRoute,
+      required String favoriteStopId,
+      required String mode,
+      required double? latitude,
+      required double? longitude,
+    });
+
+final tfnswDeparturesFetcherProvider = Provider<TfnswDeparturesFetcher>(
+  (ref) => _fetchDepartures,
+);
+
+final tfnswPollIntervalProvider = Provider<Duration>(
+  (ref) => const Duration(seconds: 20),
+);
+
 final tfnswMetroProvider = StreamProvider.autoDispose<List<MetroDeparture>>((
   ref,
 ) async* {
+  if (ref.watch(activeShellBranchIndexProvider) != ShellBranchIndex.home) {
+    yield const [];
+    return;
+  }
+
   final preferences = await ref.watch(settingsControllerProvider.future);
   if (!ref.mounted) {
     return;
@@ -24,13 +49,15 @@ final tfnswMetroProvider = StreamProvider.autoDispose<List<MetroDeparture>>((
   }
 
   final locationSource = ref.read(locationSourceProvider);
+  final fetchDepartures = ref.read(tfnswDeparturesFetcherProvider);
+  final pollInterval = ref.read(tfnswPollIntervalProvider);
   while (true) {
     final location = await locationSource.getCurrentLocation();
     if (!ref.mounted) {
       return;
     }
 
-    final departures = await _fetchDepartures(
+    final departures = await fetchDepartures(
       favoriteDirection: preferences.favoriteDirection,
       favoriteRoute: preferences.favoriteRoute,
       favoriteStopId: preferences.favoriteStopId,
@@ -43,7 +70,7 @@ final tfnswMetroProvider = StreamProvider.autoDispose<List<MetroDeparture>>((
     }
 
     yield departures;
-    await Future<void>.delayed(const Duration(seconds: 20));
+    await Future<void>.delayed(pollInterval);
     if (!ref.mounted) {
       return;
     }
