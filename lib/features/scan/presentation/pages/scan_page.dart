@@ -276,6 +276,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                     return GlassSurface(
                       variant: GlassVariant.control,
                       borderRadius: BorderRadius.circular(999),
+                      animated: true, // lives over the camera feed
                       // Dark camera tint so the white icon stays legible in
                       // every rung (glass over bright scenes, and light
                       // high-contrast solid).

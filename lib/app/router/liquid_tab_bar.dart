@@ -179,8 +179,13 @@ class _LiquidTabBarState extends State<LiquidTabBar>
     final item = widget.items[i];
     final selected = i == widget.currentIndex;
     final pressed = _pressed == i;
-    return IgnorePointer(
-      // Gestures are handled by the parent (so drag works across the whole bar).
+    // Touch (tap + drag) is handled by the parent GestureDetector; here we only
+    // declare accessibility semantics so VoiceOver announces each tab + state.
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: item.label,
+      onTap: () => widget.onSelected(i),
       // Icon + label are one centred group so they both sit inside the lens.
       child: Center(
         child: AnimatedScale(
@@ -208,7 +213,7 @@ class _LiquidTabBarState extends State<LiquidTabBar>
                           ),
                         ),
                       )
-                    : const SizedBox(width: 0, height: 0),
+                    : const SizedBox.shrink(),
               ),
             ],
           ),

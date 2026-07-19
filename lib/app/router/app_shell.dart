@@ -42,6 +42,7 @@ class AppShell extends ConsumerWidget {
           child: GlassSurface(
             variant: GlassVariant.control,
             borderRadius: BorderRadius.circular(36),
+            animated: true, // the hero island gets the living highlights
             child: LiquidTabBar(
               color: navLabelColor,
               currentIndex: navigationShell.currentIndex,

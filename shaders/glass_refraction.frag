@@ -61,7 +61,10 @@ void main() {
   vec3 rvec = refract(vec3(0.0, 0.0, -1.0), normal, 1.0 / uIor);
   float h = (sd < -thickness) ? thickness
                               : sqrt(max(sd * (-2.0 * thickness - sd), 0.0));
-  float refractLen = (h + 8.0 * thickness) / max(-rvec.z, 1e-3);
+  // Floor -rvec.z and cap the march so grazing-rim pixels don't blow up into a
+  // smeared clamp band.
+  float refractLen = (h + 8.0 * thickness) / max(-rvec.z, 0.35);
+  refractLen = min(refractLen, thickness * 6.0);
   vec2 dispPx = rvec.xy * refractLen * uRefractIntensity;
   vec2 baseUv = (fragCoord + dispPx) / uSize;
 

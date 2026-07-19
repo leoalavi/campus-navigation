@@ -47,10 +47,16 @@ class GlassSurface extends StatelessWidget {
     this.borderWidth,
     this.constraints,
     this.boxShadow,
+    this.animated = false,
   });
 
   final Widget child;
   final GlassVariant variant;
+
+  /// When true (shader path only), the surface plays the living highlights
+  /// (light sweep / iridescence / tilt-tracked glare) — a per-frame repaint.
+  /// Leave false for small/static controls to avoid needless repaints.
+  final bool animated;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
 
@@ -190,6 +196,7 @@ class GlassSurface extends StatelessWidget {
         devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
         border: border,
         specular: specular,
+        animated: animated,
         child: inner,
       );
     } else {
@@ -234,6 +241,7 @@ class _GlassShaderBackdrop extends StatefulWidget {
     required this.devicePixelRatio,
     required this.border,
     required this.specular,
+    required this.animated,
     required this.child,
   });
 
@@ -243,6 +251,7 @@ class _GlassShaderBackdrop extends StatefulWidget {
   final double devicePixelRatio;
   final BoxBorder border;
   final BoxDecoration specular;
+  final bool animated;
   final Widget child;
 
   @override
@@ -252,22 +261,24 @@ class _GlassShaderBackdrop extends StatefulWidget {
 class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
     with SingleTickerProviderStateMixin {
   late final ui.FragmentShader _shader = GlassShaderCache.newShader();
-  late final Ticker _ticker;
+  Ticker? _ticker;
   double _time = 0;
 
   @override
   void initState() {
     super.initState();
-    // Drives the living highlights (light sweep / sway / iridescence). Repaints
-    // the glass each frame; that's the cost of the "alive" look.
-    _ticker = createTicker((elapsed) {
-      setState(() => _time = elapsed.inMicroseconds / 1e6);
-    })..start();
+    if (widget.animated) {
+      // Drives the living highlights (light sweep / sway / iridescence / tilt).
+      // Repaints the glass each frame — only for surfaces that opt in.
+      _ticker = createTicker((elapsed) {
+        setState(() => _time = elapsed.inMicroseconds / 1e6);
+      })..start();
+    }
   }
 
   @override
   void dispose() {
-    _ticker.dispose();
+    _ticker?.dispose();
     _shader.dispose();
     super.dispose();
   }
@@ -294,8 +305,8 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
     _shader.setFloat(11, MqGlass.fresnel); // uFresnel
     _shader.setFloat(12, MqGlass.glare); // uGlare
     _shader.setFloat(13, MqGlass.refractIntensity); // uRefractIntensity
-    _shader.setFloat(14, _time); // uTime
-    final tilt = GlassTilt.value.value;
+    _shader.setFloat(14, _time); // uTime (0 when not animated)
+    final tilt = widget.animated ? GlassTilt.value.value : Offset.zero;
     _shader.setFloat(15, tilt.dx); // uTilt.x
     _shader.setFloat(16, tilt.dy); // uTilt.y
 
