@@ -2,7 +2,7 @@
 # MQ Journey comprehensive check script.
 #
 # Runs:
-#   pub get
+#   pub get (enforcing the committed application lockfile)
 #   format check / optional fix
 #   static analysis
 #   tests (with coverage)
@@ -116,7 +116,7 @@ run_step() {
 
 # ── 1. Dependencies ──────────────────────────────────────
 step "Install dependencies"
-run_step "flutter pub get" "flutter pub get"
+run_step "flutter pub get" "flutter pub get --enforce-lockfile"
 
 # ── 2. Format ────────────────────────────────────────────
 step "Format"

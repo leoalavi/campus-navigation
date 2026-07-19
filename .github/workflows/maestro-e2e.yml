@@ -23,9 +23,10 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version-file: pubspec.yaml
 
       - name: Flutter deps
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
 
       # Unsigned simulator/device build for Maestro Cloud upload.
       - name: Build iOS app (no codesign)
