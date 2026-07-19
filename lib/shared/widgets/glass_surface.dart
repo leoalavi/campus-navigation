@@ -131,16 +131,18 @@ class GlassSurface extends StatelessWidget {
     ];
   }
 
+  // A full-width sheen along the TOP edge, fading down — not a top-left corner
+  // diagonal (which read as a light "frozen" in the corner). Symmetric across
+  // the whole width so it looks like the glass catching light along its length.
   BoxDecoration _specular(bool isDark, BorderRadius radius) => BoxDecoration(
     borderRadius: radius,
     gradient: LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
+      begin: Alignment.topCenter,
+      end: Alignment.center,
       colors: [
         Colors.white.withValues(alpha: MqGlass.specularAlpha(isDark)),
         Colors.transparent,
       ],
-      stops: const [0.0, 0.5],
     ),
   );
 

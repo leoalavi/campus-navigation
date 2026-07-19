@@ -101,25 +101,31 @@ void main() {
   float edgeLine = smoothstep(0.86, 1.0, edge);
   color += vec3(edgeLine) * (0.32 * uFresnel);
 
-  // ── Static highlights (fixed light — no motion) ───────────────────────────
-  float axis = (fragCoord.x + fragCoord.y) / (uSize.x + uSize.y); // 0..1 diagonal
+  // ── Static highlights (fixed overhead light — no motion) ──────────────────
+  // Position across the full width, 0 (left) → 1 (right).
+  float uAcross = fragCoord.x / uSize.x;
 
-  // Directional glare from a fixed top-left light, concentrated at the rim.
+  // Directional glare from a fixed OVERHEAD light so the ENTIRE top rim catches
+  // light evenly (a symmetric full-width band) instead of bunching into the
+  // top-left corner. The bottom rim gets the mirrored counter-shade.
   vec2 gdir = normalize(grad + vec2(1e-5));
-  vec2 lightDir = normalize(vec2(-0.45, -0.85));
+  vec2 lightDir = vec2(0.0, -1.0);
   float ndl = max(dot(gdir, lightDir), 0.0);
-  float glare = pow(ndl, 7.0) * (0.35 + 0.65 * edge) * uGlare;
+  float glare = pow(ndl, 6.0) * (0.35 + 0.65 * edge) * uGlare;
   color += vec3(glare);
 
-  // Counter-shade: the rim facing AWAY from the light darkens (real glass has
-  // a bright band and a shaded band). Crucially, this is what keeps the glass
-  // legible as glass over white/light backdrops where additive highlights
-  // vanish into the page.
   float shade = pow(max(dot(gdir, -lightDir), 0.0), 5.0) * edge;
-  color *= 1.0 - shade * 0.22;
+  color *= 1.0 - shade * 0.18;
+
+  // A broad specular sheen sweeping the FULL width of the glass (a single soft
+  // diagonal glint spanning edge to edge), centred so it can never freeze into
+  // a corner. This is the "full sweep" look, held static.
+  float sheenAxis = uAcross * 0.6 + (fragCoord.y / uSize.y) * 0.4;
+  float sheen = exp(-pow((sheenAxis - 0.5) * 2.4, 2.0));
+  color += vec3(sheen) * (0.12 * (0.5 + 0.5 * edge)) * uGlare;
 
   // Pearlescent iridescence along the rim (position-based, static).
-  vec3 irid = 0.5 + 0.5 * cos(axis * 6.2831 + vec3(0.0, 2.094, 4.188));
+  vec3 irid = 0.5 + 0.5 * cos(uAcross * 6.2831 + vec3(0.0, 2.094, 4.188));
   color += irid * (edge * edge) * (0.07 * uFresnel);
 
   // Dither: ±0.5/255 hash noise kills gradient banding on the soft highlights.
