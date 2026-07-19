@@ -56,7 +56,12 @@ class IndoorPreviewPage extends ConsumerWidget {
           if (manifest == null || manifest.isEmpty) {
             return Center(child: Text(l10n.indoorNoPreview));
           }
-          return IndoorTourView(manifest: manifest);
+          // Shown inside the shell (the /map → indoor route), so the floating
+          // tab-bar island is present — reserve clearance for it.
+          return IndoorTourView(
+            manifest: manifest,
+            reserveBottomForTabBar: true,
+          );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) =>

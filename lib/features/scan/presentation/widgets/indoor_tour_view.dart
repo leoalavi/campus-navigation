@@ -36,6 +36,7 @@ class IndoorTourView extends StatefulWidget {
     required this.manifest,
     this.firstSceneId,
     this.viewerBuilder,
+    this.reserveBottomForTabBar = false,
   });
 
   final IndoorManifest manifest;
@@ -43,6 +44,12 @@ class IndoorTourView extends StatefulWidget {
 
   /// Injectable for tests (a fake replaces the platform-view webview).
   final IndoorViewerBuilder? viewerBuilder;
+
+  /// When true, the floating scene rail is lifted by [kTabBarIslandClearance]
+  /// so it clears the shell's floating tab-bar island. Set by pages shown
+  /// *inside* the shell (`indoorPreview`); the top-level `locationAr` route has
+  /// no tab bar and leaves this false.
+  final bool reserveBottomForTabBar;
 
   @override
   State<IndoorTourView> createState() => _IndoorTourViewState();
@@ -98,7 +105,7 @@ class _IndoorTourViewState extends State<IndoorTourView> {
         Positioned(
           left: 0,
           right: 0,
-          bottom: 0,
+          bottom: widget.reserveBottomForTabBar ? kTabBarIslandClearance : 0,
           child: SceneRail(
             manifest: widget.manifest,
             selectedSceneId: _selectedSceneId,

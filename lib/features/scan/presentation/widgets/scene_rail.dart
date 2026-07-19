@@ -9,6 +9,16 @@ import 'package:mq_journey/shared/widgets/glass_surface.dart';
 const double kSceneChipExtent = 165;
 const double _chipGap = 9;
 
+/// Height to reserve above the floating tab-bar island so the rail clears it
+/// when the viewer is shown *inside* the shell (the `indoorPreview` route).
+/// Measured, not guessed: the `LiquidTabBar` is 66px tall (its `height`
+/// default) plus the island's 12px bottom padding in `AppShell`. The rail's
+/// own bottom `SafeArea` still handles the device inset on top of this; a
+/// deterministic layout test (`indoor_preview_clearance_test.dart`) asserts
+/// the rail clears the island. The top-level `locationAr` route has no tab bar
+/// and passes 0.
+const double kTabBarIslandClearance = 78;
+
 /// A floating dark-glass rail of indoor scene chips. Controlled:
 /// [selectedSceneId] in, [onSceneSelected] out. Frost-forced (no shader) — it
 /// floats over a platform-view panorama that a shader cannot sample.
