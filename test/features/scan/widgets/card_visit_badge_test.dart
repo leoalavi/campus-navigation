@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/card_visit_badge.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 
-Widget _app(Widget child) => MaterialApp(
-  localizationsDelegates: AppLocalizations.localizationsDelegates,
-  supportedLocales: AppLocalizations.supportedLocales,
-  home: Scaffold(body: child),
-);
+Widget _app(Widget child, {Brightness brightness = Brightness.light}) =>
+    MaterialApp(
+      theme: ThemeData(brightness: brightness),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(body: child),
+    );
 
 void main() {
   testWidgets('renders nothing when the location has not been visited', (
@@ -49,5 +52,22 @@ void main() {
     );
 
     expect(find.text('Badge earned!'), findsOneWidget);
+  });
+
+  testWidgets('visited icon is pink in both light and dark mode', (
+    tester,
+  ) async {
+    for (final brightness in [Brightness.light, Brightness.dark]) {
+      await tester.pumpWidget(
+        _app(
+          const CardVisitBadge(
+            state: VisitedState(visited: true, rewardEarned: false),
+          ),
+          brightness: brightness,
+        ),
+      );
+      final icon = tester.widget<Icon>(find.byIcon(Icons.check_circle_rounded));
+      expect(icon.color, MqColors.brightRed, reason: '$brightness');
+    }
   });
 }

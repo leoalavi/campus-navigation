@@ -9,20 +9,10 @@ import 'package:mq_journey/shared/widgets/glass_surface.dart';
 /// Content-heavy pages keep the standard [AppBar] — glass is a
 /// navigation/control-layer material, not a texture for everything.
 class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const GlassAppBar({
-    super.key,
-    required this.title,
-    this.leading,
-    this.animated = true,
-  });
+  const GlassAppBar({super.key, required this.title, this.leading});
 
   final Widget title;
   final Widget? leading;
-
-  /// Living highlights (light sweep / drifting glare). Default on: these bars
-  /// float over media, exactly where the animated material earns its per-frame
-  /// cost.
-  final bool animated;
 
   static const double _height = 52;
   static const double _topGap = 4;
@@ -42,7 +32,6 @@ class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: GlassSurface(
           variant: GlassVariant.control,
           borderRadius: BorderRadius.circular(_height / 2),
-          animated: animated,
           child: SizedBox(
             height: _height,
             child: NavigationToolbar(

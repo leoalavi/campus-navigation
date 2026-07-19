@@ -12,7 +12,6 @@ uniform vec4 uTint;              // premultiplied tint: rgb*a, a
 uniform float uFresnel;          // rim reflection / edge brightening (0..1)
 uniform float uGlare;            // directional glare highlight (0..1)
 uniform float uRefractIntensity; // physical refraction march strength
-uniform float uTime;             // seconds, monotonic — drives the living highlights
 uniform sampler2D uTexture;
 
 out vec4 fragColor;
@@ -102,15 +101,12 @@ void main() {
   float edgeLine = smoothstep(0.86, 1.0, edge);
   color += vec3(edgeLine) * (0.32 * uFresnel);
 
-  // ── Living highlights (time-driven) ───────────────────────────────────────
+  // ── Static highlights (fixed light — no motion) ───────────────────────────
   float axis = (fragCoord.x + fragCoord.y) / (uSize.x + uSize.y); // 0..1 diagonal
 
-  // Directional glare with a gentle time sway, concentrated at the rim.
+  // Directional glare from a fixed top-left light, concentrated at the rim.
   vec2 gdir = normalize(grad + vec2(1e-5));
-  vec2 lightDir = normalize(vec2(
-    -0.45 + 0.28 * sin(uTime * 0.6),
-    -0.85 + 0.18 * cos(uTime * 0.5)
-  ));
+  vec2 lightDir = normalize(vec2(-0.45, -0.85));
   float ndl = max(dot(gdir, lightDir), 0.0);
   float glare = pow(ndl, 7.0) * (0.35 + 0.65 * edge) * uGlare;
   color += vec3(glare);
@@ -122,13 +118,8 @@ void main() {
   float shade = pow(max(dot(gdir, -lightDir), 0.0), 5.0) * edge;
   color *= 1.0 - shade * 0.22;
 
-  // A soft specular band that travels diagonally across the glass (light sweep).
-  float sweepPos = fract(uTime * 0.08);
-  float band = exp(-pow((axis - sweepPos) * 7.0, 2.0));
-  color += vec3(band) * (0.14 * (0.45 + 0.55 * edge));
-
-  // Pearlescent iridescence shifting along the rim over time.
-  vec3 irid = 0.5 + 0.5 * cos(uTime * 0.7 + axis * 6.2831 + vec3(0.0, 2.094, 4.188));
+  // Pearlescent iridescence along the rim (position-based, static).
+  vec3 irid = 0.5 + 0.5 * cos(axis * 6.2831 + vec3(0.0, 2.094, 4.188));
   color += irid * (edge * edge) * (0.07 * uFresnel);
 
   // Dither: ±0.5/255 hash noise kills gradient banding on the soft highlights.

@@ -1,7 +1,6 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_glass.dart';
 import 'package:mq_journey/shared/widgets/glass_shader.dart';
@@ -46,16 +45,10 @@ class GlassSurface extends StatelessWidget {
     this.borderWidth,
     this.constraints,
     this.boxShadow,
-    this.animated = false,
   });
 
   final Widget child;
   final GlassVariant variant;
-
-  /// When true (shader path only), the surface plays the living highlights
-  /// (light sweep / iridescence / slowly orbiting glare) — a per-frame
-  /// repaint. Leave false for small/static controls to avoid needless repaints.
-  final bool animated;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
 
@@ -195,7 +188,6 @@ class GlassSurface extends StatelessWidget {
         devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
         border: border,
         specular: specular,
-        animated: animated,
         child: inner,
       );
     } else {
@@ -231,7 +223,8 @@ class GlassSurface extends StatelessWidget {
 }
 
 /// Owns one reusable [ui.FragmentShader] for a single glass surface.
-/// Uniforms are set per build; the shader is disposed with the widget.
+/// The glass is static (no per-frame animation): uniforms are set once per
+/// build and the shader is disposed with the widget.
 class _GlassShaderBackdrop extends StatefulWidget {
   const _GlassShaderBackdrop({
     required this.tint,
@@ -240,7 +233,6 @@ class _GlassShaderBackdrop extends StatefulWidget {
     required this.devicePixelRatio,
     required this.border,
     required this.specular,
-    required this.animated,
     required this.child,
   });
 
@@ -250,51 +242,24 @@ class _GlassShaderBackdrop extends StatefulWidget {
   final double devicePixelRatio;
   final BoxBorder border;
   final BoxDecoration specular;
-  final bool animated;
   final Widget child;
 
   @override
   State<_GlassShaderBackdrop> createState() => _GlassShaderBackdropState();
 }
 
-class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
-    with SingleTickerProviderStateMixin {
-  // TWO shaders, alternated every build. dart:ui's _FragmentShaderImageFilter
-  // compares by shader identity ("so that widgets can check for ImageFilter
-  // equality to avoid repainting" — painting.dart), so wrapping one mutated
-  // shader yields ==-equal filters and RenderBackdropFilter never repaints:
-  // every animated uniform (uTime) freezes at its first frame. Alternating
-  // buffers makes consecutive filters unequal, forcing the repaint.
-  late final ui.FragmentShader _shaderA = GlassShaderCache.newShader();
-  late final ui.FragmentShader _shaderB = GlassShaderCache.newShader();
-  bool _useB = false;
-  Ticker? _ticker;
-  double _time = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.animated) {
-      // Drives the living highlights (light sweep / sway / iridescence).
-      // Repaints the glass each frame — only for surfaces that opt in.
-      _ticker = createTicker((elapsed) {
-        setState(() => _time = elapsed.inMicroseconds / 1e6);
-      })..start();
-    }
-  }
+class _GlassShaderBackdropState extends State<_GlassShaderBackdrop> {
+  late final ui.FragmentShader _shader = GlassShaderCache.newShader();
 
   @override
   void dispose() {
-    _ticker?.dispose();
-    _shaderA.dispose();
-    _shaderB.dispose();
+    _shader.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _useB = !_useB; // flip buffers so the new ImageFilter is never ==-equal
-    final shader = _useB ? _shaderB : _shaderA;
+    final shader = _shader;
     final dpr = widget.devicePixelRatio;
     // Float indices 0/1 (uSize) + the sampler are engine-owned — never set them.
     shader.setFloat(2, widget.radius.topLeft.x * dpr); // uRadius
@@ -315,7 +280,6 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
     shader.setFloat(11, MqGlass.fresnel); // uFresnel
     shader.setFloat(12, MqGlass.glare); // uGlare
     shader.setFloat(13, MqGlass.refractIntensity); // uRefractIntensity
-    shader.setFloat(14, _time); // uTime (0 when not animated)
 
     return BackdropFilter(
       filter: ui.ImageFilter.shader(shader),

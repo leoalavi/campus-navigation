@@ -57,9 +57,11 @@ class StampsPassportPage extends ConsumerWidget {
                 child: GridView.builder(
                   padding: const EdgeInsets.all(MqSpacing.space4),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    // 2 columns so each stamp reads large (was a cramped 3-up).
+                    crossAxisCount: 2,
                     crossAxisSpacing: MqSpacing.space3,
                     mainAxisSpacing: MqSpacing.space3,
+                    childAspectRatio: 0.92,
                   ),
                   itemCount: catalog.length,
                   itemBuilder: (context, index) {
@@ -134,28 +136,28 @@ class _StampCell extends StatelessWidget {
               if (collected)
                 Image.asset(
                   entry.stampAsset,
-                  width: 40,
-                  height: 40,
+                  width: 120,
+                  height: 120,
                   errorBuilder: (_, _, _) => const Icon(
                     Icons.local_activity,
-                    size: 32,
+                    size: 104,
                     color: MqColors.red,
                   ),
                 )
               else
                 Icon(
                   Icons.local_activity_outlined,
-                  size: 32,
+                  size: 104,
                   color: neutral.withValues(alpha: isDark ? 0.35 : 0.25),
                 ),
-              const SizedBox(height: MqSpacing.space1),
+              const SizedBox(height: MqSpacing.space2),
               Text(
                 entry.title,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: collected ? primaryText : secondaryText,
                 ),

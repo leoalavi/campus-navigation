@@ -1232,6 +1232,31 @@ class _CategoryChip extends StatelessWidget {
   }
 }
 
+/// The little rounded bar at the top of a draggable bottom panel that signals
+/// "grab me to drag/dismiss".
+class _SheetGrabHandle extends StatelessWidget {
+  const _SheetGrabHandle({required this.isDark});
+
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        width: 40,
+        height: 4,
+        margin: const EdgeInsets.only(bottom: MqSpacing.space4),
+        decoration: BoxDecoration(
+          color: (isDark ? Colors.white : MqColors.charcoal800).withValues(
+            alpha: isDark ? 0.28 : 0.18,
+          ),
+          borderRadius: BorderRadius.circular(2),
+        ),
+      ),
+    );
+  }
+}
+
 class _CampusBuildingInfoPanel extends StatelessWidget {
   const _CampusBuildingInfoPanel({
     required this.selectedBuilding,
@@ -1268,6 +1293,7 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _SheetGrabHandle(isDark: isDark),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

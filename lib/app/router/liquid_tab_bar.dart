@@ -146,10 +146,9 @@ class _LiquidTabBarState extends State<LiquidTabBar>
               builder: (context, _) {
                 final frac = _displayFrac;
                 final indicatorCenter = (frac + 0.5) * slot;
-                final animStretch = _dragFrac == null
-                    ? math.sin(math.pi * _slide.value) * slot * 0.5
-                    : slot * 0.22; // fatter, "grabbed" while dragging
-                final indW = slot * 0.72 + animStretch;
+                // One fixed lens size — it glides between tabs but never
+                // stretches or changes width.
+                final indW = slot * 0.82;
                 return Stack(
                   children: [
                     Positioned(

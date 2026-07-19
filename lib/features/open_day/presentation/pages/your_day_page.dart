@@ -144,6 +144,45 @@ class _EmptyYourDay extends StatelessWidget {
   }
 }
 
+/// A subtle rounded surface that lifts each saved itinerary row off the page
+/// so the list reads as discrete cards rather than free-floating text.
+class _ItineraryCard extends StatelessWidget {
+  const _ItineraryCard({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = context.isDarkMode;
+    return Container(
+      margin: const EdgeInsetsDirectional.only(bottom: MqSpacing.space3),
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: MqSpacing.space4,
+        vertical: MqSpacing.space4,
+      ),
+      decoration: BoxDecoration(
+        color: dark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
+        borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+        border: Border.all(
+          color: (dark ? Colors.white : MqColors.charcoal800).withValues(
+            alpha: dark ? 0.10 : 0.08,
+          ),
+        ),
+        boxShadow: dark
+            ? null
+            : [
+                BoxShadow(
+                  color: MqColors.charcoal800.withValues(alpha: 0.06),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+      ),
+      child: child,
+    );
+  }
+}
+
 class _SavedDayRow extends ConsumerWidget {
   const _SavedDayRow({required this.event});
 
@@ -154,8 +193,7 @@ class _SavedDayRow extends ConsumerWidget {
     final dark = context.isDarkMode;
     final time = OpenDayTime.formatTimeOfDay(event.startTime);
 
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: MqSpacing.space3),
+    return _ItineraryCard(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -217,8 +255,7 @@ class _SavedStopRow extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dark = context.isDarkMode;
 
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: MqSpacing.space3),
+    return _ItineraryCard(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
