@@ -3,15 +3,16 @@
 
 // Engine auto-sets: first vec2 = input size (physical px); first sampler2D = backdrop.
 uniform vec2 uSize;
-uniform float uRadius;          // corner radius (physical px)
-uniform float uRimPx;           // rim/bevel thickness (physical px)
-uniform float uIor;             // refractive index
-uniform float uAberrationPx;    // chromatic aberration (physical px)
-uniform float uBlurPx;          // max rim blur (physical px)
-uniform vec4 uTint;             // premultiplied tint: rgb*a, a
-uniform float uFresnel;         // rim reflection / edge brightening (0..1)
-uniform float uGlare;           // directional glare highlight (0..1)
+uniform float uRadius;           // corner radius (physical px)
+uniform float uRimPx;            // rim/bevel thickness (physical px)
+uniform float uIor;              // refractive index
+uniform float uAberrationPx;     // chromatic aberration (physical px)
+uniform float uBlurPx;           // max rim blur (physical px)
+uniform vec4 uTint;              // premultiplied tint: rgb*a, a
+uniform float uFresnel;          // rim reflection / edge brightening (0..1)
+uniform float uGlare;            // directional glare highlight (0..1)
 uniform float uRefractIntensity; // physical refraction march strength
+uniform float uTime;             // seconds, monotonic — drives the living highlights
 uniform sampler2D uTexture;
 
 out vec4 fragColor;
@@ -36,27 +37,26 @@ void main() {
 
   float radius = min(uRadius, min(uSize.x, uSize.y) * 0.5);
   float thickness = max(uRimPx, 1.0);
-  vec2 half2 = uSize * 0.5;
+  vec2 halfSize = uSize * 0.5;
 
-  float sd = sdRoundedBox(centered, half2, radius);
+  float sd = sdRoundedBox(centered, halfSize, radius);
   if (sd > 0.0) {                       // outside the shape: pass background through
     fragColor = vec4(sampleBg(fragCoord / uSize), 1.0);
     return;
   }
 
   // 2D edge normal via SDF finite-difference gradient (|grad| ~ 1).
-  float sdX = sdRoundedBox(centered + vec2(1.0, 0.0), half2, radius);
-  float sdY = sdRoundedBox(centered + vec2(0.0, 1.0), half2, radius);
+  float sdX = sdRoundedBox(centered + vec2(1.0, 0.0), halfSize, radius);
+  float sdY = sdRoundedBox(centered + vec2(0.0, 1.0), halfSize, radius);
   vec2 grad = vec2(sdX - sd, sdY - sd);
 
   // Model the glass as a real 3D bevel: flat centre, curved rim. edge=1 at the
-  // rim, 0 in the centre; the z-bulge (nSin) makes a genuine surface normal.
+  // rim, 0 in the centre; the z-bulge makes a genuine surface normal.
   float edge = clamp((thickness + sd) / thickness, 0.0, 1.0);
   float nSin = sqrt(max(1.0 - edge * edge, 0.0));
   vec3 normal = normalize(vec3(grad * edge, nSin));
 
-  // Physically-based refraction (Snell's law) of a view ray into the screen,
-  // marched by the glass depth profile — the "true glass" bend.
+  // Physically-based refraction (Snell's law), marched by the glass depth.
   vec3 rvec = refract(vec3(0.0, 0.0, -1.0), normal, 1.0 / uIor);
   float h = (sd < -thickness) ? thickness
                               : sqrt(max(sd * (-2.0 * thickness - sd), 0.0));
@@ -72,7 +72,7 @@ void main() {
   float b = sampleBg(baseUv + caUv).b;
   vec3 refracted = vec3(r, g, b);
 
-  // Variable blur in physical px -> UV (clear centre, soft rim).
+  // Variable blur (clear centre, soft rim).
   vec2 bUv = (uBlurPx * edge) / uSize;
   vec3 acc = refracted;
   acc += sampleBg(baseUv + vec2(bUv.x, 0.0));
@@ -89,16 +89,28 @@ void main() {
   vec3 rimReflect = sampleBg((fragCoord - dispPx) / uSize);
   color = mix(color, rimReflect * 1.12 + vec3(0.05), fres);
 
-  // Crisp specular edge line at the boundary (bevel catching light).
+  // Crisp specular edge line at the boundary.
   float edgeLine = smoothstep(0.86, 1.0, edge);
-  color += vec3(edgeLine) * (0.30 * uFresnel);
+  color += vec3(edgeLine) * (0.32 * uFresnel);
 
-  // Directional glare: soft streak where the rim faces a top-leading light.
+  // ── Living highlights (time-driven) ───────────────────────────────────────
+  float axis = (fragCoord.x + fragCoord.y) / (uSize.x + uSize.y); // 0..1 diagonal
+
+  // Directional glare that slowly sways, concentrated at the rim.
   vec2 gdir = normalize(grad + vec2(1e-5));
-  vec2 lightDir = normalize(vec2(-0.6, -0.8));
+  vec2 lightDir = normalize(vec2(-0.5 + 0.35 * sin(uTime * 0.6), -0.85));
   float ndl = max(dot(gdir, lightDir), 0.0);
   float glare = pow(ndl, 8.0) * (0.35 + 0.65 * edge) * uGlare;
   color += vec3(glare);
+
+  // A soft specular band that travels diagonally across the glass (light sweep).
+  float sweepPos = fract(uTime * 0.08);
+  float band = exp(-pow((axis - sweepPos) * 7.0, 2.0));
+  color += vec3(band) * (0.14 * (0.45 + 0.55 * edge));
+
+  // Pearlescent iridescence shifting along the rim over time.
+  vec3 irid = 0.5 + 0.5 * cos(uTime * 0.7 + axis * 6.2831 + vec3(0.0, 2.094, 4.188));
+  color += irid * (edge * edge) * (0.07 * uFresnel);
 
   fragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
 }

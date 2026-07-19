@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_glass.dart';
 import 'package:mq_journey/shared/widgets/glass_shader.dart';
@@ -247,11 +248,25 @@ class _GlassShaderBackdrop extends StatefulWidget {
   State<_GlassShaderBackdrop> createState() => _GlassShaderBackdropState();
 }
 
-class _GlassShaderBackdropState extends State<_GlassShaderBackdrop> {
+class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
+    with SingleTickerProviderStateMixin {
   late final ui.FragmentShader _shader = GlassShaderCache.newShader();
+  late final Ticker _ticker;
+  double _time = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Drives the living highlights (light sweep / sway / iridescence). Repaints
+    // the glass each frame; that's the cost of the "alive" look.
+    _ticker = createTicker((elapsed) {
+      setState(() => _time = elapsed.inMicroseconds / 1e6);
+    })..start();
+  }
 
   @override
   void dispose() {
+    _ticker.dispose();
     _shader.dispose();
     super.dispose();
   }
@@ -278,6 +293,7 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop> {
     _shader.setFloat(11, MqGlass.fresnel); // uFresnel
     _shader.setFloat(12, MqGlass.glare); // uGlare
     _shader.setFloat(13, MqGlass.refractIntensity); // uRefractIntensity
+    _shader.setFloat(14, _time); // uTime
 
     return BackdropFilter(
       filter: ui.ImageFilter.shader(_shader),

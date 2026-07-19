@@ -23,17 +23,17 @@ abstract final class MqGlass {
 
   // Shader params (logical/UV; converted to physical px in the shader path).
   static const double refractiveIndex = 1.6;
-  static const double rimWidth = 32; // thicker bevel -> more visible lensing
-  static const double aberration = 0.03;
+  static const double rimWidth = 42; // thick bevel -> pronounced lensing
+  static const double aberration = 0.035;
   static const double blurCoeff = 0.005;
 
   // Liquid-glass rim effects (0..1 strengths; tuned on-device).
-  static const double fresnel = 0.75;
-  static const double glare = 0.55;
+  static const double fresnel = 0.8;
+  static const double glare = 0.6;
 
   /// Strength of the physically-based (Snell) refraction march. The dominant
   /// "how much does the glass bend the background" dial.
-  static const double refractIntensity = 0.6;
+  static const double refractIntensity = 0.85;
 
   /// Base tint colour: white (light) / charcoal (dark).
   static Color tint(bool isDark) =>
