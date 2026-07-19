@@ -32,7 +32,12 @@ class LocationArPage extends ConsumerWidget {
     return Scaffold(
       // The AR/360° preview runs behind the glass island title bar.
       extendBodyBehindAppBar: true,
-      appBar: GlassAppBar(title: Text(l10n.cardArPreviewTitle)),
+      // The body is a platform-view panorama — frost, not shader (a shader
+      // BackdropFilter can't sample the webview).
+      appBar: GlassAppBar(
+        title: Text(l10n.cardArPreviewTitle),
+        allowShader: false,
+      ),
       body: trailAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text(l10n.arLoadError(e.toString()))),

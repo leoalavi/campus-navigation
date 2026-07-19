@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_journey/app/router/immersive_viewer_active_provider.dart';
 import 'package:mq_journey/app/router/liquid_tab_bar.dart';
 import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
@@ -19,6 +20,11 @@ class AppShell extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final navLabelColor = isDark ? Colors.white : Colors.black;
+
+    // Over an immersive panorama (a platform-view webview) the refraction
+    // shader can't sample the backdrop — force the tab-bar glass onto frost so
+    // it still reads as glass instead of rendering flat.
+    final immersiveActive = ref.watch(immersiveViewerActiveProvider);
 
     // Publish the active branch index so branch-root pages that stay mounted
     // offstage (e.g. ScanPage, whose camera must pause when not visible) can
@@ -42,6 +48,7 @@ class AppShell extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
           child: GlassSurface(
             variant: GlassVariant.control,
+            allowShader: !immersiveActive,
             borderRadius: BorderRadius.circular(36),
             child: LiquidTabBar(
               color: navLabelColor,

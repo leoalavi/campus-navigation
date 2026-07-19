@@ -9,10 +9,20 @@ import 'package:mq_journey/shared/widgets/glass_surface.dart';
 /// Content-heavy pages keep the standard [AppBar] — glass is a
 /// navigation/control-layer material, not a texture for everything.
 class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const GlassAppBar({super.key, required this.title, this.leading});
+  const GlassAppBar({
+    super.key,
+    required this.title,
+    this.leading,
+    this.allowShader = true,
+  });
 
   final Widget title;
   final Widget? leading;
+
+  /// Set false when the body is a platform view (e.g. an `InAppWebView`
+  /// panorama). A shader `BackdropFilter` can't sample platform-view pixels,
+  /// so the shader path renders flat/broken over it; frost still reads as glass.
+  final bool allowShader;
 
   static const double _height = 52;
   static const double _topGap = 4;
@@ -31,6 +41,7 @@ class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
         padding: const EdgeInsets.fromLTRB(16, _topGap, 16, 0),
         child: GlassSurface(
           variant: GlassVariant.control,
+          allowShader: allowShader,
           borderRadius: BorderRadius.circular(_height / 2),
           child: SizedBox(
             height: _height,
