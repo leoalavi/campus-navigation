@@ -31,6 +31,10 @@ abstract final class MqGlass {
   static const double fresnel = 0.5;
   static const double glare = 0.35;
 
+  /// Strength of the physically-based (Snell) refraction march. The dominant
+  /// "how much does the glass bend the background" dial.
+  static const double refractIntensity = 0.3;
+
   /// Base tint colour: white (light) / charcoal (dark).
   static Color tint(bool isDark) =>
       isDark ? MqColors.charcoal800 : const Color(0xFFFFFFFF);

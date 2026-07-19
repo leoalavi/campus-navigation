@@ -3,14 +3,15 @@
 
 // Engine auto-sets: first vec2 = input size (physical px); first sampler2D = backdrop.
 uniform vec2 uSize;
-uniform float uRadius;      // corner radius (physical px)
-uniform float uRimPx;       // rim width (physical px)
-uniform float uIor;
-uniform float uAberrationPx; // chromatic aberration (physical px)
-uniform float uBlurPx;       // max rim blur (physical px)
-uniform vec4 uTint;          // premultiplied tint: rgb*a, a
-uniform float uFresnel;      // rim reflection / edge brightening strength (0..1)
-uniform float uGlare;        // directional glare highlight strength (0..1)
+uniform float uRadius;          // corner radius (physical px)
+uniform float uRimPx;           // rim/bevel thickness (physical px)
+uniform float uIor;             // refractive index
+uniform float uAberrationPx;    // chromatic aberration (physical px)
+uniform float uBlurPx;          // max rim blur (physical px)
+uniform vec4 uTint;             // premultiplied tint: rgb*a, a
+uniform float uFresnel;         // rim reflection / edge brightening (0..1)
+uniform float uGlare;           // directional glare highlight (0..1)
+uniform float uRefractIntensity; // physical refraction march strength
 uniform sampler2D uTexture;
 
 out vec4 fragColor;
@@ -31,63 +32,71 @@ vec3 sampleBg(vec2 uv) {
 
 void main() {
   vec2 fragCoord = FlutterFragCoord().xy;
-  vec2 uv = fragCoord / uSize;
   vec2 centered = fragCoord - uSize * 0.5;
 
-  // Clamp radius so stadium/circle idioms (Dart passes ~999) don't exceed the
-  // half-extent (otherwise the whole interior reads as "outside" -> transparent).
   float radius = min(uRadius, min(uSize.x, uSize.y) * 0.5);
-  float d = sdRoundedBox(centered, uSize * 0.5, radius);
-  if (d > 0.0) {
-    fragColor = vec4(sampleBg(uv), 1.0);
+  float thickness = max(uRimPx, 1.0);
+  vec2 half2 = uSize * 0.5;
+
+  float sd = sdRoundedBox(centered, half2, radius);
+  if (sd > 0.0) {                       // outside the shape: pass background through
+    fragColor = vec4(sampleBg(fragCoord / uSize), 1.0);
     return;
   }
 
-  // Edge coefficient: 0 at centre, ->1 at the rim.
-  float edge = clamp(1.0 + d / max(uRimPx, 1.0), 0.0, 1.0);
-  // Squircle-ish lens curve: flat centre, steep rim.
-  float lens = 1.0 - sqrt(1.0 - edge * edge);
+  // 2D edge normal via SDF finite-difference gradient (|grad| ~ 1).
+  float sdX = sdRoundedBox(centered + vec2(1.0, 0.0), half2, radius);
+  float sdY = sdRoundedBox(centered + vec2(0.0, 1.0), half2, radius);
+  vec2 grad = vec2(sdX - sd, sdY - sd);
 
-  // Outward normal of the rounded shape (points from centre toward the rim).
-  vec2 dir = normalize(centered + vec2(1e-4));
-  float strength = lens * (uIor - 1.0);
-  vec2 offset = dir * strength * (uRimPx / uSize); // px -> UV
+  // Model the glass as a real 3D bevel: flat centre, curved rim. edge=1 at the
+  // rim, 0 in the centre; the z-bulge (nSin) makes a genuine surface normal.
+  float edge = clamp((thickness + sd) / thickness, 0.0, 1.0);
+  float nSin = sqrt(max(1.0 - edge * edge, 0.0));
+  vec3 normal = normalize(vec3(grad * edge, nSin));
 
-  // Chromatic dispersion: stronger at the rim, split along the refraction axis.
-  vec2 caUv = (uAberrationPx * edge) * dir / uSize;
-  float r = sampleBg(uv - offset - caUv).r;
-  float g = sampleBg(uv - offset).g;
-  float b = sampleBg(uv - offset + caUv).b;
+  // Physically-based refraction (Snell's law) of a view ray into the screen,
+  // marched by the glass depth profile — the "true glass" bend.
+  vec3 rvec = refract(vec3(0.0, 0.0, -1.0), normal, 1.0 / uIor);
+  float h = (sd < -thickness) ? thickness
+                              : sqrt(max(sd * (-2.0 * thickness - sd), 0.0));
+  float refractLen = (h + 8.0 * thickness) / max(-rvec.z, 1e-3);
+  vec2 dispPx = rvec.xy * refractLen * uRefractIntensity;
+  vec2 baseUv = (fragCoord + dispPx) / uSize;
+
+  // Chromatic dispersion along the refraction axis, stronger at the rim.
+  vec2 caDir = normalize(rvec.xy + vec2(1e-5));
+  vec2 caUv = (uAberrationPx * edge) * caDir / uSize;
+  float r = sampleBg(baseUv - caUv).r;
+  float g = sampleBg(baseUv).g;
+  float b = sampleBg(baseUv + caUv).b;
   vec3 refracted = vec3(r, g, b);
 
   // Variable blur in physical px -> UV (clear centre, soft rim).
   vec2 bUv = (uBlurPx * edge) / uSize;
   vec3 acc = refracted;
-  acc += sampleBg(uv - offset + vec2(bUv.x, 0.0));
-  acc += sampleBg(uv - offset - vec2(bUv.x, 0.0));
-  acc += sampleBg(uv - offset + vec2(0.0, bUv.y));
-  acc += sampleBg(uv - offset - vec2(0.0, bUv.y));
+  acc += sampleBg(baseUv + vec2(bUv.x, 0.0));
+  acc += sampleBg(baseUv - vec2(bUv.x, 0.0));
+  acc += sampleBg(baseUv + vec2(0.0, bUv.y));
+  acc += sampleBg(baseUv - vec2(0.0, bUv.y));
   refracted = acc / 5.0;
 
-  // Body tint.
+  // Body tint (premultiplied over).
   vec3 color = refracted * (1.0 - uTint.a) + uTint.rgb;
 
-  // ── Fresnel rim reflection ────────────────────────────────────────────────
-  // Grazing angles (the rim) reflect the surroundings and brighten. Approximate
-  // the reflection by sampling the opposite side of the lens and mixing it in,
-  // weighted by a Fresnel-style rim falloff.
+  // Fresnel rim reflection: grazing rim brightens + mirrors the surroundings.
   float fres = pow(edge, 4.0) * uFresnel;
-  vec3 rimReflect = sampleBg(uv + offset * 1.5);
+  vec3 rimReflect = sampleBg((fragCoord - dispPx) / uSize);
   color = mix(color, rimReflect * 1.12 + vec3(0.05), fres);
 
-  // Crisp specular edge line right at the boundary (the glass bevel catching light).
+  // Crisp specular edge line at the boundary (bevel catching light).
   float edgeLine = smoothstep(0.86, 1.0, edge);
   color += vec3(edgeLine) * (0.30 * uFresnel);
 
-  // ── Directional glare highlight ───────────────────────────────────────────
-  // A soft bright streak where the rim faces a fixed top-leading light.
+  // Directional glare: soft streak where the rim faces a top-leading light.
+  vec2 gdir = normalize(grad + vec2(1e-5));
   vec2 lightDir = normalize(vec2(-0.6, -0.8));
-  float ndl = max(dot(dir, lightDir), 0.0);
+  float ndl = max(dot(gdir, lightDir), 0.0);
   float glare = pow(ndl, 8.0) * (0.35 + 0.65 * edge) * uGlare;
   color += vec3(glare);
 
