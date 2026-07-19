@@ -72,6 +72,8 @@ flutter:
   generate: true
   config:
     enable-swift-package-manager: false
+  shaders:
+    - shaders/glass_refraction.frag
   assets:
     - assets/data/
     - assets/data/indoor/

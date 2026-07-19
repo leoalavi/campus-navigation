@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_glass.dart';
+import 'package:mq_journey/shared/widgets/glass_shader.dart';
 
 /// Variants of the Liquid Glass-inspired ("Glass UI layer") material.
 enum GlassVariant { bar, control, content }
@@ -62,8 +63,7 @@ class GlassSurface extends StatelessWidget {
   final BoxConstraints? constraints;
   final List<BoxShadow>? boxShadow;
 
-  // Task 3 flips this to GlassShaderCache.ready.
-  bool _shaderSupported(BuildContext context) => false;
+  bool _shaderSupported(BuildContext context) => GlassShaderCache.ready;
 
   BorderRadius get _defaultRadius => switch (variant) {
     GlassVariant.bar => BorderRadius.circular(MqGlass.radiusBar),
@@ -89,8 +89,9 @@ class GlassSurface extends StatelessWidget {
       case GlassRenderMode.solid:
         return _solid(isDark, radius, highContrast: highContrast);
       case GlassRenderMode.frost:
-      case GlassRenderMode.shader:
         return _frost(context, isDark, radius, useShader: false);
+      case GlassRenderMode.shader:
+        return _frost(context, isDark, radius, useShader: true);
     }
   }
 
@@ -173,36 +174,119 @@ class GlassSurface extends StatelessWidget {
     BorderRadius radius, {
     required bool useShader,
   }) {
-    final inner = Container(
-      decoration: BoxDecoration(
-        color: (color ?? MqGlass.tint(isDark)).withValues(
-          alpha: MqGlass.opacityRegular(isDark),
+    final baseTint = color ?? MqGlass.tint(isDark);
+    final border = _border(isDark, false);
+    final specular = _specular(isDark, radius);
+    final inner = _padded(child);
+
+    final Widget filtered;
+    if (useShader) {
+      filtered = _GlassShaderBackdrop(
+        tint: baseTint,
+        alpha: MqGlass.opacityRegular(isDark),
+        radius: radius,
+        devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
+        border: border,
+        specular: specular,
+        child: inner,
+      );
+    } else {
+      filtered = BackdropFilter(
+        filter: ui.ImageFilter.blur(
+          sigmaX: MqGlass.blurMd,
+          sigmaY: MqGlass.blurMd,
         ),
-        borderRadius: radius,
-        border: _border(isDark, false),
-      ),
-      foregroundDecoration: _specular(isDark, radius),
-      child: _padded(child),
-    );
+        child: Container(
+          decoration: BoxDecoration(
+            color: baseTint.withValues(alpha: MqGlass.opacityRegular(isDark)),
+            borderRadius: radius,
+            border: border,
+          ),
+          foregroundDecoration: specular,
+          child: inner,
+        ),
+      );
+    }
+
     Widget box = DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: radius,
         boxShadow: _shadow(isDark),
       ),
-      child: ClipRRect(
-        borderRadius: radius,
-        child: BackdropFilter(
-          filter: ui.ImageFilter.blur(
-            sigmaX: MqGlass.blurMd,
-            sigmaY: MqGlass.blurMd,
-          ),
-          child: inner,
-        ),
-      ),
+      child: ClipRRect(borderRadius: radius, child: filtered),
     );
     if (constraints != null) {
       box = ConstrainedBox(constraints: constraints!, child: box);
     }
     return box;
+  }
+}
+
+/// Owns one reusable [ui.FragmentShader] for a single glass surface.
+/// Uniforms are set per build; the shader is disposed with the widget.
+class _GlassShaderBackdrop extends StatefulWidget {
+  const _GlassShaderBackdrop({
+    required this.tint,
+    required this.alpha,
+    required this.radius,
+    required this.devicePixelRatio,
+    required this.border,
+    required this.specular,
+    required this.child,
+  });
+
+  final Color tint;
+  final double alpha;
+  final BorderRadius radius;
+  final double devicePixelRatio;
+  final BoxBorder border;
+  final BoxDecoration specular;
+  final Widget child;
+
+  @override
+  State<_GlassShaderBackdrop> createState() => _GlassShaderBackdropState();
+}
+
+class _GlassShaderBackdropState extends State<_GlassShaderBackdrop> {
+  late final ui.FragmentShader _shader = GlassShaderCache.newShader();
+
+  @override
+  void dispose() {
+    _shader.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final dpr = widget.devicePixelRatio;
+    // Float indices 0/1 (uSize) + the sampler are engine-owned — never set them.
+    _shader.setFloat(2, widget.radius.topLeft.x * dpr); // uRadius
+    _shader.setFloat(3, MqGlass.rimWidth * dpr); // uRimPx
+    _shader.setFloat(4, MqGlass.refractiveIndex); // uIor
+    _shader.setFloat(
+      5,
+      MqGlass.aberration * MqGlass.rimWidth * dpr,
+    ); // uAberrationPx
+    _shader.setFloat(6, MqGlass.blurCoeff * MqGlass.rimWidth * dpr); // uBlurPx
+    final r = widget.tint.r * widget.alpha;
+    final g = widget.tint.g * widget.alpha;
+    final b = widget.tint.b * widget.alpha;
+    _shader.setFloat(7, r); // uTint.r (premultiplied)
+    _shader.setFloat(8, g);
+    _shader.setFloat(9, b);
+    _shader.setFloat(10, widget.alpha);
+
+    return BackdropFilter(
+      filter: ui.ImageFilter.shader(_shader),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent, // shader supplies the tint
+          borderRadius: widget.radius,
+          border: widget.border,
+        ),
+        foregroundDecoration: widget.specular,
+        child: widget.child,
+      ),
+    );
   }
 }
