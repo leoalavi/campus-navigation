@@ -19,9 +19,9 @@ class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget title;
   final Widget? leading;
 
-  /// Living highlights (light sweep / tilt-tracked glare). Default on: these
-  /// bars float over media, exactly where the animated material earns its
-  /// per-frame cost.
+  /// Living highlights (light sweep / drifting glare). Default on: these bars
+  /// float over media, exactly where the animated material earns its per-frame
+  /// cost.
   final bool animated;
 
   static const double _height = 52;

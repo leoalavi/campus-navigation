@@ -263,7 +263,7 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
   // compares by shader identity ("so that widgets can check for ImageFilter
   // equality to avoid repainting" — painting.dart), so wrapping one mutated
   // shader yields ==-equal filters and RenderBackdropFilter never repaints:
-  // every animated uniform (time/tilt) freezes at its first frame. Alternating
+  // every animated uniform (uTime) freezes at its first frame. Alternating
   // buffers makes consecutive filters unequal, forcing the repaint.
   late final ui.FragmentShader _shaderA = GlassShaderCache.newShader();
   late final ui.FragmentShader _shaderB = GlassShaderCache.newShader();
@@ -275,7 +275,7 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
   void initState() {
     super.initState();
     if (widget.animated) {
-      // Drives the living highlights (light sweep / sway / iridescence / tilt).
+      // Drives the living highlights (light sweep / sway / iridescence).
       // Repaints the glass each frame — only for surfaces that opt in.
       _ticker = createTicker((elapsed) {
         setState(() => _time = elapsed.inMicroseconds / 1e6);

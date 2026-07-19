@@ -8,6 +8,7 @@ import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.da
 import 'package:mq_journey/features/scan/presentation/widgets/stamp_progress_ring.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_journey/shared/extensions/context_extensions.dart';
 
 class StampsPassportPage extends ConsumerWidget {
   const StampsPassportPage({super.key});
@@ -97,6 +98,16 @@ class _StampCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = context.isDarkMode;
+    // The locked-stamp neutral must flip to a light ink in dark mode; a fixed
+    // charcoal background/border/icon is invisible on the dark scaffold.
+    final neutral = isDark ? Colors.white : MqColors.charcoal800;
+    final primaryText = isDark
+        ? MqColors.contentPrimaryDark
+        : MqColors.contentPrimary;
+    final secondaryText = isDark
+        ? MqColors.contentSecondaryDark
+        : MqColors.contentSecondary;
     return Semantics(
       label: collected
           ? entry.title
@@ -108,13 +119,13 @@ class _StampCell extends StatelessWidget {
           padding: const EdgeInsets.all(MqSpacing.space2),
           decoration: BoxDecoration(
             color: collected
-                ? MqColors.red.withValues(alpha: 0.06)
-                : MqColors.charcoal800.withValues(alpha: 0.04),
+                ? MqColors.red.withValues(alpha: isDark ? 0.14 : 0.06)
+                : neutral.withValues(alpha: isDark ? 0.07 : 0.04),
             borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
             border: Border.all(
               color: collected
-                  ? MqColors.red.withValues(alpha: 0.25)
-                  : MqColors.charcoal800.withValues(alpha: 0.08),
+                  ? MqColors.red.withValues(alpha: isDark ? 0.40 : 0.25)
+                  : neutral.withValues(alpha: isDark ? 0.16 : 0.08),
             ),
           ),
           child: Column(
@@ -135,7 +146,7 @@ class _StampCell extends StatelessWidget {
                 Icon(
                   Icons.local_activity_outlined,
                   size: 32,
-                  color: MqColors.charcoal800.withValues(alpha: 0.25),
+                  color: neutral.withValues(alpha: isDark ? 0.35 : 0.25),
                 ),
               const SizedBox(height: MqSpacing.space1),
               Text(
@@ -146,9 +157,7 @@ class _StampCell extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
-                  color: collected
-                      ? MqColors.contentPrimary
-                      : MqColors.contentSecondary,
+                  color: collected ? primaryText : secondaryText,
                 ),
               ),
             ],

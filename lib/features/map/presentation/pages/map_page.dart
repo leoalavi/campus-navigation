@@ -1167,9 +1167,11 @@ class _CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const activeBg = MqColors.red;
+    // Crisper hairline so the glass edge reads as glass over the bright campus
+    // map (the faint 0.05/0.08 rim vanished against light tiles).
     final inactiveBorder = isDark
-        ? Colors.white.withValues(alpha: 0.05)
-        : MqColors.charcoal800.withValues(alpha: 0.08);
+        ? Colors.white.withValues(alpha: 0.14)
+        : MqColors.charcoal800.withValues(alpha: 0.16);
     const activeFg = Colors.white;
     final inactiveFg = isDark ? Colors.white : MqColors.contentPrimary;
 

@@ -122,21 +122,6 @@ void main() {
   float shade = pow(max(dot(gdir, -lightDir), 0.0), 5.0) * edge;
   color *= 1.0 - shade * 0.22;
 
-  // Motion highlight: a broad soft illumination spot that slowly orbits the
-  // surface over time (the ambient "living" layer). Paired with a mirrored
-  // counter-shade so the travel is visible on any backdrop, light or dark.
-  vec2 hlPos = uSize * vec2(
-    0.5 + 0.28 * sin(uTime * 0.35),
-    0.35 + 0.18 * cos(uTime * 0.45)
-  );
-  float spotR = 0.9 * min(uSize.x, uSize.y);
-  vec2 hp = fragCoord - hlPos;
-  float spot = exp(-dot(hp, hp) / (spotR * spotR));
-  color += vec3(spot) * (0.10 + 0.16 * edge) * uGlare;
-  vec2 sp = fragCoord - (uSize - hlPos); // mirrored across the centre
-  float counter = exp(-dot(sp, sp) / (spotR * spotR));
-  color *= 1.0 - counter * 0.10 * uGlare;
-
   // A soft specular band that travels diagonally across the glass (light sweep).
   float sweepPos = fract(uTime * 0.08);
   float band = exp(-pow((axis - sweepPos) * 7.0, 2.0));
