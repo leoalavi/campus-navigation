@@ -134,6 +134,30 @@ void main() {
     });
 
     test(
+      'watch closes its settings listener after the last subscriber',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final stream = container.read(progressApiProvider).watch('C3A');
+        await stream.first;
+
+        final closed = await stream
+            .drain<void>()
+            .then((_) => true)
+            .timeout(const Duration(milliseconds: 100), onTimeout: () => false);
+
+        expect(closed, isTrue);
+      },
+    );
+
+    test(
       'watch matches lowercase ids against uppercase stored visits',
       () async {
         final container = ProviderContainer(

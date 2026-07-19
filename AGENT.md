@@ -43,6 +43,13 @@ lib/
   features/settings/ → Theme, locale, notification preferences (local storage)
 ```
 
+### Raouf: 2026-07-19 (Australia/Sydney) — Dispose location-card visited-state listeners
+**Scope:** Location-card Riverpod lifecycle and `SettingsProgressApiAdapter.watch` subscription ownership.
+**Summary:** Converted the per-location visited-state family to auto-dispose and made each adapter stream close its internal settings-provider subscription when its last consumer leaves. This prevents every opened location card from retaining another settings listener and stream controller for the rest of the process. Visit recording, Supabase upsert idempotency, building-code matching, rewards, and signed QR verification are unchanged.
+**Files Changed:** `lib/features/scan/data/adapters/settings_progress_api_adapter.dart`, `lib/features/scan/providers/scan_providers.dart`, `test/features/scan/adapters/settings_progress_api_adapter_test.dart`, `test/features/scan/providers/visited_state_provider_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** Before implementation the source-stream cancellation count stayed at 0 after the consumer closed, and the adapter stream remained open beyond the 100 ms observation bound. After the change the provider cancels its source exactly once and the adapter stream closes immediately after its last subscriber. Focused analysis reported no issues, focused tests passed 8/8, and the complete scan suite—including strict rejection, nine-location census, duplicate-frame single-flight, idempotent persistence, and QR-to-card-to-stamp journeys—passed 145/145.
+**Follow-ups:** Use DevTools memory allocation tracing on a physical-device repeated card-open/close loop to quantify retained-object reduction; no device-memory percentage is claimed from lifecycle tests alone.
+
 ### Raouf: 2026-07-19 (Australia/Sydney) — Suspend Home transit polling off-screen
 **Scope:** Retained Home shell branch, TfNSW location acquisition, and Edge Function polling.
 **Summary:** Made the 20-second transit stream depend on the centralized active-shell index. Configured commute polling now returns immediately without location or network work while Home is off-screen, then restarts when Home becomes active. Added narrow fetcher and interval provider seams so request cadence and lifecycle can be tested without production credentials or timing.

@@ -5,6 +5,7 @@ import 'package:mq_journey/features/scan/domain/contracts/progress_api.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_journey/shared/models/user_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> ensureAnonSession({SupabaseClient? supabaseClient}) async {
@@ -61,8 +62,9 @@ class SettingsProgressApiAdapter implements ProgressApi {
   @override
   Stream<VisitedState> watch(String locationId) {
     final normalizedLocationId = locationId.trim().toUpperCase();
-    // ignore: close_sinks
     late final StreamController<VisitedState> controller;
+    late final ProviderSubscription<AsyncValue<UserPreferences>>
+    settingsSubscription;
 
     void emit() {
       if (controller.isClosed) return;
@@ -78,9 +80,17 @@ class SettingsProgressApiAdapter implements ProgressApi {
       );
     }
 
-    // ignore: close_sinks
-    controller = StreamController<VisitedState>.broadcast(onListen: emit);
-    _ref.listen(settingsControllerProvider, (_, _) => emit());
+    controller = StreamController<VisitedState>.broadcast(
+      onListen: emit,
+      onCancel: () {
+        settingsSubscription.close();
+        unawaited(controller.close());
+      },
+    );
+    settingsSubscription = _ref.listen(
+      settingsControllerProvider,
+      (_, _) => emit(),
+    );
 
     return controller.stream;
   }

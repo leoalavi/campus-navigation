@@ -67,12 +67,10 @@ final myDayApiProvider = Provider<MyDayApi>((ref) {
   return SettingsMyDayApiAdapter(ref);
 });
 
-final visitedStateProvider = StreamProvider.family<VisitedState, String>((
-  ref,
-  locationId,
-) {
-  return ref.watch(progressApiProvider).watch(locationId);
-});
+final visitedStateProvider = StreamProvider.autoDispose
+    .family<VisitedState, String>((ref, locationId) {
+      return ref.watch(progressApiProvider).watch(locationId);
+    });
 
 final stampCatalogRepositoryProvider = Provider<StampCatalogRepository>(
   (ref) => StampCatalogRepository(),
