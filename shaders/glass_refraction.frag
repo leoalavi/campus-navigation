@@ -13,6 +13,7 @@ uniform float uFresnel;          // rim reflection / edge brightening (0..1)
 uniform float uGlare;            // directional glare highlight (0..1)
 uniform float uRefractIntensity; // physical refraction march strength
 uniform float uTime;             // seconds, monotonic — drives the living highlights
+uniform vec2 uTilt;              // device tilt (gravity), ~[-1,1] — glare tracks it
 uniform sampler2D uTexture;
 
 out vec4 fragColor;
@@ -96,11 +97,15 @@ void main() {
   // ── Living highlights (time-driven) ───────────────────────────────────────
   float axis = (fragCoord.x + fragCoord.y) / (uSize.x + uSize.y); // 0..1 diagonal
 
-  // Directional glare that slowly sways, concentrated at the rim.
+  // Directional glare: tracks device tilt (like light on real glass), with a
+  // gentle time sway layered in. Concentrated at the rim.
   vec2 gdir = normalize(grad + vec2(1e-5));
-  vec2 lightDir = normalize(vec2(-0.5 + 0.35 * sin(uTime * 0.6), -0.85));
+  vec2 lightDir = normalize(vec2(
+    -0.45 + 0.28 * sin(uTime * 0.6) + uTilt.x * 1.3,
+    -0.85 + uTilt.y * 1.3
+  ));
   float ndl = max(dot(gdir, lightDir), 0.0);
-  float glare = pow(ndl, 8.0) * (0.35 + 0.65 * edge) * uGlare;
+  float glare = pow(ndl, 7.0) * (0.35 + 0.65 * edge) * uGlare;
   color += vec3(glare);
 
   // A soft specular band that travels diagonally across the glass (light sweep).

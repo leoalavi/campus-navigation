@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_glass.dart';
 import 'package:mq_journey/shared/widgets/glass_shader.dart';
+import 'package:mq_journey/shared/widgets/glass_tilt.dart';
 
 /// Variants of the Liquid Glass-inspired ("Glass UI layer") material.
 enum GlassVariant { bar, control, content }
@@ -294,6 +295,9 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop>
     _shader.setFloat(12, MqGlass.glare); // uGlare
     _shader.setFloat(13, MqGlass.refractIntensity); // uRefractIntensity
     _shader.setFloat(14, _time); // uTime
+    final tilt = GlassTilt.value.value;
+    _shader.setFloat(15, tilt.dx); // uTilt.x
+    _shader.setFloat(16, tilt.dy); // uTilt.y
 
     return BackdropFilter(
       filter: ui.ImageFilter.shader(_shader),

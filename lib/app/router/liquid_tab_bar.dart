@@ -97,7 +97,7 @@ class _LiquidTabBarState extends State<LiquidTabBar>
       builder: (context, constraints) {
         final w = constraints.maxWidth;
         final slot = w / n;
-        final indH = widget.height * 0.66;
+        final indH = widget.height * 0.78; // tall enough to hold icon + label
 
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -181,43 +181,38 @@ class _LiquidTabBarState extends State<LiquidTabBar>
     final pressed = _pressed == i;
     return IgnorePointer(
       // Gestures are handled by the parent (so drag works across the whole bar).
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Icon pinned to the vertical centre -> always inside the lens,
-          // regardless of the label or the flourish.
-          Center(
-            child: AnimatedScale(
-              scale: pressed ? 0.85 : 1.0, // gel-press
-              duration: const Duration(milliseconds: 130),
-              curve: Curves.easeOut,
-              child: _TabIcon(
-                item: item,
-                selected: selected,
-                color: widget.color,
+      // Icon + label are one centred group so they both sit inside the lens.
+      child: Center(
+        child: AnimatedScale(
+          scale: pressed ? 0.85 : 1.0, // gel-press
+          duration: const Duration(milliseconds: 130),
+          curve: Curves.easeOut,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _TabIcon(item: item, selected: selected, color: widget.color),
+              AnimatedSize(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOut,
+                child: selected
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: Text(
+                          item.label,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: widget.color,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            height: 1.0,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(width: 0, height: 0),
               ),
-            ),
+            ],
           ),
-          // Label overlaid near the bottom; never displaces the icon.
-          Positioned(
-            bottom: 4,
-            left: 0,
-            right: 0,
-            child: AnimatedOpacity(
-              opacity: selected ? 1 : 0,
-              duration: const Duration(milliseconds: 200),
-              child: Text(
-                item.label,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: widget.color,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
