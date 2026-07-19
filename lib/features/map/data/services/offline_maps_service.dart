@@ -41,7 +41,13 @@ class OfflineMapsService {
   /// ran to completion, so callers can persist a "downloaded" state and stop
   /// offering the download as if it never happened.
   Future<bool> downloadCampusTiles() async {
-    if (!_fmtcObjectBoxBackendReady) {
+    // ObjectBox is optional and expensive native/FFI work. Initialise it only
+    // when the user asks for an offline download so it cannot delay every
+    // launch for users who never use this feature.
+    if (!isFmtcBackendReady) {
+      await initializeBackend();
+    }
+    if (!isFmtcBackendReady) {
       AppLogger.warning(
         'Offline campus tile download skipped: FMTC ObjectBox backend is not '
         'initialised (e.g. macOS App Sandbox may need an application group).',
@@ -75,10 +81,8 @@ class OfflineMapsService {
       return;
     }
     try {
-      // Impose a timeout so that a hung/corrupted ObjectBox store cannot block
-      // the entire bootstrap sequence before the first frame is drawn. iOS's
-      // watchdog kills the process after ~20 s of startup work; 8 s here leaves
-      // plenty of headroom for the rest of the bootstrap.
+      // Bound the user-triggered download setup so a hung/corrupted ObjectBox
+      // store surfaces a failure instead of leaving an endless spinner.
       await FMTCObjectBoxBackend().initialise().timeout(
         const Duration(seconds: 8),
         onTimeout: () {
