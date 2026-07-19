@@ -15,25 +15,25 @@ abstract final class MqGlass {
   // Border / shadow / specular alpha.
   static double borderAlpha(bool isDark) => isDark ? 0.28 : 0.35;
   static double shadowAlpha(bool isDark) => isDark ? 0.35 : 0.14;
-  static double specularAlpha(bool isDark) => isDark ? 0.06 : 0.18;
+  static double specularAlpha(bool isDark) => isDark ? 0.10 : 0.28;
 
   // Default radii (geometry may still be overridden per surface).
   static const double radiusBar = 18;
   static const double radiusFloating = 22;
 
   // Shader params (logical/UV; converted to physical px in the shader path).
-  static const double refractiveIndex = 1.5;
-  static const double rimWidth = 24;
-  static const double aberration = 0.02;
-  static const double blurCoeff = 0.004;
+  static const double refractiveIndex = 1.6;
+  static const double rimWidth = 32; // thicker bevel -> more visible lensing
+  static const double aberration = 0.03;
+  static const double blurCoeff = 0.005;
 
   // Liquid-glass rim effects (0..1 strengths; tuned on-device).
-  static const double fresnel = 0.5;
-  static const double glare = 0.35;
+  static const double fresnel = 0.75;
+  static const double glare = 0.55;
 
   /// Strength of the physically-based (Snell) refraction march. The dominant
   /// "how much does the glass bend the background" dial.
-  static const double refractIntensity = 0.3;
+  static const double refractIntensity = 0.6;
 
   /// Base tint colour: white (light) / charcoal (dark).
   static Color tint(bool isDark) =>
