@@ -27,6 +27,10 @@ abstract final class MqGlass {
   static const double aberration = 0.02;
   static const double blurCoeff = 0.004;
 
+  // Liquid-glass rim effects (0..1 strengths; tuned on-device).
+  static const double fresnel = 0.5;
+  static const double glare = 0.35;
+
   /// Base tint colour: white (light) / charcoal (dark).
   static Color tint(bool isDark) =>
       isDark ? MqColors.charcoal800 : const Color(0xFFFFFFFF);

@@ -9,6 +9,8 @@ uniform float uIor;
 uniform float uAberrationPx; // chromatic aberration (physical px)
 uniform float uBlurPx;       // max rim blur (physical px)
 uniform vec4 uTint;          // premultiplied tint: rgb*a, a
+uniform float uFresnel;      // rim reflection / edge brightening strength (0..1)
+uniform float uGlare;        // directional glare highlight strength (0..1)
 uniform sampler2D uTexture;
 
 out vec4 fragColor;
@@ -41,14 +43,17 @@ void main() {
     return;
   }
 
+  // Edge coefficient: 0 at centre, ->1 at the rim.
   float edge = clamp(1.0 + d / max(uRimPx, 1.0), 0.0, 1.0);
+  // Squircle-ish lens curve: flat centre, steep rim.
   float lens = 1.0 - sqrt(1.0 - edge * edge);
 
+  // Outward normal of the rounded shape (points from centre toward the rim).
   vec2 dir = normalize(centered + vec2(1e-4));
   float strength = lens * (uIor - 1.0);
   vec2 offset = dir * strength * (uRimPx / uSize); // px -> UV
 
-  // Aberration in physical px -> UV.
+  // Chromatic dispersion: stronger at the rim, split along the refraction axis.
   vec2 caUv = (uAberrationPx * edge) * dir / uSize;
   float r = sampleBg(uv - offset - caUv).r;
   float g = sampleBg(uv - offset).g;
@@ -64,6 +69,27 @@ void main() {
   acc += sampleBg(uv - offset - vec2(0.0, bUv.y));
   refracted = acc / 5.0;
 
-  vec3 tinted = refracted * (1.0 - uTint.a) + uTint.rgb;
-  fragColor = vec4(tinted, 1.0);
+  // Body tint.
+  vec3 color = refracted * (1.0 - uTint.a) + uTint.rgb;
+
+  // ── Fresnel rim reflection ────────────────────────────────────────────────
+  // Grazing angles (the rim) reflect the surroundings and brighten. Approximate
+  // the reflection by sampling the opposite side of the lens and mixing it in,
+  // weighted by a Fresnel-style rim falloff.
+  float fres = pow(edge, 4.0) * uFresnel;
+  vec3 rimReflect = sampleBg(uv + offset * 1.5);
+  color = mix(color, rimReflect * 1.12 + vec3(0.05), fres);
+
+  // Crisp specular edge line right at the boundary (the glass bevel catching light).
+  float edgeLine = smoothstep(0.86, 1.0, edge);
+  color += vec3(edgeLine) * (0.30 * uFresnel);
+
+  // ── Directional glare highlight ───────────────────────────────────────────
+  // A soft bright streak where the rim faces a fixed top-leading light.
+  vec2 lightDir = normalize(vec2(-0.6, -0.8));
+  float ndl = max(dot(dir, lightDir), 0.0);
+  float glare = pow(ndl, 8.0) * (0.35 + 0.65 * edge) * uGlare;
+  color += vec3(glare);
+
+  fragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
 }

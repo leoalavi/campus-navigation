@@ -275,6 +275,8 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop> {
     _shader.setFloat(8, g);
     _shader.setFloat(9, b);
     _shader.setFloat(10, widget.alpha);
+    _shader.setFloat(11, MqGlass.fresnel); // uFresnel
+    _shader.setFloat(12, MqGlass.glare); // uGlare
 
     return BackdropFilter(
       filter: ui.ImageFilter.shader(_shader),
