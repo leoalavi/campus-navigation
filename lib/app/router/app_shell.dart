@@ -9,6 +9,10 @@ import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
+/// Stable identity for the single tab bar so its metaball animation state is
+/// preserved when the surrounding glass swaps render modes (see [AppShell]).
+final GlobalKey _liquidTabBarKey = GlobalKey();
+
 /// Persistent bottom navigation shell wrapping the main tab destinations.
 class AppShell extends ConsumerWidget {
   const AppShell({super.key, required this.navigationShell});
@@ -23,8 +27,13 @@ class AppShell extends ConsumerWidget {
 
     // Over an immersive panorama (a platform-view webview) the refraction
     // shader can't sample the backdrop — force the tab-bar glass onto frost so
-    // it still reads as glass instead of rendering flat.
-    final immersiveActive = ref.watch(immersiveViewerActiveProvider);
+    // it still reads as glass instead of rendering flat. Only while the AR
+    // page is the *visible* one: it stays mounted offstage in the shell's
+    // IndexedStack when another tab is active, so gate on the active branch
+    // (otherwise every tab would frost after visiting AR once).
+    final immersiveActive =
+        ref.watch(immersiveViewerActiveProvider) &&
+        navigationShell.currentIndex == ShellBranchIndex.map;
 
     // Publish the active branch index so branch-root pages that stay mounted
     // offstage (e.g. ScanPage, whose camera must pause when not visible) can
@@ -51,6 +60,10 @@ class AppShell extends ConsumerWidget {
             allowShader: !immersiveActive,
             borderRadius: BorderRadius.circular(36),
             child: LiquidTabBar(
+              // Stable key so the metaball's state + in-flight drag survive the
+              // GlassSurface render-mode swap (shader↔frost) when entering or
+              // leaving the immersive AR viewer, instead of being recreated.
+              key: _liquidTabBarKey,
               color: navLabelColor,
               accent: MqColors.red, // scanline laser + viewfinder lock
 

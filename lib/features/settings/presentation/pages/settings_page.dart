@@ -220,14 +220,19 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ),
                 ),
               ),
+            // bottom:false so content scrolls *under* the floating glass tab
+            // bar (like the AR picker); the dynamic bottom padding keeps the
+            // last row reachable above it (extendBody inflates paddingOf.bottom
+            // by the island height).
             SafeArea(
+              bottom: false,
               child: ListView(
                 controller: _scrollController,
-                padding: const EdgeInsetsDirectional.fromSTEB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   MqSpacing.space5,
                   MqSpacing.space6,
                   MqSpacing.space5,
-                  MqSpacing.space12,
+                  MediaQuery.paddingOf(context).bottom + MqSpacing.space6,
                 ),
                 children: [
                   // ── Page title ──────────────────────────────

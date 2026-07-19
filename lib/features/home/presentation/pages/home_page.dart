@@ -90,16 +90,22 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
             ),
+          // bottom:false so the scroll content extends *under* the floating
+          // glass tab bar (content scrolls behind the frosted island); the
+          // dynamic bottom padding below keeps the last item reachable above
+          // it. The shell's extendBody inflates paddingOf.bottom by the island
+          // height, so this mirrors the AR picker's scroll behaviour.
           SafeArea(
+            bottom: false,
             child: CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
+                    padding: EdgeInsetsDirectional.fromSTEB(
                       MqSpacing.space5,
                       MqSpacing.space8,
                       MqSpacing.space5,
-                      MqSpacing.space12,
+                      MediaQuery.paddingOf(context).bottom + MqSpacing.space6,
                     ),
                     child: Column(
                       children: [

@@ -139,6 +139,20 @@ class _LiquidTabBarState extends State<LiquidTabBar>
             });
             _slide.forward(from: 0);
           },
+          // If the drag is interrupted rather than ended cleanly — e.g. the
+          // glass render mode swaps under us mid-navigation and re-parents the
+          // bar — settle the lens onto the current tab instead of freezing it
+          // between two tabs.
+          onHorizontalDragCancel: () {
+            if (_dragFrac == null) return;
+            _fracFrom = _dragFrac!;
+            _fracTo = widget.currentIndex.toDouble();
+            setState(() {
+              _dragFrac = null;
+              _pressed = null;
+            });
+            _slide.forward(from: 0);
+          },
           child: SizedBox(
             height: widget.height,
             child: AnimatedBuilder(
