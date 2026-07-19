@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
 import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
@@ -111,6 +115,52 @@ void main() {
 
     expect(locationSource.requestCount, greaterThan(settledOffScreenLocations));
   });
+
+  test(
+    'a stalled departures request finishes at the configured bound',
+    () async {
+      final pendingResponse = Completer<http.Response>();
+      var requestCount = 0;
+      final client = MockClient((request) {
+        requestCount += 1;
+        return pendingResponse.future;
+      });
+      final container = ProviderContainer(
+        overrides: [
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(
+              const UserPreferences(commuteMode: 'metro'),
+            ),
+          ),
+          locationSourceProvider.overrideWithValue(_FakeLocationSource()),
+          tfnswHttpClientProvider.overrideWithValue(client),
+          tfnswAuthHeadersProvider.overrideWithValue(const {
+            'Authorization': 'Bearer test',
+            'apikey': 'test',
+          }),
+          tfnswRequestTimeoutProvider.overrideWithValue(
+            const Duration(milliseconds: 10),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      final sub = container.listen(tfnswMetroProvider, (_, _) {});
+      addTearDown(sub.close);
+      addTearDown(() {
+        if (!pendingResponse.isCompleted) {
+          pendingResponse.complete(http.Response('[]', 200));
+        }
+      });
+
+      final completedWithinBound = await container
+          .read(tfnswMetroProvider.future)
+          .then((_) => true)
+          .timeout(const Duration(milliseconds: 100), onTimeout: () => false);
+
+      expect(requestCount, 1);
+      expect(completedWithinBound, isTrue);
+    },
+  );
 }
 
 Future<void> _waitUntil(bool Function() predicate) async {

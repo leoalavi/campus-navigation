@@ -23,9 +23,43 @@ typedef TfnswDeparturesFetcher =
       required double? longitude,
     });
 
-final tfnswDeparturesFetcherProvider = Provider<TfnswDeparturesFetcher>(
-  (ref) => _fetchDepartures,
+final tfnswHttpClientProvider = Provider<http.Client>((ref) {
+  final client = http.Client();
+  ref.onDispose(client.close);
+  return client;
+});
+
+final tfnswAuthHeadersProvider = Provider<Map<String, String>>(
+  (ref) => _tfnswAuthHeaders(),
 );
+
+final tfnswRequestTimeoutProvider = Provider<Duration>(
+  (ref) => const Duration(seconds: 10),
+);
+
+final tfnswDeparturesFetcherProvider = Provider<TfnswDeparturesFetcher>((ref) {
+  final client = ref.watch(tfnswHttpClientProvider);
+  final headers = ref.watch(tfnswAuthHeadersProvider);
+  final requestTimeout = ref.watch(tfnswRequestTimeoutProvider);
+  return ({
+    required favoriteDirection,
+    required favoriteRoute,
+    required favoriteStopId,
+    required mode,
+    required latitude,
+    required longitude,
+  }) => _fetchDepartures(
+    client: client,
+    headers: headers,
+    requestTimeout: requestTimeout,
+    favoriteDirection: favoriteDirection,
+    favoriteRoute: favoriteRoute,
+    favoriteStopId: favoriteStopId,
+    mode: mode,
+    latitude: latitude,
+    longitude: longitude,
+  );
+});
 
 final tfnswPollIntervalProvider = Provider<Duration>(
   (ref) => const Duration(seconds: 20),
@@ -81,7 +115,13 @@ typedef TfnswStopSearchQuery = ({String mode, String query});
 
 final tfnswStopSearchProvider = FutureProvider.autoDispose
     .family<List<TransitStop>, TfnswStopSearchQuery>((ref, search) {
-      return _searchStops(mode: search.mode, query: search.query);
+      return _searchStops(
+        client: ref.watch(tfnswHttpClientProvider),
+        headers: ref.watch(tfnswAuthHeadersProvider),
+        requestTimeout: ref.watch(tfnswRequestTimeoutProvider),
+        mode: search.mode,
+        query: search.query,
+      );
     });
 
 /// Auth headers for the tfnsw-proxy edge function.
@@ -103,6 +143,9 @@ Map<String, String> _tfnswAuthHeaders() {
 }
 
 Future<List<MetroDeparture>> _fetchDepartures({
+  required http.Client client,
+  required Map<String, String> headers,
+  required Duration requestTimeout,
   required String favoriteDirection,
   required String favoriteRoute,
   required String favoriteStopId,
@@ -120,12 +163,14 @@ Future<List<MetroDeparture>> _fetchDepartures({
       if (latitude != null) 'lat': latitude.toString(),
       if (longitude != null) 'lng': longitude.toString(),
     };
-    final response = await http.get(
-      Uri.parse(
-        '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
-      ).replace(queryParameters: query),
-      headers: _tfnswAuthHeaders(),
-    );
+    final response = await client
+        .get(
+          Uri.parse(
+            '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
+          ).replace(queryParameters: query),
+          headers: headers,
+        )
+        .timeout(requestTimeout);
 
     if (response.statusCode != 200) {
       return const [];
@@ -144,6 +189,9 @@ Future<List<MetroDeparture>> _fetchDepartures({
 }
 
 Future<List<TransitStop>> _searchStops({
+  required http.Client client,
+  required Map<String, String> headers,
+  required Duration requestTimeout,
   required String mode,
   required String query,
 }) async {
@@ -153,12 +201,20 @@ Future<List<TransitStop>> _searchStops({
   }
 
   try {
-    final response = await http.get(
-      Uri.parse('${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy').replace(
-        queryParameters: {'action': 'stop-search', 'mode': mode, 'q': trimmed},
-      ),
-      headers: _tfnswAuthHeaders(),
-    );
+    final response = await client
+        .get(
+          Uri.parse(
+            '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
+          ).replace(
+            queryParameters: {
+              'action': 'stop-search',
+              'mode': mode,
+              'q': trimmed,
+            },
+          ),
+          headers: headers,
+        )
+        .timeout(requestTimeout);
 
     if (response.statusCode != 200) {
       return const [];

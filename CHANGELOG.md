@@ -1,3 +1,10 @@
+### Raouf: 2026-07-19 (Australia/Sydney) — Bound TfNSW proxy request latency
+**Scope:** Home departures and commute stop-search HTTP requests.
+**Summary:** Replaced per-call top-level HTTP helpers with one provider-owned `http.Client` and applied a configurable 10-second `Future.timeout` to both TfNSW proxy request paths. A stalled proxy now resolves through the existing typed empty-state/error handling instead of leaving Home refresh or stop search pending indefinitely. Authentication headers, anonymous-session behavior, payload parsing, polling cadence, and Edge Function contracts are unchanged.
+**Files Changed:** `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `test/features/transit/tfnsw_metro_provider_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** The regression harness supplied a never-completing HTTP response and a 10 ms bound. Before the timeout was applied, the provider still had not completed after the 100 ms observation ceiling; after the change it completed with the existing safe empty result at the configured bound. Focused analysis reported no issues and the complete transit suite passed 11/11.
+**Follow-ups:** A Dart `Future.timeout` bounds provider latency but does not guarantee transport-level socket cancellation. Evaluate `AbortableRequest` against the exact locked `package:http` version with staging request traces before adding more machinery; no production latency reduction is claimed.
+
 ### Raouf: 2026-07-19 (Australia/Sydney) — Dispose location-card visited-state listeners
 **Scope:** Location-card Riverpod lifecycle and `SettingsProgressApiAdapter.watch` subscription ownership.
 **Summary:** Converted the per-location visited-state family to auto-dispose and made each adapter stream close its internal settings-provider subscription when its last consumer leaves. This prevents every opened location card from retaining another settings listener and stream controller for the rest of the process. Visit recording, Supabase upsert idempotency, building-code matching, rewards, and signed QR verification are unchanged.
