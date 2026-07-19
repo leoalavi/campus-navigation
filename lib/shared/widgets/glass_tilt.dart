@@ -10,14 +10,14 @@ import 'package:sensors_plus/sensors_plus.dart';
 abstract final class GlassTilt {
   static final ValueNotifier<Offset> value = ValueNotifier<Offset>(Offset.zero);
 
+  // Intentionally app-lifetime (a global singleton); never cancelled.
+  // ignore: cancel_subscriptions
   static StreamSubscription<AccelerometerEvent>? _sub;
   static double _x = 0, _y = 0;
 
   static void start() {
     if (_sub != null) return;
     try {
-      // Intentionally app-lifetime (a global singleton); never cancelled.
-      // ignore: cancel_subscriptions
       _sub = accelerometerEventStream().listen(
         (e) {
           // Gravity ~9.81 m/s^2. x ≈ left/right tilt, y ≈ forward/back tilt.
