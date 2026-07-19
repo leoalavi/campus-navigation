@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/core/logging/app_logger.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
 import 'package:mq_journey/features/map/data/repositories/map_repository_impl.dart';
@@ -177,13 +179,31 @@ class MapController extends AsyncNotifier<MapState> {
   static const _offRouteThresholdMetres = 50.0;
 
   StreamSubscription<LocationSample>? _locationSubscription;
+  int _locationTrackingRequestVersion = 0;
+  bool _locationTrackingAllowed = true;
   int _routeRequestVersion = 0;
   LocationSample? _lastRouteFetchLocation;
   DateTime? _lastNavDiagnosticsAt;
 
   @override
   Future<MapState> build() async {
-    ref.onDispose(() => _locationSubscription?.cancel());
+    ref.onDispose(() {
+      _locationTrackingAllowed = false;
+      _locationTrackingRequestVersion += 1;
+      _locationSubscription?.cancel();
+      _locationSubscription = null;
+    });
+    ref.listen<int>(activeShellBranchIndexProvider, (previous, next) {
+      _locationTrackingAllowed = next == ShellBranchIndex.map;
+      if (!_locationTrackingAllowed) {
+        unawaited(_stopLocationTracking());
+        return;
+      }
+
+      if (state.value?.permissionState == LocationPermissionState.granted) {
+        unawaited(_startLocationTracking());
+      }
+    });
     final buildings = await ref.read(mapRepositoryProvider).getBuildings();
 
     ref.listen(settingsControllerProvider, (previous, next) {
@@ -362,8 +382,7 @@ class MapController extends AsyncNotifier<MapState> {
       return;
     }
     _invalidateRouteRequest();
-    _locationSubscription?.cancel();
-    _locationSubscription = null;
+    unawaited(_stopLocationTracking());
     _lastRouteFetchLocation = null;
     state = AsyncData(
       current.copyWith(
@@ -567,8 +586,7 @@ class MapController extends AsyncNotifier<MapState> {
       return;
     }
     _invalidateRouteRequest();
-    _locationSubscription?.cancel();
-    _locationSubscription = null;
+    unawaited(_stopLocationTracking());
     _lastRouteFetchLocation = null;
     state = AsyncData(
       current.copyWith(
@@ -587,8 +605,7 @@ class MapController extends AsyncNotifier<MapState> {
       return;
     }
     _invalidateRouteRequest();
-    _locationSubscription?.cancel();
-    _locationSubscription = null;
+    unawaited(_stopLocationTracking());
     _lastRouteFetchLocation = null;
     state = AsyncData(
       current.copyWith(
@@ -616,8 +633,7 @@ class MapController extends AsyncNotifier<MapState> {
       return;
     }
     _invalidateRouteRequest();
-    _locationSubscription?.cancel();
-    _locationSubscription = null;
+    unawaited(_stopLocationTracking());
     _lastRouteFetchLocation = null;
 
     final hasActiveQuery = current.searchQuery.trim().isNotEmpty;
@@ -728,7 +744,15 @@ class MapController extends AsyncNotifier<MapState> {
   }
 
   Future<void> _startLocationTracking() async {
-    await _locationSubscription?.cancel();
+    final requestVersion = ++_locationTrackingRequestVersion;
+    final previousSubscription = _locationSubscription;
+    _locationSubscription = null;
+    await previousSubscription?.cancel();
+    if (!_locationTrackingAllowed ||
+        requestVersion != _locationTrackingRequestVersion) {
+      return;
+    }
+
     _locationSubscription = ref
         .read(mapRepositoryProvider)
         .watchLocation()
@@ -751,6 +775,15 @@ class MapController extends AsyncNotifier<MapState> {
             AppLogger.warning('Location stream error', error, stackTrace);
           },
         );
+  }
+
+  Future<void> _stopLocationTracking() async {
+    // Invalidating the version prevents an older asynchronous start from
+    // attaching a second GPS listener after a tab switch or route reset.
+    _locationTrackingRequestVersion += 1;
+    final subscription = _locationSubscription;
+    _locationSubscription = null;
+    await subscription?.cancel();
   }
 
   void _checkNavigationState(LocationSample location) {
@@ -776,8 +809,7 @@ class MapController extends AsyncNotifier<MapState> {
     );
 
     if (distToDestination <= _arrivalThresholdMetres) {
-      _locationSubscription?.cancel();
-      _locationSubscription = null;
+      unawaited(_stopLocationTracking());
       AppLogger.info('Navigation arrived', {
         'destination': destination.id,
         'distanceToDestinationMetres': distToDestination.toStringAsFixed(1),

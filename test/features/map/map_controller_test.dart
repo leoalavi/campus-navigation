@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
 import 'package:mq_journey/features/map/data/repositories/map_repository_impl.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
@@ -73,6 +75,48 @@ void main() {
 
       notifier.startNavigation();
       expect(container.read(mapControllerProvider).value!.isNavigating, isTrue);
+    });
+
+    test('pauses location updates off-screen and resumes on return', () async {
+      var listenCount = 0;
+      var cancelCount = 0;
+      final locations = StreamController<LocationSample>.broadcast(
+        onListen: () => listenCount += 1,
+        onCancel: () => cancelCount += 1,
+      );
+      addTearDown(locations.close);
+      final repository = _FakeMapRepository(
+        buildings: [building],
+        locationStream: locations.stream,
+      );
+      final container = ProviderContainer(
+        overrides: [
+          mapRepositoryProvider.overrideWithValue(repository),
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await container.read(mapControllerProvider.future);
+      expect(listenCount, 1);
+
+      container
+          .read(activeShellBranchIndexProvider.notifier)
+          .setIndex(ShellBranchIndex.settings);
+      await Future<void>.delayed(Duration.zero);
+
+      expect(cancelCount, 1);
+      expect(locations.hasListener, isFalse);
+
+      container
+          .read(activeShellBranchIndexProvider.notifier)
+          .setIndex(ShellBranchIndex.map);
+      await Future<void>.delayed(Duration.zero);
+
+      expect(listenCount, 2);
+      expect(locations.hasListener, isTrue);
     });
 
     test('coerces unsupported campus travel modes to walk', () async {

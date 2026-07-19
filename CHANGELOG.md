@@ -1,3 +1,10 @@
+### Raouf: 2026-07-19 (Australia/Sydney) — Pause Journey GPS off-screen
+**Scope:** Journey shell-tab lifecycle and `MapController` location-stream ownership.
+**Summary:** Connected the retained Journey branch to the centralized active-shell index. Its best-for-navigation location subscription now cancels when another tab becomes active and resumes when Journey returns. A request-version guard prevents overlapping asynchronous starts from attaching stale or duplicate listeners; route resets, arrival, and provider disposal use the same cancellation path. Navigation state remains in Riverpod and resumes without changing route, permission, privacy, or map behavior.
+**Files Changed:** `lib/features/map/presentation/controllers/map_controller.dart`, `test/features/map/map_controller_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** The lifecycle regression test failed before implementation with 0 cancellations after switching off Journey. After the change it proves active location subscriptions transition 1 → 0 off-screen → 1 on return; focused analysis reported no issues, all 16 `MapController`/`MapState` tests passed, and the complete map suite passed 125/125. This is stream-ownership evidence only; no unmeasured battery or device-latency claim is made.
+**Follow-ups:** Repeat with physical Android/iOS power and location traces during a long foreground session; decide separately whether a future turn-by-turn product should deliberately retain navigation across tabs or background the app.
+
 ### Raouf: 2026-07-19 (Australia/Sydney) — Batch startup preference reads
 **Scope:** Secure local settings hydration (`SecureStorageService` and `LocalSettingsRepository`).
 **Summary:** Replaced 26 sequential per-key startup reads with the exact locked `flutter_secure_storage` 10.0.0 `readAll()` API. The desktop/web SharedPreferences fallback filters the same string values into one map, while Android/iOS remain inside encrypted platform storage. Parsing, defaults, locale, commute, onboarding, Open Day, and visited-location behavior are unchanged.
