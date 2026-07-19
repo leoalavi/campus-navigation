@@ -4,6 +4,7 @@ import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
 class ArBuildingPicker extends ConsumerWidget {
   const ArBuildingPicker({super.key, required this.onSelect});
@@ -220,9 +221,8 @@ class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
   }
 }
 
-/// A solid (non-glass) building card styled to match the app's glass
-/// aesthetic. Solid because it sits over a solid ground — a per-row
-/// `BackdropFilter` there would blur nothing and cost GPU.
+/// A glass building card, matching the app-wide Liquid Glass surfaces. The
+/// list is short (a handful of buildings) so a per-card [GlassSurface] is fine.
 class _ArBuildingCard extends StatelessWidget {
   const _ArBuildingCard({
     required this.name,
@@ -253,25 +253,6 @@ class _ArBuildingCard extends StatelessWidget {
     final subColor = isDark
         ? MqColors.contentSecondaryDark
         : MqColors.contentSecondary;
-
-    final decoration = BoxDecoration(
-      color: isDark
-          ? Colors.white.withValues(alpha: locked ? 0.04 : 0.06)
-          : Colors.white,
-      borderRadius: radius,
-      border: Border.all(
-        color: neutral.withValues(alpha: isDark ? 0.12 : 0.10),
-      ),
-      boxShadow: isDark
-          ? null
-          : [
-              BoxShadow(
-                color: MqColors.charcoal800.withValues(alpha: 0.06),
-                blurRadius: 14,
-                offset: const Offset(0, 5),
-              ),
-            ],
-    );
 
     final content = Padding(
       padding: const EdgeInsets.all(MqSpacing.space4),
@@ -344,26 +325,30 @@ class _ArBuildingCard extends StatelessWidget {
       ),
     );
 
-    if (locked) {
-      return Semantics(
-        excludeSemantics: true,
-        label: '$name, $subtitle',
-        child: DecoratedBox(decoration: decoration, child: content),
-      );
-    }
+    // Locked cards get a slightly dimmer glass; available cards are tappable
+    // (Material + InkWell inside the glass so the splash shows over it).
+    final glass = GlassSurface(
+      variant: GlassVariant.control,
+      borderRadius: radius,
+      color: locked ? neutral.withValues(alpha: 0.04) : null,
+      child: locked
+          ? content
+          : Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: radius,
+                onTap: onTap,
+                child: content,
+              ),
+            ),
+    );
+
     return Semantics(
-      button: true,
+      button: !locked,
       excludeSemantics: true,
       label: '$name, $subtitle',
-      onTap: onTap,
-      child: Material(
-        color: Colors.transparent,
-        child: Ink(
-          // Ink (not a Container under InkWell) so the splash shows.
-          decoration: decoration,
-          child: InkWell(borderRadius: radius, onTap: onTap, child: content),
-        ),
-      ),
+      onTap: locked ? null : onTap,
+      child: glass,
     );
   }
 }
