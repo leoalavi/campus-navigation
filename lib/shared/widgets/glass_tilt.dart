@@ -48,9 +48,10 @@ abstract final class GlassTilt {
           ).listen(
             (e) {
               final target = glassTiltTarget(e.x, e.y, e.z);
-              // Low-pass smooth to kill jitter (~0.15 s time constant @50 Hz).
-              _x += (target.dx - _x) * 0.12;
-              _y += (target.dy - _y) * 0.12;
+              // Low-pass smooth to kill jitter (~0.08 s time constant @50 Hz —
+              // snappy enough that the light visibly chases the motion).
+              _x += (target.dx - _x) * 0.22;
+              _y += (target.dy - _y) * 0.22;
               value.value = Offset(_x, _y);
             },
             onError: (_) {},

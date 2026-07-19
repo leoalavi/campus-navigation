@@ -7,8 +7,10 @@ abstract final class MqGlass {
   // Blur (sigma) for the non-shader frost fallback.
   static const double blurMd = 18;
 
-  // Body opacity per rung.
-  static double opacityRegular(bool isDark) => isDark ? 0.58 : 0.74;
+  // Body opacity per rung. Thin enough that refraction/vibrancy show through
+  // (the shader compensates legibility with a 1.55× saturation boost and a
+  // two-band rim); a milky 0.74 wash was burying every effect in light mode.
+  static double opacityRegular(bool isDark) => isDark ? 0.45 : 0.52;
   static const double opacityContent = 0.94;
   static const double opacityHighContrast = 0.96;
 
@@ -24,8 +26,8 @@ abstract final class MqGlass {
   // Shader params (logical/UV; converted to physical px in the shader path).
   static const double refractiveIndex = 1.6;
   static const double rimWidth = 42; // thick bevel -> pronounced lensing
-  static const double aberration = 0.035;
-  static const double blurCoeff = 0.005;
+  static const double aberration = 0.05; // prismatic rim fringe
+  static const double blurCoeff = 0.03; // ~4 physical px of frost at the rim
 
   // Liquid-glass rim effects (0..1 strengths; tuned on-device).
   static const double fresnel = 0.8;
