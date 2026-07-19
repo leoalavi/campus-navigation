@@ -14,6 +14,7 @@ import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
 import 'package:mq_journey/features/scan/domain/services/scan_branch_lifecycle.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/scanner_view.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 enum _ScanState { scanning, decoding, denied, notOnTrail, decodeError }
@@ -155,22 +156,7 @@ class _ScanPageState extends ConsumerState<ScanPage> {
       }
     });
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.scanQrCta),
-        actions: [
-          if (_currentScanState == _ScanState.scanning)
-            ValueListenableBuilder<MobileScannerState>(
-              valueListenable: _scannerController,
-              builder: (context, state, _) {
-                final torchOn = state.torchState == TorchState.on;
-                return IconButton(
-                  icon: Icon(torchOn ? Icons.flash_on : Icons.flash_off),
-                  onPressed: _toggleTorch,
-                );
-              },
-            ),
-        ],
-      ),
+      appBar: AppBar(title: Text(l10n.scanQrCta)),
       body: _buildBody(l10n),
     );
   }
@@ -273,6 +259,46 @@ class _ScanPageState extends ConsumerState<ScanPage> {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white, width: 2),
                   borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+            PositionedDirectional(
+              top: 16,
+              end: 16,
+              child: SafeArea(
+                minimum: const EdgeInsets.all(4),
+                child: ValueListenableBuilder<MobileScannerState>(
+                  valueListenable: _scannerController,
+                  builder: (context, state, _) {
+                    final unavailable =
+                        state.torchState == TorchState.unavailable;
+                    final torchOn = state.torchState == TorchState.on;
+                    return GlassSurface(
+                      variant: GlassVariant.control,
+                      borderRadius: BorderRadius.circular(999),
+                      // Dark camera tint so the white icon stays legible in
+                      // every rung (glass over bright scenes, and light
+                      // high-contrast solid).
+                      color: Colors.black,
+                      child: Material(
+                        color: Colors.transparent,
+                        shape: const CircleBorder(),
+                        child: IconButton(
+                          icon: Icon(
+                            torchOn ? Icons.flash_on : Icons.flash_off,
+                            color: unavailable ? Colors.white38 : Colors.white,
+                          ),
+                          tooltip: unavailable
+                              ? l10n.safetyFlashlightUnavailable
+                              : (torchOn
+                                    ? l10n.safetyFlashlightOn
+                                    : l10n.safetyFlashlight),
+                          // Disabled (not hidden) when the device has no torch.
+                          onPressed: unavailable ? null : _toggleTorch,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

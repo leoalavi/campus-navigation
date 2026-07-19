@@ -10,6 +10,7 @@ import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_ada
 import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
 import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 import 'package:mq_journey/features/scan/domain/fakes/fake_progress_api.dart';
 import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
 import 'package:mq_journey/features/scan/presentation/pages/scan_page.dart';
@@ -70,6 +71,27 @@ void main() {
     await tester.pumpWidget(_buildTestApp());
     await tester.pump();
     expect(find.byIcon(Icons.flash_off), findsOneWidget);
+  });
+
+  testWidgets('torch is a floating glass control, not an AppBar action', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_buildTestApp());
+    await tester.pump();
+
+    final flashFinder = find.byWidgetPredicate(
+      (w) =>
+          w is Icon && (w.icon == Icons.flash_off || w.icon == Icons.flash_on),
+    );
+    expect(flashFinder, findsOneWidget);
+    expect(
+      find.ancestor(of: flashFinder, matching: find.byType(GlassSurface)),
+      findsOneWidget,
+    );
+    expect(
+      find.ancestor(of: flashFinder, matching: find.byType(AppBar)),
+      findsNothing,
+    );
   });
 
   testWidgets('lifecycle disposes controller cleanly', (tester) async {
