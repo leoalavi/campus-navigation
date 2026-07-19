@@ -266,7 +266,15 @@ class _SecondaryActions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    // Full-schedule deep link. Defence-in-depth: fullScheduleUrl is null today
+    // but is spec'd to come from remote content later — only ever open an
+    // https URL, never tel:/intent:/javascript:/file: or a scheme-relative host.
     final scheduleUrl = content.fullScheduleUrl;
+    final scheduleUri = (scheduleUrl != null && scheduleUrl.isNotEmpty)
+        ? Uri.tryParse(scheduleUrl)
+        : null;
+    final scheduleLinkValid =
+        scheduleUri != null && scheduleUri.scheme == 'https';
     // Reflect the real saved state so the button doesn't silently toggle a
     // hidden flag: filled + "Added to Your Day" once saved, outlined + "Add
     // to Your Day" otherwise. Uses the same savedStopIds source as every
@@ -293,14 +301,12 @@ class _SecondaryActions extends ConsumerWidget {
                 icon: const Icon(Icons.calendar_today),
                 label: Text(l10n.cardAddToYourDayCta),
               ),
-        // Full schedule link — spec §3/§4; hidden when fullScheduleUrl is null.
-        if (scheduleUrl != null && scheduleUrl.isNotEmpty) ...[
+        // Full schedule link — spec §3/§4; hidden unless a valid https URL.
+        if (scheduleLinkValid) ...[
           const SizedBox(height: 8),
           TextButton.icon(
-            onPressed: () => launchUrl(
-              Uri.parse(scheduleUrl),
-              mode: LaunchMode.externalApplication,
-            ),
+            onPressed: () =>
+                launchUrl(scheduleUri, mode: LaunchMode.externalApplication),
             icon: const Icon(Icons.open_in_new),
             label: Text(l10n.cardFullSchedule),
           ),

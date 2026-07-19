@@ -97,7 +97,14 @@ class IndoorManifest {
           (node.neighbours.isNotEmpty ? node.neighbours.first.bearing : 0.0);
       scenes[node.id] = {
         'type': 'equirectangular',
-        'panorama': '$assetBaseUrl/${node.image}',
+        // Only ever resolve a panorama *inside* the bundled asset server. A
+        // value with a URI scheme, an absolute/scheme-relative leading slash,
+        // or a `..` traversal (e.g. `https://evil/beacon.jpg`, `//host/x`,
+        // `../../secret`) would otherwise make the WebView fetch remote or
+        // unintended content — blank it instead of building an off-origin URL.
+        'panorama': _isSafeRelativeImagePath(node.image)
+            ? '$assetBaseUrl/${node.image}'
+            : '',
         'yaw': initialYaw,
         'pitch': node.previewPitch ?? 0,
         // 90° gives a natural, less fisheye-distorted framing than
@@ -145,4 +152,20 @@ class IndoorManifest {
       'scenes': scenes,
     };
   }
+}
+
+/// Whether [path] is a safe, *relative* asset path that resolves inside the
+/// bundled localhost asset server — no URI scheme (`http:`, `data:`,
+/// `javascript:`…), no absolute or scheme-relative leading slash, and no `..`
+/// traversal segment. Used to gate panorama image refs before they become a
+/// WebView URL, so a hostile/remote value can never trigger an off-origin fetch.
+bool _isSafeRelativeImagePath(String path) {
+  if (path.isEmpty) return false;
+  // Any URI scheme (letters/digits/+/-/., then a colon) — also catches `//host`
+  // via the leading-slash check below.
+  if (RegExp(r'^[a-zA-Z][a-zA-Z0-9+.\-]*:').hasMatch(path)) return false;
+  if (path.startsWith('/') || path.startsWith(r'\')) return false;
+  final segments = path.split(RegExp(r'[/\\]'));
+  if (segments.contains('..')) return false;
+  return true;
 }

@@ -115,9 +115,33 @@ class _IndoorWebViewState extends State<IndoorWebView> {
     javaScriptEnabled: true,
     transparentBackground: true,
     mediaPlaybackRequiresUserGesture: true,
+    // Enforce the navigation allowlist in [_shouldOverrideUrlLoading].
+    useShouldOverrideUrlLoading: true,
     // The iframe only ever loads our own bundled viewer page.
     iframeAllow: 'fullscreen',
   );
+
+  /// Defence-in-depth: the bundled viewer never navigates away from itself, so
+  /// cancel any top-level navigation that isn't the localhost asset origin (or
+  /// `about:blank`). Stops a crafted panorama/config from driving the WebView
+  /// to a remote/phishing page. Sub-resources (JS/CSS/images) are governed by
+  /// the page CSP, not this hook.
+  Future<NavigationActionPolicy> _shouldOverrideUrlLoading(
+    InAppWebViewController controller,
+    NavigationAction action,
+  ) async {
+    final url = action.request.url;
+    if (url == null) return NavigationActionPolicy.CANCEL;
+    final scheme = url.scheme.toLowerCase();
+    if (scheme == 'about') return NavigationActionPolicy.ALLOW;
+    final isLocalViewer =
+        scheme == 'http' &&
+        url.host == 'localhost' &&
+        url.port == _indoorServerPort;
+    return isLocalViewer
+        ? NavigationActionPolicy.ALLOW
+        : NavigationActionPolicy.CANCEL;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +156,7 @@ class _IndoorWebViewState extends State<IndoorWebView> {
         url: WebUri('$_viewerBase/web/indoor_viewer.html'),
       ),
       initialSettings: _settings,
+      shouldOverrideUrlLoading: kIsWeb ? null : _shouldOverrideUrlLoading,
       onWebViewCreated: (controller) {
         _webViewController = controller;
         controller.addJavaScriptHandler(

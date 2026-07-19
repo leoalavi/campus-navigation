@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
 
@@ -36,6 +38,37 @@ void main() {
       expect(hotspots.first['yaw'], 90);
       // Hot spots must carry a pitch or Pannellum positions them at NaN.
       expect(hotspots.first['pitch'], 0);
+    });
+
+    test('safe relative panorama path is resolved against the asset base', () {
+      final m = IndoorManifest.fromJson(json);
+      final config = m.buildPannellumConfig(assetBaseUrl: '/indoor');
+      expect(config['scenes']['lobby']['panorama'], '/indoor/c3a/lobby.jpg');
+    });
+
+    test('off-origin / traversal panorama paths are blanked, not fetched', () {
+      // Each of these must NOT become a loadable URL — a remote scheme,
+      // scheme-relative host, absolute path, or `..` traversal would let the
+      // WebView fetch off-origin/unintended content.
+      const hostile = [
+        'https://evil.example/beacon.jpg',
+        '//evil.example/beacon.jpg',
+        '/etc/passwd',
+        '../../secret.json',
+        'data:image/png;base64,AAAA',
+        'javascript:alert(1)',
+      ];
+      for (final img in hostile) {
+        final m = IndoorManifest.fromJson(
+          '{"nodes":[{"id":"x","image":${jsonEncode(img)},"neighbours":[]}]}',
+        );
+        final config = m.buildPannellumConfig(assetBaseUrl: '/indoor');
+        expect(
+          config['scenes']['x']['panorama'],
+          '',
+          reason: 'hostile image "$img" should be blanked',
+        );
+      }
     });
 
     test('scene opens facing its first hotspot when no preview is set', () {
