@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/app_shell.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
 GoRouter _shellRouter() {
   return GoRouter(
@@ -63,6 +64,28 @@ Widget _app() {
 }
 
 void main() {
+  testWidgets('tab bar is a transparent glass bar over extended body', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final scaffold = tester.widget<Scaffold>(find.byType(Scaffold).first);
+    expect(scaffold.extendBody, isTrue);
+
+    final navBar = tester.widget<NavigationBar>(find.byType(NavigationBar));
+    expect(navBar.backgroundColor, Colors.transparent);
+    expect(navBar.elevation, 0);
+
+    expect(
+      find.ancestor(
+        of: find.byType(NavigationBar),
+        matching: find.byType(GlassSurface),
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('renders the 4 bottom-nav destinations and the home branch', (
     tester,
   ) async {
