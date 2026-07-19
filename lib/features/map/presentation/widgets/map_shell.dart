@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/features/map/presentation/widgets/map_mode_toggle.dart';
 import 'package:mq_journey/shared/widgets/glass_pane.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
 
 class MapShell extends StatelessWidget {
@@ -318,25 +317,16 @@ class _GlassIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: Material(
-          color: isDark
-              ? MqColors.charcoal800.withValues(alpha: 0.85)
-              : Colors.white.withValues(alpha: 0.8),
-          shape: CircleBorder(
-            side: BorderSide(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.05)
-                  : MqColors.charcoal800.withValues(alpha: 0.08),
-            ),
-          ),
-          child: IconButton(
-            icon: Icon(icon, color: isDark ? Colors.white : MqColors.black87),
-            tooltip: tooltip,
-            onPressed: onPressed,
-          ),
+    return GlassSurface(
+      variant: GlassVariant.control,
+      borderRadius: BorderRadius.circular(999), // stadium/circle
+      child: Material(
+        color: Colors.transparent,
+        shape: const CircleBorder(),
+        child: IconButton(
+          icon: Icon(icon, color: isDark ? Colors.white : MqColors.black87),
+          tooltip: tooltip,
+          onPressed: onPressed,
         ),
       ),
     );

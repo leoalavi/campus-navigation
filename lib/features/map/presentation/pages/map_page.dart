@@ -7,6 +7,7 @@ import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
 import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
@@ -1223,52 +1224,63 @@ class _CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const activeBg = MqColors.red;
-    final inactiveBg = isDark
-        ? MqColors.charcoal800.withValues(alpha: 0.85)
-        : Colors.white.withValues(alpha: 0.9);
+    final inactiveBorder = isDark
+        ? Colors.white.withValues(alpha: 0.05)
+        : MqColors.charcoal800.withValues(alpha: 0.08);
     const activeFg = Colors.white;
     final inactiveFg = isDark ? Colors.white : MqColors.contentPrimary;
 
-    return ClipRRect(
+    final row = Padding(
+      padding: const EdgeInsetsDirectional.symmetric(
+        horizontal: MqSpacing.space3,
+        vertical: MqSpacing.space2,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: isActive ? activeFg : inactiveFg),
+          const SizedBox(width: MqSpacing.space2),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: isActive ? activeFg : inactiveFg,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // Selected: solid red pill (no glass, no wasted BackdropFilter).
+    if (isActive) {
+      return Material(
+        color: activeBg,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
+          side: const BorderSide(color: activeBg),
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
+          onTap: onTap,
+          child: row,
+        ),
+      );
+    }
+
+    // Unselected: frosted glass control.
+    return GlassSurface(
+      variant: GlassVariant.control,
       borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: Material(
-          color: isActive ? activeBg : inactiveBg,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
-            side: BorderSide(
-              color: isActive
-                  ? activeBg
-                  : (isDark
-                        ? Colors.white.withValues(alpha: 0.05)
-                        : MqColors.charcoal800.withValues(alpha: 0.08)),
-            ),
-          ),
-          child: InkWell(
-            borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: MqSpacing.space3,
-                vertical: MqSpacing.space2,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(icon, size: 16, color: isActive ? activeFg : inactiveFg),
-                  const SizedBox(width: MqSpacing.space2),
-                  Text(
-                    label,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: isActive ? activeFg : inactiveFg,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+      borderColor: inactiveBorder,
+      child: Material(
+        color: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
+          onTap: onTap,
+          child: row,
         ),
       ),
     );

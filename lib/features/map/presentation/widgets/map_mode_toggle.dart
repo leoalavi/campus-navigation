@@ -1,7 +1,7 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
 enum MapMode { campusMap, ar }
 
@@ -24,40 +24,25 @@ class MapModeToggle extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     const segments = MapMode.values;
 
-    return ClipRRect(
+    return GlassSurface(
+      variant: GlassVariant.control,
       borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark
-                ? MqColors.charcoal800.withValues(alpha: 0.85)
-                : Colors.white.withValues(alpha: 0.9),
-            borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.05)
-                  : MqColors.charcoal800.withValues(alpha: 0.08),
+      padding: const EdgeInsets.all(2),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final mode in segments) ...[
+            if (mode != segments.first) const SizedBox(width: 2),
+            _SegmentButton(
+              label: mode == MapMode.campusMap
+                  ? (campusMapLabel ?? 'Campus Map')
+                  : (arLabel ?? 'AR'),
+              isSelected: value == mode,
+              isDark: isDark,
+              onTap: () => onChanged(mode),
             ),
-          ),
-          padding: const EdgeInsets.all(2),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (final mode in segments) ...[
-                if (mode != segments.first) const SizedBox(width: 2),
-                _SegmentButton(
-                  label: mode == MapMode.campusMap
-                      ? (campusMapLabel ?? 'Campus Map')
-                      : (arLabel ?? 'AR'),
-                  isSelected: value == mode,
-                  isDark: isDark,
-                  onTap: () => onChanged(mode),
-                ),
-              ],
-            ],
-          ),
-        ),
+          ],
+        ],
       ),
     );
   }
