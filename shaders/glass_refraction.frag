@@ -10,7 +10,6 @@ uniform float uAberrationPx;     // chromatic aberration (physical px)
 uniform float uBlurPx;           // max rim blur (physical px)
 uniform vec4 uTint;              // premultiplied tint: rgb*a, a
 uniform float uFresnel;          // rim reflection / edge brightening (0..1)
-uniform float uGlare;            // directional glare highlight (0..1)
 uniform float uRefractIntensity; // physical refraction march strength
 uniform sampler2D uTexture;
 
@@ -92,41 +91,17 @@ void main() {
   // Body tint (premultiplied over).
   vec3 color = refracted * (1.0 - uTint.a) + uTint.rgb;
 
-  // Fresnel rim reflection: grazing rim brightens + mirrors the surroundings.
-  float fres = pow(edge, 4.0) * uFresnel;
+  // Subtle Fresnel rim: the grazing edge mirrors whatever is behind the glass,
+  // so it stays dark over dark surroundings and light over light — with NO
+  // added white. This is what lets the surface blend into its background
+  // instead of glinting a bright band (the "frozen light" the highlights
+  // caused). No directional glare, sweep, or specular sheen at all.
+  float fres = pow(edge, 4.0) * uFresnel * 0.5;
   vec3 rimReflect = sampleBg((fragCoord - dispPx) / uSize);
-  color = mix(color, rimReflect * 1.12 + vec3(0.05), fres);
+  color = mix(color, rimReflect, fres);
 
-  // Crisp specular edge line at the boundary.
-  float edgeLine = smoothstep(0.86, 1.0, edge);
-  color += vec3(edgeLine) * (0.32 * uFresnel);
-
-  // ── Static highlights (fixed overhead light — no motion) ──────────────────
-  // Position across the full width, 0 (left) → 1 (right).
-  float uAcross = fragCoord.x / uSize.x;
-
-  // Directional glare from a fixed OVERHEAD light so the ENTIRE top rim catches
-  // light evenly (a symmetric full-width band) instead of bunching into the
-  // top-left corner. The bottom rim gets the mirrored counter-shade.
-  vec2 gdir = normalize(grad + vec2(1e-5));
-  vec2 lightDir = vec2(0.0, -1.0);
-  float ndl = max(dot(gdir, lightDir), 0.0);
-  float glare = pow(ndl, 6.0) * (0.35 + 0.65 * edge) * uGlare;
-  color += vec3(glare);
-
-  float shade = pow(max(dot(gdir, -lightDir), 0.0), 5.0) * edge;
-  color *= 1.0 - shade * 0.18;
-
-  // A broad specular sheen sweeping the FULL width of the glass (a single soft
-  // diagonal glint spanning edge to edge), centred so it can never freeze into
-  // a corner. This is the "full sweep" look, held static.
-  float sheenAxis = uAcross * 0.6 + (fragCoord.y / uSize.y) * 0.4;
-  float sheen = exp(-pow((sheenAxis - 0.5) * 2.4, 2.0));
-  color += vec3(sheen) * (0.12 * (0.5 + 0.5 * edge)) * uGlare;
-
-  // Pearlescent iridescence along the rim (position-based, static).
-  vec3 irid = 0.5 + 0.5 * cos(uAcross * 6.2831 + vec3(0.0, 2.094, 4.188));
-  color += irid * (edge * edge) * (0.07 * uFresnel);
+  // A whisper of edge darkening for dimensional depth (additive-white-free).
+  color *= 1.0 - pow(edge, 3.0) * 0.06;
 
   // Dither: ±0.5/255 hash noise kills gradient banding on the soft highlights.
   float dither =

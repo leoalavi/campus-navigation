@@ -131,21 +131,6 @@ class GlassSurface extends StatelessWidget {
     ];
   }
 
-  // A full-width sheen along the TOP edge, fading down — not a top-left corner
-  // diagonal (which read as a light "frozen" in the corner). Symmetric across
-  // the whole width so it looks like the glass catching light along its length.
-  BoxDecoration _specular(bool isDark, BorderRadius radius) => BoxDecoration(
-    borderRadius: radius,
-    gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.center,
-      colors: [
-        Colors.white.withValues(alpha: MqGlass.specularAlpha(isDark)),
-        Colors.transparent,
-      ],
-    ),
-  );
-
   Widget _solid(
     bool isDark,
     BorderRadius radius, {
@@ -178,7 +163,6 @@ class GlassSurface extends StatelessWidget {
   }) {
     final baseTint = color ?? MqGlass.tint(isDark);
     final border = _border(isDark, false);
-    final specular = _specular(isDark, radius);
     final inner = _padded(child);
 
     final Widget filtered;
@@ -189,7 +173,6 @@ class GlassSurface extends StatelessWidget {
         radius: radius,
         devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
         border: border,
-        specular: specular,
         child: inner,
       );
     } else {
@@ -198,13 +181,12 @@ class GlassSurface extends StatelessWidget {
           sigmaX: MqGlass.blurMd,
           sigmaY: MqGlass.blurMd,
         ),
-        child: Container(
+        child: DecoratedBox(
           decoration: BoxDecoration(
             color: baseTint.withValues(alpha: MqGlass.opacityRegular(isDark)),
             borderRadius: radius,
             border: border,
           ),
-          foregroundDecoration: specular,
           child: inner,
         ),
       );
@@ -234,7 +216,6 @@ class _GlassShaderBackdrop extends StatefulWidget {
     required this.radius,
     required this.devicePixelRatio,
     required this.border,
-    required this.specular,
     required this.child,
   });
 
@@ -243,7 +224,6 @@ class _GlassShaderBackdrop extends StatefulWidget {
   final BorderRadius radius;
   final double devicePixelRatio;
   final BoxBorder border;
-  final BoxDecoration specular;
   final Widget child;
 
   @override
@@ -280,18 +260,16 @@ class _GlassShaderBackdropState extends State<_GlassShaderBackdrop> {
     shader.setFloat(9, b);
     shader.setFloat(10, widget.alpha);
     shader.setFloat(11, MqGlass.fresnel); // uFresnel
-    shader.setFloat(12, MqGlass.glare); // uGlare
-    shader.setFloat(13, MqGlass.refractIntensity); // uRefractIntensity
+    shader.setFloat(12, MqGlass.refractIntensity); // uRefractIntensity
 
     return BackdropFilter(
       filter: ui.ImageFilter.shader(shader),
-      child: Container(
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.transparent, // shader supplies the tint
           borderRadius: widget.radius,
           border: widget.border,
         ),
-        foregroundDecoration: widget.specular,
         child: widget.child,
       ),
     );
