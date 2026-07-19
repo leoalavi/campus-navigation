@@ -212,9 +212,13 @@ class _PrimaryButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    return Row(
+    // Full-width stacked buttons: side-by-side Expanded buttons squeezed the
+    // long "View on Campus Map" label into a half-width box where it wrapped
+    // on top of itself.
+    return Column(
       children: [
-        Expanded(
+        SizedBox(
+          width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: mapEnabled
                 ? () {
@@ -237,8 +241,9 @@ class _PrimaryButtons extends ConsumerWidget {
           ),
         ),
         if (arEnabled(loc)) ...[
-          const SizedBox(width: 12),
-          Expanded(
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
             child: FilledButton.icon(
               onPressed: () => context.goNamed(
                 RouteNames.locationAr,

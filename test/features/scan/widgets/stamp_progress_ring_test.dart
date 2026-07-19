@@ -31,4 +31,45 @@ void main() {
     );
     expect(indicator.value, 1.0);
   });
+
+  testWidgets('track is a light ink in dark mode (was invisible charcoal)', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(brightness: Brightness.dark),
+        home: const Scaffold(
+          body: Center(child: StampProgressRing(collected: 2, total: 9)),
+        ),
+      ),
+    );
+    final track = tester
+        .widget<CircularProgressIndicator>(
+          find.byType(CircularProgressIndicator),
+        )
+        .backgroundColor;
+    // Must be white-based so it reads on the dark scaffold, not a fixed
+    // charcoal that vanishes. (computeLuminance ignores alpha, so this checks
+    // the underlying ink, which is the regression that mattered.)
+    expect(track, isNotNull);
+    expect(track!.computeLuminance(), greaterThan(0.5));
+  });
+
+  testWidgets('track is a dark ink in light mode', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData(brightness: Brightness.light),
+        home: const Scaffold(
+          body: Center(child: StampProgressRing(collected: 2, total: 9)),
+        ),
+      ),
+    );
+    final track = tester
+        .widget<CircularProgressIndicator>(
+          find.byType(CircularProgressIndicator),
+        )
+        .backgroundColor;
+    expect(track, isNotNull);
+    expect(track!.computeLuminance(), lessThan(0.5));
+  });
 }

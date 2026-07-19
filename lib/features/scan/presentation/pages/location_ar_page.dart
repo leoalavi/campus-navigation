@@ -4,6 +4,7 @@ import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
 import 'package:mq_journey/features/scan/presentation/widgets/indoor_tour_view.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_journey/shared/widgets/glass_app_bar.dart';
 
 /// Pure scene resolution (spec refinement #3): a valid stop scene wins;
 /// otherwise fall back to the entrance scene; otherwise null (Pannellum uses
@@ -29,7 +30,14 @@ class LocationArPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final trailAsync = ref.watch(trailManifestProvider);
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.cardArPreviewTitle)),
+      // The AR/360° preview runs behind the glass island title bar.
+      extendBodyBehindAppBar: true,
+      // The body is a platform-view panorama — frost, not shader (a shader
+      // BackdropFilter can't sample the webview).
+      appBar: GlassAppBar(
+        title: Text(l10n.cardArPreviewTitle),
+        allowShader: false,
+      ),
       body: trailAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text(l10n.arLoadError(e.toString()))),

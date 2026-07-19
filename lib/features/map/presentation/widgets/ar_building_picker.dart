@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
+import 'package:mq_journey/app/theme/mq_colors.dart';
+import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
 class ArBuildingPicker extends ConsumerWidget {
   const ArBuildingPicker({super.key, required this.onSelect});
@@ -106,9 +109,14 @@ class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
 
     final hasManifest = <String>[];
     final noManifest = <String>[];
+    final sceneCounts = <String, int>{};
     for (var i = 0; i < widget.buildingIds.length; i++) {
-      if (manifestStates[i].value != null) {
+      final manifest = manifestStates[i].value;
+      // An empty manifest is as unavailable as a missing one (matches
+      // IndoorPreviewPage, which shows "no preview" for an empty manifest).
+      if (manifest != null && !manifest.isEmpty) {
         hasManifest.add(widget.buildingIds[i]);
+        sceneCounts[widget.buildingIds[i]] = manifest.nodes.length;
       } else {
         noManifest.add(widget.buildingIds[i]);
       }
@@ -133,32 +141,214 @@ class _ManifestAwarePickerState extends ConsumerState<_ManifestAwarePicker> {
     // at the top — otherwise the first rows sit hidden behind the control.
     final topInset = MediaQuery.paddingOf(context).top + 76.0;
     final bottomInset = MediaQuery.paddingOf(context).bottom + 16.0;
-    return ListView.separated(
-      padding: EdgeInsetsDirectional.only(top: topInset, bottom: bottomInset),
-      itemCount: hasManifest.length + noManifest.length,
-      separatorBuilder: (_, _) => const Divider(height: 1),
-      itemBuilder: (context, index) {
-        if (index < hasManifest.length) {
-          final id = hasManifest[index];
-          return ListTile(
-            leading: const Icon(Icons.view_in_ar_outlined),
-            title: Text(_displayName(id)),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => widget.onSelect(id),
-          );
-        }
-        final id = noManifest[index - hasManifest.length];
-        return ListTile(
-          leading: const Icon(Icons.view_in_ar_outlined),
-          title: Text(_displayName(id)),
-          subtitle: Text(widget.l10n.arComingSoon),
-          enabled: false,
-          trailing: Icon(
-            Icons.lock,
-            color: widget.isDark ? Colors.white24 : Colors.black26,
+    final l10n = widget.l10n;
+    return ListView(
+      padding: EdgeInsetsDirectional.only(
+        top: topInset,
+        bottom: bottomInset,
+        start: MqSpacing.space4,
+        end: MqSpacing.space4,
+      ),
+      children: [
+        Padding(
+          padding: const EdgeInsetsDirectional.only(
+            start: 6,
+            bottom: MqSpacing.space4,
           ),
-        );
-      },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.arExploreEyebrow,
+                style: const TextStyle(
+                  color: MqColors.red,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.6,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Semantics(
+                header: true,
+                child: Text(
+                  l10n.arExploreTitle,
+                  style: TextStyle(
+                    color: widget.isDark
+                        ? Colors.white
+                        : MqColors.contentPrimary,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                l10n.arExploreSubtitle,
+                style: TextStyle(
+                  color: widget.isDark
+                      ? MqColors.contentSecondaryDark
+                      : MqColors.contentSecondary,
+                  fontSize: 13.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+        for (final id in hasManifest)
+          Padding(
+            padding: const EdgeInsets.only(bottom: MqSpacing.space3),
+            child: _ArBuildingCard(
+              name: _displayName(id),
+              subtitle: l10n.arSceneCount(sceneCounts[id]!),
+              isDark: widget.isDark,
+              onTap: () => widget.onSelect(id),
+            ),
+          ),
+        for (final id in noManifest)
+          Padding(
+            padding: const EdgeInsets.only(bottom: MqSpacing.space3),
+            child: _ArBuildingCard(
+              name: _displayName(id),
+              subtitle: l10n.arTourComingSoon,
+              isDark: widget.isDark,
+              locked: true,
+              soonLabel: l10n.arSoonPill,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// A glass building card, matching the app-wide Liquid Glass surfaces. The
+/// list is short (a handful of buildings) so a per-card [GlassSurface] is fine.
+class _ArBuildingCard extends StatelessWidget {
+  const _ArBuildingCard({
+    required this.name,
+    required this.subtitle,
+    required this.isDark,
+    this.onTap,
+    this.locked = false,
+    this.soonLabel,
+  }) : assert(locked || onTap != null),
+       assert(!locked || onTap == null),
+       assert(!locked || soonLabel != null);
+
+  final String name;
+  final String subtitle;
+  final bool isDark;
+  final VoidCallback? onTap;
+  final bool locked;
+  final String? soonLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final neutral = isDark ? Colors.white : MqColors.charcoal800;
+    final radius = BorderRadius.circular(MqSpacing.radiusXl);
+    // No whole-card Opacity — locked info stays readable. Muted-but-accessible.
+    final titleColor = locked
+        ? (isDark ? MqColors.contentSecondaryDark : MqColors.contentSecondary)
+        : (isDark ? Colors.white : MqColors.contentPrimary);
+    final subColor = isDark
+        ? MqColors.contentSecondaryDark
+        : MqColors.contentSecondary;
+
+    final content = Padding(
+      padding: const EdgeInsets.all(MqSpacing.space4),
+      child: Row(
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              gradient: locked
+                  ? null
+                  : const LinearGradient(
+                      colors: [MqColors.red, MqColors.deepRed],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+              color: locked ? neutral.withValues(alpha: 0.10) : null,
+            ),
+            child: Icon(
+              locked ? Icons.lock_outline_rounded : Icons.view_in_ar_outlined,
+              color: locked ? neutral.withValues(alpha: 0.6) : Colors.white,
+            ),
+          ),
+          const SizedBox(width: MqSpacing.space4),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: titleColor,
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: subColor, fontSize: 12.5),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: MqSpacing.space3),
+          if (locked)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
+                color: neutral.withValues(alpha: 0.12),
+              ),
+              child: Text(
+                soonLabel!,
+                style: TextStyle(
+                  color: subColor,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            )
+          else
+            const Icon(Icons.chevron_right_rounded, color: MqColors.red),
+        ],
+      ),
+    );
+
+    // Locked cards get a slightly dimmer glass; available cards are tappable
+    // (Material + InkWell inside the glass so the splash shows over it).
+    final glass = GlassSurface(
+      variant: GlassVariant.control,
+      borderRadius: radius,
+      color: locked ? neutral.withValues(alpha: 0.04) : null,
+      child: locked
+          ? content
+          : Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: radius,
+                onTap: onTap,
+                child: content,
+              ),
+            ),
+    );
+
+    return Semantics(
+      button: !locked,
+      excludeSemantics: true,
+      label: '$name, $subtitle',
+      onTap: locked ? null : onTap,
+      child: glass,
     );
   }
 }

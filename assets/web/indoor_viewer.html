@@ -25,6 +25,16 @@
       background-image: none !important;
       border-radius: 0;
     }
+    /* Remove Pannellum's built-in control chrome entirely: the zoom +/-
+       buttons and the fullscreen toggle in the top-left corner. Redundant
+       with the config's showControls:false, but guarantees they never flash
+       in during load. */
+    .pnlm-controls-container,
+    .pnlm-zoom-controls,
+    .pnlm-fullscreen-toggle-button,
+    .pnlm-orientation-button {
+      display: none !important;
+    }
     .mq-hotspot .mq-hotspot-arrow {
       width: 56px;
       height: 56px;

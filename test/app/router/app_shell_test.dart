@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/app_shell.dart';
+import 'package:mq_journey/app/router/liquid_tab_bar.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
 GoRouter _shellRouter() {
   return GoRouter(
@@ -63,17 +65,36 @@ Widget _app() {
 }
 
 void main() {
-  testWidgets('renders the 4 bottom-nav destinations and the home branch', (
+  testWidgets('tab bar is a glass LiquidTabBar over an extended body', (
     tester,
   ) async {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(AppShell)))!;
-    expect(find.text(l10n.home), findsOneWidget);
-    expect(find.text(l10n.navigation), findsOneWidget);
-    expect(find.text(l10n.scanTab), findsOneWidget);
-    expect(find.text(l10n.settings), findsOneWidget);
+    final scaffold = tester.widget<Scaffold>(find.byType(Scaffold).first);
+    expect(scaffold.extendBody, isTrue);
+
+    expect(find.byType(LiquidTabBar), findsOneWidget);
+    expect(
+      find.ancestor(
+        of: find.byType(LiquidTabBar),
+        matching: find.byType(GlassSurface),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('renders the 4 destinations (home active) and the home branch', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    // Home is selected -> filled icon; the rest show their outline icon.
+    expect(find.byIcon(Icons.home), findsOneWidget);
+    expect(find.byIcon(Icons.map_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.qr_code_scanner_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.settings_outlined), findsOneWidget);
     expect(find.text('home-branch'), findsOneWidget);
   });
 
@@ -83,8 +104,7 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(AppShell)))!;
-    await tester.tap(find.text(l10n.navigation));
+    await tester.tap(find.byIcon(Icons.map_outlined), warnIfMissed: false);
     await tester.pumpAndSettle();
 
     expect(find.text('map-branch'), findsOneWidget);
@@ -97,8 +117,10 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(AppShell)))!;
-    await tester.tap(find.text(l10n.scanTab));
+    await tester.tap(
+      find.byIcon(Icons.qr_code_scanner_outlined),
+      warnIfMissed: false,
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('scan-branch'), findsOneWidget);
@@ -111,13 +133,11 @@ void main() {
     await tester.pumpWidget(_app());
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(AppShell)))!;
-
-    await tester.tap(find.text(l10n.settings));
+    await tester.tap(find.byIcon(Icons.settings_outlined), warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(find.text('settings-branch'), findsOneWidget);
 
-    await tester.tap(find.text(l10n.home));
+    await tester.tap(find.byIcon(Icons.home_outlined), warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(find.text('home-branch'), findsOneWidget);
   });

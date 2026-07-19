@@ -3,7 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_journey/app/router/immersive_viewer_active_provider.dart';
+import 'package:mq_journey/app/router/liquid_tab_bar.dart';
 import 'package:mq_journey/app/router/route_names.dart';
+import 'package:mq_journey/app/theme/mq_colors.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
+
+/// Stable identity for the single tab bar so its metaball animation state is
+/// preserved when the surrounding glass swaps render modes (see [AppShell]).
+final GlobalKey _liquidTabBarKey = GlobalKey();
 
 /// Persistent bottom navigation shell wrapping the main tab destinations.
 class AppShell extends ConsumerWidget {
@@ -17,6 +25,16 @@ class AppShell extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final navLabelColor = isDark ? Colors.white : Colors.black;
 
+    // Over an immersive panorama (a platform-view webview) the refraction
+    // shader can't sample the backdrop — force the tab-bar glass onto frost so
+    // it still reads as glass instead of rendering flat. Only while the AR
+    // page is the *visible* one: it stays mounted offstage in the shell's
+    // IndexedStack when another tab is active, so gate on the active branch
+    // (otherwise every tab would frost after visiting AR once).
+    final immersiveActive =
+        ref.watch(immersiveViewerActiveProvider) &&
+        navigationShell.currentIndex == ShellBranchIndex.map;
+
     // Publish the active branch index so branch-root pages that stay mounted
     // offstage (e.g. ScanPage, whose camera must pause when not visible) can
     // react to tab switches. Deferred to after this frame since providers
@@ -28,54 +46,72 @@ class AppShell extends ConsumerWidget {
     });
 
     return Scaffold(
+      extendBody: true,
       body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
-          return TextStyle(color: navLabelColor);
-        }),
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (index) {
-          // Navigate to the chosen branch. If the user taps the active tab,
-          // the branch's navigation stack pops back to its root.
-          //
-          // The Journey (Campus Map) tab ALWAYS resets to its root: the
-          // branch stack preserves whatever deep-linked URL it last had
-          // (e.g. `/map?building=X` from a "View on Campus Map" or AR flow),
-          // so without the reset, returning to Journey after visiting a
-          // location re-restored that URL and force-reselected the stale
-          // building. Tapping "Journey" must mean "show me the campus
-          // overview", not "replay my last deep link". Explicit map deep
-          // links (goNamed with a building param) are unaffected — they
-          // navigate the branch directly, not through this tab handler.
-          navigationShell.goBranch(
-            index,
-            initialLocation:
-                index == navigationShell.currentIndex ||
-                index == ShellBranchIndex.map,
-          );
-        },
-        destinations: [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined, color: navLabelColor),
-            selectedIcon: Icon(Icons.home, color: navLabelColor),
-            label: l10n.home,
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          // Detach the bar from the screen edges so it floats as a glass
+          // "island" (the iOS 26 Liquid Glass tab-bar form) rather than a
+          // flat, edge-to-edge bar.
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+          child: GlassSurface(
+            variant: GlassVariant.control,
+            allowShader: !immersiveActive,
+            borderRadius: BorderRadius.circular(36),
+            child: LiquidTabBar(
+              // Stable key so the metaball's state + in-flight drag survive the
+              // GlassSurface render-mode swap (shader↔frost) when entering or
+              // leaving the immersive AR viewer, instead of being recreated.
+              key: _liquidTabBarKey,
+              color: navLabelColor,
+              accent: MqColors.red, // scanline laser + viewfinder lock
+
+              currentIndex: navigationShell.currentIndex,
+              onSelected: (index) {
+                // Navigate to the chosen branch. If the user taps the active
+                // tab, the branch's navigation stack pops back to its root.
+                //
+                // The Journey (Campus Map) tab ALWAYS resets to its root so
+                // that tapping "Journey" means "show me the campus overview",
+                // not "replay my last deep link". Explicit map deep links
+                // (goNamed with a building param) are unaffected.
+                navigationShell.goBranch(
+                  index,
+                  initialLocation:
+                      index == navigationShell.currentIndex ||
+                      index == ShellBranchIndex.map,
+                );
+              },
+              items: [
+                LiquidNavItem(
+                  icon: Icons.home_outlined,
+                  activeIcon: Icons.home,
+                  label: l10n.home,
+                  fx: TabFx.homecoming,
+                ),
+                LiquidNavItem(
+                  icon: Icons.map_outlined,
+                  activeIcon: Icons.map,
+                  label: l10n.navigation,
+                  fx: TabFx.rotateOpen,
+                ),
+                LiquidNavItem(
+                  icon: Icons.qr_code_scanner_outlined,
+                  activeIcon: Icons.qr_code_scanner,
+                  label: l10n.scanTab,
+                  fx: TabFx.scanline,
+                ),
+                LiquidNavItem(
+                  icon: Icons.settings_outlined,
+                  activeIcon: Icons.settings,
+                  label: l10n.settings,
+                  fx: TabFx.spin,
+                ),
+              ],
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.map_outlined, color: navLabelColor),
-            selectedIcon: Icon(Icons.map, color: navLabelColor),
-            label: l10n.navigation,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.qr_code_scanner_outlined, color: navLabelColor),
-            selectedIcon: Icon(Icons.qr_code_scanner, color: navLabelColor),
-            label: l10n.scanTab,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined, color: navLabelColor),
-            selectedIcon: Icon(Icons.settings, color: navLabelColor),
-            label: l10n.settings,
-          ),
-        ],
+        ),
       ),
     );
   }

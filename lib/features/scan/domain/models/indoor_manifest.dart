@@ -137,6 +137,10 @@ class IndoorManifest {
         // want the scene to render immediately.
         'autoLoad': true,
         'sceneFadeDuration': 600,
+        // Hide Pannellum's built-in UI chrome — the zoom +/− buttons and the
+        // fullscreen toggle in the top-left corner. They're not useful in the
+        // embedded viewer (pinch/drag still work).
+        'showControls': false,
       },
       'scenes': scenes,
     };

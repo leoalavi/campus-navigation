@@ -5,6 +5,7 @@ import 'package:mq_journey/features/map/domain/entities/building.dart';
 import 'package:mq_journey/features/map/domain/entities/nav_instruction.dart';
 import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
 import 'package:mq_journey/features/map/presentation/widgets/route_panel.dart';
+import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
 const _building = Building(
   id: 'wallys-1',
@@ -64,6 +65,17 @@ Widget _app({
 }
 
 void main() {
+  testWidgets('route panel body is a content-tier GlassSurface (no blur)', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app());
+    expect(find.byType(GlassSurface), findsWidgets);
+    final surfaces = tester.widgetList<GlassSurface>(find.byType(GlassSurface));
+    expect(surfaces.any((s) => s.variant == GlassVariant.content), isTrue);
+    // content tier never blurs the backdrop.
+    expect(find.byType(BackdropFilter), findsNothing);
+  });
+
   testWidgets('renders nothing when no building is selected', (tester) async {
     await tester.pumpWidget(_app(selectedBuilding: null));
 
