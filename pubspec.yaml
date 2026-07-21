@@ -6,7 +6,7 @@ version: 1.0.0+1
 environment:
   sdk: ^3.11.0
   # Keep Flutter's SDK-owned test packages reproducible across local and CI.
-  flutter: "3.41.8"
+  flutter: "3.44.0"
 
 dependencies:
   flutter:
