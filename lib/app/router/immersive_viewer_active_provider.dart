@@ -12,6 +12,11 @@ class ImmersiveViewerActiveNotifier extends Notifier<bool> {
   bool build() => false;
 
   void setActive(bool active) {
+    // Callers defer this write to a post-frame callback (see
+    // IndoorPreviewPage.dispose), which can outlive this provider itself —
+    // e.g. the whole ProviderScope tearing down before the callback fires.
+    // `ref.mounted` is the documented guard for exactly that race.
+    if (!ref.mounted) return;
     if (state != active) state = active;
   }
 }

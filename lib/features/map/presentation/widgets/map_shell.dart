@@ -375,9 +375,23 @@ class _DraggableFooterState extends State<_DraggableFooter>
   @override
   void initState() {
     super.initState();
-    // Optimistic first value so companion controls start near the right
-    // place; corrected by the first _afterLayout measurement.
-    widget.heightListenable?.value = widget.snappable ? _mediumBase : 0;
+    // Do NOT write to `heightListenable` here. `initState` runs while the
+    // framework is still inside the current build pass (element mounting),
+    // so a synchronous ValueNotifier write here synchronously calls
+    // notifyListeners() on any ALREADY-MOUNTED ValueListenableBuilder (the
+    // companion map controls) — which calls setState()/markNeedsBuild() on
+    // a widget mid-build. That is exactly the reported
+    // "setState() or markNeedsBuild() called during build" crash (widget
+    // being built: Positioned; stack: ValueListenableBuilder._valueChanged
+    // <- ChangeNotifier.notifyListeners).
+    //
+    // `build()` below unconditionally schedules `_afterLayout()` via
+    // `addPostFrameCallback`, which measures the real height and writes
+    // `heightListenable` AFTER the frame — that's the only place this
+    // notifier should ever be written from. For the one frame before that
+    // callback fires, the controls simply keep their previous position;
+    // they correct themselves before the next raster, so nothing is
+    // visibly wrong, and no listener is ever notified during a build.
     _settle =
         AnimationController(
           vsync: this,

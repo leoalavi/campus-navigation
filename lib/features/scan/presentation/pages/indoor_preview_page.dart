@@ -41,7 +41,21 @@ class _IndoorPreviewPageState extends ConsumerState<IndoorPreviewPage> {
 
   @override
   void dispose() {
-    _immersive?.setActive(false);
+    // Do NOT write to the provider synchronously here. When this page is
+    // popped as part of a route transition, `dispose()` can run while the
+    // framework is still inside the *new* page's build pass (element
+    // mounting/unmounting is interleaved with building during navigation),
+    // so a synchronous `setActive(false)` here can hit Riverpod's "Tried to
+    // modify a provider while the widget tree was building" guard. Deferring
+    // to a post-frame callback (the same pattern used above for the `true`
+    // write, and in `_afterLayout`-style writes elsewhere) makes the write
+    // land safely after the frame, once no build is in flight. The notifier
+    // reference was captured in `initState`, so it stays valid independent
+    // of this State's `ref` binding after unmount.
+    final immersive = _immersive;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      immersive?.setActive(false);
+    });
     super.dispose();
   }
 

@@ -6,11 +6,27 @@
   <!-- Lock the viewer to its own (localhost / same) origin. Panorama images
        and the Pannellum lib load from 'self'; remote fetches/beacons are
        blocked, so a panorama ref can never exfiltrate or pull off-origin
-       content. Inline script/style are the bundled viewer's own; the native
-       loadTour()/selectScene() bridge runs via evaluateJavascript, which is
-       privileged and unaffected by this policy. -->
+       content. Inline script/style are the bundled viewer's own.
+
+       'unsafe-eval' is required for 'script-src': on native platforms
+       (iOS/Android), flutter_inappwebview's evaluateJavascript() runs through
+       the OS webview's own privileged JS-injection API and is genuinely
+       unaffected by this page's CSP. On Flutter *web*, flutter_inappwebview_web
+       has no such native hook — its evaluateJavascript() (and the loadTour()/
+       selectScene() calls Flutter makes through it) is implemented as a plain
+       `iframe.contentWindow.eval(source)` call, which IS subject to this
+       document's own CSP. Without 'unsafe-eval' every one of those calls
+       throws an EvalError that the plugin swallows, so `loadTour()` silently
+       never runs and the viewer stays blank forever — this was the confirmed
+       root cause of the web AR/360° viewer failing to render. The alternative
+       (routing the initial tour config through the iframe's URL/postMessage
+       instead of eval) would remove the need for this, but scene-switching
+       still goes through evaluateJavascript today, so 'unsafe-eval' stays
+       necessary either way. All script content here is our own bundled HTML/
+       JS — never third-party or user-supplied — so this does not open an XSS
+       vector; 'connect-src' and 'img-src' remain locked to 'self'/data:/blob:. -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; worker-src blob:; child-src blob:">
+        content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; worker-src blob:; child-src blob:">
   <title>Indoor Preview</title>
   <link rel="stylesheet" href="pannellum/pannellum.css">
   <script src="pannellum/pannellum.js"></script>

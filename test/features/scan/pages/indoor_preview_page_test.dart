@@ -109,4 +109,36 @@ void main() {
     await tester.pump();
     expect(backTapped, 1);
   });
+
+  testWidgets(
+    'unmounting the page while a new tree builds does not throw '
+    '(regression: dispose() used to write immersiveViewerActiveProvider '
+    'synchronously, tripping Riverpod\'s "modify during build" guard)',
+    (tester) async {
+      Widget wrap(Widget home) => ProviderScope(
+        overrides: [
+          indoorManifestProvider.overrideWith((ref, id) async => null),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: home,
+        ),
+      );
+
+      await tester.pumpWidget(wrap(const IndoorPreviewPage(buildingId: 'C3A')));
+      // Let the deferred `setActive(true)` post-frame callback run so the
+      // page is in the same "mounted and active" state a real navigation
+      // would leave it in before the user backs out.
+      await tester.pump();
+
+      // Swap the page out for an unrelated widget in one go, the same way
+      // go_router replaces the current route's element tree — the old
+      // page's `dispose()` runs while the new tree is being built.
+      await tester.pumpWidget(wrap(const SizedBox.shrink()));
+      await tester.pump();
+
+      expect(tester.takeException(), isNull);
+    },
+  );
 }
