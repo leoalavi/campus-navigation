@@ -27,7 +27,19 @@ Future<void> bootstrap(Widget Function() appBuilder) async {
       await GlassShaderCache.ensureLoaded();
       tz.initializeTimeZones();
       installErrorHandlers();
-      EnvConfig.validate();
+
+      // A pre-runApp failure (e.g. a release build missing its
+      // --dart-define config) previously threw here and NOTHING was ever
+      // mounted — the user sat on the native/HTML boot screen forever with
+      // no feedback. Always mount *something*: on config failure, a clear
+      // error screen instead of a silent hang.
+      try {
+        EnvConfig.validate();
+      } on Object catch (error, stack) {
+        AppLogger.error('Startup configuration invalid', error, stack);
+        runApp(_BootFailureApp(message: error.toString()));
+        return;
+      }
 
       runApp(ProviderScope(child: ErrorBoundary(child: appBuilder())));
     },
@@ -35,4 +47,56 @@ Future<void> bootstrap(Widget Function() appBuilder) async {
       AppLogger.error('Unhandled zone error', error, stack);
     },
   );
+}
+
+/// Minimal, dependency-free screen shown when startup configuration is
+/// invalid. Deliberately avoids the app theme/l10n stack (which may be part
+/// of what failed) — a plain branded surface with the failure reason.
+class _BootFailureApp extends StatelessWidget {
+  const _BootFailureApp({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: const Color(0xFFC6006F),
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.build_circle_outlined,
+                    size: 48,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'MQ Journey could not start',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white70, fontSize: 13),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

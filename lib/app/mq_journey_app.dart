@@ -103,11 +103,25 @@ class _MqJourneyAppState extends ConsumerState<MqJourneyApp> {
 
     return initAsync.when(
       data: (_) {
+        // ── Startup gate ─────────────────────────────────────────────
+        // Never mount the router until persisted preferences (including
+        // hasCompletedOnboarding) have RESOLVED. Without this, the router
+        // defaulted to /home while settings were still loading, Home
+        // painted for a frame or two, and only then did the redirect kick
+        // the user to onboarding — the "Home flashes before onboarding"
+        // bug. States: initialising → (onboarding | home), decided once.
+        // If preference loading itself errors we proceed with defaults
+        // rather than stranding the user on the splash forever.
+        final preferencesAsync = ref.watch(settingsControllerProvider);
+        if (!preferencesAsync.hasValue && !preferencesAsync.hasError) {
+          return const _SplashView(isLoading: true);
+        }
+
         // Watch global navigation state.
         final router = ref.watch(appRouterProvider);
 
         // Watch global preferences (theme, locale) loaded from local storage.
-        final preferences = ref.watch(settingsControllerProvider).value;
+        final preferences = preferencesAsync.value;
 
         // Explicitly watch the notifications controller to keep it alive.
         // This triggers FCM permission requests and token sync side effects

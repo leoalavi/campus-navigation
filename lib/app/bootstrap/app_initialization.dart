@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:mq_journey/core/config/env_config.dart';
@@ -20,6 +20,8 @@ import 'package:mq_journey/features/notifications/data/datasources/fcm_service.d
 /// only after this provider completes.
 final appInitializationProvider = FutureProvider<void>((ref) async {
   AppLogger.info('Asynchronous service initialisation started');
+  // Dev-only startup timing (stripped from release builds by kDebugMode).
+  final bootWatch = kDebugMode ? (Stopwatch()..start()) : null;
 
   // Run Firebase and Supabase initialisation in parallel.
   await Future.wait([
@@ -55,18 +57,31 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
 
         // Silently mint an anonymous session so all RLS-gated features
         // (favourites, FCM tokens, notifications) work without login.
+        //
+        // FIRE-AND-FORGET: this is a NETWORK round-trip (previously awaited
+        // with an 8 s timeout), and nothing on the first screen needs the
+        // session — every RLS-gated write already retries `ensureAnonSession`
+        // lazily on first use. Awaiting it here held the whole app on the
+        // splash for the full network RTT (or 8 s offline) on every cold
+        // start where no cached session existed.
         final auth = Supabase.instance.client.auth;
         if (auth.currentSession == null) {
-          try {
-            await auth.signInAnonymously().timeout(const Duration(seconds: 8));
-            AppLogger.info('Anonymous session established on launch');
-          } on Exception catch (e, st) {
-            AppLogger.warning(
-              'Anonymous sign-in failed; writes will retry on first use',
-              e,
-              st,
-            );
-          }
+          unawaited(
+            auth
+                .signInAnonymously()
+                .timeout(const Duration(seconds: 8))
+                .then(
+                  (_) =>
+                      AppLogger.info('Anonymous session established on launch'),
+                )
+                .catchError((Object e, StackTrace st) {
+                  AppLogger.warning(
+                    'Anonymous sign-in deferred; writes will retry on first use',
+                    e,
+                    st,
+                  );
+                }),
+          );
         }
       } catch (error, stackTrace) {
         AppLogger.warning(
@@ -78,4 +93,11 @@ final appInitializationProvider = FutureProvider<void>((ref) async {
       }
     }),
   ]);
+
+  if (bootWatch != null) {
+    AppLogger.info(
+      'Startup gate ready in ${bootWatch.elapsedMilliseconds} ms '
+      '(Firebase + Supabase.initialize; anon sign-in deferred)',
+    );
+  }
 });

@@ -361,6 +361,15 @@ class _MapPageState extends ConsumerState<MapPage> {
             onFooterDismiss: mapState.selectedBuilding != null
                 ? controller.clearSelection
                 : controller.clearCategoryBrowse,
+            // Category/browse result lists get peek/medium/expanded snap
+            // states; the compact building-info card keeps drag-to-dismiss.
+            footerSnappable: mapState.selectedBuilding == null,
+            // Changing category/group/search reopens the sheet to medium.
+            footerResetKey:
+                '${mapState.selectedFacultyGroup}'
+                '|${mapState.selectedStudentServicesGroup}'
+                '|${mapState.selectedCampusHubGroup}'
+                '|${mapState.searchQuery}',
             footer: mapState.selectedBuilding != null
                 ? _CampusBuildingInfoPanel(
                     selectedBuilding: mapState.selectedBuilding!,
@@ -817,7 +826,6 @@ class _CategoryBuildingList extends StatelessWidget {
           ? Colors.white.withValues(alpha: 0.08)
           : MqColors.charcoal800.withValues(alpha: 0.06),
       borderWidth: 0.6,
-      constraints: const BoxConstraints(maxHeight: 240),
       boxShadow: [
         BoxShadow(
           color: MqColors.charcoal800.withValues(alpha: isDark ? 0.30 : 0.10),
@@ -887,6 +895,10 @@ class _CategoryBuildingList extends StatelessWidget {
 
           Flexible(
             child: ListView.separated(
+              // Hug the actual row count: without shrinkWrap the ListView
+              // greedily fills whatever height the snapping sheet allows,
+              // leaving a large empty glass area under short lists.
+              shrinkWrap: true,
               padding: const EdgeInsetsDirectional.fromSTEB(
                 MqSpacing.space2,
                 0,
@@ -983,7 +995,6 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
           ? Colors.white.withValues(alpha: 0.08)
           : MqColors.charcoal800.withValues(alpha: 0.06),
       borderWidth: 0.6,
-      constraints: const BoxConstraints(maxHeight: 240),
       boxShadow: [
         BoxShadow(
           color: MqColors.charcoal800.withValues(alpha: isDark ? 0.30 : 0.10),
@@ -1044,6 +1055,10 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
 
           Flexible(
             child: ListView.separated(
+              // Hug the actual row count: without shrinkWrap the ListView
+              // greedily fills whatever height the snapping sheet allows,
+              // leaving a large empty glass area under short lists.
+              shrinkWrap: true,
               padding: const EdgeInsetsDirectional.fromSTEB(
                 MqSpacing.space2,
                 0,

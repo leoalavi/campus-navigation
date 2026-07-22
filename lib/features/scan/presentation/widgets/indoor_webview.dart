@@ -159,6 +159,11 @@ class _IndoorWebViewState extends State<IndoorWebView> {
       shouldOverrideUrlLoading: kIsWeb ? null : _shouldOverrideUrlLoading,
       onWebViewCreated: (controller) {
         _webViewController = controller;
+        // flutter_inappwebview_web has no JS-handler bridge implementation
+        // (addJavaScriptHandler throws UnimplementedError there), so hotspot
+        // taps can't be reported back to Flutter on web. The tour still
+        // loads and is browsable; only the "scene changed" callback is lost.
+        if (kIsWeb) return;
         controller.addJavaScriptHandler(
           handlerName: 'indoorSceneChanged',
           callback: (arguments) {

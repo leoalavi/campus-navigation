@@ -61,7 +61,7 @@ void main() {
   });
 
   testWidgets('falls back to id when description is empty', (tester) async {
-    final m = IndoorManifest(
+    const m = IndoorManifest(
       nodes: const [IndoorNode(id: 'x9', image: 'a.jpg', description: '')],
     );
     await tester.pumpWidget(_host(manifest: m, selected: 'x9', onSel: (_) {}));
