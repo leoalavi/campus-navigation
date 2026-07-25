@@ -9,7 +9,7 @@ import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
 import 'package:mq_journey/features/open_day/domain/services/open_day_time.dart';
 import 'package:mq_journey/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
-import 'package:mq_journey/features/open_day/presentation/widgets/event_actions_sheet.dart';
+import 'package:mq_journey/features/open_day/presentation/actions/open_event_venue.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:mq_journey/shared/extensions/context_extensions.dart';
 import 'package:mq_journey/shared/widgets/mq_tactile_button.dart';
@@ -469,12 +469,12 @@ class _EventTile extends ConsumerWidget {
               ),
             ),
           ),
-          // Venue action: opens the stable in-app Campus Map handoff sheet.
+          // Venue action: jumps straight to this venue on the Campus Map.
           Semantics(
             button: true,
             label: l10n.openDay_directionsTo(event.venueName),
             child: MqTactileButton(
-              onTap: () => EventActionsSheet.show(context, event),
+              onTap: () => openEventVenueOnMap(context, event),
               borderRadius: MqSpacing.radiusXl,
               child: Padding(
                 padding: const EdgeInsetsDirectional.symmetric(

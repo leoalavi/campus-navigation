@@ -306,6 +306,15 @@ class _SavedStopRow extends ConsumerWidget {
   }
 }
 
+/// Glyph size for the trailing row actions (map / remove).
+///
+/// Bigger than the 18px these used to be so they read clearly on a phone,
+/// and sized inside a full [MqSpacing.minTapTarget] box so the touch area is
+/// the standard 48px rather than the ~26px it was. Both controls sit beside an
+/// `Expanded` single-line, ellipsised title, so widening them shortens the
+/// text instead of pushing the row onto a second line.
+const double _kRowActionIcon = 24;
+
 /// Opens a saved item's location on the Campus Map.
 class _ShowOnMapButton extends ConsumerWidget {
   const _ShowOnMapButton({required this.buildingCode});
@@ -335,12 +344,14 @@ class _ShowOnMapButton extends ConsumerWidget {
           );
         },
         customBorder: const CircleBorder(),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.all(MqSpacing.space1),
-          child: Icon(
-            Icons.map_outlined,
-            size: 18,
-            color: dark ? MqColors.brightRed : MqColors.red,
+        child: SizedBox.square(
+          dimension: MqSpacing.minTapTarget,
+          child: Center(
+            child: Icon(
+              Icons.map_outlined,
+              size: _kRowActionIcon,
+              color: dark ? MqColors.brightRed : MqColors.red,
+            ),
           ),
         ),
       ),
@@ -363,14 +374,16 @@ class _RemoveButton extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         customBorder: const CircleBorder(),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.all(MqSpacing.space1),
-          child: Icon(
-            Icons.close_rounded,
-            size: 18,
-            color: dark
-                ? Colors.white.withValues(alpha: 0.6)
-                : MqColors.contentTertiary,
+        child: SizedBox.square(
+          dimension: MqSpacing.minTapTarget,
+          child: Center(
+            child: Icon(
+              Icons.close_rounded,
+              size: _kRowActionIcon,
+              color: dark
+                  ? Colors.white.withValues(alpha: 0.6)
+                  : MqColors.contentTertiary,
+            ),
           ),
         ),
       ),

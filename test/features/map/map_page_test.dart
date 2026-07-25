@@ -307,4 +307,101 @@ void main() {
     expect(mapState.selectedBuilding?.id, equals('BLD-A'));
     expect(mapState.isNavigating, isFalse);
   });
+
+  testWidgets(
+    'closing the building card hides it but keeps the pin and the route',
+    (tester) async {
+      // Reported: pressing X on the building card took the user "back to the
+      // previous window". It cleared the selection, which dropped the map pin
+      // and drove a goNamed() back to /map. Closing the card should only
+      // close the card — the building stays pinned so it can be walked to.
+      await tester.binding.setSurfaceSize(const Size(1400, 1000));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      final router = GoRouter(
+        initialLocation: '/map',
+        routes: [
+          GoRoute(
+            path: '/map',
+            name: RouteNames.map,
+            builder: (context, state) => MapPage(
+              initialBuildingId: state.uri.queryParameters['building'],
+            ),
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(buildTestApp(router: router));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      final element = tester.element(find.byType(MapPage));
+      final container = ProviderScope.containerOf(element);
+
+      router.go('/map?building=BLD-A');
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      // The card is up, naming the building.
+      expect(find.text('Building A'), findsOneWidget);
+
+      await tester.tap(find.byTooltip('Clear'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      // Card gone...
+      expect(find.text('Building A'), findsNothing);
+      // ...but the building is still selected, so its pin is still on the map.
+      expect(
+        container.read(mapControllerProvider).value!.selectedBuilding?.id,
+        equals('BLD-A'),
+        reason: 'closing the card must not clear the selection',
+      );
+      // ...and we did not navigate anywhere.
+      expect(
+        router.routeInformationProvider.value.uri.path,
+        equals('/map'),
+        reason: 'closing the card must not pop back to a previous screen',
+      );
+    },
+  );
+
+  testWidgets('selecting a different building brings the card back', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1400, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final router = GoRouter(
+      initialLocation: '/map',
+      routes: [
+        GoRoute(
+          path: '/map',
+          name: RouteNames.map,
+          builder: (context, state) => MapPage(
+            initialBuildingId: state.uri.queryParameters['building'],
+          ),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(buildTestApp(router: router));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+
+    router.go('/map?building=BLD-A');
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    await tester.tap(find.byTooltip('Clear'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('Building A'), findsNothing);
+
+    // Dismissing one building must not suppress the next one's card.
+    router.go('/map?building=BLD-B');
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.text('Building B'), findsOneWidget);
+  });
 }

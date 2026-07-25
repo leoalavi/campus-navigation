@@ -101,30 +101,41 @@ class _LiquidTabBarState extends State<LiquidTabBar>
   @override
   Widget build(BuildContext context) {
     final n = widget.items.length;
+    // The tabs are laid out by a `Row`, which orders children along the
+    // *logical* axis: child 0 sits at the start edge — the LEFT edge under
+    // LTR, but the RIGHT edge under RTL (Persian/Arabic). Pointer events, by
+    // contrast, always arrive in physical coordinates measured from the left.
+    // Every slot calculation below therefore converts to logical space first;
+    // without it, RTL users tapped Home and got Settings (index n-1-i).
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     return LayoutBuilder(
       builder: (context, constraints) {
         final w = constraints.maxWidth;
         final slot = w / n;
         final indH = widget.height * 0.78; // tall enough to hold icon + label
 
+        /// Physical (left-origin) x → logical (start-origin) x.
+        double logical(double dx) => isRtl ? w - dx : dx;
+
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTapDown: (d) =>
-              setState(() => _pressed = _indexAt(d.localPosition.dx, slot, n)),
+          onTapDown: (d) => setState(
+            () => _pressed = _indexAt(logical(d.localPosition.dx), slot, n),
+          ),
           onTapCancel: () => setState(() => _pressed = null),
           onTapUp: (d) {
-            final i = _indexAt(d.localPosition.dx, slot, n);
+            final i = _indexAt(logical(d.localPosition.dx), slot, n);
             setState(() => _pressed = null);
             widget.onSelected(i);
           },
           onHorizontalDragStart: (d) => setState(() {
-            _pressed = _indexAt(d.localPosition.dx, slot, n);
-            _dragFrac = _fracAt(d.localPosition.dx, slot, n);
+            _pressed = _indexAt(logical(d.localPosition.dx), slot, n);
+            _dragFrac = _fracAt(logical(d.localPosition.dx), slot, n);
           }),
           onHorizontalDragUpdate: (d) {
-            final i = _indexAt(d.localPosition.dx, slot, n);
+            final i = _indexAt(logical(d.localPosition.dx), slot, n);
             setState(() {
-              _dragFrac = _fracAt(d.localPosition.dx, slot, n);
+              _dragFrac = _fracAt(logical(d.localPosition.dx), slot, n);
               _pressed = i;
             });
             if (i != widget.currentIndex) widget.onSelected(i);
@@ -165,8 +176,11 @@ class _LiquidTabBarState extends State<LiquidTabBar>
                 final indW = slot * 0.82;
                 return Stack(
                   children: [
-                    Positioned(
-                      left: indicatorCenter - indW / 2,
+                    // `start`, not `left`: the lens tracks the Row's logical
+                    // order, so it must mirror with the tabs under RTL. A
+                    // hard-coded `left` parked it over Settings instead.
+                    PositionedDirectional(
+                      start: indicatorCenter - indW / 2,
                       top: (widget.height - indH) / 2,
                       width: indW,
                       height: indH,

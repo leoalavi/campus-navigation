@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
 import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
@@ -8,6 +9,7 @@ import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/shared/widgets/glass_surface.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
+import 'package:mq_journey/features/map/domain/services/map_branch_lifecycle.dart';
 import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/map/presentation/widgets/ar_building_picker.dart';
 import 'package:mq_journey/features/map/presentation/widgets/building_actions_sheet.dart';
@@ -40,6 +42,22 @@ class MapPage extends ConsumerStatefulWidget {
 
 class _MapPageState extends ConsumerState<MapPage> {
   MapMode _mapMode = MapMode.campusMap;
+
+  /// Id of the building whose info card the user has dismissed.
+  ///
+  /// Dismissing the card is deliberately NOT the same as clearing the
+  /// selection: the building stays selected so its pin remains on the map and
+  /// can be walked to, and no route change happens. Clearing the selection
+  /// used to do both, which is why closing the card felt like being thrown
+  /// back to the previous screen. Keyed by id so selecting a *different*
+  /// building shows its card again.
+  String? _infoCardHiddenFor;
+
+  /// Hides the info card for [buildingId] without touching the selection.
+  void _hideInfoCard(String buildingId) {
+    if (_infoCardHiddenFor == buildingId) return;
+    setState(() => _infoCardHiddenFor = buildingId);
+  }
 
   /// Last [campusMapIntentProvider] value this page has honoured. Null until
   /// the first build so a pre-existing counter value doesn't force a reset.
@@ -192,6 +210,25 @@ class _MapPageState extends ConsumerState<MapPage> {
     final state = ref.watch(mapControllerProvider);
     final isDark = context.isDarkMode;
 
+    // Tearing the indoor viewer down when the user switches tabs. This branch
+    // stays mounted offstage in the shell's IndexedStack, so without this the
+    // viewer's platform-view webview came back as an all-black frame. Registered
+    // in build (not initState) because that is where Riverpod allows listeners.
+    ref.listen<int>(activeShellBranchIndexProvider, (previous, next) {
+      if (shouldResetIndoorViewerOnBranchChange(
+        previousIndex: previous,
+        nextIndex: next,
+        mapBranchIndex: ShellBranchIndex.map,
+        viewerOpen:
+            _mapMode == MapMode.ar &&
+            ref.read(mapControllerProvider).value?.selectedBuilding != null,
+      )) {
+        // Drop the selected building only — stay in AR mode, so returning to
+        // the tab lands on the full scene list ready to be picked from again.
+        ref.read(mapControllerProvider.notifier).clearSelection();
+      }
+    });
+
     ref.listen<AsyncValue<MapState>>(mapControllerProvider, (previous, next) {
       final isCurrent = ModalRoute.of(context)?.isCurrent ?? false;
       if (!isCurrent) return;
@@ -334,9 +371,23 @@ class _MapPageState extends ConsumerState<MapPage> {
             activeOverlayIds: mapState.activeOverlayIds,
           );
 
+          final selectedBuilding = mapState.selectedBuilding;
+          // The card is a description, not the selection itself — once the
+          // user is heading somewhere it should get out of the way of the map.
+          final showInfoCard =
+              selectedBuilding != null &&
+              _infoCardHiddenFor != selectedBuilding.id;
+
           return MapShell(
             mapView: mapView,
-            onCenterOnLocation: controller.centerOnCurrentLocation,
+            onCenterOnLocation: () {
+              // Centring on yourself with a destination pinned is a "walking
+              // there now" signal — clear the card off the map, keep the pin.
+              if (selectedBuilding != null) {
+                _hideInfoCard(selectedBuilding.id);
+              }
+              controller.centerOnCurrentLocation();
+            },
             onOpenSearch: _openSearchSheet,
             onOpenOverlayPicker: _openOverlayPicker,
             filterChips: _CategoryFilterChips(
@@ -358,8 +409,8 @@ class _MapPageState extends ConsumerState<MapPage> {
                   ),
             // Dragging the footer down (bottom-sheet gesture) dismisses it
             // via the same action as its own close button.
-            onFooterDismiss: mapState.selectedBuilding != null
-                ? controller.clearSelection
+            onFooterDismiss: selectedBuilding != null
+                ? () => _hideInfoCard(selectedBuilding.id)
                 : controller.clearCategoryBrowse,
             // Category/browse result lists get peek/medium/expanded snap
             // states; the compact building-info card keeps drag-to-dismiss.
@@ -370,11 +421,17 @@ class _MapPageState extends ConsumerState<MapPage> {
                 '|${mapState.selectedStudentServicesGroup}'
                 '|${mapState.selectedCampusHubGroup}'
                 '|${mapState.searchQuery}',
-            footer: mapState.selectedBuilding != null
-                ? _CampusBuildingInfoPanel(
-                    selectedBuilding: mapState.selectedBuilding!,
-                    onClearSelection: controller.clearSelection,
-                  )
+            footer: selectedBuilding != null
+                // Dismissed → no footer at all, leaving a clean map with the
+                // pin still on it. Falling through to the category list here
+                // would replace the card with an unrelated panel.
+                ? (showInfoCard
+                      ? _CampusBuildingInfoPanel(
+                          selectedBuilding: selectedBuilding,
+                          onClearSelection: () =>
+                              _hideInfoCard(selectedBuilding.id),
+                        )
+                      : null)
                 : facultyTopLevel
                 ? _BrowseGroupPanel<FacultyGroup>(
                     title: l10n.home_faculty,
