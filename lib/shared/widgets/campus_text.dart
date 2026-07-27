@@ -95,3 +95,26 @@ class DirectionalChevron extends StatelessWidget {
     );
   }
 }
+
+/// The directional "go back one level" arrow.
+///
+/// Like [DirectionalChevron], this is a movement arrow and must mirror:
+/// [Icons.arrow_back] always draws a left-pointing glyph, which in an RTL
+/// hierarchy points *forward*, not back. Placement is already handled by
+/// `Row`/`EdgeInsetsDirectional`; only the glyph needs choosing.
+class DirectionalBackIcon extends StatelessWidget {
+  const DirectionalBackIcon({super.key, this.size, this.color});
+
+  final double? size;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+    return Icon(
+      rtl ? Icons.arrow_forward : Icons.arrow_back,
+      size: size,
+      color: color,
+    );
+  }
+}

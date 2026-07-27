@@ -927,8 +927,7 @@ class _CategoryBuildingList extends StatelessWidget {
               children: [
                 if (onBack != null)
                   IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
+                    icon: DirectionalBackIcon(
                       size: 20,
                       color: isDark ? Colors.white : MqColors.contentSecondary,
                     ),
@@ -937,7 +936,11 @@ class _CategoryBuildingList extends StatelessWidget {
                   ),
                 Expanded(
                   child: Text(
-                    '${_capitalize(searchQuery.trim())} (${validBuildings.length})',
+                    // The count is an isolated Latin run so the parentheses
+                    // and digit stay welded to the end of a localised title
+                    // instead of drifting to the far side of an RTL line.
+                    '${_capitalize(searchQuery.trim())} '
+                    '${ltrIsolate('(${validBuildings.length})')}',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: isDark ? Colors.white : MqColors.contentPrimary,
@@ -973,40 +976,48 @@ class _CategoryBuildingList extends StatelessWidget {
               separatorBuilder: (_, _) => const SizedBox(height: 0),
               itemBuilder: (context, index) {
                 final building = validBuildings[index];
-                return ListTile(
-                  dense: true,
-                  leading: const Icon(
-                    Icons.location_on,
-                    color: MqColors.red,
-                    size: 20,
-                  ),
-                  title: CampusText(
-                    building.name,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: isDark ? Colors.white : MqColors.contentPrimary,
+                // Transparent Material, not a coloured one: ListTile paints
+                // its ink on the nearest Material ancestor, and the glass
+                // surface above is a DecoratedBox, so without this the
+                // splashes were invisible (and Flutter asserted). Transparent
+                // keeps the Liquid Glass backdrop untouched.
+                return Material(
+                  type: MaterialType.transparency,
+                  child: ListTile(
+                    dense: true,
+                    leading: const Icon(
+                      Icons.location_on,
+                      color: MqColors.red,
+                      size: 20,
                     ),
-                  ),
-                  subtitle: building.address != null
-                      ? CampusText(
-                          building.address!,
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                color: isDark
-                                    ? Colors.white
-                                    : MqColors.charcoal600,
-                              ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      : null,
-                  trailing: DirectionalChevron(
-                    size: 20,
-                    color: isDark ? Colors.white : MqColors.charcoal600,
-                  ),
-                  onTap: () => onSelectBuilding(building),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+                    title: CampusText(
+                      building.name,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: isDark ? Colors.white : MqColors.contentPrimary,
+                      ),
+                    ),
+                    subtitle: building.address != null
+                        ? CampusText(
+                            building.address!,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: isDark
+                                      ? Colors.white
+                                      : MqColors.charcoal600,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        : null,
+                    trailing: DirectionalChevron(
+                      size: 20,
+                      color: isDark ? Colors.white : MqColors.charcoal600,
+                    ),
+                    onTap: () => onSelectBuilding(building),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+                    ),
                   ),
                 );
               },
@@ -1133,36 +1144,40 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
               itemBuilder: (context, index) {
                 final group = groups[index];
                 final count = countsByGroup[group] ?? 0;
-                return ListTile(
-                  dense: true,
-                  visualDensity: VisualDensity.compact,
-                  contentPadding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: MqSpacing.space3,
-                  ),
-                  leading: Icon(leadingIcon, color: MqColors.red, size: 20),
-                  title: Text(
-                    labelOf(group),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? Colors.white : MqColors.contentPrimary,
+                // Transparent Material: ListTile ink needs a Material
+                // ancestor, and the glass surface above is a DecoratedBox.
+                return Material(
+                  type: MaterialType.transparency,
+                  child: ListTile(
+                    dense: true,
+                    visualDensity: VisualDensity.compact,
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: MqSpacing.space3,
                     ),
-                  ),
-                  subtitle: Text(
-                    '${descriptionOf(group)}  ·  $count',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    leading: Icon(leadingIcon, color: MqColors.red, size: 20),
+                    title: Text(
+                      labelOf(group),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? Colors.white : MqColors.contentPrimary,
+                      ),
+                    ),
+                    subtitle: Text(
+                      '${descriptionOf(group)}  ·  ${ltrIsolate('$count')}',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: isDark ? Colors.white : MqColors.charcoal600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: DirectionalChevron(
+                      size: 20,
                       color: isDark ? Colors.white : MqColors.charcoal600,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  trailing: Icon(
-                    Icons.chevron_right,
-                    size: 20,
-                    color: isDark ? Colors.white : MqColors.charcoal600,
-                  ),
-                  onTap: () => onSelectGroup(group),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+                    onTap: () => onSelectGroup(group),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+                    ),
                   ),
                 );
               },
@@ -1381,6 +1396,13 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
                   children: [
                     CampusText(
                       selectedBuilding.name,
+                      // Bounded so a long name cannot grow the compact panel
+                      // past the space the sheet gives it — an unbounded
+                      // title overflowed by ~150px on a 320pt phone. Two
+                      // lines still shows a full street address; anything
+                      // longer ellipsises rather than clipping.
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
                             color: isDark

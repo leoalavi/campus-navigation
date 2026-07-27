@@ -410,6 +410,24 @@ class _DraggableFooterState extends State<_DraggableFooter>
   @override
   void didUpdateWidget(covariant _DraggableFooter oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // Switching between the two sheet modes must not leave a settle
+    // animation running.
+    //
+    // `_settle` drives a *different* field in each mode: the sheet height
+    // while snappable, and the drag-dismiss translation while not. An
+    // animation started in one mode keeps ticking after the flip and writes
+    // its values into the other mode's field. Selecting a building from a
+    // category list did exactly that: the list's height settle (e.g.
+    // 185 → 100) was still running when the footer became the compact info
+    // card, so `_offset` was set to 100 and `Transform.translate` pushed the
+    // freshly-opened detail panel off the bottom of the screen. The panel was
+    // built and the marker was selected — it was simply not on screen.
+    if (widget.snappable != oldWidget.snappable) {
+      _settle.stop();
+      _offset = 0;
+      _height = null;
+      _contentMax = null;
+    }
     // New content (different category / group) → forget the previous
     // content's measured height and reopen to medium so the fresh list is
     // actually visible even if the old one was collapsed to peek.

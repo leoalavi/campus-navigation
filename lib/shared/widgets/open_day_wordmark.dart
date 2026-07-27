@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mq_journey/shared/widgets/campus_text.dart';
 
 /// The "(OPEN DAY)us" campaign wordmark, rendered in type rather than as a
 /// bitmap so it stays crisp at any size and can be tinted per surface.
@@ -79,7 +80,10 @@ class OpenDayDateChip extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-        child: Text(
+        // Latin-script brand data in a possibly-RTL page: without its own
+        // LTR paragraph the leading "15" was pushed to the far end of the
+        // line in Persian ("AUGUST 2026 · 10AM – 4PM 15").
+        child: CampusText(
           '15 AUGUST 2026  ·  10AM – 4PM',
           style: TextStyle(
             color: foreground,
