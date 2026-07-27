@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "এই ইভেন্টের জন্য এখনও কোনো ম্যাপযোগ্য স্থান নেই।",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "ক্যাম্পাসের অবস্থানগুলি লোড করা যায়নি। আবার চেষ্টা করুন।",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "একটি প্রোগ্রাম বা আগ্রহ বেছে নিন — আপনার ডিভাইসে থাকে এবং Open Day ইভেন্টগুলো ব্যক্তিগত করে।",
   "@openDay_pickerSubtitle": {

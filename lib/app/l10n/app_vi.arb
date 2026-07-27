@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "Sự kiện này chưa có địa điểm trên bản đồ.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "Không thể tải các địa điểm trong khuôn viên. Vui lòng thử lại.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "Chọn một chương trình hoặc lĩnh vực quan tâm — lưu trên thiết bị và cá nhân hóa sự kiện Open Day.",
   "@openDay_pickerSubtitle": {

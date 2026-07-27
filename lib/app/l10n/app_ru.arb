@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "Для этого мероприятия ещё нет отображаемого места.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "Не удалось загрузить места кампуса. Пожалуйста, попробуйте ещё раз.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "Выберите программу или область интересов — сохраняется на устройстве и персонализирует мероприятия Open Day.",
   "@openDay_pickerSubtitle": {

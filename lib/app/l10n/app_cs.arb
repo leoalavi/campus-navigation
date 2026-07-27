@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "Pro tuto akci zatím není k dispozici žádné mapovatelné místo.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "Nepodařilo se načíst místa v kampusu. Zkuste to prosím znovu.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "Vyberte program nebo oblast zájmu — zůstane v zařízení a přizpůsobí vaše akce Open Day.",
   "@openDay_pickerSubtitle": {

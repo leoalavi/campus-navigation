@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "このイベントの地図表示可能な会場はまだありません。",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "キャンパスの場所を読み込めませんでした。もう一度お試しください。",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "プログラムまたは興味のある分野を選択 — デバイスに保存され、Open Dayのイベントをカスタマイズします。",
   "@openDay_pickerSubtitle": {

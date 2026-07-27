@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "Ingen kartlagt lokasjon for dette arrangementet ennå.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "Kunne ikke laste campusplasseringene. Prøv igjen.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "Velg et program eller interesseområde — lagres på enheten og tilpasser Open Day-arrangementene dine.",
   "@openDay_pickerSubtitle": {

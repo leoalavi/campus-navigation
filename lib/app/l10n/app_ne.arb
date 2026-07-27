@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "यस कार्यक्रमको लागि अहिलेसम्म कुनै नक्सायोग्य स्थान छैन।",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "क्याम्पसका स्थानहरू लोड गर्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "कुनै कार्यक्रम वा रुचि छान्नुहोस् — तपाईंको यन्त्रमा रहन्छ र Open Day कार्यक्रमहरू व्यक्तिगत बनाउँछ।",
   "@openDay_pickerSubtitle": {

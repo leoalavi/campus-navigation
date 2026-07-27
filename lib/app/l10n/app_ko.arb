@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "이 행사의 지도 표시 가능한 장소가 아직 없습니다.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "캠퍼스 위치를 불러오지 못했습니다. 다시 시도해 주세요.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "프로그램 또는 관심 분야 선택 — 기기에 저장되며 오픈 데이 행사를 개인화합니다.",
   "@openDay_pickerSubtitle": {

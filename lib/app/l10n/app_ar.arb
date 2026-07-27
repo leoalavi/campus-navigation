@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "لا يوجد موقع قابل للتعيين لهذه الفعالية بعد.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "تعذّر تحميل مواقع الحرم الجامعي. يُرجى المحاولة مرة أخرى.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "اختر برنامجًا أو مجال اهتمام — يبقى على جهازك ويخصص فعاليات يوم الانفتاح.",
   "@openDay_pickerSubtitle": {

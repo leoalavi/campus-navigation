@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "اس پروگرام کے لیے ابھی کوئی نقشے پر دکھانے کا مقام نہیں۔",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "کیمپس کے مقامات لوڈ نہیں ہو سکے۔ براہِ کرم دوبارہ کوشش کریں۔",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "کوئی پروگرام یا دلچسپی منتخب کریں — آپ کے ڈیوائس پر رہتا ہے اور Open Day پروگراموں کو ذاتی بناتا ہے۔",
   "@openDay_pickerSubtitle": {

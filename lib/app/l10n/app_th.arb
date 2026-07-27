@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "ยังไม่มีสถานที่ที่แสดงในแผนที่สำหรับกิจกรรมนี้",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "ไม่สามารถโหลดตำแหน่งในวิทยาเขตได้ กรุณาลองอีกครั้ง",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "เลือกโปรแกรมหรือความสนใจ — บันทึกไว้ในอุปกรณ์ของคุณและปรับแต่งกิจกรรม Open Day",
   "@openDay_pickerSubtitle": {

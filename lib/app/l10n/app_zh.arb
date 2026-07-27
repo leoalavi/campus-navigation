@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "此活动暂无可显示的地点。",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "无法加载校园地点，请重试。",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "选择专业或感兴趣的领域——保存在您的设备上，并个性化您的开放日活动。",
   "@openDay_pickerSubtitle": {

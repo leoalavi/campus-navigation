@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "Niciun loc cartografiat pentru acest eveniment încă.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "Locațiile din campus nu au putut fi încărcate. Încercați din nou.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "Alegeți un program sau un domeniu de interes — rămâne pe dispozitivul dvs. și personalizează evenimentele Open Day.",
   "@openDay_pickerSubtitle": {

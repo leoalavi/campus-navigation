@@ -144,6 +144,85 @@ void main() {
       expect(notices.map((notice) => notice.isNewVisit), [true, false]);
     }
   });
+
+  group('a stalled trail manifest cannot brick the scanner', () {
+    // `trailManifestProvider` is a FutureProvider over a bundled asset. In the
+    // vendored Riverpod a provider whose create function throws never settles
+    // — it stays AsyncLoading and its `.future` never completes. Awaiting that
+    // unbounded meant `_handling` stayed latched and every later scan returned
+    // QrScanIgnored: the scanner was dead for the rest of the session, with
+    // nothing shown to the user.
+    const shortTimeout = Duration(milliseconds: 50);
+
+    QrScanOrchestrator stalled({
+      required Future<TrailManifest> Function() loadTrail,
+    }) => QrScanOrchestrator(
+      validate: (_, _) async => const ValidTrailQr('wallys-1', 'key'),
+      loadTrail: loadTrail,
+      progressApi: progress,
+      clock: () => DateTime.utc(2026, 7, 10, 2),
+      navigate: routes.add,
+      onRecorded: notices.add,
+      trailLoadTimeout: shortTimeout,
+    );
+
+    test('a manifest that never arrives fails the scan closed', () async {
+      final never = Completer<TrailManifest>();
+      final subject = stalled(loadTrail: () => never.future);
+
+      final outcome = await subject.handleCandidate('signed');
+
+      expect(
+        outcome,
+        const QrScanRejected(QrRejectReason.internalFailClosed),
+        reason: 'the scan must resolve rather than hang forever',
+      );
+      expect(routes, isEmpty);
+      expect(notices, isEmpty);
+      expect(progress.events, isEmpty);
+    });
+
+    test('the scanner still works on the next scan', () async {
+      // The regression: the stuck `_handling` latch made every later scan a
+      // no-op, so a recovered manifest could never be scanned.
+      var healthy = false;
+      final never = Completer<TrailManifest>();
+      final subject = stalled(
+        loadTrail: () => healthy ? Future.value(manifest) : never.future,
+      );
+
+      await subject.handleCandidate('signed');
+      healthy = true;
+      final outcome = await subject.handleCandidate('signed');
+
+      expect(outcome, const QrScanAccepted('wallys-1', isNewVisit: true));
+      expect(routes, ['/location/wallys-1']);
+    });
+
+    test(
+      'a manifest that throws also fails closed and releases the scanner',
+      () async {
+        var thrown = true;
+        final subject = stalled(
+          loadTrail: () async {
+            if (thrown) throw Exception('asset missing');
+            return manifest;
+          },
+        );
+
+        expect(
+          await subject.handleCandidate('signed'),
+          const QrScanRejected(QrRejectReason.internalFailClosed),
+        );
+
+        thrown = false;
+        expect(
+          await subject.handleCandidate('signed'),
+          const QrScanAccepted('wallys-1', isNewVisit: true),
+        );
+      },
+    );
+  });
 }
 
 class _Progress implements ProgressApi {

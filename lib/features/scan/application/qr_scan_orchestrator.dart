@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:mq_journey/features/scan/domain/contracts/progress_api.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
@@ -78,6 +80,19 @@ final class QrScanSaveFailed extends QrScanOutcome {
   int get hashCode => locationId.hashCode;
 }
 
+/// How long a scan waits for the trail manifest before failing closed.
+///
+/// The manifest is a bundled asset that normally loads in milliseconds. The
+/// bound matters because the manifest arrives via `trailManifestProvider`, and
+/// a `FutureProvider` whose create function throws never settles in the
+/// vendored Riverpod — it stays `AsyncLoading` and its `.future` never
+/// completes. Awaiting that unbounded left [QrScanOrchestrator._handling]
+/// latched true, so *every* later scan short-circuited to [QrScanIgnored] and
+/// the scanner was dead for the rest of the session, with nothing shown to the
+/// user. Timing out routes the failure into the existing fail-closed path,
+/// which also releases the latch.
+const Duration kTrailLoadTimeout = Duration(seconds: 5);
+
 class QrScanOrchestrator {
   QrScanOrchestrator({
     required QrValidate validate,
@@ -86,15 +101,18 @@ class QrScanOrchestrator {
     required DateTime Function() clock,
     required void Function(String route) navigate,
     required void Function(RecordedQrVisit visit) onRecorded,
+    Duration trailLoadTimeout = kTrailLoadTimeout,
   }) : _validate = validate,
        _loadTrail = loadTrail,
        _progressApi = progressApi,
        _clock = clock,
        _navigate = navigate,
-       _onRecorded = onRecorded;
+       _onRecorded = onRecorded,
+       _trailLoadTimeout = trailLoadTimeout;
 
   final QrValidate _validate;
   final Future<TrailManifest> Function() _loadTrail;
+  final Duration _trailLoadTimeout;
   final ProgressApi _progressApi;
   final DateTime Function() _clock;
   final void Function(String route) _navigate;
@@ -105,7 +123,10 @@ class QrScanOrchestrator {
     if (_handling) return const QrScanIgnored();
     _handling = true;
     try {
-      final trail = await _loadTrail();
+      // Bounded: see [kTrailLoadTimeout]. A TimeoutException falls into the
+      // outer catch below, so a stalled manifest fails this one scan closed
+      // instead of latching `_handling` and killing every future scan.
+      final trail = await _loadTrail().timeout(_trailLoadTimeout);
       final validation = await _validate(raw, trail.contains);
       if (validation case InvalidTrailQr(:final reason)) {
         return QrScanRejected(reason);

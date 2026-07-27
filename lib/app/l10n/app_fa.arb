@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "هنوز مکانی قابل نمایش در نقشه برای این رویداد وجود ندارد.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "بارگذاری مکان‌های پردیس ممکن نشد. لطفاً دوباره تلاش کنید.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "یک برنامه یا حوزهٔ علاقه انتخاب کنید — روی دستگاه شما می‌ماند و رویدادهای روز باز را شخصی‌سازی می‌کند.",
   "@openDay_pickerSubtitle": {

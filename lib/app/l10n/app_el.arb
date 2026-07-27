@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "Δεν υπάρχει χαρτογραφημένη τοποθεσία για αυτή την εκδήλωση.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "Δεν ήταν δυνατή η φόρτωση των τοποθεσιών της πανεπιστημιούπολης. Δοκιμάστε ξανά.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "Επιλέξτε ένα πρόγραμμα ή ενδιαφέρον — παραμένει στη συσκευή και εξατομικεύει τις εκδηλώσεις Open Day.",
   "@openDay_pickerSubtitle": {

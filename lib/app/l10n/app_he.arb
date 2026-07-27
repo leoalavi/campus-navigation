@@ -316,7 +316,11 @@
   },
   "openDay_noMappableVenue": "עדיין אין מיקום במפה לאירוע זה.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "לא ניתן היה לטעון את מיקומי הקמפוס. נסו שוב.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "בחר תוכנית או תחום עניין — נשמר במכשיר שלך ומתאים אישית את אירועי ה-Open Day שלך.",
   "@openDay_pickerSubtitle": {
