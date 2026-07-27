@@ -318,6 +318,10 @@
   "@openDay_noMappableVenue": {
     "description": "Shown when an Open Day event has no campus location that can be placed on the map."
   },
+  "stampCatalogUnavailable": "ไม่สามารถโหลดคอลเลกชันตราประทับของคุณได้ กรุณาลองอีกครั้ง",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
   "openDay_venueLookupFailed": "ไม่สามารถโหลดตำแหน่งในวิทยาเขตได้ กรุณาลองอีกครั้ง",
   "@openDay_venueLookupFailed": {
     "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."

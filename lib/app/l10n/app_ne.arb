@@ -318,6 +318,10 @@
   "@openDay_noMappableVenue": {
     "description": "Shown when an Open Day event has no campus location that can be placed on the map."
   },
+  "stampCatalogUnavailable": "तपाईंको स्ट्याम्प सङ्ग्रह लोड गर्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
   "openDay_venueLookupFailed": "क्याम्पसका स्थानहरू लोड गर्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।",
   "@openDay_venueLookupFailed": {
     "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."

@@ -5,9 +5,7 @@ import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_journey/features/map/presentation/actions/open_building_on_map.dart';
 import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_progress.dart';
@@ -145,25 +143,7 @@ IconData iconForStop(String name) {
 /// `goNamed` keeps the URL in sync.
 void _openOnMap(BuildContext context, WidgetRef ref, String? buildingCode) {
   if (buildingCode == null) return;
-  final buildings = ref.read(buildingRegistryProvider).value;
-  final resolved = _resolveBuilding(buildings, buildingCode);
-  final targetId = resolved?.id ?? buildingCode;
-  // This flow must always land on the Campus Map — never a remembered AR
-  // view (see campusMapIntentProvider).
-  ref.read(campusMapIntentProvider.notifier).bump();
-  ref.read(mapControllerProvider.notifier).selectBuildingById(targetId);
-  context.goNamed(RouteNames.map, queryParameters: {'building': targetId});
-}
-
-Building? _resolveBuilding(List<Building>? buildings, String? code) {
-  if (buildings == null || code == null) return null;
-  final upper = code.toUpperCase();
-  for (final b in buildings) {
-    if (b.code.toUpperCase() == upper || b.id.toUpperCase() == upper) {
-      return b;
-    }
-  }
-  return null;
+  openBuildingOnCampusMap(context, buildingCode);
 }
 
 /// Prominent section header for the Suggested Stops block.

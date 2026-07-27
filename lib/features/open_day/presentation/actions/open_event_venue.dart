@@ -1,14 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
+import 'package:mq_journey/features/map/presentation/actions/open_building_on_map.dart';
 import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_journey/shared/async/bounded_provider_read.dart';
 
 /// How long to wait for the building registry before giving up on it.
 ///
@@ -52,7 +50,11 @@ Future<void> openEventVenueOnMap(
     return;
   }
 
-  final buildings = await _readRegistry(container);
+  final buildings = await readProviderBounded(
+    container,
+    buildingRegistryProvider,
+    timeout: kVenueLookupTimeout,
+  );
   // Null means the registry could not answer — a thrown error or a timeout.
   // Either way it is a *transient* condition, unlike "answered, no match".
   final registryUnavailable = buildings == null;
@@ -60,7 +62,7 @@ Future<void> openEventVenueOnMap(
   if (!context.mounted) return;
 
   if (resolved != null) {
-    _openOnMap(context, container, resolved.id);
+    openBuildingOnCampusMap(context, resolved.id);
     return;
   }
 
@@ -80,7 +82,7 @@ Future<void> openEventVenueOnMap(
   // map can actually place it, so a fallback can never dump the user on a
   // blank campus map with no pin.
   if (_mapCanPlace(container, code)) {
-    _openOnMap(context, container, code);
+    openBuildingOnCampusMap(context, code);
     return;
   }
 
@@ -100,60 +102,12 @@ Future<void> openEventVenueOnMap(
   );
 }
 
-/// Reads the building registry, returning null when it cannot answer.
-///
-/// Deliberately not a bare `await provider.future`, which never settles if
-/// the provider fails (see [kVenueLookupTimeout]). Watching the [AsyncValue]
-/// returns the moment data arrives, handles `AsyncError` should Riverpod ever
-/// start reporting it, and [kVenueLookupTimeout] covers the failure mode it
-/// currently has instead — staying `AsyncLoading` indefinitely.
-Future<List<Building>?> _readRegistry(ProviderContainer container) async {
-  final result = Completer<List<Building>?>();
-  final sub = container.listen<AsyncValue<List<Building>>>(
-    buildingRegistryProvider,
-    (_, next) {
-      if (result.isCompleted) return;
-      next.whenOrNull(
-        data: result.complete,
-        error: (_, _) => result.complete(null),
-      );
-    },
-    fireImmediately: true,
-  );
-  try {
-    return await result.future.timeout(
-      kVenueLookupTimeout,
-      onTimeout: () => null,
-    );
-  } finally {
-    sub.close();
-  }
-}
-
 /// Whether the map already holds a building matching [code], so a fallback
 /// navigation will actually land on a pin.
 bool _mapCanPlace(ProviderContainer container, String code) {
   final buildings = container.read(mapControllerProvider).value?.buildings;
   if (buildings == null) return false;
   return _resolveBuilding(buildings, code) != null;
-}
-
-void _openOnMap(
-  BuildContext context,
-  ProviderContainer container,
-  String targetBuildingId,
-) {
-  // Re-emit the selection imperatively so the marker re-shows even when the
-  // same building URL was opened before (go_router same-URL no-op). Always
-  // land on the Campus Map, never a remembered AR view.
-  container.read(campusMapIntentProvider.notifier).bump();
-  container
-      .read(mapControllerProvider.notifier)
-      .selectBuildingById(targetBuildingId);
-  context.goNamed(
-    RouteNames.map,
-    queryParameters: {'building': targetBuildingId},
-  );
 }
 
 Building? _resolveBuilding(List<Building>? buildings, String? code) {

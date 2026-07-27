@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/route_names.dart';
-import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_journey/features/map/presentation/actions/open_building_on_map.dart';
 import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
 import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
 import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
@@ -18,11 +18,17 @@ import 'package:mq_journey/features/scan/presentation/widgets/schedule_chips.dar
 import 'package:mq_journey/features/scan/presentation/widgets/stamp_earned_sheet.dart';
 import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_journey/shared/async/bounded_provider_read.dart';
 
 bool arEnabled(TrailLocation? loc) {
   if (loc == null) return false;
   return loc.arSceneId != null || loc.stops.any((s) => s.arSceneId.isNotEmpty);
 }
+
+/// How long the award flow waits for the bundled stamp catalog.
+///
+/// Injectable so tests can exercise the timeout without real delays.
+const Duration kStampCatalogTimeout = Duration(seconds: 3);
 
 class LocationCardPage extends ConsumerWidget {
   const LocationCardPage({super.key, required this.locationId});
@@ -36,7 +42,10 @@ class LocationCardPage extends ConsumerWidget {
     final registry = ref.watch(buildingsRegistryProvider).value;
     final pendingNotice = ref.watch(pendingStampAwardProvider);
 
-    if (pendingNotice?.locationId == locationId) {
+    // `awaitingRetry` awards are parked: kept, but not re-attempted on every
+    // rebuild — otherwise a failing catalog loops forever.
+    if (pendingNotice?.locationId == locationId &&
+        !pendingNotice!.awaitingRetry) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _consumePendingNotice(context, ref, locationId);
       });
@@ -158,24 +167,63 @@ class LocationCardPage extends ConsumerWidget {
     );
   }
 
+  /// Shows the stamp award for a just-scanned location, if one is pending.
+  ///
+  /// The pending notice is *peeked*, not consumed, until the catalog has
+  /// actually resolved and the award is ready to show. Consuming first meant a
+  /// catalog that failed — or, in the vendored Riverpod, one that hung as
+  /// `AsyncLoading` forever — threw the award away with nothing on screen and
+  /// no way to get it back. Now a failure leaves the notice pending and offers
+  /// a retry, and a duplicate scan still reports "already collected" because
+  /// dedup is driven by locally-persisted visited codes, not by this notice.
   Future<void> _consumePendingNotice(
     BuildContext context,
     WidgetRef ref,
     String locationId,
   ) async {
-    final notice = ref
-        .read(pendingStampAwardProvider.notifier)
-        .consume(locationId);
+    final pending = ref.read(pendingStampAwardProvider.notifier);
+    final notice = pending.peek(locationId);
     if (notice == null || !context.mounted) return;
     final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+
     if (notice.saveFailed) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.scanVisitSaveFailed)));
+      // Nothing to look up — resolve it now so it does not linger.
+      pending.consume(locationId);
+      messenger.showSnackBar(SnackBar(content: Text(l10n.scanVisitSaveFailed)));
       return;
     }
 
-    final catalog = await ref.read(stampCatalogProvider.future);
+    final container = ProviderScope.containerOf(context, listen: false);
+    final catalog = await readProviderBounded(
+      container,
+      stampCatalogProvider,
+      timeout: kStampCatalogTimeout,
+    );
+    if (!context.mounted) return;
+
+    if (catalog == null) {
+      // Transient: the award stays pending so a retry can still deliver it,
+      // parked so the card's auto-delivery does not spin on it.
+      pending.markAwaitingRetry(locationId);
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(l10n.stampCatalogUnavailable),
+          action: SnackBarAction(
+            label: l10n.retry,
+            onPressed: () {
+              container.invalidate(stampCatalogProvider);
+              pending.resumeRetry(locationId);
+              if (context.mounted) {
+                unawaited(_consumePendingNotice(context, ref, locationId));
+              }
+            },
+          ),
+        ),
+      );
+      return;
+    }
+
     final visitedCodes =
         ref.read(settingsControllerProvider).value?.visitedLocationCodes ??
         const <String>[];
@@ -184,6 +232,10 @@ class LocationCardPage extends ConsumerWidget {
       visitedLocationCodesAfterVisit: visitedCodes,
       catalog: catalog,
     );
+
+    // Resolved either way: the catalog answered, so this notice has had its
+    // chance and must not be replayed on the next visit to this card.
+    pending.consume(locationId);
     if (award == null || !context.mounted) return;
 
     if (notice.isNewVisit) {
@@ -192,7 +244,7 @@ class LocationCardPage extends ConsumerWidget {
         unawaited(context.push('/stamps'));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         SnackBar(content: Text(l10n.stampAlreadyCollected(award.stamp.title))),
       );
     }
@@ -221,20 +273,13 @@ class _PrimaryButtons extends ConsumerWidget {
           width: double.infinity,
           child: OutlinedButton.icon(
             onPressed: mapEnabled
-                ? () {
-                    // "View on Campus Map" must always show the map —
-                    // never a remembered AR view on the Journey tab. Pass the
-                    // resolved campus-map code (real coords), not the trail
-                    // buildingId slug, so the map focuses the actual building.
-                    ref.read(campusMapIntentProvider.notifier).bump();
-                    context.goNamed(
-                      RouteNames.map,
-                      queryParameters: {
-                        'building':
-                            content.mapBuildingCode ?? content.buildingId!,
-                      },
-                    );
-                  }
+                ? () => openBuildingOnCampusMap(
+                    context,
+                    // The resolved campus-map code (real coords), not the
+                    // trail buildingId slug, so the map focuses the actual
+                    // building.
+                    content.mapBuildingCode ?? content.buildingId!,
+                  )
                 : null,
             icon: const Icon(Icons.map),
             label: Text(l10n.cardViewOnCampusMap),

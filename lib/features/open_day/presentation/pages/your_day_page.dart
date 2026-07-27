@@ -5,15 +5,14 @@ import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_progress.dart';
 import 'package:mq_journey/features/open_day/domain/services/open_day_time.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:mq_journey/shared/extensions/context_extensions.dart';
+import 'package:mq_journey/features/map/presentation/actions/open_building_on_map.dart';
+import 'package:mq_journey/shared/widgets/campus_text.dart';
 
 /// Dedicated "Your Day" screen — the user's personal saved itinerary ONLY.
 ///
@@ -220,7 +219,7 @@ class _SavedDayRow extends ConsumerWidget {
                     color: dark ? Colors.white : MqColors.contentPrimary,
                   ),
                 ),
-                Text(
+                CampusText(
                   event.venueName,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -329,20 +328,7 @@ class _ShowOnMapButton extends ConsumerWidget {
       button: true,
       label: l10n.openDay_viewInCampusMap,
       child: InkWell(
-        onTap: () {
-          final buildings = ref.read(buildingRegistryProvider).value;
-          final resolved = _resolveBuildingByCode(buildings, buildingCode);
-          final targetId = resolved?.id ?? buildingCode;
-          // Re-emit the selection so the marker re-shows even if the same
-          // location was opened and closed before (same-URL no-op guard).
-          // Always land on the Campus Map, never a remembered AR view.
-          ref.read(campusMapIntentProvider.notifier).bump();
-          ref.read(mapControllerProvider.notifier).selectBuildingById(targetId);
-          context.goNamed(
-            RouteNames.map,
-            queryParameters: {'building': targetId},
-          );
-        },
+        onTap: () => openBuildingOnCampusMap(context, buildingCode),
         customBorder: const CircleBorder(),
         child: SizedBox.square(
           dimension: MqSpacing.minTapTarget,
@@ -389,15 +375,4 @@ class _RemoveButton extends StatelessWidget {
       ),
     );
   }
-}
-
-Building? _resolveBuildingByCode(List<Building>? buildings, String code) {
-  if (buildings == null) return null;
-  final upper = code.toUpperCase();
-  for (final b in buildings) {
-    if (b.code.toUpperCase() == upper || b.id.toUpperCase() == upper) {
-      return b;
-    }
-  }
-  return null;
 }

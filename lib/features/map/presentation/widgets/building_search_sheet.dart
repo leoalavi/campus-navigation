@@ -8,6 +8,7 @@ import 'package:mq_journey/features/map/domain/entities/building.dart';
 import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:mq_journey/shared/extensions/context_extensions.dart';
+import 'package:mq_journey/shared/widgets/campus_text.dart';
 
 class BuildingSearchSheet extends ConsumerStatefulWidget {
   const BuildingSearchSheet({super.key});
@@ -192,7 +193,7 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
                             Icons.location_on_outlined,
                             color: MqColors.red,
                           ),
-                          title: Text(
+                          title: CampusText(
                             building.name,
                             style: TextStyle(
                               color: isDark
@@ -200,7 +201,7 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
                                   : MqColors.contentPrimary,
                             ),
                           ),
-                          subtitle: Text(
+                          subtitle: CampusText(
                             building.code,
                             style: TextStyle(
                               color: isDark

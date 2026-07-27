@@ -318,6 +318,10 @@
   "@openDay_noMappableVenue": {
     "description": "Shown when an Open Day event has no campus location that can be placed on the map."
   },
+  "stampCatalogUnavailable": "Colecția ta de ștampile nu a putut fi încărcată. Încercați din nou.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
   "openDay_venueLookupFailed": "Locațiile din campus nu au putut fi încărcate. Încercați din nou.",
   "@openDay_venueLookupFailed": {
     "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."

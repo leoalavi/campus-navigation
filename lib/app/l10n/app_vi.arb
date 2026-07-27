@@ -318,6 +318,10 @@
   "@openDay_noMappableVenue": {
     "description": "Shown when an Open Day event has no campus location that can be placed on the map."
   },
+  "stampCatalogUnavailable": "Không thể tải bộ sưu tập tem của bạn. Vui lòng thử lại.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
   "openDay_venueLookupFailed": "Không thể tải các địa điểm trong khuôn viên. Vui lòng thử lại.",
   "@openDay_venueLookupFailed": {
     "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."

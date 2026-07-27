@@ -403,4 +403,190 @@ void main() {
 
     expect(find.text('Building B'), findsOneWidget);
   });
+
+  testWidgets('re-selecting the same building reopens its card', (
+    tester,
+  ) async {
+    // Task 3.5: closing the card must not permanently suppress it. Tapping
+    // the same building again is a fresh request to see its details.
+    await tester.binding.setSurfaceSize(const Size(1400, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final router = GoRouter(
+      initialLocation: '/map',
+      routes: [
+        GoRoute(
+          path: '/map',
+          name: RouteNames.map,
+          builder: (context, state) =>
+              MapPage(initialBuildingId: state.uri.queryParameters['building']),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(buildTestApp(router: router));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(MapPage)),
+    );
+
+    router.go('/map?building=BLD-A');
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(find.text('Building A'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Clear'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('Building A'), findsNothing);
+
+    // Select the very same building again, the way a marker tap does.
+    final buildingA = container
+        .read(mapControllerProvider)
+        .value!
+        .buildings
+        .firstWhere((b) => b.id == 'BLD-A');
+    container.read(mapControllerProvider.notifier).selectBuilding(buildingA);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(
+      find.text('Building A'),
+      findsOneWidget,
+      reason: 're-selecting a building must reopen its detail card',
+    );
+  });
+
+  testWidgets('locale change keeps the selected building and its open panel', (
+    tester,
+  ) async {
+    // Task 4: changing language must not change functionality. Panel
+    // visibility is keyed by the selection token — a stable int, not a
+    // localised label — so a rebuild under a new locale cannot drop it.
+    await tester.binding.setSurfaceSize(const Size(1400, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final router = GoRouter(
+      initialLocation: '/map',
+      routes: [
+        GoRoute(
+          path: '/map',
+          name: RouteNames.map,
+          builder: (context, state) =>
+              MapPage(initialBuildingId: state.uri.queryParameters['building']),
+        ),
+      ],
+    );
+
+    Widget app(Locale locale) => ProviderScope(
+      overrides: [
+        mapRepositoryProvider.overrideWithValue(fakeRepository),
+        settingsControllerProvider.overrideWith(_FakeSettingsController.new),
+      ],
+      child: MaterialApp.router(
+        locale: locale,
+        routerConfig: router,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
+    );
+
+    await tester.pumpWidget(app(const Locale('en')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(MapPage)),
+    );
+
+    router.go('/map?building=BLD-A');
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(find.text('Building A'), findsOneWidget);
+
+    // Switch to Persian — an RTL locale, which also re-lays-out the shell.
+    await tester.pumpWidget(app(const Locale('fa')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(
+      container.read(mapControllerProvider).value!.selectedBuilding?.id,
+      'BLD-A',
+      reason: 'the selection must survive a language change',
+    );
+    expect(
+      find.text('Building A'),
+      findsOneWidget,
+      reason: 'the detail panel must stay open across a locale change',
+    );
+    expect(
+      Directionality.of(tester.element(find.byType(MapPage))),
+      TextDirection.rtl,
+      reason: 'sanity: the tree really did switch to RTL',
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'a panel closed by the user stays closed across a locale change',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1400, 1000));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      final router = GoRouter(
+        initialLocation: '/map',
+        routes: [
+          GoRoute(
+            path: '/map',
+            name: RouteNames.map,
+            builder: (context, state) => MapPage(
+              initialBuildingId: state.uri.queryParameters['building'],
+            ),
+          ),
+        ],
+      );
+
+      Widget app(Locale locale) => ProviderScope(
+        overrides: [
+          mapRepositoryProvider.overrideWithValue(fakeRepository),
+          settingsControllerProvider.overrideWith(_FakeSettingsController.new),
+        ],
+        child: MaterialApp.router(
+          locale: locale,
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
+      );
+
+      await tester.pumpWidget(app(const Locale('en')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      router.go('/map?building=BLD-A');
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 200));
+
+      await tester.tap(find.byTooltip('Clear'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('Building A'), findsNothing);
+
+      await tester.pumpWidget(app(const Locale('fa')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      // Still selected (pin kept) but the user's dismissal is respected.
+      final container = ProviderScope.containerOf(
+        tester.element(find.byType(MapPage)),
+      );
+      expect(
+        container.read(mapControllerProvider).value!.selectedBuilding?.id,
+        'BLD-A',
+      );
+      expect(find.text('Building A'), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
 }

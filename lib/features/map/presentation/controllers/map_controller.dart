@@ -39,6 +39,7 @@ class MapState {
     this.isLoadingRoute = false,
     this.hasArrived = false,
     this.locationCenterRequestToken = 0,
+    this.selectionToken = 0,
     this.activeOverlayIds = const {},
     this.error,
     this.selectedFacultyGroup,
@@ -58,6 +59,17 @@ class MapState {
   final bool isLoadingRoute;
   final bool hasArrived;
   final int locationCenterRequestToken;
+
+  /// Bumped on every explicit building selection, including re-selecting the
+  /// building that is already selected.
+  ///
+  /// Panel visibility is derived from this rather than from the building id:
+  /// a per-building "dismissed" flag latched forever, so once a user closed a
+  /// building's card, tapping that same marker again never reopened it. A
+  /// token makes each selection a distinct *event*, so dismissal applies only
+  /// to the selection it dismissed. It is also locale-independent, which is
+  /// what keeps the panel open across a language change.
+  final int selectionToken;
   final Set<String> activeOverlayIds;
   final MapStateError? error;
 
@@ -81,6 +93,7 @@ class MapState {
     bool? isLoadingRoute,
     bool? hasArrived,
     int? locationCenterRequestToken,
+    int? selectionToken,
     Set<String>? activeOverlayIds,
     MapStateError? error,
     bool clearError = false,
@@ -109,6 +122,7 @@ class MapState {
       hasArrived: hasArrived ?? this.hasArrived,
       locationCenterRequestToken:
           locationCenterRequestToken ?? this.locationCenterRequestToken,
+      selectionToken: selectionToken ?? this.selectionToken,
       activeOverlayIds: activeOverlayIds ?? this.activeOverlayIds,
       error: clearError ? null : error ?? this.error,
       selectedFacultyGroup: clearSelectedFacultyGroup
@@ -131,6 +145,7 @@ class MapState {
         listEquals(other.buildings, buildings) &&
         listEquals(other.searchResults, searchResults) &&
         other.selectedBuilding == selectedBuilding &&
+        other.selectionToken == selectionToken &&
         other.currentLocation == currentLocation &&
         other.route == route &&
         other.searchQuery == searchQuery &&
@@ -161,6 +176,7 @@ class MapState {
         isLoadingRoute.hashCode ^
         hasArrived.hashCode ^
         locationCenterRequestToken.hashCode ^
+        selectionToken.hashCode ^
         activeOverlayIds.hashCode ^
         error.hashCode ^
         selectedFacultyGroup.hashCode ^
@@ -387,6 +403,9 @@ class MapController extends AsyncNotifier<MapState> {
     state = AsyncData(
       current.copyWith(
         selectedBuilding: building,
+        // A fresh selection event, even when it is the same building — this
+        // is what reopens a card the user previously closed.
+        selectionToken: current.selectionToken + 1,
         clearRoute: true,
         isNavigating: false,
         hasArrived: false,

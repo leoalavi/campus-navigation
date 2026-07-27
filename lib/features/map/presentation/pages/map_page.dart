@@ -6,6 +6,7 @@ import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
+import 'package:mq_journey/shared/widgets/campus_text.dart';
 import 'package:mq_journey/shared/widgets/glass_surface.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
@@ -43,20 +44,26 @@ class MapPage extends ConsumerStatefulWidget {
 class _MapPageState extends ConsumerState<MapPage> {
   MapMode _mapMode = MapMode.campusMap;
 
-  /// Id of the building whose info card the user has dismissed.
+  /// The selection *event* whose info card the user dismissed.
   ///
   /// Dismissing the card is deliberately NOT the same as clearing the
   /// selection: the building stays selected so its pin remains on the map and
   /// can be walked to, and no route change happens. Clearing the selection
   /// used to do both, which is why closing the card felt like being thrown
-  /// back to the previous screen. Keyed by id so selecting a *different*
-  /// building shows its card again.
-  String? _infoCardHiddenFor;
+  /// back to the previous screen.
+  ///
+  /// Keyed by `MapState.selectionToken`, not by building id. A per-building
+  /// key latched forever: once a card was closed, tapping that same marker
+  /// again never reopened it — the reported "detail panel does not appear".
+  /// Every selection bumps the token, so a dismissal only ever applies to the
+  /// one selection it dismissed. Being locale-independent, it also survives a
+  /// language change with the panel's open/closed state intact.
+  int? _dismissedSelectionToken;
 
-  /// Hides the info card for [buildingId] without touching the selection.
-  void _hideInfoCard(String buildingId) {
-    if (_infoCardHiddenFor == buildingId) return;
-    setState(() => _infoCardHiddenFor = buildingId);
+  /// Hides the info card for the current selection, leaving it selected.
+  void _hideInfoCard(int selectionToken) {
+    if (_dismissedSelectionToken == selectionToken) return;
+    setState(() => _dismissedSelectionToken = selectionToken);
   }
 
   /// Last [campusMapIntentProvider] value this page has honoured. Null until
@@ -376,7 +383,7 @@ class _MapPageState extends ConsumerState<MapPage> {
           // user is heading somewhere it should get out of the way of the map.
           final showInfoCard =
               selectedBuilding != null &&
-              _infoCardHiddenFor != selectedBuilding.id;
+              _dismissedSelectionToken != mapState.selectionToken;
 
           return MapShell(
             mapView: mapView,
@@ -384,7 +391,7 @@ class _MapPageState extends ConsumerState<MapPage> {
               // Centring on yourself with a destination pinned is a "walking
               // there now" signal — clear the card off the map, keep the pin.
               if (selectedBuilding != null) {
-                _hideInfoCard(selectedBuilding.id);
+                _hideInfoCard(mapState.selectionToken);
               }
               controller.centerOnCurrentLocation();
             },
@@ -410,7 +417,7 @@ class _MapPageState extends ConsumerState<MapPage> {
             // Dragging the footer down (bottom-sheet gesture) dismisses it
             // via the same action as its own close button.
             onFooterDismiss: selectedBuilding != null
-                ? () => _hideInfoCard(selectedBuilding.id)
+                ? () => _hideInfoCard(mapState.selectionToken)
                 : controller.clearCategoryBrowse,
             // Category/browse result lists get peek/medium/expanded snap
             // states; the compact building-info card keeps drag-to-dismiss.
@@ -429,7 +436,7 @@ class _MapPageState extends ConsumerState<MapPage> {
                       ? _CampusBuildingInfoPanel(
                           selectedBuilding: selectedBuilding,
                           onClearSelection: () =>
-                              _hideInfoCard(selectedBuilding.id),
+                              _hideInfoCard(mapState.selectionToken),
                         )
                       : null)
                 : facultyTopLevel
@@ -973,7 +980,7 @@ class _CategoryBuildingList extends StatelessWidget {
                     color: MqColors.red,
                     size: 20,
                   ),
-                  title: Text(
+                  title: CampusText(
                     building.name,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
@@ -981,7 +988,7 @@ class _CategoryBuildingList extends StatelessWidget {
                     ),
                   ),
                   subtitle: building.address != null
-                      ? Text(
+                      ? CampusText(
                           building.address!,
                           style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
@@ -993,8 +1000,7 @@ class _CategoryBuildingList extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         )
                       : null,
-                  trailing: Icon(
-                    Icons.chevron_right,
+                  trailing: DirectionalChevron(
                     size: 20,
                     color: isDark ? Colors.white : MqColors.charcoal600,
                   ),
@@ -1373,7 +1379,7 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    CampusText(
                       selectedBuilding.name,
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
@@ -1398,7 +1404,10 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
                                   ),
                               children: [
                                 TextSpan(
-                                  text: selectedBuilding.code,
+                                  // Isolated: a Latin code inside a localised
+                                  // label must not be reordered by the RTL
+                                  // paragraph around it.
+                                  text: ltrIsolate(selectedBuilding.code),
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     color: isDark
