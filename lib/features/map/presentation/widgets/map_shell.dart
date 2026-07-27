@@ -485,9 +485,7 @@ class _DraggableFooterState extends State<_DraggableFooter>
     final h = _currentHeight;
     final snaps = _snaps;
     if (direction > 0) {
-      _animateHeightTo(
-        snaps.where((s) => s > h + 1).firstOrNull ?? snaps.last,
-      );
+      _animateHeightTo(snaps.where((s) => s > h + 1).firstOrNull ?? snaps.last);
     } else {
       final below = snaps.where((s) => s < h - 1).lastOrNull;
       if (below == null) return; // already at peek

@@ -32,11 +32,8 @@ Widget _app({
 Widget _tallContent() => Container(key: _sheetKey, color: Colors.white);
 
 /// A child with a short natural height (like a 2-row category list).
-Widget _shortContent() => Container(
-  key: _sheetKey,
-  color: Colors.white,
-  height: 180,
-);
+Widget _shortContent() =>
+    Container(key: _sheetKey, color: Colors.white, height: 180);
 
 Future<void> _settle(WidgetTester tester) async {
   await tester.pump();
@@ -162,37 +159,33 @@ void main() {
     expect(tester.getSize(find.byKey(_sheetKey)).height, closeTo(320, 1));
   });
 
-  testWidgets(
-    'opening a footer after the corner controls are mounted does not '
-    'mutate a notifier during build (regression, prior "setState called '
-    'during build" crash)',
-    (tester) async {
-      // Reproduces the exact reported crash: MapShell mounts with no footer
-      // (the layers/location ValueListenableBuilders become live listeners
-      // on the shared sheet-height notifier), then a footer opens — which
-      // previously wrote to that notifier synchronously from
-      // _DraggableFooter.initState(), notifying the already-mounted
-      // builders mid-build.
-      await tester.pumpWidget(_app(footer: null));
-      await tester.pumpAndSettle();
+  testWidgets('opening a footer after the corner controls are mounted does not '
+      'mutate a notifier during build (regression, prior "setState called '
+      'during build" crash)', (tester) async {
+    // Reproduces the exact reported crash: MapShell mounts with no footer
+    // (the layers/location ValueListenableBuilders become live listeners
+    // on the shared sheet-height notifier), then a footer opens — which
+    // previously wrote to that notifier synchronously from
+    // _DraggableFooter.initState(), notifying the already-mounted
+    // builders mid-build.
+    await tester.pumpWidget(_app(footer: null));
+    await tester.pumpAndSettle();
 
-      await tester.pumpWidget(_app(footer: _tallContent()));
+    await tester.pumpWidget(_app(footer: _tallContent()));
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('closing then reopening the footer repeatedly does not throw', (
+    tester,
+  ) async {
+    for (var i = 0; i < 3; i++) {
+      await tester.pumpWidget(_app(footer: _tallContent(), resetKey: i));
       await tester.pump();
-
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
-    'closing then reopening the footer repeatedly does not throw',
-    (tester) async {
-      for (var i = 0; i < 3; i++) {
-        await tester.pumpWidget(_app(footer: _tallContent(), resetKey: i));
-        await tester.pump();
-        await tester.pumpWidget(_app(footer: null));
-        await tester.pump();
-      }
-      expect(tester.takeException(), isNull);
-    },
-  );
+      await tester.pumpWidget(_app(footer: null));
+      await tester.pump();
+    }
+    expect(tester.takeException(), isNull);
+  });
 }

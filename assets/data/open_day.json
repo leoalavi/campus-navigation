@@ -942,23 +942,23 @@
       ]
     },
     {
-      "id": "evt-14-v13",
+      "id": "evt-14-v12",
       "title": "Bachelor of Information Technology",
       "startTime": "2026-08-15T14:00:00+10:00",
       "endTime": "2026-08-15T14:45:00+10:00",
-      "venueName": "Theatre G03, 1 Wally's Walk",
-      "buildingCode": "AINS",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
       "repeating": true,
       "bachelorIds": [
         "it"
       ]
     },
     {
-      "id": "evt-14-v14",
+      "id": "evt-14-v13",
       "title": "Bachelor of Exercise and Sports Science",
       "startTime": "2026-08-15T14:00:00+10:00",
       "endTime": "2026-08-15T14:45:00+10:00",
-      "venueName": "Theatre 102, 1 Wally's Walk",
+      "venueName": "Theatre G03, 1 Wally's Walk",
       "buildingCode": "AINS",
       "repeating": true,
       "bachelorIds": [
@@ -966,11 +966,11 @@
       ]
     },
     {
-      "id": "evt-14-v15",
+      "id": "evt-14-v14",
       "title": "Chiropractic science",
       "startTime": "2026-08-15T14:00:00+10:00",
       "endTime": "2026-08-15T14:45:00+10:00",
-      "venueName": "Theatre 202, 1 Wally's Walk",
+      "venueName": "Theatre 102, 1 Wally's Walk",
       "buildingCode": "AINS",
       "repeating": false,
       "bachelorIds": [
@@ -1058,23 +1058,23 @@
       ]
     },
     {
-      "id": "evt-15-v10",
+      "id": "evt-15-v9",
       "title": "Primary and early childhood teaching",
       "startTime": "2026-08-15T15:00:00+10:00",
       "endTime": "2026-08-15T15:45:00+10:00",
-      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
-      "buildingCode": "14SCO",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
       "repeating": false,
       "bachelorIds": [
         "primary-early-childhood-teaching"
       ]
     },
     {
-      "id": "evt-15-v11",
+      "id": "evt-15-v10",
       "title": "Bachelor of Medical Sciences",
       "startTime": "2026-08-15T15:00:00+10:00",
       "endTime": "2026-08-15T15:45:00+10:00",
-      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
       "buildingCode": "14SCO",
       "repeating": true,
       "bachelorIds": [
@@ -1082,11 +1082,11 @@
       ]
     },
     {
-      "id": "evt-15-v12",
+      "id": "evt-15-v11",
       "title": "Bachelor of Information Technology",
       "startTime": "2026-08-15T15:00:00+10:00",
       "endTime": "2026-08-15T15:45:00+10:00",
-      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
       "buildingCode": "14SCO",
       "repeating": true,
       "bachelorIds": [
@@ -1094,23 +1094,23 @@
       ]
     },
     {
-      "id": "evt-15-v13",
+      "id": "evt-15-v12",
       "title": "Bachelor of Engineering (Honours)",
       "startTime": "2026-08-15T15:00:00+10:00",
       "endTime": "2026-08-15T15:45:00+10:00",
-      "venueName": "Theatre G03, 1 Wally's Walk",
-      "buildingCode": "AINS",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
       "repeating": true,
       "bachelorIds": [
         "engineering"
       ]
     },
     {
-      "id": "evt-15-v14",
+      "id": "evt-15-v13",
       "title": "Bachelor of Health Sciences",
       "startTime": "2026-08-15T15:00:00+10:00",
       "endTime": "2026-08-15T15:45:00+10:00",
-      "venueName": "Theatre 102, 1 Wally's Walk",
+      "venueName": "Theatre G03, 1 Wally's Walk",
       "buildingCode": "AINS",
       "repeating": true,
       "bachelorIds": [

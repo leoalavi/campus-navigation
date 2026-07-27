@@ -4,16 +4,13 @@ import 'package:mq_journey/features/map/domain/services/map_branch_lifecycle.dar
 void main() {
   const mapBranch = 1;
 
-  bool reset({
-    required int? from,
-    required int to,
-    bool viewerOpen = true,
-  }) => shouldResetIndoorViewerOnBranchChange(
-    previousIndex: from,
-    nextIndex: to,
-    mapBranchIndex: mapBranch,
-    viewerOpen: viewerOpen,
-  );
+  bool reset({required int? from, required int to, bool viewerOpen = true}) =>
+      shouldResetIndoorViewerOnBranchChange(
+        previousIndex: from,
+        nextIndex: to,
+        mapBranchIndex: mapBranch,
+        viewerOpen: viewerOpen,
+      );
 
   test('resets when leaving the map tab with a scene open', () {
     // The reported bug: open a 3D scene, switch to Home, come back → black

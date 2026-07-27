@@ -318,7 +318,11 @@
   },
   "openDay_noMappableVenue": "No mappable venue for this event yet.",
   "@openDay_noMappableVenue": {
-    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+    "description": "Shown when an Open Day event has no campus location that can be placed on the map."
+  },
+  "openDay_venueLookupFailed": "Couldn't load campus locations. Please try again.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
   },
   "openDay_pickerSubtitle": "Choose a program or interest — this stays on your device and personalises your Open Day events.",
   "@openDay_pickerSubtitle": {

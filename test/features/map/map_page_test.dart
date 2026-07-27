@@ -378,9 +378,8 @@ void main() {
         GoRoute(
           path: '/map',
           name: RouteNames.map,
-          builder: (context, state) => MapPage(
-            initialBuildingId: state.uri.queryParameters['building'],
-          ),
+          builder: (context, state) =>
+              MapPage(initialBuildingId: state.uri.queryParameters['building']),
         ),
       ],
     );

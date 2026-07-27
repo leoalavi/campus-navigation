@@ -135,9 +135,7 @@ void main() {
     (tester) async {
       // buildingCode is set, but no matching building exists — must not
       // navigate to a map that cannot place the venue.
-      await tester.pumpWidget(
-        _app(event: _mappableEvent, buildings: const []),
-      );
+      await tester.pumpWidget(_app(event: _mappableEvent, buildings: const []));
       await tester.tap(find.text('open'));
       await tester.pumpAndSettle();
 
@@ -174,6 +172,6 @@ GoRouter router(WidgetTester tester) =>
 /// The localised "this venue has no map location" copy, read from the running
 /// app rather than duplicated as a literal — a stale literal would make these
 /// assertions pass for the wrong reason.
-String _noVenueCopy(WidgetTester tester) =>
-    AppLocalizations.of(tester.element(find.byType(Scaffold).first))!
-        .openDay_noMappableVenue;
+String _noVenueCopy(WidgetTester tester) => AppLocalizations.of(
+  tester.element(find.byType(Scaffold).first),
+)!.openDay_noMappableVenue;

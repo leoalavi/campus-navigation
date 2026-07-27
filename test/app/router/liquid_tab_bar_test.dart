@@ -95,10 +95,7 @@ void main() {
       testWidgets('$name: each icon reports its own index', (tester) async {
         final selected = <int>[];
         await tester.pumpWidget(
-          directionalHost(
-            direction: direction,
-            onSelected: selected.add,
-          ),
+          directionalHost(direction: direction, onSelected: selected.add),
         );
 
         // The icon a user sees for tab i must report i, whichever edge the
@@ -137,10 +134,7 @@ void main() {
     // the right-hand side for tab 0 — a hard-coded `left:` would put it over
     // Settings instead.
     await tester.pumpWidget(
-      directionalHost(
-        direction: TextDirection.rtl,
-        onSelected: (_) {},
-      ),
+      directionalHost(direction: TextDirection.rtl, onSelected: (_) {}),
     );
     await tester.pumpAndSettle();
 
