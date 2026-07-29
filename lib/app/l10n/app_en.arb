@@ -96,6 +96,10 @@
   "clearAll": "Clear All",
   "results": "results",
   "noBuildingsFound": "No buildings found matching \"{query}\"",
+  "buildingsLoadError": "Couldn't load buildings. Please try again.",
+  "@buildingsLoadError": {
+    "description": "Shown in the building search sheet when the campus building registry failed to load."
+  },
   "primary": "Primary",
   "warning": "Warning",
   "success": "Success",
@@ -662,19 +666,38 @@
   "arNoBuildingSelected": "Select a building to view indoors",
   "arComingSoon": "Indoor preview coming soon",
   "arExploreTitle": "Explore in 360°",
-  "@arExploreTitle": { "description": "Title of the AR building picker screen" },
+  "@arExploreTitle": {
+    "description": "Title of the AR building picker screen"
+  },
   "arExploreEyebrow": "360° campus tours",
-  "@arExploreEyebrow": { "description": "Eyebrow above the AR picker title (not literally augmented reality — it is a 360° panorama tour)" },
+  "@arExploreEyebrow": {
+    "description": "Eyebrow above the AR picker title (not literally augmented reality — it is a 360° panorama tour)"
+  },
   "arExploreSubtitle": "Step inside campus spaces before you arrive.",
-  "@arExploreSubtitle": { "description": "One-line subtitle under the AR picker title" },
+  "@arExploreSubtitle": {
+    "description": "One-line subtitle under the AR picker title"
+  },
   "arSceneCount": "{count, plural, =1{1 scene · 360° tour} other{{count} scenes · 360° tour}}",
-  "@arSceneCount": { "description": "Scene count sub-label on an available AR building card", "placeholders": { "count": { "type": "int" } } },
+  "@arSceneCount": {
+    "description": "Scene count sub-label on an available AR building card",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "arTourComingSoon": "Tour coming soon",
-  "@arTourComingSoon": { "description": "Sub-label on a locked AR building card" },
+  "@arTourComingSoon": {
+    "description": "Sub-label on a locked AR building card"
+  },
   "arSoonPill": "Soon",
-  "@arSoonPill": { "description": "Pill on a locked AR building card" },
+  "@arSoonPill": {
+    "description": "Pill on a locked AR building card"
+  },
   "indoorScenesLabel": "Scenes",
-  "@indoorScenesLabel": { "description": "Caption above the scene rail in the 360 viewer" },
+  "@indoorScenesLabel": {
+    "description": "Caption above the scene rail in the 360 viewer"
+  },
   "cardViewOnCampusMap": "View on Campus Map",
   "cardViewArMap": "View AR map",
   "cardAddToYourDayCta": "Add to Your Day",

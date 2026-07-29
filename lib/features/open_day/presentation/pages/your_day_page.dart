@@ -256,16 +256,16 @@ class _SavedStopRow extends ConsumerWidget {
 
     return _ItineraryCard(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // Centred rather than top-aligned: the leading badge is about as tall
+        // as this card's two single-line texts, so aligning to the start left
+        // it floating above the content.
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 72,
-            child: Icon(
-              Icons.place_outlined,
-              size: 18,
-              color: dark ? MqColors.brightRed : MqColors.red,
-            ),
-          ),
+          // The 72px lane is shared with the saved-session rows' time column,
+          // which is what keeps titles aligned down the list. A bare 18px
+          // glyph left most of that lane empty and the card looked unfinished,
+          // so the space is now filled deliberately with a tinted badge.
+          const SizedBox(width: 72, child: Center(child: _StopLeadingBadge())),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,6 +301,35 @@ class _SavedStopRow extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Leading marker badge for a saved stop.
+///
+/// Sized to fill the 72px leading lane meaningfully (40px tinted disc, 22px
+/// glyph) instead of the bare 18px icon that left the card looking empty on
+/// the left. It is decorative — the row's actions carry the semantics — so it
+/// deliberately has no tap target of its own and stays out of the a11y tree
+/// as an interactive element.
+class _StopLeadingBadge extends StatelessWidget {
+  const _StopLeadingBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = context.isDarkMode;
+    final accent = dark ? MqColors.brightRed : MqColors.red;
+    return Container(
+      width: 40,
+      height: 40,
+      // Explicitly centred: a sized Container passes tight constraints to its
+      // child, which would stretch the glyph's box to the full 40px.
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: accent.withValues(alpha: dark ? 0.22 : 0.12),
+        shape: BoxShape.circle,
+      ),
+      child: Icon(Icons.place_rounded, size: 22, color: accent),
     );
   }
 }

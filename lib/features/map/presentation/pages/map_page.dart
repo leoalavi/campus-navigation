@@ -30,12 +30,22 @@ class MapPage extends ConsumerStatefulWidget {
     this.initialSearchQuery,
     this.meetLat,
     this.meetLng,
+    this.showBackButton = false,
   });
 
   final String? initialBuildingId;
   final String? initialSearchQuery;
   final double? meetLat;
   final double? meetLng;
+
+  /// Whether to offer an in-map back affordance.
+  ///
+  /// Set from the route's `back=1` flag, which only `MapOpenPolicy.push`
+  /// adds. It is a route-carried flag rather than a `canPop()` check because
+  /// `canPop()` is read during build, while the push transition is still
+  /// running — it reads false at that moment and nothing rebuilds the page
+  /// afterwards, so the arrow never appeared.
+  final bool showBackButton;
 
   @override
   ConsumerState<MapPage> createState() => _MapPageState();
@@ -112,6 +122,20 @@ class _MapPageState extends ConsumerState<MapPage> {
         setState(() {});
       },
     );
+  }
+
+  /// Leaves the map the way the user came in.
+  ///
+  /// Normally there is a route beneath (the scanned venue card) and we simply
+  /// pop back to it. The fallback covers a hand-typed or shared URL that still
+  /// carries `back=1` with no history behind it: rather than a dead control,
+  /// send the user to Home, which is the app's standard root destination.
+  void _handleBack() {
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.goNamed(RouteNames.home);
+    }
   }
 
   Future<void> _openSearchSheet() async {
@@ -250,25 +274,45 @@ class _MapPageState extends ConsumerState<MapPage> {
 
         final selectedBuilding = mapState.selectedBuilding;
         if (!context.mounted) return;
-        final location = GoRouterState.of(context).matchedLocation;
+
+        // This block mirrors the selection into the URL so a refresh or a
+        // shared link reopens the same building. It does that with `goNamed`,
+        // which REPLACES the current route — fine for the map that lives in
+        // the shell, fatal for a map that was PUSHED as a detour.
+        //
+        // A pushed map (MapOpenPolicy.push, from the scanned QR venue card)
+        // already arrived at exactly the right URL, and replacing it collapses
+        // the stack: the venue card underneath is discarded and there is
+        // nothing left to go back to. Worse, the selection is transiently null
+        // while the map settles, so the `else` branch fired too and rewrote
+        // the route a second time. Skipping the sync entirely here is the
+        // fix — there is nothing to correct, and everything to lose.
+        if (widget.showBackButton) return;
+
+        // Read the *query*, not `matchedLocation`: the latter is only the
+        // path ('/map'), so the previous `location.contains('building=')`
+        // guard was never true and this re-navigated on every selection.
+        final uri = GoRouterState.of(context).uri;
+        final currentBuilding = uri.queryParameters['building'];
 
         if (selectedBuilding != null &&
             !selectedBuilding.id.startsWith('meet_')) {
-          if (!location.contains('building=')) {
+          if (currentBuilding != selectedBuilding.id) {
             context.goNamed(
               RouteNames.map,
               queryParameters: {'building': selectedBuilding.id},
             );
           }
-        } else {
-          if (location.contains('building=')) {
-            context.goNamed(RouteNames.map);
-          }
+        } else if (currentBuilding != null) {
+          context.goNamed(RouteNames.map);
         }
       }
     });
 
-    if (state.hasValue) {
+    if (state.hasValue && !widget.showBackButton) {
+      // Same reasoning as the URL sync above: on a pushed detour the route is
+      // authoritative, so this "URL says no building — drop the selection"
+      // reconciliation must not run and wipe the marker we were opened for.
       final selectedBuilding = state.value!.selectedBuilding;
       if (selectedBuilding != null &&
           !selectedBuilding.id.startsWith('meet_')) {
@@ -397,6 +441,9 @@ class _MapPageState extends ConsumerState<MapPage> {
             },
             onOpenSearch: _openSearchSheet,
             onOpenOverlayPicker: _openOverlayPicker,
+            // Only routes opened with MapOpenPolicy.push carry `back=1`, so
+            // bottom-nav and deep-link entries show no arrow at all.
+            onBack: widget.showBackButton ? _handleBack : null,
             filterChips: _CategoryFilterChips(
               activeQuery: mapState.searchQuery,
               onSelect: controller.updateSearchQuery,

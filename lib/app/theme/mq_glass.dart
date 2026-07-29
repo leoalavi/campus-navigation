@@ -40,4 +40,35 @@ abstract final class MqGlass {
   /// Base tint colour: white (light) / charcoal (dark).
   static Color tint(bool isDark) =>
       isDark ? MqColors.charcoal800 : const Color(0xFFFFFFFF);
+
+  // ── On-glass content ────────────────────────────────────
+  // Text and icons sitting ON a glass surface do not composite against a flat
+  // colour — they composite against the tint PLUS whatever shows through it
+  // (campus photo, map tiles). At [opacityRegular] the surface is only
+  // ~0.45–0.52 opaque, so a label drawn at the alpha you would use on a solid
+  // card washes out completely: charcoal @ 0.4 over the light pill measured
+  // roughly 2:1, far below the 4.5:1 AA floor.
+  //
+  // These tokens are therefore much stronger than normal "muted" alphas. They
+  // raise the *content*, never the surface — [opacityRegular] is untouched, so
+  // refraction and vibrancy still read through the glass.
+
+  /// Primary label on glass (segmented controls, chips, active labels).
+  static Color onGlassPrimary(bool isDark) =>
+      isDark ? const Color(0xFFFFFFFF) : MqColors.charcoal800;
+
+  /// Secondary label on glass — visibly lighter than [onGlassPrimary] but
+  /// still solidly readable over a busy backdrop. Used for the map search
+  /// pill's placeholder, which is a button label, not a true input hint.
+  static Color onGlassSecondary(bool isDark) =>
+      (isDark ? const Color(0xFFFFFFFF) : MqColors.charcoal800).withValues(
+        alpha: isDark ? 0.86 : 0.85,
+      );
+
+  /// Leading/trailing glyphs on glass. Slightly under the text alpha so icons
+  /// read as supporting, without dissolving into the backdrop.
+  static Color onGlassIcon(bool isDark) =>
+      (isDark ? const Color(0xFFFFFFFF) : MqColors.charcoal800).withValues(
+        alpha: isDark ? 0.78 : 0.72,
+      );
 }
