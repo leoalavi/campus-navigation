@@ -180,6 +180,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   meetLng: double.tryParse(
                     state.uri.queryParameters['lng'] ?? '',
                   ),
+                  // Added only by MapOpenPolicy.push (e.g. the scanned-QR
+                  // venue card), so the back arrow appears exactly on the
+                  // flows that have somewhere to go back to.
+                  showBackButton: state.uri.queryParameters['back'] == '1',
                 ),
                 routes: [
                   GoRoute(

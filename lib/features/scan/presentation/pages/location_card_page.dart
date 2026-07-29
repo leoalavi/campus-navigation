@@ -279,6 +279,12 @@ class _PrimaryButtons extends ConsumerWidget {
                     // trail buildingId slug, so the map focuses the actual
                     // building.
                     content.mapBuildingCode ?? content.buildingId!,
+                    // Push, don't replace. This card is a top-level route
+                    // outside the shell, so `go` tore it off the stack and
+                    // left the map with nothing to go back to. Pushing keeps
+                    // the card alive underneath, so back returns to this exact
+                    // venue with its Your Day / Visited state intact.
+                    policy: MapOpenPolicy.push,
                   )
                 : null,
             icon: const Icon(Icons.map),

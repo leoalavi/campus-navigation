@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
+import 'package:mq_journey/app/theme/mq_glass.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/shared/widgets/glass_surface.dart';
 
@@ -77,9 +78,11 @@ class _SegmentButton extends StatelessWidget {
           child: Text(
             label,
             style: TextStyle(
-              color: isSelected
-                  ? Colors.white
-                  : (isDark ? Colors.white70 : MqColors.charcoal800),
+              // Unselected sat at white70 in dark mode, which dissolved into
+              // the glass over a bright map. On-glass primary keeps the two
+              // states distinct (red pill vs bare glass) while leaving the
+              // inactive label properly readable rather than merely present.
+              color: isSelected ? Colors.white : MqGlass.onGlassPrimary(isDark),
               fontWeight: FontWeight.w700,
               fontSize: 14,
             ),

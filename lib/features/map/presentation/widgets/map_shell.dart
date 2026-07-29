@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart' show CustomSemanticsAction;
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
+import 'package:mq_journey/app/theme/mq_glass.dart';
 import 'package:mq_journey/features/map/presentation/widgets/map_mode_toggle.dart';
 import 'package:mq_journey/shared/widgets/glass_pane.dart';
 import 'package:mq_journey/shared/widgets/glass_surface.dart';
@@ -24,11 +25,20 @@ class MapShell extends StatefulWidget {
     this.onMapModeChanged,
     this.arContent,
     this.showArModeToggle = true,
+    this.onBack,
   });
 
   final Widget mapView;
   final VoidCallback onCenterOnLocation;
   final VoidCallback onOpenSearch;
+
+  /// When non-null a back affordance is rendered beside the search pill.
+  ///
+  /// Only supplied when the map was *pushed* on top of a real previous page
+  /// (see `MapOpenPolicy.push` — e.g. a scanned QR venue card). Entering the
+  /// map via the bottom nav or a cold deep link leaves this null, so no
+  /// misleading back arrow appears with nothing behind it.
+  final VoidCallback? onBack;
   final VoidCallback? onOpenOverlayPicker;
   final Widget? banner;
   final Widget? footer;
@@ -86,6 +96,7 @@ class _MapShellState extends State<MapShell> {
   ValueChanged<MapMode>? get onMapModeChanged => widget.onMapModeChanged;
   Widget? get arContent => widget.arContent;
   bool get showArModeToggle => widget.showArModeToggle;
+  VoidCallback? get onBack => widget.onBack;
 
   static const double _bottomControlsReservedHeight =
       MapShell._bottomControlsReservedHeight;
@@ -118,46 +129,55 @@ class _MapShellState extends State<MapShell> {
             right: MqSpacing.space4,
             child: Column(
               children: [
-                Semantics(
-                  button: true,
-                  label: l10n.searchBuildingsPlaceholder,
-                  child: GestureDetector(
-                    onTap: onOpenSearch,
-                    child: _GlassPane(
-                      isDark: isDark,
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: MqSpacing.space4,
-                          vertical: MqSpacing.space4,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.search,
-                              color: isDark
-                                  ? Colors.white.withValues(alpha: 0.5)
-                                  : MqColors.charcoal800.withValues(alpha: 0.4),
-                              size: 20,
-                            ),
-                            const SizedBox(width: MqSpacing.space3),
-                            Expanded(
-                              child: Text(
-                                l10n.searchBuildingsPlaceholder,
-                                style: TextStyle(
-                                  color: isDark
-                                      ? Colors.white.withValues(alpha: 0.5)
-                                      : MqColors.charcoal800.withValues(
-                                          alpha: 0.4,
-                                        ),
-                                  fontSize: 14,
-                                ),
+                Row(
+                  children: [
+                    if (onBack != null) ...[
+                      _MapBackButton(isDark: isDark, onTap: onBack!),
+                      const SizedBox(width: MqSpacing.space3),
+                    ],
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        label: l10n.searchBuildingsPlaceholder,
+                        child: GestureDetector(
+                          onTap: onOpenSearch,
+                          child: _GlassPane(
+                            isDark: isDark,
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.symmetric(
+                                horizontal: MqSpacing.space4,
+                                vertical: MqSpacing.space4,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    color: MqGlass.onGlassIcon(isDark),
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: MqSpacing.space3),
+                                  Expanded(
+                                    child: Text(
+                                      l10n.searchBuildingsPlaceholder,
+                                      // A BUTTON label, not a text-field hint:
+                                      // it is the only thing identifying the
+                                      // control, so it gets on-glass secondary
+                                      // weight/alpha, not a washed-out 0.4.
+                                      style: TextStyle(
+                                        color: MqGlass.onGlassSecondary(isDark),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
 
                 if (mapMode != null && onMapModeChanged != null) ...[
@@ -289,6 +309,44 @@ class _MapShellState extends State<MapShell> {
 
 class _GlassPane extends GlassPane {
   const _GlassPane({required super.isDark, required super.child});
+}
+
+/// Circular glass back affordance shown beside the search pill when the map
+/// was pushed on top of a real previous page (see [MapShell.onBack]).
+///
+/// Uses `Icons.arrow_back` — which carries `matchTextDirection: true` — so the
+/// arrow mirrors automatically in RTL locales without a manual flip.
+class _MapBackButton extends StatelessWidget {
+  const _MapBackButton({required this.isDark, required this.onTap});
+
+  final bool isDark;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Semantics(
+      button: true,
+      label: l10n.back,
+      child: GestureDetector(
+        onTap: onTap,
+        child: _GlassPane(
+          isDark: isDark,
+          child: SizedBox.square(
+            // Full 48px target: this is the only non-bottom-nav way back.
+            dimension: MqSpacing.minTapTarget,
+            child: Center(
+              child: Icon(
+                Icons.arrow_back,
+                size: 22,
+                color: MqGlass.onGlassPrimary(isDark),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// Makes the map's footer panel behave like a real bottom sheet.

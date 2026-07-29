@@ -56,7 +56,7 @@ const _trail = TrailManifest(
   ],
 );
 
-Widget _app() {
+Widget _app({Locale locale = const Locale('en')}) {
   final router = GoRouter(
     initialLocation: '/your-day',
     routes: [
@@ -81,6 +81,7 @@ Widget _app() {
       ),
     ],
     child: MaterialApp.router(
+      locale: locale,
       routerConfig: router,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -135,6 +136,88 @@ void main() {
     final title = tester.widget<Text>(find.text('Waranara Library'));
     expect(title.maxLines, 1);
     expect(title.overflow, TextOverflow.ellipsis);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the leading marker fills its lane instead of floating in it', (
+    tester,
+  ) async {
+    // Regression: an 18px glyph sat alone in the 72px leading lane (which is
+    // shared with the session rows' time column), leaving the card looking
+    // half-finished on the left.
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final marker = find.byIcon(Icons.place_rounded);
+    expect(marker, findsOneWidget);
+
+    final glyph = tester.getSize(marker);
+    expect(
+      glyph.width,
+      greaterThanOrEqualTo(20),
+      reason: 'the marker glyph must read clearly on a phone',
+    );
+    expect(
+      glyph.width,
+      lessThanOrEqualTo(28),
+      reason: 'but must not balloon and unbalance the row',
+    );
+
+    // The tinted disc behind it is what actually occupies the lane.
+    final badge = tester.getSize(
+      find.ancestor(of: marker, matching: find.byType(Container)).first,
+    );
+    expect(badge.width, greaterThanOrEqualTo(36));
+    expect(badge.height, greaterThanOrEqualTo(36));
+  });
+
+  testWidgets('the marker is centred in the row, not top-aligned', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final markerCentre = tester.getCenter(find.byIcon(Icons.place_rounded));
+    final titleCentre = tester.getCenter(find.text('Waranara Library'));
+    final subtitleCentre = tester.getCenter(
+      find.text('Study spaces at the heart of campus.'),
+    );
+    final contentCentre = (titleCentre.dy + subtitleCentre.dy) / 2;
+
+    expect(
+      (markerCentre.dy - contentCentre).abs(),
+      lessThan(4.0),
+      reason: 'the badge should sit level with the card text',
+    );
+  });
+
+  testWidgets('the stop row mirrors correctly in RTL', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    // Arabic drives the whole app into RTL, which is what actually flips the
+    // Row — an outer Directionality would be overridden by MaterialApp.
+    await tester.pumpWidget(_app(locale: const Locale('ar')));
+    await tester.pumpAndSettle();
+
+    // In RTL the leading badge belongs on the RIGHT and the trailing actions
+    // on the LEFT — Row + EdgeInsetsDirectional should do this for free.
+    final marker = tester.getCenter(find.byIcon(Icons.place_rounded));
+    final remove = tester.getCenter(find.byIcon(Icons.close_rounded));
+    expect(
+      marker.dx,
+      greaterThan(remove.dx),
+      reason: 'leading marker must mirror to the right-hand side in RTL',
+    );
     expect(tester.takeException(), isNull);
   });
 }
