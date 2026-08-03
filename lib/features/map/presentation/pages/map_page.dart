@@ -116,11 +116,15 @@ class _MapPageState extends ConsumerState<MapPage> {
       final trail = ref.read(trailManifestProvider).value;
       final manifestId =
           trail?.byMapBuildingCode(buildingCode)?.buildingId ?? buildingCode;
+      // Aliased codes (a second map pin inside one physical building, e.g.
+      // PRICE inside 23 Wally's Walk) open directly on their own scene.
+      final initialScene = trail?.arSceneForMapBuildingCode(buildingCode);
       // Embedded (not pushed) in the AR branch, so there's nothing to pop —
       // give it an explicit back button that clears the selection and returns
       // to the AR building picker, keeping the user inside AR mode.
       return IndoorPreviewPage(
         buildingId: manifestId,
+        initialSceneId: initialScene,
         onBack: () {
           ref.read(mapControllerProvider.notifier).clearSelection();
           setState(() {});
@@ -150,16 +154,21 @@ class _MapPageState extends ConsumerState<MapPage> {
     }
   }
 
+  /// Guards against a second search surface while one is opening/open.
+  ///
+  /// A modal route takes a frame to install, so a fast double-tap (or a
+  /// synthesised second tap on web) could push two.
+  bool _searchOpening = false;
+
   Future<void> _openSearchSheet() async {
-    final building = await showModalBottomSheet<Building>(
-      context: context,
-      isScrollControlled: true,
-      // Cover the full height so the map's search pill can never show through
-      // behind the sheet — a single search surface, never two at once.
-      useSafeArea: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const BuildingSearchSheet(),
-    );
+    if (_searchOpening) return;
+    _searchOpening = true;
+    final Building? building;
+    try {
+      building = await Navigator.of(context).push<Building>(_searchRoute());
+    } finally {
+      _searchOpening = false;
+    }
     if (!mounted) return;
     if (building != null) {
       await BuildingActionsSheet.show(
@@ -169,6 +178,37 @@ class _MapPageState extends ConsumerState<MapPage> {
       );
     }
   }
+
+  /// The search surface as an **opaque** route rather than a modal sheet.
+  ///
+  /// The sheet already filled the screen, but `showModalBottomSheet` keeps the
+  /// route underneath mounted *and painting*. The map carries eight
+  /// `BackdropFilter` glass layers (search pill, chips, mode toggle, layers,
+  /// my-location, footer, tab bar), and every one of them kept re-sampling a
+  /// full-screen blur each frame behind a surface that already hid them — on
+  /// web each blur is a save-layer readback, which is what made opening the
+  /// search flash and pulse.
+  ///
+  /// An opaque route lets the framework stop painting everything beneath once
+  /// the transition ends, so those eight blurs go quiet. It also needs no
+  /// modal barrier (nothing shows through), giving exactly one transition and
+  /// no scrim — and `pop` still returns the chosen building, so Back and the
+  /// system/browser back gesture close it cleanly.
+  Route<Building> _searchRoute() => PageRouteBuilder<Building>(
+    opaque: true,
+    barrierColor: null,
+    barrierDismissible: false,
+    transitionDuration: const Duration(milliseconds: 220),
+    reverseTransitionDuration: const Duration(milliseconds: 180),
+    pageBuilder: (_, _, _) => const BuildingSearchSheet(),
+    transitionsBuilder: (_, animation, _, child) => SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0, 1),
+        end: Offset.zero,
+      ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
+      child: child,
+    ),
+  );
 
   void _openOverlayPicker() {
     showModalBottomSheet<void>(
@@ -839,9 +879,15 @@ class _MapErrorBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(MqSpacing.space4),
       decoration: BoxDecoration(
-        color: isDark
-            ? MqColors.error.withValues(alpha: 0.14)
-            : Colors.white.withValues(alpha: 0.95),
+        // Deliberately NOT a glass/tinted surface. This banner sits directly
+        // over the campus map, whose colours and labels run underneath it. At
+        // the previous dark-mode value (an error tint at 0.14 alpha) the map
+        // showed straight through and the message — the one thing the user
+        // needs to read when location fails — was barely legible. Status and
+        // error copy gets an opaque surface; the Liquid Glass language is kept
+        // by the rounded shape, error-tinted border and shadow rather than by
+        // transparency.
+        color: isDark ? MqColors.charcoal900 : Colors.white,
         borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
         border: Border.all(
           color: MqColors.error.withValues(alpha: isDark ? 0.34 : 0.22),
@@ -881,7 +927,9 @@ class _MapErrorBanner extends StatelessWidget {
           Text(
             message,
             style: context.textTheme.bodySmall?.copyWith(
-              color: isDark ? Colors.white : MqColors.contentSecondary,
+              // Primary, not secondary: this is the actionable sentence, and
+              // secondary grey on white was the weakest text in the banner.
+              color: isDark ? Colors.white : MqColors.contentPrimary,
             ),
           ),
           if (isPermissionBlocked) ...[

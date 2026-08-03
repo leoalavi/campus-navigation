@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Peta kampus sudah dimuat turun untuk kegunaan luar talian.",
   "offlineCampusMapsRedownload": "Muat turun semula",
   "offlineCampusMapsFailed": "Muat turun gagal",
+  "offlineCampusMapsBundled": "Disertakan dalam apl",
+  "offlineCampusMapsBundledDetail": "Peta kampus, senarai bangunan dan lawatan dalaman berfungsi tanpa sambungan. Masa metro langsung, laluan pejalan kaki dan perkhidmatan dalam talian lain memerlukannya.",
   "homeNextMetroLabel": "Metro seterusnya",
   "homeNextMetroEmpty": "Tiada perlepasan metro akan datang",
   "commutePreferences": "Pilihan Ulang-alik",

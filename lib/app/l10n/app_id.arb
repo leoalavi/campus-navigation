@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Peta kampus sudah diunduh untuk penggunaan offline.",
   "offlineCampusMapsRedownload": "Unduh ulang",
   "offlineCampusMapsFailed": "Unduhan gagal",
+  "offlineCampusMapsBundled": "Termasuk dalam aplikasi",
+  "offlineCampusMapsBundledDetail": "Peta kampus, daftar gedung, dan tur dalam ruangan berfungsi tanpa koneksi. Waktu metro langsung, rute jalan kaki, dan layanan daring lainnya tetap memerlukannya.",
   "homeNextMetroLabel": "Metro berikutnya",
   "homeNextMetroEmpty": "Tidak ada keberangkatan metro mendatang",
   "commutePreferences": "Preferensi Perjalanan",

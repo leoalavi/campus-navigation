@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "نقشه‌های پردیس قبلاً برای استفاده آفلاین دانلود شده‌اند.",
   "offlineCampusMapsRedownload": "دانلود مجدد",
   "offlineCampusMapsFailed": "دانلود ناموفق بود",
+  "offlineCampusMapsBundled": "همراه برنامه ارائه شده است",
+  "offlineCampusMapsBundledDetail": "نقشه پردیس، فهرست ساختمان‌ها و تورهای داخلی بدون اتصال کار می‌کنند. زمان‌های زندهٔ مترو، مسیرهای پیاده‌روی و سایر سرویس‌های آنلاین به اتصال نیاز دارند.",
   "homeNextMetroLabel": "متروی بعدی",
   "homeNextMetroEmpty": "هیچ حرکت مترو در آینده وجود ندارد",
   "commutePreferences": "تنظیمات برگزیده رفت و آمد",

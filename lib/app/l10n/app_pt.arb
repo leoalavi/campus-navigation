@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Os mapas do campus já foram baixados para uso offline.",
   "offlineCampusMapsRedownload": "Baixar novamente",
   "offlineCampusMapsFailed": "Falha no download",
+  "offlineCampusMapsBundled": "Incluído no aplicativo",
+  "offlineCampusMapsBundledDetail": "O mapa do campus, a lista de edifícios e os tours internos funcionam sem ligação. Horários do metro em direto, rotas a pé e outros serviços online precisam de ligação.",
   "homeNextMetroLabel": "Próximo metrô",
   "homeNextMetroEmpty": "Não há próximas partidas de metrô",
   "commutePreferences": "Preferências de deslocamento diário",

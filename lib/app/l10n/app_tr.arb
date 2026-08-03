@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Kampüs haritaları çevrimdışı kullanım için zaten indirildi.",
   "offlineCampusMapsRedownload": "Yeniden indir",
   "offlineCampusMapsFailed": "İndirme başarısız oldu",
+  "offlineCampusMapsBundled": "Uygulamaya dahil",
+  "offlineCampusMapsBundledDetail": "Kampüs haritası, bina listesi ve iç mekân turları bağlantı olmadan çalışır. Canlı metro saatleri, yürüyüş rotaları ve diğer çevrimiçi hizmetler bağlantı gerektirir.",
   "homeNextMetroLabel": "Sonraki Metro",
   "homeNextMetroEmpty": "Yaklaşan metro kalkışı yok",
   "commutePreferences": "İşe gidip gelme tercihleri",

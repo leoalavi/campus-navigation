@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "A campus térképek már le vannak töltve offline használatra.",
   "offlineCampusMapsRedownload": "Újratöltés",
   "offlineCampusMapsFailed": "A letöltés sikertelen",
+  "offlineCampusMapsBundled": "Az alkalmazás része",
+  "offlineCampusMapsBundledDetail": "A campustérkép, az épületlista és a beltéri túrák kapcsolat nélkül is működnek. Az élő metróidők, a gyalogos útvonalak és más online szolgáltatások kapcsolatot igényelnek.",
   "homeNextMetroLabel": "Következő metró",
   "homeNextMetroEmpty": "Nincs közelgő metró indulás",
   "commutePreferences": "Ingázási beállítások",

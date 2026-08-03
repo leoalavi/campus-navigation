@@ -7,8 +7,20 @@ import 'package:mq_journey/features/scan/presentation/widgets/indoor_tour_view.d
 import 'package:mq_journey/shared/widgets/glass_app_bar.dart';
 
 class IndoorPreviewPage extends ConsumerStatefulWidget {
-  const IndoorPreviewPage({super.key, required this.buildingId, this.onBack});
+  const IndoorPreviewPage({
+    super.key,
+    required this.buildingId,
+    this.initialSceneId,
+    this.onBack,
+  });
   final String buildingId;
+
+  /// Scene to open on, when the caller knows which one it wants.
+  ///
+  /// Used by aliased campus-map codes: selecting Price Theatre opens the
+  /// 23 Wally's Walk manifest *on its `price` panorama* rather than the
+  /// building entrance, so the AR view matches the pin the user tapped.
+  final String? initialSceneId;
 
   /// When provided, the app bar shows a leading back button that calls this
   /// instead of relying on the navigation stack. Used when the page is
@@ -105,6 +117,7 @@ class _IndoorPreviewPageState extends ConsumerState<IndoorPreviewPage> {
           // tab-bar island is present — reserve clearance for it.
           return IndoorTourView(
             manifest: manifest,
+            firstSceneId: widget.initialSceneId,
             reserveBottomForTabBar: true,
           );
         },

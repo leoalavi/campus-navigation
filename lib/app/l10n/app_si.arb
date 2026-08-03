@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "නොබැඳි භාවිතය සඳහා කැම්පස් සිතියම් දැනටමත් බාගත කර ඇත.",
   "offlineCampusMapsRedownload": "නැවත බාගන්න",
   "offlineCampusMapsFailed": "බාගැනීම අසාර්ථක විය",
+  "offlineCampusMapsBundled": "යෙදුම තුළ ඇතුළත්",
+  "offlineCampusMapsBundledDetail": "කැම්පස් සිතියම, ගොඩනැගිලි ලැයිස්තුව සහ ගෘහස්ථ සංචාර සම්බන්ධතාවයකින් තොරව ක්‍රියා කරයි. සජීවී මෙට්‍රෝ වේලාවන් සහ වෙනත් සබැඳි සේවා සඳහා සම්බන්ධතාවයක් අවශ්‍යයි.",
   "homeNextMetroLabel": "ඊළඟ මෙට්රෝ",
   "homeNextMetroEmpty": "ඉදිරියට එන මෙට්‍රෝ පිටත්වීම් නැත",
   "commutePreferences": "ගමනාගමන මනාප",

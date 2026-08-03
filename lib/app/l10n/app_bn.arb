@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "অফলাইন ব্যবহারের জন্য ক্যাম্পাস মানচিত্র ইতিমধ্যে ডাউনলোড করা হয়েছে।",
   "offlineCampusMapsRedownload": "পুনরায় ডাউনলোড করুন",
   "offlineCampusMapsFailed": "ডাউনলোড ব্যর্থ হয়েছে",
+  "offlineCampusMapsBundled": "অ্যাপে অন্তর্ভুক্ত",
+  "offlineCampusMapsBundledDetail": "ক্যাম্পাস মানচিত্র, ভবনের তালিকা ও ইনডোর ট্যুর সংযোগ ছাড়াই কাজ করে। লাইভ মেট্রো সময়, হাঁটার রুট ও অন্যান্য অনলাইন পরিষেবার জন্য সংযোগ প্রয়োজন।",
   "homeNextMetroLabel": "পরবর্তী মেট্রো",
   "homeNextMetroEmpty": "কোনো আসন্ন মেট্রো প্রস্থান",
   "commutePreferences": "যাতায়াতের পছন্দ",

@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "अफलाइन प्रयोगको लागि क्याम्पस नक्सा पहिले नै डाउनलोड भइसकेको छ।",
   "offlineCampusMapsRedownload": "पुन: डाउनलोड गर्नुहोस्",
   "offlineCampusMapsFailed": "डाउनलोड असफल भयो",
+  "offlineCampusMapsBundled": "एपमा समावेश",
+  "offlineCampusMapsBundledDetail": "क्याम्पस नक्सा, भवन सूची र इनडोर टुरहरू जडान बिना काम गर्छन्। लाइभ मेट्रो समय, हिँड्ने मार्ग र अन्य अनलाइन सेवाहरूलाई जडान चाहिन्छ।",
   "homeNextMetroLabel": "अर्को मेट्रो",
   "homeNextMetroEmpty": "कुनै आगामी मेट्रो प्रस्थान छैन",
   "commutePreferences": "कम्युट प्राथमिकताहरू",

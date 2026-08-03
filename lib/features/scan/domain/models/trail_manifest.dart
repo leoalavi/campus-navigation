@@ -27,6 +27,19 @@ class TrailLocation {
   final String? description; // short 2-3 sentence blurb shown on the card
   final List<String> photos;
   final String? arSceneId; // this location's own entrance scene (a node id)
+
+  /// Extra campus-map building codes that resolve to *this* location's indoor
+  /// manifest, mapped to the scene each one should open on.
+  ///
+  /// `mapBuildingCode` is 1:1, but a single physical building can carry more
+  /// than one pin on the campus map. Price Theatre is its own building in
+  /// `buildings.json` (code `PRICE`) yet lives inside 23 Wally's Walk, whose
+  /// manifest already ships a `price` panorama. Without an alias, selecting
+  /// Price Theatre on the map and switching to AR looked up a manifest named
+  /// `PRICE`, found nothing, and reported "no indoor preview" for a location
+  /// the map had just shown. Keyed by stable code → scene id, never by
+  /// display title, so it is locale-independent.
+  final Map<String, String> arAliases;
   final List<OpenDayStop> stops;
 
   const TrailLocation({
@@ -37,6 +50,7 @@ class TrailLocation {
     this.description,
     this.photos = const [],
     this.arSceneId,
+    this.arAliases = const {},
     this.stops = const [],
   });
 }
@@ -68,6 +82,28 @@ class TrailManifest {
     for (final l in locations) {
       if (l.mapBuildingCode?.toUpperCase() == upper) return l;
     }
+    // Fall back to explicit aliases: a second map pin inside the same
+    // physical building (e.g. PRICE inside 23 Wally's Walk).
+    for (final l in locations) {
+      for (final alias in l.arAliases.keys) {
+        if (alias.toUpperCase() == upper) return l;
+      }
+    }
+    return null;
+  }
+
+  /// The scene an aliased campus-map code should open on, if any.
+  ///
+  /// Returns null for a location's primary code, which opens on its own
+  /// entrance scene as before.
+  String? arSceneForMapBuildingCode(String mapBuildingCode) {
+    final upper = mapBuildingCode.toUpperCase();
+    for (final l in locations) {
+      if (l.mapBuildingCode?.toUpperCase() == upper) return null;
+      for (final entry in l.arAliases.entries) {
+        if (entry.key.toUpperCase() == upper) return entry.value;
+      }
+    }
     return null;
   }
 
@@ -86,6 +122,9 @@ class TrailManifest {
                 .map((p) => p as String)
                 .toList(growable: false),
             arSceneId: m['arSceneId'] as String?,
+            arAliases: ((m['arAliases'] as Map?) ?? const {}).map(
+              (k, v) => MapEntry(k as String, v as String),
+            ),
             stops: ((m['stops'] as List?) ?? const [])
                 .map((s) {
                   final sm = s as Map<String, dynamic>;

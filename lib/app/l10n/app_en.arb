@@ -210,6 +210,14 @@
   "offlineCampusMapsAlreadyDownloaded": "Campus maps are already downloaded for offline use.",
   "offlineCampusMapsRedownload": "Re-download",
   "offlineCampusMapsFailed": "Download failed",
+  "offlineCampusMapsBundled": "Included in the app",
+  "@offlineCampusMapsBundled": {
+    "description": "Status for Offline Campus Map: the campus map image ships with the app, so there is nothing to download."
+  },
+  "offlineCampusMapsBundledDetail": "The campus map, building list and indoor tours work without a connection. Live metro times, walking routes and other online services still need one.",
+  "@offlineCampusMapsBundledDetail": {
+    "description": "Explains what does and does not work offline, shown under the Offline Campus Map status row."
+  },
   "homeNextMetroLabel": "Next Metro",
   "homeNextMetroEmpty": "No upcoming metro departures",
   "commutePreferences": "Commute Preferences",

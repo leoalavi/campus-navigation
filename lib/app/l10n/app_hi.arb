@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "ऑफ़लाइन उपयोग के लिए कैम्पस मानचित्र पहले से ही डाउनलोड हैं।",
   "offlineCampusMapsRedownload": "फिर से डाउनलोड करें",
   "offlineCampusMapsFailed": "डाउनलोड विफल हुआ",
+  "offlineCampusMapsBundled": "ऐप में शामिल",
+  "offlineCampusMapsBundledDetail": "कैंपस मानचित्र, भवन सूची और इनडोर टूर बिना कनेक्शन के काम करते हैं। लाइव मेट्रो समय, पैदल मार्ग और अन्य ऑनलाइन सेवाओं के लिए कनेक्शन चाहिए।",
   "homeNextMetroLabel": "अगला मेट्रो",
   "homeNextMetroEmpty": "कोई आगामी मेट्रो प्रस्थान नहीं",
   "commutePreferences": "यात्रा प्राथमिकताएँ",

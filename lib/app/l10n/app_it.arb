@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Le mappe del campus sono già state scaricate per l'uso offline.",
   "offlineCampusMapsRedownload": "Scarica di nuovo",
   "offlineCampusMapsFailed": "Download non riuscito",
+  "offlineCampusMapsBundled": "Incluso nell'app",
+  "offlineCampusMapsBundledDetail": "La mappa del campus, l'elenco degli edifici e i tour interni funzionano senza connessione. Gli orari live della metro, i percorsi a piedi e gli altri servizi online la richiedono.",
   "homeNextMetroLabel": "La prossima metropolitana",
   "homeNextMetroEmpty": "Nessuna prossima partenza della metropolitana",
   "commutePreferences": "Preferenze di pendolarismo",

@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "校园地图已下载供离线使用。",
   "offlineCampusMapsRedownload": "重新下载",
   "offlineCampusMapsFailed": "下载失败",
+  "offlineCampusMapsBundled": "已包含在应用中",
+  "offlineCampusMapsBundledDetail": "校园地图、建筑列表和室内导览无需联网即可使用。地铁实时时刻、步行路线及其他在线服务仍需联网。",
   "homeNextMetroLabel": "下一班地铁",
   "homeNextMetroEmpty": "暂无即将出发的地铁班次",
   "commutePreferences": "通勤偏好",

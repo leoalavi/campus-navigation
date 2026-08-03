@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "מפות הקמפוס כבר הורדו לשימוש לא מקוון.",
   "offlineCampusMapsRedownload": "הורד מחדש",
   "offlineCampusMapsFailed": "ההורדה נכשלה",
+  "offlineCampusMapsBundled": "כלול באפליקציה",
+  "offlineCampusMapsBundledDetail": "מפת הקמפוס, רשימת המבנים והסיורים הפנימיים פועלים ללא חיבור. זמני רכבת בזמן אמת, מסלולי הליכה ושירותים מקוונים אחרים דורשים חיבור.",
   "homeNextMetroLabel": "המטרו הבא",
   "homeNextMetroEmpty": "אין יציאות בקרוב למטרו",
   "commutePreferences": "העדפות נסיעה לעבודה",

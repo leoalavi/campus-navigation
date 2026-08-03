@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "キャンパスマップはすでにオフライン用にダウンロードされています。",
   "offlineCampusMapsRedownload": "再ダウンロード",
   "offlineCampusMapsFailed": "ダウンロードに失敗しました",
+  "offlineCampusMapsBundled": "アプリに同梱",
+  "offlineCampusMapsBundledDetail": "キャンパスマップ、建物一覧、屋内ツアーは接続なしで利用できます。メトロのリアルタイム時刻、徒歩ルートなどのオンラインサービスには接続が必要です。",
   "homeNextMetroLabel": "次の電車",
   "homeNextMetroEmpty": "まもなく出発する電車はありません",
   "commutePreferences": "通勤設定",

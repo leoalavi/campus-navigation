@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Campuskartor är redan nedladdade för offlineanvändning.",
   "offlineCampusMapsRedownload": "Ladda ner igen",
   "offlineCampusMapsFailed": "Nedladdningen misslyckades",
+  "offlineCampusMapsBundled": "Ingår i appen",
+  "offlineCampusMapsBundledDetail": "Campuskartan, byggnadslistan och inomhusturerna fungerar utan anslutning. Live-tunnelbanetider, gångrutter och andra onlinetjänster kräver anslutning.",
   "homeNextMetroLabel": "Nästa tunnelbana",
   "homeNextMetroEmpty": "Inga kommande tunnelbaneavgångar",
   "commutePreferences": "Pendlingsinställningar",

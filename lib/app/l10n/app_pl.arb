@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Mapy kampusu zostały już pobrane do użytku offline.",
   "offlineCampusMapsRedownload": "Pobierz ponownie",
   "offlineCampusMapsFailed": "Pobieranie nie powiodło się",
+  "offlineCampusMapsBundled": "Dołączone do aplikacji",
+  "offlineCampusMapsBundledDetail": "Mapa kampusu, lista budynków i zwiedzanie wnętrz działają bez połączenia. Czasy metra na żywo, trasy piesze i inne usługi online go wymagają.",
   "homeNextMetroLabel": "Następne metro",
   "homeNextMetroEmpty": "Brak nadchodzących odjazdów metra",
   "commutePreferences": "Preferencje dotyczące dojazdów",

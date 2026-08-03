@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Campuskarten wurden bereits für die Offline-Nutzung heruntergeladen.",
   "offlineCampusMapsRedownload": "Erneut herunterladen",
   "offlineCampusMapsFailed": "Download fehlgeschlagen",
+  "offlineCampusMapsBundled": "In der App enthalten",
+  "offlineCampusMapsBundledDetail": "Campusplan, Gebäudeliste und Innenrundgänge funktionieren ohne Verbindung. Live-Metrozeiten, Fußwege und andere Onlinedienste benötigen eine Verbindung.",
   "homeNextMetroLabel": "Nächste U-Bahn",
   "homeNextMetroEmpty": "Keine bevorstehenden U-Bahn-Abfahrten",
   "commutePreferences": "Pendeleinstellungen",

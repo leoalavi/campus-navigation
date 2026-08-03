@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "แผนที่วิทยาเขตถูกดาวน์โหลดสำหรับการใช้งานออฟไลน์แล้ว",
   "offlineCampusMapsRedownload": "ดาวน์โหลดอีกครั้ง",
   "offlineCampusMapsFailed": "ดาวน์โหลดล้มเหลว",
+  "offlineCampusMapsBundled": "รวมอยู่ในแอป",
+  "offlineCampusMapsBundledDetail": "แผนที่วิทยาเขต รายชื่ออาคาร และทัวร์ภายในใช้งานได้โดยไม่ต้องเชื่อมต่อ ส่วนเวลารถไฟฟ้าแบบเรียลไทม์ เส้นทางเดิน และบริการออนไลน์อื่นยังต้องใช้การเชื่อมต่อ",
   "homeNextMetroLabel": "รถไฟฟ้าใต้ดินถัดไป",
   "homeNextMetroEmpty": "ไม่มีการออกเดินทางของรถไฟใต้ดินที่กำลังจะมาถึง",
   "commutePreferences": "การตั้งค่าการเดินทาง",

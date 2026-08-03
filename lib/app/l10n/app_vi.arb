@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Bản đồ khuôn viên trường đã được tải xuống để sử dụng ngoại tuyến.",
   "offlineCampusMapsRedownload": "Tải lại",
   "offlineCampusMapsFailed": "Tải xuống không thành công",
+  "offlineCampusMapsBundled": "Đã có sẵn trong ứng dụng",
+  "offlineCampusMapsBundledDetail": "Bản đồ khuôn viên, danh sách tòa nhà và tham quan trong nhà hoạt động khi không có kết nối. Giờ tàu điện trực tiếp, lộ trình đi bộ và các dịch vụ trực tuyến khác vẫn cần kết nối.",
   "homeNextMetroLabel": "Tàu điện ngầm tiếp theo",
   "homeNextMetroEmpty": "Không có chuyến khởi hành tàu điện ngầm sắp tới",
   "commutePreferences": "Tùy chọn đi lại",

@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Hărțile campusului sunt deja descărcate pentru utilizare offline.",
   "offlineCampusMapsRedownload": "Redescarcă",
   "offlineCampusMapsFailed": "Descărcarea a eșuat",
+  "offlineCampusMapsBundled": "Inclus în aplicație",
+  "offlineCampusMapsBundledDetail": "Harta campusului, lista clădirilor și tururile interioare funcționează fără conexiune. Orarele live de metrou, rutele pietonale și alte servicii online necesită conexiune.",
   "homeNextMetroLabel": "Următorul metrou",
   "homeNextMetroEmpty": "Nu există plecări viitoare de metrou",
   "commutePreferences": "Preferințe de navetă",

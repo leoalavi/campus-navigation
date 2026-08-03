@@ -6,7 +6,6 @@ import 'package:mq_journey/app/router/route_names.dart';
 import 'package:mq_journey/app/theme/mq_colors.dart';
 import 'package:mq_journey/app/theme/mq_spacing.dart';
 import 'package:mq_journey/core/utils/haptics.dart';
-import 'package:mq_journey/features/map/data/services/offline_maps_service.dart';
 import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
 import 'package:mq_journey/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
 import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
@@ -484,37 +483,25 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   _SectionHeader(title: l10n.accessibility),
                   _SettingsCard(
                     children: [
-                      _ToggleRow(
-                        icon: Icons.download_for_offline_outlined,
+                      // Offline Campus Map is a STATUS, not a download.
+                      //
+                      // The campus map is a bundled asset (assets/maps/
+                      // mq-campus.png plus its overlays) and the building
+                      // registry, Open Day data and indoor tours are bundled
+                      // JSON/images — all of it already works with no
+                      // connection. The old row offered an OpenStreetMap tile
+                      // download whose store *nothing in the app ever read*
+                      // (`OfflineMapsService.tileProvider()` had no callers),
+                      // so it spent the user's data and then reported
+                      // "Downloaded" for a capability they already had. Saying
+                      // plainly what works offline is the honest version.
+                      _InfoRow(
+                        icon: Icons.offline_pin_outlined,
                         label: l10n.offlineCampusMaps,
-                        value: preferences.offlineCampusMapsEnabled,
-                        semanticLabel: l10n.offlineCampusMaps,
-                        hapticsEnabled: preferences.hapticsEnabled,
-                        onChanged: (v) => ref
-                            .read(settingsControllerProvider.notifier)
-                            .updateOfflineCampusMapsEnabled(v),
+                        subtitle:
+                            '${l10n.offlineCampusMapsBundled} — '
+                            '${l10n.offlineCampusMapsBundledDetail}',
                       ),
-                      if (preferences.offlineCampusMapsEnabled)
-                        _TapRow(
-                          icon: preferences.offlineCampusMapsDownloaded
-                              ? Icons.cloud_done_outlined
-                              : Icons.cloud_download_outlined,
-                          label: l10n.offlineCampusMapsDownload,
-                          // Reflect the real state so the row never reads as
-                          // "not downloaded" after a successful download.
-                          value: preferences.offlineCampusMapsDownloaded
-                              ? l10n.offlineCampusMapsDownloadedLabel
-                              : '',
-                          semanticLabel: l10n.offlineCampusMapsDownload,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onTap: () => _downloadOfflineMaps(
-                            context,
-                            ref,
-                            l10n,
-                            alreadyDownloaded:
-                                preferences.offlineCampusMapsDownloaded,
-                          ),
-                        ),
                       _ToggleRow(
                         icon: Icons.motion_photos_off_outlined,
                         label: l10n.reducedMotion,
@@ -700,52 +687,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           ? Theme(data: _settingsDarkReadableTheme(context), child: body)
           : body,
     );
-  }
-
-  /// Runs the offline campus tile download with correct state handling:
-  /// already-downloaded taps require an explicit re-download confirmation
-  /// (never an accidental restart), and the downloaded flag is persisted
-  /// only when the download actually completed.
-  Future<void> _downloadOfflineMaps(
-    BuildContext context,
-    WidgetRef ref,
-    AppLocalizations l10n, {
-    required bool alreadyDownloaded,
-  }) async {
-    if (alreadyDownloaded) {
-      final redownload = await showDialog<bool>(
-        context: context,
-        builder: (dialogContext) => AlertDialog(
-          content: Text(l10n.offlineCampusMapsAlreadyDownloaded),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(l10n.cancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(dialogContext, true),
-              child: Text(l10n.offlineCampusMapsRedownload),
-            ),
-          ],
-        ),
-      );
-      if (redownload != true) return;
-    }
-    if (!context.mounted) return;
-    context.showSnackBar(l10n.offlineCampusMapsDownloading);
-    final completed = await ref
-        .read(offlineMapsServiceProvider)
-        .downloadCampusTiles();
-    if (completed) {
-      await ref
-          .read(settingsControllerProvider.notifier)
-          .updateOfflineCampusMapsDownloaded(true);
-    }
-    if (context.mounted) {
-      context.showSnackBar(
-        completed ? l10n.offlineCampusMapsReady : l10n.offlineCampusMapsFailed,
-      );
-    }
   }
 
   Future<void> _confirmWipe(

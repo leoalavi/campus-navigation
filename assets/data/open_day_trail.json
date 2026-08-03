@@ -1,11 +1,249 @@
-{"locations":[
-{"locationId":"hadenfeld-10","buildingId":"hadenfeld-10","mapBuildingCode":"10HA","title":"10 Hadenfeld Avenue","description":"Home to the Faculty of Arts' Department of Media, Communications, Creative Arts, Language and Literature on the northern edge of campus. It is packed with hands-on spaces including a Simulation Hub, drama and dance studios, screen and edit suites, music rooms and the 2SER radio studio. Theatre 1 and its lecture spaces make it a hub for experiential learning in media and the creative arts.","mapRefs":["P6"],"photos":["assets/photos/hadenfeld-10.jpg"],"arSceneId":"entrance","stops":[{"stopId":"hadenfeld-10-t1","title":"Theatre 1","arSceneId":"theatre-1","scheduleLocationId":"hadenfeld-10-t1"}]},
-{"locationId":"wallys-29","buildingId":"wallys-29","mapBuildingCode":"29WW","title":"29 Wally's Walk","description":"A lively Faculty of Arts building and home to Walanga Muru, Macquarie's Aboriginal and Torres Strait Islander centre whose Darug name means follow your path. It also houses the Department of Educational Studies and Mia Mia, the on-campus early childhood centre. Its Theatre 1 and links to the Museum of Ancient Cultures collections make it a cultural anchor on Wally's Walk.","mapRefs":["L11"],"photos":["assets/photos/wallys-29.jpg"],"arSceneId":"entrance","stops":[{"stopId":"wallys-29-t1","title":"Theatre 1","arSceneId":"theatre-1","scheduleLocationId":"wallys-29-t1"}]},
-{"locationId":"wallys-27","buildingId":"wallys-27","mapBuildingCode":"LOTUS","title":"27 Wally's Walk","description":"At the western end of campus, 27 Wally's Walk houses the Lotus Theatre, one of Macquarie's seven main lecture theatres and among the largest lecture halls on campus. The tiered auditorium hosts big first-year cohorts, exams and university events. Its central location makes it an easy landmark between the western precinct and the library.","mapRefs":["L12"],"photos":["assets/photos/wallys-27.jpg"],"arSceneId":"entrance","stops":[{"stopId":"wallys-27-lotus","title":"Lotus Theatre","arSceneId":"lotus","scheduleLocationId":"wallys-27-lotus"}]},
-{"locationId":"wallys-23","buildingId":"wallys-23","mapBuildingCode":"23WW","title":"23 Wally's Walk","description":"A central teaching building on Wally's Walk, number 23 holds the Price Theatre alongside additional lecture theatres (Theatre 1 and Theatre 2). Its tiered, fixed-seat theatres run large undergraduate lectures across many disciplines. It sits right on the University's main pedestrian spine, minutes from the library and Central Courtyard.","mapRefs":["L14","M14"],"photos":["assets/photos/wallys-23.jpg"],"arSceneId":"entrance","stops":[{"stopId":"wallys-23-price","title":"Price Theatre","arSceneId":"price","scheduleLocationId":"wallys-23-price"},{"stopId":"wallys-23-t1","title":"Theatre 1","arSceneId":"theatre-1","scheduleLocationId":"wallys-23-t1"},{"stopId":"wallys-23-t2","title":"Theatre 2","arSceneId":"theatre-2","scheduleLocationId":"wallys-23-t2"}]},
-{"locationId":"wallys-21","buildingId":"wallys-21","mapBuildingCode":"MQTH","title":"21 Wally's Walk","description":"21 Wally's Walk is home to the Macquarie Theatre, one of the University's largest tiered lecture theatres, plus tutorial rooms. The fixed-seat auditorium hosts major lectures, ceremonies, performances and public events. It sits centrally on Wally's Walk, a short walk from the library and Central Courtyard.","mapRefs":["L15"],"photos":["assets/photos/wallys-21.jpg"],"arSceneId":"entrance","stops":[{"stopId":"wallys-21-macquarie","title":"Macquarie Theatre","arSceneId":"macquarie","scheduleLocationId":"wallys-21-macquarie"}]},
-{"locationId":"wallys-17","buildingId":"wallys-17","mapBuildingCode":"17WW","title":"17 Wally's Walk","description":"Opened in 2024, the Michael Kirby Building is Macquarie Law School's striking new home, named after former Chancellor and High Court Justice Michael Kirby. Rebuilt as a four-storey mass-timber structure around one of Australia's largest timber atriums, it features a first-of-its-kind floating moot court. It also hosts Wallumatta Legal, legal clinics and dedicated law-student study and reading spaces.","mapRefs":["L17"],"photos":["assets/photos/wallys-17.jpg"],"arSceneId":"entrance","stops":[{"stopId":"wallys-17-vloten","title":"Johan van Vloten Theatre (G02)","arSceneId":"vloten","scheduleLocationId":"wallys-17-vloten"},{"stopId":"wallys-17-t2","title":"Theatre 2 (G25)","arSceneId":"theatre-2","scheduleLocationId":"wallys-17-t2"}]},
-{"locationId":"ondaatje-14","buildingId":"ondaatje-14","mapBuildingCode":"14SCO","title":"14 Sir Christopher Ondaatje Avenue","description":"Part of the Faculty of Science and Engineering precinct, this building is best known for the Mason Theatre and its cluster of tiered lecture theatres. The fixed-seat theatres host large first-year science and engineering classes as well as public lectures and events. It sits on the eastern side of campus among the science and engineering schools.","mapRefs":["J20","K20"],"photos":["assets/photos/ondaatje-14.jpg"],"arSceneId":"entrance","stops":[{"stopId":"ondaatje-14-mason","title":"Mason Theatre","arSceneId":"mason","scheduleLocationId":"ondaatje-14-mason"},{"stopId":"ondaatje-14-t3","title":"Theatre 3","arSceneId":"theatre-3","scheduleLocationId":"ondaatje-14-t3"},{"stopId":"ondaatje-14-t4","title":"Theatre 4","arSceneId":"theatre-4","scheduleLocationId":"ondaatje-14-t4"}]},
-{"locationId":"wallys-1","buildingId":"wallys-1","mapBuildingCode":"AINS","title":"1 Wally's Walk","description":"The Ainsworth Building is the home of Macquarie's Faculty of Medicine, Health and Human Sciences, a four-storey mass-timber landmark beside Macquarie University Hospital. Inside are a 200-seat lecture theatre, Harvard-style case-study theatres and collaborative teaching spaces that blend clinical care with research. Its warm timber structure and double-glazed facade make it one of the campus's most sustainable buildings.","mapRefs":["K27"],"photos":["assets/photos/wallys-1.jpg"],"arSceneId":"entrance","stops":[{"stopId":"wallys-1-g03","title":"Theatre G03","arSceneId":"theatre-g03","scheduleLocationId":"wallys-1-g03"},{"stopId":"wallys-1-102","title":"Theatre 102","arSceneId":"theatre-102","scheduleLocationId":"wallys-1-102"},{"stopId":"wallys-1-202","title":"Theatre 202","arSceneId":"theatre-202","scheduleLocationId":"wallys-1-202"}]},
-{"locationId":"wallys-25","buildingId":"wallys-25","mapBuildingCode":"25WW","title":"25 Wally's Walk","description":"25c Wally's Walk is part of the Faculty of Arts precinct and home to the Gale History Museum. Opened in 2021 and renamed in 2025 after Dr Janet and Dr William Gale, the museum holds around 18,000 artefacts spanning prehistory to the present. It brings together the former Museum of Ancient Cultures and Australian History Museum and is open to the public on weekdays.","mapRefs":["N12"],"photos":["assets/photos/wallys-25.jpg"],"arSceneId":"entrance","stops":[{"stopId":"wallys-25-c122","title":"C122 Exhibition Space","arSceneId":"c122","scheduleLocationId":"wallys-25-c122"}]}
-]}
+{
+  "locations": [
+    {
+      "locationId": "hadenfeld-10",
+      "buildingId": "hadenfeld-10",
+      "mapBuildingCode": "10HA",
+      "title": "10 Hadenfeld Avenue",
+      "description": "Home to the Faculty of Arts' Department of Media, Communications, Creative Arts, Language and Literature on the northern edge of campus. It is packed with hands-on spaces including a Simulation Hub, drama and dance studios, screen and edit suites, music rooms and the 2SER radio studio. Theatre 1 and its lecture spaces make it a hub for experiential learning in media and the creative arts.",
+      "mapRefs": [
+        "P6"
+      ],
+      "photos": [
+        "assets/photos/hadenfeld-10.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "hadenfeld-10-t1",
+          "title": "Theatre 1",
+          "arSceneId": "theatre-1",
+          "scheduleLocationId": "hadenfeld-10-t1"
+        }
+      ]
+    },
+    {
+      "locationId": "wallys-29",
+      "buildingId": "wallys-29",
+      "mapBuildingCode": "29WW",
+      "title": "29 Wally's Walk",
+      "description": "A lively Faculty of Arts building and home to Walanga Muru, Macquarie's Aboriginal and Torres Strait Islander centre whose Darug name means follow your path. It also houses the Department of Educational Studies and Mia Mia, the on-campus early childhood centre. Its Theatre 1 and links to the Museum of Ancient Cultures collections make it a cultural anchor on Wally's Walk.",
+      "mapRefs": [
+        "L11"
+      ],
+      "photos": [
+        "assets/photos/wallys-29.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "wallys-29-t1",
+          "title": "Theatre 1",
+          "arSceneId": "theatre-1",
+          "scheduleLocationId": "wallys-29-t1"
+        }
+      ]
+    },
+    {
+      "locationId": "wallys-27",
+      "buildingId": "wallys-27",
+      "mapBuildingCode": "LOTUS",
+      "title": "27 Wally's Walk",
+      "description": "At the western end of campus, 27 Wally's Walk houses the Lotus Theatre, one of Macquarie's seven main lecture theatres and among the largest lecture halls on campus. The tiered auditorium hosts big first-year cohorts, exams and university events. Its central location makes it an easy landmark between the western precinct and the library.",
+      "mapRefs": [
+        "L12"
+      ],
+      "photos": [
+        "assets/photos/wallys-27.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "wallys-27-lotus",
+          "title": "Lotus Theatre",
+          "arSceneId": "lotus",
+          "scheduleLocationId": "wallys-27-lotus"
+        }
+      ]
+    },
+    {
+      "locationId": "wallys-23",
+      "buildingId": "wallys-23",
+      "mapBuildingCode": "23WW",
+      "title": "23 Wally's Walk",
+      "description": "A central teaching building on Wally's Walk, number 23 holds the Price Theatre alongside additional lecture theatres (Theatre 1 and Theatre 2). Its tiered, fixed-seat theatres run large undergraduate lectures across many disciplines. It sits right on the University's main pedestrian spine, minutes from the library and Central Courtyard.",
+      "mapRefs": [
+        "L14",
+        "M14"
+      ],
+      "photos": [
+        "assets/photos/wallys-23.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "wallys-23-price",
+          "title": "Price Theatre",
+          "arSceneId": "price",
+          "scheduleLocationId": "wallys-23-price"
+        },
+        {
+          "stopId": "wallys-23-t1",
+          "title": "Theatre 1",
+          "arSceneId": "theatre-1",
+          "scheduleLocationId": "wallys-23-t1"
+        },
+        {
+          "stopId": "wallys-23-t2",
+          "title": "Theatre 2",
+          "arSceneId": "theatre-2",
+          "scheduleLocationId": "wallys-23-t2"
+        }
+      ],
+      "arAliases": {
+        "PRICE": "price"
+      }
+    },
+    {
+      "locationId": "wallys-21",
+      "buildingId": "wallys-21",
+      "mapBuildingCode": "MQTH",
+      "title": "21 Wally's Walk",
+      "description": "21 Wally's Walk is home to the Macquarie Theatre, one of the University's largest tiered lecture theatres, plus tutorial rooms. The fixed-seat auditorium hosts major lectures, ceremonies, performances and public events. It sits centrally on Wally's Walk, a short walk from the library and Central Courtyard.",
+      "mapRefs": [
+        "L15"
+      ],
+      "photos": [
+        "assets/photos/wallys-21.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "wallys-21-macquarie",
+          "title": "Macquarie Theatre",
+          "arSceneId": "macquarie",
+          "scheduleLocationId": "wallys-21-macquarie"
+        }
+      ]
+    },
+    {
+      "locationId": "wallys-17",
+      "buildingId": "wallys-17",
+      "mapBuildingCode": "17WW",
+      "title": "17 Wally's Walk",
+      "description": "Opened in 2024, the Michael Kirby Building is Macquarie Law School's striking new home, named after former Chancellor and High Court Justice Michael Kirby. Rebuilt as a four-storey mass-timber structure around one of Australia's largest timber atriums, it features a first-of-its-kind floating moot court. It also hosts Wallumatta Legal, legal clinics and dedicated law-student study and reading spaces.",
+      "mapRefs": [
+        "L17"
+      ],
+      "photos": [
+        "assets/photos/wallys-17.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "wallys-17-vloten",
+          "title": "Johan van Vloten Theatre (G02)",
+          "arSceneId": "vloten",
+          "scheduleLocationId": "wallys-17-vloten"
+        },
+        {
+          "stopId": "wallys-17-t2",
+          "title": "Theatre 2 (G25)",
+          "arSceneId": "theatre-2",
+          "scheduleLocationId": "wallys-17-t2"
+        }
+      ]
+    },
+    {
+      "locationId": "ondaatje-14",
+      "buildingId": "ondaatje-14",
+      "mapBuildingCode": "14SCO",
+      "title": "14 Sir Christopher Ondaatje Avenue",
+      "description": "Part of the Faculty of Science and Engineering precinct, this building is best known for the Mason Theatre and its cluster of tiered lecture theatres. The fixed-seat theatres host large first-year science and engineering classes as well as public lectures and events. It sits on the eastern side of campus among the science and engineering schools.",
+      "mapRefs": [
+        "J20",
+        "K20"
+      ],
+      "photos": [
+        "assets/photos/ondaatje-14.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "ondaatje-14-mason",
+          "title": "Mason Theatre",
+          "arSceneId": "mason",
+          "scheduleLocationId": "ondaatje-14-mason"
+        },
+        {
+          "stopId": "ondaatje-14-t3",
+          "title": "Theatre 3",
+          "arSceneId": "theatre-3",
+          "scheduleLocationId": "ondaatje-14-t3"
+        },
+        {
+          "stopId": "ondaatje-14-t4",
+          "title": "Theatre 4",
+          "arSceneId": "theatre-4",
+          "scheduleLocationId": "ondaatje-14-t4"
+        }
+      ]
+    },
+    {
+      "locationId": "wallys-1",
+      "buildingId": "wallys-1",
+      "mapBuildingCode": "AINS",
+      "title": "1 Wally's Walk",
+      "description": "The Ainsworth Building is the home of Macquarie's Faculty of Medicine, Health and Human Sciences, a four-storey mass-timber landmark beside Macquarie University Hospital. Inside are a 200-seat lecture theatre, Harvard-style case-study theatres and collaborative teaching spaces that blend clinical care with research. Its warm timber structure and double-glazed facade make it one of the campus's most sustainable buildings.",
+      "mapRefs": [
+        "K27"
+      ],
+      "photos": [
+        "assets/photos/wallys-1.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "wallys-1-g03",
+          "title": "Theatre G03",
+          "arSceneId": "theatre-g03",
+          "scheduleLocationId": "wallys-1-g03"
+        },
+        {
+          "stopId": "wallys-1-102",
+          "title": "Theatre 102",
+          "arSceneId": "theatre-102",
+          "scheduleLocationId": "wallys-1-102"
+        },
+        {
+          "stopId": "wallys-1-202",
+          "title": "Theatre 202",
+          "arSceneId": "theatre-202",
+          "scheduleLocationId": "wallys-1-202"
+        }
+      ]
+    },
+    {
+      "locationId": "wallys-25",
+      "buildingId": "wallys-25",
+      "mapBuildingCode": "25WW",
+      "title": "25 Wally's Walk",
+      "description": "25c Wally's Walk is part of the Faculty of Arts precinct and home to the Gale History Museum. Opened in 2021 and renamed in 2025 after Dr Janet and Dr William Gale, the museum holds around 18,000 artefacts spanning prehistory to the present. It brings together the former Museum of Ancient Cultures and Australian History Museum and is open to the public on weekdays.",
+      "mapRefs": [
+        "N12"
+      ],
+      "photos": [
+        "assets/photos/wallys-25.jpg"
+      ],
+      "arSceneId": "entrance",
+      "stops": [
+        {
+          "stopId": "wallys-25-c122",
+          "title": "C122 Exhibition Space",
+          "arSceneId": "c122",
+          "scheduleLocationId": "wallys-25-c122"
+        }
+      ]
+    }
+  ]
+}

@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Campuskart er allerede lastet ned for offline bruk.",
   "offlineCampusMapsRedownload": "Last ned på nytt",
   "offlineCampusMapsFailed": "Nedlasting mislyktes",
+  "offlineCampusMapsBundled": "Inkludert i appen",
+  "offlineCampusMapsBundledDetail": "Campuskartet, bygningslisten og innendørsturene fungerer uten tilkobling. Sanntids metrotider, gåruter og andre nettjenester krever tilkobling.",
   "homeNextMetroLabel": "Neste Metro",
   "homeNextMetroEmpty": "Ingen kommende metroavganger",
   "commutePreferences": "Pendlingspreferanser",

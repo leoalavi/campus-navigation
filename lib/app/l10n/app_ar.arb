@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "خرائط الحرم الجامعي محملة بالفعل للاستخدام دون اتصال.",
   "offlineCampusMapsRedownload": "إعادة التنزيل",
   "offlineCampusMapsFailed": "فشل التنزيل",
+  "offlineCampusMapsBundled": "مُضمَّن في التطبيق",
+  "offlineCampusMapsBundledDetail": "تعمل خريطة الحرم الجامعي وقائمة المباني والجولات الداخلية بدون اتصال. أما أوقات المترو المباشرة ومسارات المشي والخدمات الأخرى عبر الإنترنت فتحتاج إلى اتصال.",
   "homeNextMetroLabel": "المترو القادم",
   "homeNextMetroEmpty": "لا توجد مغادرات مترو قادمة",
   "commutePreferences": "تفضيلات التنقل",

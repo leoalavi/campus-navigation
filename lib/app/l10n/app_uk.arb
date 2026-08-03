@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Карти кампусу вже завантажені для офлайн-використання.",
   "offlineCampusMapsRedownload": "Завантажити знову",
   "offlineCampusMapsFailed": "Не вдалося завантажити",
+  "offlineCampusMapsBundled": "Входить до застосунку",
+  "offlineCampusMapsBundledDetail": "Карта кампусу, список будівель і внутрішні тури працюють без підключення. Для розкладу метро в реальному часі, пішохідних маршрутів та інших онлайн-сервісів потрібне підключення.",
   "homeNextMetroLabel": "Наступне метро",
   "homeNextMetroEmpty": "Немає найближчих відправлень метро",
   "commutePreferences": "Налаштування щоденних поїздок",

@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "캠퍼스 지도가 이미 오프라인 사용을 위해 다운로드되었습니다.",
   "offlineCampusMapsRedownload": "다시 다운로드",
   "offlineCampusMapsFailed": "다운로드 실패",
+  "offlineCampusMapsBundled": "앱에 포함됨",
+  "offlineCampusMapsBundledDetail": "캠퍼스 지도, 건물 목록, 실내 투어는 연결 없이 작동합니다. 실시간 메트로 시간, 도보 경로 등 온라인 서비스에는 연결이 필요합니다.",
   "homeNextMetroLabel": "다음 전철",
   "homeNextMetroEmpty": "다가오는 전철 출발이 없습니다",
   "commutePreferences": "통근 설정",

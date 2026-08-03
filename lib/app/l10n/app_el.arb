@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Οι χάρτες πανεπιστημιούπολης έχουν ήδη ληφθεί για χρήση εκτός σύνδεσης.",
   "offlineCampusMapsRedownload": "Λήψη ξανά",
   "offlineCampusMapsFailed": "Η λήψη απέτυχε",
+  "offlineCampusMapsBundled": "Περιλαμβάνεται στην εφαρμογή",
+  "offlineCampusMapsBundledDetail": "Ο χάρτης, η λίστα κτιρίων και οι εσωτερικές περιηγήσεις λειτουργούν χωρίς σύνδεση. Οι ζωντανοί χρόνοι μετρό, οι διαδρομές και άλλες διαδικτυακές υπηρεσίες χρειάζονται σύνδεση.",
   "homeNextMetroLabel": "Επόμενο Μετρό",
   "homeNextMetroEmpty": "Δεν υπάρχουν επερχόμενες αναχωρήσεις μετρό",
   "commutePreferences": "Προτιμήσεις μετακίνησης",

@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Campuskaarten zijn al gedownload voor offline gebruik.",
   "offlineCampusMapsRedownload": "Opnieuw downloaden",
   "offlineCampusMapsFailed": "Downloaden mislukt",
+  "offlineCampusMapsBundled": "Inbegrepen in de app",
+  "offlineCampusMapsBundledDetail": "De campuskaart, gebouwenlijst en binnentours werken zonder verbinding. Live metrotijden, wandelroutes en andere onlinediensten hebben er wel een nodig.",
   "homeNextMetroLabel": "Volgende Metro",
   "homeNextMetroEmpty": "Geen aankomend metrovertrek",
   "commutePreferences": "Voorkeuren voor woon-werkverkeer",

@@ -207,6 +207,8 @@
   "offlineCampusMapsAlreadyDownloaded": "Kampuskartat on jo ladattu offline-käyttöä varten.",
   "offlineCampusMapsRedownload": "Lataa uudelleen",
   "offlineCampusMapsFailed": "Lataus epäonnistui",
+  "offlineCampusMapsBundled": "Sisältyy sovellukseen",
+  "offlineCampusMapsBundledDetail": "Kampuskartta, rakennusluettelo ja sisätilakierrokset toimivat ilman yhteyttä. Metron reaaliaikaiset ajat, kävelyreitit ja muut verkkopalvelut tarvitsevat yhteyden.",
   "homeNextMetroLabel": "Seuraava metro",
   "homeNextMetroEmpty": "Ei tulevia metrolähtöjä",
   "commutePreferences": "Työmatka-asetukset",
