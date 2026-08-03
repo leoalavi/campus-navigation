@@ -189,7 +189,7 @@ void main() {
 
     // 5. close it, select the same building again — it must come back, and
     // come back *visible*.
-    await tester.tap(find.byTooltip('Clear'));
+    await tester.tap(find.byTooltip('Close'));
     await _settle(tester);
     expect(find.text('Building A'), findsNothing);
 

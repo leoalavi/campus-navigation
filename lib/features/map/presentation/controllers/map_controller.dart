@@ -620,6 +620,16 @@ class MapController extends AsyncNotifier<MapState> {
     );
   }
 
+  /// Dismisses the location status message without changing anything else.
+  ///
+  /// The banner is advisory: a user who does not want to open Settings needs
+  /// a way to get rid of it, and it must not latch on screen.
+  void dismissError() {
+    final current = state.value;
+    if (current == null || current.error == null) return;
+    state = AsyncData(current.copyWith(clearError: true));
+  }
+
   void clearCategoryBrowse() {
     final current = state.value;
     if (current == null) {

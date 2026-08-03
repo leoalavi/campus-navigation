@@ -200,13 +200,10 @@
   "quietHoursEnd": "Slutter kl",
   "highContrastMap": "Kort med høj kontrast",
   "offlineCampusMaps": "Offline campuskort",
-  "offlineCampusMapsDownload": "Download campuskort til offlinebrug",
-  "offlineCampusMapsDownloading": "Downloader offline campuskort...",
-  "offlineCampusMapsReady": "Offline campuskort er klar",
-  "offlineCampusMapsDownloadedLabel": "Downloadet",
-  "offlineCampusMapsAlreadyDownloaded": "Campuskort er allerede downloadet til offlinebrug.",
-  "offlineCampusMapsRedownload": "Download igen",
-  "offlineCampusMapsFailed": "Download mislykkedes",
+  "dismiss": "Afvis",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Inkluderet i appen",
   "offlineCampusMapsBundledDetail": "Campuskortet, bygningslisten og indendørsture virker uden forbindelse. Live-metrotider, gåruter og andre onlinetjenester kræver forbindelse.",
   "homeNextMetroLabel": "Næste Metro",

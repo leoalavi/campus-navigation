@@ -200,13 +200,10 @@
   "quietHoursEnd": "Kết thúc lúc",
   "highContrastMap": "Bản đồ có độ tương phản cao",
   "offlineCampusMaps": "Bản đồ trường ngoại tuyến",
-  "offlineCampusMapsDownload": "Tải xuống Bản đồ khuôn viên trường để sử dụng ngoại tuyến",
-  "offlineCampusMapsDownloading": "Đang tải xuống bản đồ khuôn viên trường ngoại tuyến...",
-  "offlineCampusMapsReady": "Bản đồ khuôn viên ngoại tuyến đã sẵn sàng",
-  "offlineCampusMapsDownloadedLabel": "Đã tải xuống",
-  "offlineCampusMapsAlreadyDownloaded": "Bản đồ khuôn viên trường đã được tải xuống để sử dụng ngoại tuyến.",
-  "offlineCampusMapsRedownload": "Tải lại",
-  "offlineCampusMapsFailed": "Tải xuống không thành công",
+  "dismiss": "Bỏ qua",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Đã có sẵn trong ứng dụng",
   "offlineCampusMapsBundledDetail": "Bản đồ khuôn viên, danh sách tòa nhà và tham quan trong nhà hoạt động khi không có kết nối. Giờ tàu điện trực tiếp, lộ trình đi bộ và các dịch vụ trực tuyến khác vẫn cần kết nối.",
   "homeNextMetroLabel": "Tàu điện ngầm tiếp theo",

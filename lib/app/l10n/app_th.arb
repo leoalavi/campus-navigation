@@ -200,13 +200,10 @@
   "quietHoursEnd": "สิ้นสุดที่",
   "highContrastMap": "แผนที่คอนทราสต์สูง",
   "offlineCampusMaps": "แผนที่วิทยาเขตออฟไลน์",
-  "offlineCampusMapsDownload": "ดาวน์โหลด Campus Maps สำหรับการใช้งานออฟไลน์",
-  "offlineCampusMapsDownloading": "กำลังดาวน์โหลดแผนที่วิทยาเขตแบบออฟไลน์...",
-  "offlineCampusMapsReady": "แผนที่วิทยาเขตออฟไลน์พร้อมแล้ว",
-  "offlineCampusMapsDownloadedLabel": "ดาวน์โหลดแล้ว",
-  "offlineCampusMapsAlreadyDownloaded": "แผนที่วิทยาเขตถูกดาวน์โหลดสำหรับการใช้งานออฟไลน์แล้ว",
-  "offlineCampusMapsRedownload": "ดาวน์โหลดอีกครั้ง",
-  "offlineCampusMapsFailed": "ดาวน์โหลดล้มเหลว",
+  "dismiss": "ปิด",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "รวมอยู่ในแอป",
   "offlineCampusMapsBundledDetail": "แผนที่วิทยาเขต รายชื่ออาคาร และทัวร์ภายในใช้งานได้โดยไม่ต้องเชื่อมต่อ ส่วนเวลารถไฟฟ้าแบบเรียลไทม์ เส้นทางเดิน และบริการออนไลน์อื่นยังต้องใช้การเชื่อมต่อ",
   "homeNextMetroLabel": "รถไฟฟ้าใต้ดินถัดไป",

@@ -200,13 +200,10 @@
   "quietHoursEnd": "Eindigt om",
   "highContrastMap": "Kaart met hoog contrast",
   "offlineCampusMaps": "Offline campuskaarten",
-  "offlineCampusMapsDownload": "Download campuskaarten voor offline gebruik",
-  "offlineCampusMapsDownloading": "Offline campuskaarten downloaden...",
-  "offlineCampusMapsReady": "Offline campuskaarten zijn klaar",
-  "offlineCampusMapsDownloadedLabel": "Gedownload",
-  "offlineCampusMapsAlreadyDownloaded": "Campuskaarten zijn al gedownload voor offline gebruik.",
-  "offlineCampusMapsRedownload": "Opnieuw downloaden",
-  "offlineCampusMapsFailed": "Downloaden mislukt",
+  "dismiss": "Sluiten",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Inbegrepen in de app",
   "offlineCampusMapsBundledDetail": "De campuskaart, gebouwenlijst en binnentours werken zonder verbinding. Live metrotijden, wandelroutes en andere onlinediensten hebben er wel een nodig.",
   "homeNextMetroLabel": "Volgende Metro",

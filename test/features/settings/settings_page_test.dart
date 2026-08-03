@@ -7,7 +7,6 @@ import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 
 import 'package:mq_journey/features/settings/data/repositories/settings_repository.dart';
 import 'package:mq_journey/features/settings/presentation/pages/settings_page.dart';
-import 'package:mq_journey/features/map/data/services/offline_maps_service.dart';
 import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
 import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
 import 'package:mq_journey/features/notifications/domain/entities/app_notification.dart';
@@ -18,8 +17,6 @@ import 'package:mq_journey/features/transit/presentation/providers/tfnsw_provide
 import 'package:mq_journey/shared/models/user_preferences.dart';
 
 class MockSettingsRepository extends Mock implements SettingsRepository {}
-
-class MockOfflineMapsService extends Mock implements OfflineMapsService {}
 
 class _FakeNotificationsController extends NotificationsController {
   @override
@@ -38,7 +35,6 @@ class _FakeNotificationsController extends NotificationsController {
 
 void main() {
   late MockSettingsRepository mockSettingsRepository;
-  late MockOfflineMapsService mockOfflineMapsService;
 
   setUpAll(() {
     registerFallbackValue(const UserPreferences());
@@ -46,7 +42,6 @@ void main() {
 
   setUp(() {
     mockSettingsRepository = MockSettingsRepository();
-    mockOfflineMapsService = MockOfflineMapsService();
 
     when(
       () => mockSettingsRepository.loadPreferences(),
@@ -58,18 +53,12 @@ void main() {
     when(
       () => mockSettingsRepository.wipeAllLocalData(),
     ).thenAnswer((_) async {});
-
-    when(() => mockOfflineMapsService.isFmtcBackendReady).thenReturn(false);
-    when(
-      () => mockOfflineMapsService.downloadCampusTiles(),
-    ).thenAnswer((_) async => true);
   });
 
   Widget buildTestApp({Widget? child}) {
     return ProviderScope(
       overrides: [
         settingsRepositoryProvider.overrideWithValue(mockSettingsRepository),
-        offlineMapsServiceProvider.overrideWithValue(mockOfflineMapsService),
         notificationsControllerProvider.overrideWith(
           () => _FakeNotificationsController(),
         ),

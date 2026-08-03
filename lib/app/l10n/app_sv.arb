@@ -200,13 +200,10 @@
   "quietHoursEnd": "Slutar kl",
   "highContrastMap": "Karta med hög kontrast",
   "offlineCampusMaps": "Offline campuskartor",
-  "offlineCampusMapsDownload": "Ladda ner campuskartor för offlinebruk",
-  "offlineCampusMapsDownloading": "Laddar ner offline campuskartor...",
-  "offlineCampusMapsReady": "Offline campuskartor är klara",
-  "offlineCampusMapsDownloadedLabel": "Nedladdad",
-  "offlineCampusMapsAlreadyDownloaded": "Campuskartor är redan nedladdade för offlineanvändning.",
-  "offlineCampusMapsRedownload": "Ladda ner igen",
-  "offlineCampusMapsFailed": "Nedladdningen misslyckades",
+  "dismiss": "Avfärda",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Ingår i appen",
   "offlineCampusMapsBundledDetail": "Campuskartan, byggnadslistan och inomhusturerna fungerar utan anslutning. Live-tunnelbanetider, gångrutter och andra onlinetjänster kräver anslutning.",
   "homeNextMetroLabel": "Nästa tunnelbana",

@@ -200,13 +200,10 @@
   "quietHoursEnd": "Bitiş tarihi",
   "highContrastMap": "Yüksek Kontrastlı Harita",
   "offlineCampusMaps": "Çevrimdışı Kampüs Haritaları",
-  "offlineCampusMapsDownload": "Çevrimdışı Kullanım için Kampüs Haritalarını İndirin",
-  "offlineCampusMapsDownloading": "Çevrimdışı kampüs haritaları indiriliyor...",
-  "offlineCampusMapsReady": "Çevrimdışı kampüs haritaları hazır",
-  "offlineCampusMapsDownloadedLabel": "İndirildi",
-  "offlineCampusMapsAlreadyDownloaded": "Kampüs haritaları çevrimdışı kullanım için zaten indirildi.",
-  "offlineCampusMapsRedownload": "Yeniden indir",
-  "offlineCampusMapsFailed": "İndirme başarısız oldu",
+  "dismiss": "Kapat",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Uygulamaya dahil",
   "offlineCampusMapsBundledDetail": "Kampüs haritası, bina listesi ve iç mekân turları bağlantı olmadan çalışır. Canlı metro saatleri, yürüyüş rotaları ve diğer çevrimiçi hizmetler bağlantı gerektirir.",
   "homeNextMetroLabel": "Sonraki Metro",

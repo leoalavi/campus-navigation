@@ -174,7 +174,7 @@ void main() {
       tester.element(find.byType(MapPage)),
     );
     // Close it, then select the marker again — the panel must come back.
-    await tester.tap(find.byTooltip('Clear'));
+    await tester.tap(find.byTooltip('Close'));
     await _settle(tester);
     expect(find.text("11 Wally's Walk"), findsNothing);
 
@@ -229,7 +229,7 @@ void main() {
       expect(tester.takeException(), isNull);
 
       // The close control stays inside the viewport and clear of the title.
-      final close = tester.getRect(find.byTooltip('پاک کردن'));
+      final close = tester.getRect(find.byTooltip('بستن'));
       final title = tester.getRect(find.text(_longRtl.name));
       expect(close.width, greaterThan(0));
       expect(

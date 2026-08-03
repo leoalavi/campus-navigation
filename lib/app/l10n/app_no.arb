@@ -200,13 +200,10 @@
   "quietHoursEnd": "Slutter kl",
   "highContrastMap": "Kart med høy kontrast",
   "offlineCampusMaps": "Offline campuskart",
-  "offlineCampusMapsDownload": "Last ned Campus Maps for offline bruk",
-  "offlineCampusMapsDownloading": "Laster ned campuskart uten nett...",
-  "offlineCampusMapsReady": "Offline campuskart er klare",
-  "offlineCampusMapsDownloadedLabel": "Lastet ned",
-  "offlineCampusMapsAlreadyDownloaded": "Campuskart er allerede lastet ned for offline bruk.",
-  "offlineCampusMapsRedownload": "Last ned på nytt",
-  "offlineCampusMapsFailed": "Nedlasting mislyktes",
+  "dismiss": "Avvis",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Inkludert i appen",
   "offlineCampusMapsBundledDetail": "Campuskartet, bygningslisten og innendørsturene fungerer uten tilkobling. Sanntids metrotider, gåruter og andre nettjenester krever tilkobling.",
   "homeNextMetroLabel": "Neste Metro",

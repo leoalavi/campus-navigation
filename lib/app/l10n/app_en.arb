@@ -203,13 +203,10 @@
   "quietHoursEnd": "Ends at",
   "highContrastMap": "High-Contrast Map",
   "offlineCampusMaps": "Offline Campus Maps",
-  "offlineCampusMapsDownload": "Download Campus Maps for Offline Use",
-  "offlineCampusMapsDownloading": "Downloading offline campus maps...",
-  "offlineCampusMapsReady": "Offline campus maps are ready",
-  "offlineCampusMapsDownloadedLabel": "Downloaded",
-  "offlineCampusMapsAlreadyDownloaded": "Campus maps are already downloaded for offline use.",
-  "offlineCampusMapsRedownload": "Re-download",
-  "offlineCampusMapsFailed": "Download failed",
+  "dismiss": "Dismiss",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Included in the app",
   "@offlineCampusMapsBundled": {
     "description": "Status for Offline Campus Map: the campus map image ships with the app, so there is nothing to download."

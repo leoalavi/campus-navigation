@@ -200,13 +200,10 @@
   "quietHoursEnd": "மணிக்கு முடிவடைகிறது",
   "highContrastMap": "உயர்-மாறுபட்ட வரைபடம்",
   "offlineCampusMaps": "ஆஃப்லைன் வளாக வரைபடங்கள்",
-  "offlineCampusMapsDownload": "ஆஃப்லைன் பயன்பாட்டிற்கு வளாக வரைபடத்தைப் பதிவிறக்கவும்",
-  "offlineCampusMapsDownloading": "ஆஃப்லைன் வளாக வரைபடங்களைப் பதிவிறக்குகிறது...",
-  "offlineCampusMapsReady": "ஆஃப்லைன் வளாக வரைபடங்கள் தயாராக உள்ளன",
-  "offlineCampusMapsDownloadedLabel": "பதிவிறக்கம் செய்யப்பட்டது",
-  "offlineCampusMapsAlreadyDownloaded": "ஆஃப்லைன் பயன்பாட்டிற்கு வளாக வரைபடங்கள் ஏற்கனவே பதிவிறக்கம் செய்யப்பட்டுள்ளன.",
-  "offlineCampusMapsRedownload": "மீண்டும் பதிவிறக்கவும்",
-  "offlineCampusMapsFailed": "பதிவிறக்கம் தோல்வியடைந்தது",
+  "dismiss": "நிராகரி",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "பயன்பாட்டில் சேர்க்கப்பட்டுள்ளது",
   "offlineCampusMapsBundledDetail": "வளாக வரைபடம், கட்டிடப் பட்டியல் மற்றும் உட்புற சுற்றுப்பயணங்கள் இணைப்பின்றி இயங்கும். நேரடி மெட்ரோ நேரங்கள், நடைபாதை வழிகள் மற்றும் பிற ஆன்லைன் சேவைகளுக்கு இணைப்பு தேவை.",
   "homeNextMetroLabel": "அடுத்த மெட்ரோ",

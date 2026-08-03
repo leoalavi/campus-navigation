@@ -10,6 +10,7 @@ import 'package:mq_journey/shared/widgets/campus_text.dart';
 import 'package:mq_journey/shared/widgets/glass_surface.dart';
 import 'package:mq_journey/features/map/data/datasources/location_source.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
+import 'package:mq_journey/features/map/domain/services/map_back_action.dart';
 import 'package:mq_journey/features/map/domain/services/map_branch_lifecycle.dart';
 import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/map/presentation/widgets/ar_building_picker.dart';
@@ -152,6 +153,47 @@ class _MapPageState extends ConsumerState<MapPage> {
     } else {
       context.goNamed(RouteNames.home);
     }
+  }
+
+  /// The Back action the map's current temporary state implies.
+  ///
+  /// Shared by the visible controls and by [PopScope], so the on-screen Back
+  /// and the platform Back can never disagree.
+  MapBackAction _pendingBackAction() {
+    final map = ref.read(mapControllerProvider).value;
+    if (map == null) return MapBackAction.popRoute;
+    final fromList = map.searchQuery.trim().isNotEmpty;
+    return mapBackAction(
+      hasStatusMessage: map.error != null,
+      hasSelectionFromList: map.selectedBuilding != null && fromList,
+      hasSubgroup:
+          map.selectedFacultyGroup != null ||
+          map.selectedStudentServicesGroup != null ||
+          map.selectedCampusHubGroup != null,
+      hasCategoryPanel: fromList,
+    );
+  }
+
+  /// Applies one step of the Back hierarchy. Returns false when there was
+  /// nothing to dismiss and the route itself should pop.
+  bool _consumeBack() {
+    final controller = ref.read(mapControllerProvider.notifier);
+    switch (_pendingBackAction()) {
+      case MapBackAction.dismissStatusMessage:
+        controller.dismissError();
+      case MapBackAction.closeLocationDetail:
+        controller.clearSelection();
+      case MapBackAction.closeSubgroup:
+        controller
+          ..selectFacultyGroup(null)
+          ..selectStudentServicesGroup(null)
+          ..selectCampusHubGroup(null);
+      case MapBackAction.closeCategoryPanel:
+        controller.clearCategoryBrowse();
+      case MapBackAction.popRoute:
+        return false;
+    }
+    return true;
   }
 
   /// Guards against a second search surface while one is opening/open.
@@ -310,6 +352,21 @@ class _MapPageState extends ConsumerState<MapPage> {
         // the tab lands on the full scene list ready to be picked from again.
         ref.read(mapControllerProvider.notifier).clearSelection();
       }
+
+      // Leaving the Journey tab also discards the temporary campus-map
+      // exploration state, so returning shows a clean map rather than a
+      // category/detail panel from minutes ago. Pushed entries (QR venue,
+      // Your Day) are exempt — their selection is the reason the map is open.
+      if (shouldResetMapExplorationOnBranchChange(
+        previousIndex: previous,
+        nextIndex: next,
+        mapBranchIndex: ShellBranchIndex.map,
+        isPushedEntry: widget.showBackButton,
+      )) {
+        ref.read(mapControllerProvider.notifier).clearCategoryBrowse();
+        _dismissedSelectionToken = null;
+        _mapMode = MapMode.campusMap;
+      }
     });
 
     ref.listen<AsyncValue<MapState>>(mapControllerProvider, (previous, next) {
@@ -384,448 +441,475 @@ class _MapPageState extends ConsumerState<MapPage> {
       }
     }
 
-    return Scaffold(
-      body: state.when(
-        data: (mapState) {
-          final controller = ref.read(mapControllerProvider.notifier);
-          final permissionState = mapState.permissionState;
-          final isPermissionBlocked =
-              permissionState == LocationPermissionState.denied ||
-              permissionState == LocationPermissionState.deniedForever ||
-              permissionState == LocationPermissionState.servicesDisabled;
+    // Keep the platform's Back in step with the on-screen one. `canPop` is
+    // true whenever there is nothing temporary to peel, so Back is never
+    // intercepted without reason — a clean map, and a pushed QR/Your Day
+    // entry showing only its own detail, both pop straight back to where the
+    // user came from.
+    return PopScope(
+      canPop: _pendingBackAction() == MapBackAction.popRoute,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        _consumeBack();
+      },
+      child: Scaffold(
+        body: state.when(
+          data: (mapState) {
+            final controller = ref.read(mapControllerProvider.notifier);
+            final permissionState = mapState.permissionState;
+            final isPermissionBlocked =
+                permissionState == LocationPermissionState.denied ||
+                permissionState == LocationPermissionState.deniedForever ||
+                permissionState == LocationPermissionState.servicesDisabled;
 
-          final isCategoryBrowse =
-              mapState.searchQuery.trim().isNotEmpty &&
-              mapState.selectedBuilding == null &&
-              mapState.searchResults.length > 1;
+            final isCategoryBrowse =
+                mapState.searchQuery.trim().isNotEmpty &&
+                mapState.selectedBuilding == null &&
+                mapState.searchResults.length > 1;
 
-          final normalizedQuery = mapState.searchQuery.trim().toLowerCase();
+            final normalizedQuery = mapState.searchQuery.trim().toLowerCase();
 
-          final isFacultyCategory = normalizedQuery == 'faculty';
-          final facultyTopLevel =
-              isFacultyCategory && mapState.selectedFacultyGroup == null;
-          final facultySubLevel =
-              isFacultyCategory && mapState.selectedFacultyGroup != null;
-          final facultyBuildings = facultySubLevel
-              ? mapState.searchResults
-                    .where(
-                      (b) => b.facultyGroup == mapState.selectedFacultyGroup,
+            final isFacultyCategory = normalizedQuery == 'faculty';
+            final facultyTopLevel =
+                isFacultyCategory && mapState.selectedFacultyGroup == null;
+            final facultySubLevel =
+                isFacultyCategory && mapState.selectedFacultyGroup != null;
+            final facultyBuildings = facultySubLevel
+                ? mapState.searchResults
+                      .where(
+                        (b) => b.facultyGroup == mapState.selectedFacultyGroup,
+                      )
+                      .toList()
+                : const <Building>[];
+
+            final isStudentServicesCategory =
+                normalizedQuery == 'student services';
+            final studentServicesTopLevel =
+                isStudentServicesCategory &&
+                mapState.selectedStudentServicesGroup == null;
+            final studentServicesSubLevel =
+                isStudentServicesCategory &&
+                mapState.selectedStudentServicesGroup != null;
+            final studentServicesBuildings = studentServicesSubLevel
+                ? mapState.searchResults
+                      .where(
+                        (b) => b.studentServicesGroups.contains(
+                          mapState.selectedStudentServicesGroup,
+                        ),
+                      )
+                      .toList()
+                : const <Building>[];
+
+            final isCampusHubCategory = normalizedQuery == 'campus hub';
+            final campusHubTopLevel =
+                isCampusHubCategory && mapState.selectedCampusHubGroup == null;
+            final campusHubSubLevel =
+                isCampusHubCategory && mapState.selectedCampusHubGroup != null;
+            final campusHubBuildings = campusHubSubLevel
+                ? mapState.searchResults
+                      .where(
+                        (b) => b.campusHubGroups.contains(
+                          mapState.selectedCampusHubGroup,
+                        ),
+                      )
+                      .toList()
+                : const <Building>[];
+
+            final List<Building> rendererSearchResults;
+            if (facultySubLevel) {
+              rendererSearchResults = facultyBuildings;
+            } else if (studentServicesSubLevel) {
+              rendererSearchResults = studentServicesBuildings;
+            } else if (campusHubSubLevel) {
+              rendererSearchResults = campusHubBuildings;
+            } else if (facultyTopLevel ||
+                studentServicesTopLevel ||
+                campusHubTopLevel) {
+              rendererSearchResults = const <Building>[];
+            } else {
+              rendererSearchResults = mapState.searchResults;
+            }
+
+            final mapView = CampusMapView(
+              searchResults: rendererSearchResults,
+              searchQuery: mapState.searchQuery,
+              selectedBuilding: mapState.selectedBuilding,
+              route: mapState.route,
+              currentLocation: mapState.currentLocation,
+              locationCenterRequestToken: mapState.locationCenterRequestToken,
+              isNavigating: mapState.isNavigating,
+              onSelectBuilding: controller.selectBuilding,
+              activeOverlayIds: mapState.activeOverlayIds,
+            );
+
+            final selectedBuilding = mapState.selectedBuilding;
+            // The card is a description, not the selection itself — once the
+            // user is heading somewhere it should get out of the way of the map.
+            final showInfoCard =
+                selectedBuilding != null &&
+                _dismissedSelectionToken != mapState.selectionToken;
+
+            // A results list is still behind this detail when a category/search
+            // query is active — that is what gives Back somewhere to go.
+            final cameFromList = mapState.searchQuery.trim().isNotEmpty;
+
+            return MapShell(
+              mapView: mapView,
+              onCenterOnLocation: () {
+                // Centring on yourself with a destination pinned is a "walking
+                // there now" signal — clear the card off the map, keep the pin.
+                if (selectedBuilding != null) {
+                  _hideInfoCard(mapState.selectionToken);
+                }
+                controller.centerOnCurrentLocation();
+              },
+              onOpenSearch: _openSearchSheet,
+              onOpenOverlayPicker: _openOverlayPicker,
+              // Only routes opened with MapOpenPolicy.push carry `back=1`, so
+              // bottom-nav and deep-link entries show no arrow at all.
+              onBack: widget.showBackButton ? _handleBack : null,
+              filterChips: _CategoryFilterChips(
+                activeQuery: mapState.searchQuery,
+                onSelect: controller.updateSearchQuery,
+              ),
+              banner: mapState.error == null
+                  ? null
+                  : _MapErrorBanner(
+                      title: _errorTitle(l10n, mapState.error!),
+                      message: _errorMessage(l10n, mapState.error!),
+                      isPermissionBlocked: isPermissionBlocked,
+                      onCenterOnLocation: controller.centerOnCurrentLocation,
+                      onOpenSettings:
+                          permissionState ==
+                              LocationPermissionState.servicesDisabled
+                          ? controller.openLocationSettings
+                          : controller.openAppSettings,
+                      onDismiss: controller.dismissError,
+                    ),
+              // Dragging the footer down (bottom-sheet gesture) dismisses it
+              // via the same action as its own close button.
+              onFooterDismiss: selectedBuilding != null
+                  ? () => _hideInfoCard(mapState.selectionToken)
+                  : controller.clearCategoryBrowse,
+              // Category/browse result lists get peek/medium/expanded snap
+              // states; the compact building-info card keeps drag-to-dismiss.
+              footerSnappable: mapState.selectedBuilding == null,
+              // Changing category/group/search reopens the sheet to medium.
+              footerResetKey:
+                  '${mapState.selectedFacultyGroup}'
+                  '|${mapState.selectedStudentServicesGroup}'
+                  '|${mapState.selectedCampusHubGroup}'
+                  '|${mapState.searchQuery}',
+              footer: selectedBuilding != null
+                  // Dismissed → no footer at all, leaving a clean map with the
+                  // pin still on it. Falling through to the category list here
+                  // would replace the card with an unrelated panel.
+                  ? (showInfoCard
+                        ? _CampusBuildingInfoPanel(
+                            selectedBuilding: selectedBuilding,
+                            // Opened from a category/search list → Back returns
+                            // to that list (the list state is still intact
+                            // underneath), and Close exits the whole flow.
+                            // Opened directly (deep link / QR / Your Day) → no
+                            // Back, and Close just dismisses the panel while
+                            // leaving the pin and the map as they were.
+                            onBack: cameFromList
+                                ? controller.clearSelection
+                                : null,
+                            onClearSelection: cameFromList
+                                ? controller.clearCategoryBrowse
+                                : () => _hideInfoCard(mapState.selectionToken),
+                          )
+                        : null)
+                  : facultyTopLevel
+                  ? _BrowseGroupPanel<FacultyGroup>(
+                      title: l10n.home_faculty,
+                      leadingIcon: Icons.school,
+                      groups: FacultyGroup.values,
+                      countByGroup: {
+                        for (final g in FacultyGroup.values)
+                          g: mapState.searchResults
+                              .where(
+                                (b) =>
+                                    b.facultyGroup == g &&
+                                    b.latitude != null &&
+                                    b.longitude != null,
+                              )
+                              .length,
+                      },
+                      labelOf: (g) {
+                        switch (g) {
+                          case FacultyGroup.arts:
+                            return l10n.faculty_arts_label;
+                          case FacultyGroup.business:
+                            return l10n.faculty_business_label;
+                          case FacultyGroup.mhhs:
+                            return l10n.faculty_mhhs_label;
+                          case FacultyGroup.scienceEngineering:
+                            return l10n.faculty_scienceEngineering_label;
+                        }
+                      },
+                      descriptionOf: (g) {
+                        switch (g) {
+                          case FacultyGroup.arts:
+                            return l10n.faculty_arts_desc;
+                          case FacultyGroup.business:
+                            return l10n.faculty_business_desc;
+                          case FacultyGroup.mhhs:
+                            return l10n.faculty_mhhs_desc;
+                          case FacultyGroup.scienceEngineering:
+                            return l10n.faculty_scienceEngineering_desc;
+                        }
+                      },
+                      onSelectGroup: controller.selectFacultyGroup,
+                      onClear: controller.clearCategoryBrowse,
                     )
-                    .toList()
-              : const <Building>[];
-
-          final isStudentServicesCategory =
-              normalizedQuery == 'student services';
-          final studentServicesTopLevel =
-              isStudentServicesCategory &&
-              mapState.selectedStudentServicesGroup == null;
-          final studentServicesSubLevel =
-              isStudentServicesCategory &&
-              mapState.selectedStudentServicesGroup != null;
-          final studentServicesBuildings = studentServicesSubLevel
-              ? mapState.searchResults
-                    .where(
-                      (b) => b.studentServicesGroups.contains(
-                        mapState.selectedStudentServicesGroup,
-                      ),
+                  : facultySubLevel
+                  ? _CategoryBuildingList(
+                      buildings: facultyBuildings,
+                      searchQuery: () {
+                        switch (mapState.selectedFacultyGroup!) {
+                          case FacultyGroup.arts:
+                            return l10n.faculty_arts_label;
+                          case FacultyGroup.business:
+                            return l10n.faculty_business_label;
+                          case FacultyGroup.mhhs:
+                            return l10n.faculty_mhhs_label;
+                          case FacultyGroup.scienceEngineering:
+                            return l10n.faculty_scienceEngineering_label;
+                        }
+                      }(),
+                      onSelectBuilding: controller.selectBuilding,
+                      onBack: () => controller.selectFacultyGroup(null),
+                      onClear: controller.clearCategoryBrowse,
                     )
-                    .toList()
-              : const <Building>[];
-
-          final isCampusHubCategory = normalizedQuery == 'campus hub';
-          final campusHubTopLevel =
-              isCampusHubCategory && mapState.selectedCampusHubGroup == null;
-          final campusHubSubLevel =
-              isCampusHubCategory && mapState.selectedCampusHubGroup != null;
-          final campusHubBuildings = campusHubSubLevel
-              ? mapState.searchResults
-                    .where(
-                      (b) => b.campusHubGroups.contains(
-                        mapState.selectedCampusHubGroup,
-                      ),
+                  : studentServicesTopLevel
+                  ? _BrowseGroupPanel<StudentServicesGroup>(
+                      title: l10n.home_studentServices,
+                      leadingIcon: Icons.support_agent,
+                      groups: StudentServicesGroup.values,
+                      countByGroup: {
+                        for (final g in StudentServicesGroup.values)
+                          g: mapState.searchResults
+                              .where(
+                                (b) =>
+                                    b.studentServicesGroups.contains(g) &&
+                                    b.latitude != null &&
+                                    b.longitude != null,
+                              )
+                              .length,
+                      },
+                      labelOf: (g) {
+                        switch (g) {
+                          case StudentServicesGroup.support:
+                            return l10n.services_support_label;
+                          case StudentServicesGroup.admin:
+                            return l10n.services_admin_label;
+                          case StudentServicesGroup.academic:
+                            return l10n.services_academic_label;
+                          case StudentServicesGroup.it:
+                            return l10n.services_it_label;
+                          case StudentServicesGroup.security:
+                            return l10n.services_security_label;
+                          case StudentServicesGroup.careers:
+                            return l10n.services_careers_label;
+                          case StudentServicesGroup.inclusion:
+                            return l10n.services_inclusion_label;
+                        }
+                      },
+                      descriptionOf: (g) {
+                        switch (g) {
+                          case StudentServicesGroup.support:
+                            return l10n.services_support_desc;
+                          case StudentServicesGroup.admin:
+                            return l10n.services_admin_desc;
+                          case StudentServicesGroup.academic:
+                            return l10n.services_academic_desc;
+                          case StudentServicesGroup.it:
+                            return l10n.services_it_desc;
+                          case StudentServicesGroup.security:
+                            return l10n.services_security_desc;
+                          case StudentServicesGroup.careers:
+                            return l10n.services_careers_desc;
+                          case StudentServicesGroup.inclusion:
+                            return l10n.services_inclusion_desc;
+                        }
+                      },
+                      onSelectGroup: controller.selectStudentServicesGroup,
+                      onClear: controller.clearCategoryBrowse,
                     )
-                    .toList()
-              : const <Building>[];
-
-          final List<Building> rendererSearchResults;
-          if (facultySubLevel) {
-            rendererSearchResults = facultyBuildings;
-          } else if (studentServicesSubLevel) {
-            rendererSearchResults = studentServicesBuildings;
-          } else if (campusHubSubLevel) {
-            rendererSearchResults = campusHubBuildings;
-          } else if (facultyTopLevel ||
-              studentServicesTopLevel ||
-              campusHubTopLevel) {
-            rendererSearchResults = const <Building>[];
-          } else {
-            rendererSearchResults = mapState.searchResults;
-          }
-
-          final mapView = CampusMapView(
-            searchResults: rendererSearchResults,
-            searchQuery: mapState.searchQuery,
-            selectedBuilding: mapState.selectedBuilding,
-            route: mapState.route,
-            currentLocation: mapState.currentLocation,
-            locationCenterRequestToken: mapState.locationCenterRequestToken,
-            isNavigating: mapState.isNavigating,
-            onSelectBuilding: controller.selectBuilding,
-            activeOverlayIds: mapState.activeOverlayIds,
-          );
-
-          final selectedBuilding = mapState.selectedBuilding;
-          // The card is a description, not the selection itself — once the
-          // user is heading somewhere it should get out of the way of the map.
-          final showInfoCard =
-              selectedBuilding != null &&
-              _dismissedSelectionToken != mapState.selectionToken;
-
-          return MapShell(
-            mapView: mapView,
-            onCenterOnLocation: () {
-              // Centring on yourself with a destination pinned is a "walking
-              // there now" signal — clear the card off the map, keep the pin.
-              if (selectedBuilding != null) {
-                _hideInfoCard(mapState.selectionToken);
-              }
-              controller.centerOnCurrentLocation();
-            },
-            onOpenSearch: _openSearchSheet,
-            onOpenOverlayPicker: _openOverlayPicker,
-            // Only routes opened with MapOpenPolicy.push carry `back=1`, so
-            // bottom-nav and deep-link entries show no arrow at all.
-            onBack: widget.showBackButton ? _handleBack : null,
-            filterChips: _CategoryFilterChips(
-              activeQuery: mapState.searchQuery,
-              onSelect: controller.updateSearchQuery,
-            ),
-            banner: mapState.error == null
-                ? null
-                : _MapErrorBanner(
-                    title: _errorTitle(l10n, mapState.error!),
-                    message: _errorMessage(l10n, mapState.error!),
-                    isPermissionBlocked: isPermissionBlocked,
-                    onCenterOnLocation: controller.centerOnCurrentLocation,
-                    onOpenSettings:
-                        permissionState ==
-                            LocationPermissionState.servicesDisabled
-                        ? controller.openLocationSettings
-                        : controller.openAppSettings,
+                  : studentServicesSubLevel
+                  ? _CategoryBuildingList(
+                      buildings: studentServicesBuildings,
+                      searchQuery: () {
+                        switch (mapState.selectedStudentServicesGroup!) {
+                          case StudentServicesGroup.support:
+                            return l10n.services_support_label;
+                          case StudentServicesGroup.admin:
+                            return l10n.services_admin_label;
+                          case StudentServicesGroup.academic:
+                            return l10n.services_academic_label;
+                          case StudentServicesGroup.it:
+                            return l10n.services_it_label;
+                          case StudentServicesGroup.security:
+                            return l10n.services_security_label;
+                          case StudentServicesGroup.careers:
+                            return l10n.services_careers_label;
+                          case StudentServicesGroup.inclusion:
+                            return l10n.services_inclusion_label;
+                        }
+                      }(),
+                      onSelectBuilding: controller.selectBuilding,
+                      onBack: () => controller.selectStudentServicesGroup(null),
+                      onClear: controller.clearCategoryBrowse,
+                    )
+                  : campusHubTopLevel
+                  ? _BrowseGroupPanel<CampusHubGroup>(
+                      title: l10n.home_campusHub,
+                      leadingIcon: Icons.account_balance,
+                      groups: CampusHubGroup.values,
+                      countByGroup: {
+                        for (final g in CampusHubGroup.values)
+                          g: mapState.searchResults
+                              .where(
+                                (b) =>
+                                    b.campusHubGroups.contains(g) &&
+                                    b.latitude != null &&
+                                    b.longitude != null,
+                              )
+                              .length,
+                      },
+                      labelOf: (g) {
+                        switch (g) {
+                          case CampusHubGroup.accommodation:
+                            return l10n.hub_accommodation_label;
+                          case CampusHubGroup.sport:
+                            return l10n.hub_sport_label;
+                          case CampusHubGroup.study:
+                            return l10n.hub_study_label;
+                          case CampusHubGroup.museums:
+                            return l10n.hub_museums_label;
+                          case CampusHubGroup.studentLife:
+                            return l10n.hub_studentLife_label;
+                          case CampusHubGroup.childcare:
+                            return l10n.hub_childcare_label;
+                          case CampusHubGroup.health:
+                            return l10n.hub_health_label;
+                          case CampusHubGroup.bike:
+                            return l10n.hub_bike_label;
+                          case CampusHubGroup.smoking:
+                            return l10n.hub_smoking_label;
+                        }
+                      },
+                      descriptionOf: (g) {
+                        switch (g) {
+                          case CampusHubGroup.accommodation:
+                            return l10n.hub_accommodation_desc;
+                          case CampusHubGroup.sport:
+                            return l10n.hub_sport_desc;
+                          case CampusHubGroup.study:
+                            return l10n.hub_study_desc;
+                          case CampusHubGroup.museums:
+                            return l10n.hub_museums_desc;
+                          case CampusHubGroup.studentLife:
+                            return l10n.hub_studentLife_desc;
+                          case CampusHubGroup.childcare:
+                            return l10n.hub_childcare_desc;
+                          case CampusHubGroup.health:
+                            return l10n.hub_health_desc;
+                          case CampusHubGroup.bike:
+                            return l10n.hub_bike_desc;
+                          case CampusHubGroup.smoking:
+                            return l10n.hub_smoking_desc;
+                        }
+                      },
+                      onSelectGroup: controller.selectCampusHubGroup,
+                      onClear: controller.clearCategoryBrowse,
+                    )
+                  : campusHubSubLevel
+                  ? _CategoryBuildingList(
+                      buildings: campusHubBuildings,
+                      searchQuery: () {
+                        switch (mapState.selectedCampusHubGroup!) {
+                          case CampusHubGroup.accommodation:
+                            return l10n.hub_accommodation_label;
+                          case CampusHubGroup.sport:
+                            return l10n.hub_sport_label;
+                          case CampusHubGroup.study:
+                            return l10n.hub_study_label;
+                          case CampusHubGroup.museums:
+                            return l10n.hub_museums_label;
+                          case CampusHubGroup.studentLife:
+                            return l10n.hub_studentLife_label;
+                          case CampusHubGroup.childcare:
+                            return l10n.hub_childcare_label;
+                          case CampusHubGroup.health:
+                            return l10n.hub_health_label;
+                          case CampusHubGroup.bike:
+                            return l10n.hub_bike_label;
+                          case CampusHubGroup.smoking:
+                            return l10n.hub_smoking_label;
+                        }
+                      }(),
+                      onSelectBuilding: controller.selectBuilding,
+                      onBack: () => controller.selectCampusHubGroup(null),
+                      onClear: controller.clearCategoryBrowse,
+                    )
+                  : isCategoryBrowse
+                  ? _CategoryBuildingList(
+                      buildings: mapState.searchResults,
+                      searchQuery: mapState.searchQuery,
+                      onSelectBuilding: controller.selectBuilding,
+                      onClear: controller.clearCategoryBrowse,
+                    )
+                  : null,
+              mapMode: _mapMode,
+              onMapModeChanged: (mode) => setState(() => _mapMode = mode),
+              arContent: _buildArContent(),
+              // In AR mode the selected-building indoor preview owns its own
+              // AppBar (with the location name); don't float the mode toggle
+              // over it, or the two overlap. The preview's Back button returns
+              // to the picker, where the toggle is shown again.
+              showArModeToggle:
+                  !(_mapMode == MapMode.ar &&
+                      mapState.selectedBuilding?.code != null),
+            );
+          },
+          error: (error, _) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(MqSpacing.space8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: MqColors.error.withValues(alpha: 0.7),
                   ),
-            // Dragging the footer down (bottom-sheet gesture) dismisses it
-            // via the same action as its own close button.
-            onFooterDismiss: selectedBuilding != null
-                ? () => _hideInfoCard(mapState.selectionToken)
-                : controller.clearCategoryBrowse,
-            // Category/browse result lists get peek/medium/expanded snap
-            // states; the compact building-info card keeps drag-to-dismiss.
-            footerSnappable: mapState.selectedBuilding == null,
-            // Changing category/group/search reopens the sheet to medium.
-            footerResetKey:
-                '${mapState.selectedFacultyGroup}'
-                '|${mapState.selectedStudentServicesGroup}'
-                '|${mapState.selectedCampusHubGroup}'
-                '|${mapState.searchQuery}',
-            footer: selectedBuilding != null
-                // Dismissed → no footer at all, leaving a clean map with the
-                // pin still on it. Falling through to the category list here
-                // would replace the card with an unrelated panel.
-                ? (showInfoCard
-                      ? _CampusBuildingInfoPanel(
-                          selectedBuilding: selectedBuilding,
-                          onClearSelection: () =>
-                              _hideInfoCard(mapState.selectionToken),
-                        )
-                      : null)
-                : facultyTopLevel
-                ? _BrowseGroupPanel<FacultyGroup>(
-                    title: l10n.home_faculty,
-                    leadingIcon: Icons.school,
-                    groups: FacultyGroup.values,
-                    countByGroup: {
-                      for (final g in FacultyGroup.values)
-                        g: mapState.searchResults
-                            .where(
-                              (b) =>
-                                  b.facultyGroup == g &&
-                                  b.latitude != null &&
-                                  b.longitude != null,
-                            )
-                            .length,
-                    },
-                    labelOf: (g) {
-                      switch (g) {
-                        case FacultyGroup.arts:
-                          return l10n.faculty_arts_label;
-                        case FacultyGroup.business:
-                          return l10n.faculty_business_label;
-                        case FacultyGroup.mhhs:
-                          return l10n.faculty_mhhs_label;
-                        case FacultyGroup.scienceEngineering:
-                          return l10n.faculty_scienceEngineering_label;
-                      }
-                    },
-                    descriptionOf: (g) {
-                      switch (g) {
-                        case FacultyGroup.arts:
-                          return l10n.faculty_arts_desc;
-                        case FacultyGroup.business:
-                          return l10n.faculty_business_desc;
-                        case FacultyGroup.mhhs:
-                          return l10n.faculty_mhhs_desc;
-                        case FacultyGroup.scienceEngineering:
-                          return l10n.faculty_scienceEngineering_desc;
-                      }
-                    },
-                    onSelectGroup: controller.selectFacultyGroup,
-                    onClear: controller.clearCategoryBrowse,
-                  )
-                : facultySubLevel
-                ? _CategoryBuildingList(
-                    buildings: facultyBuildings,
-                    searchQuery: () {
-                      switch (mapState.selectedFacultyGroup!) {
-                        case FacultyGroup.arts:
-                          return l10n.faculty_arts_label;
-                        case FacultyGroup.business:
-                          return l10n.faculty_business_label;
-                        case FacultyGroup.mhhs:
-                          return l10n.faculty_mhhs_label;
-                        case FacultyGroup.scienceEngineering:
-                          return l10n.faculty_scienceEngineering_label;
-                      }
-                    }(),
-                    onSelectBuilding: controller.selectBuilding,
-                    onBack: () => controller.selectFacultyGroup(null),
-                    onClear: controller.clearCategoryBrowse,
-                  )
-                : studentServicesTopLevel
-                ? _BrowseGroupPanel<StudentServicesGroup>(
-                    title: l10n.home_studentServices,
-                    leadingIcon: Icons.support_agent,
-                    groups: StudentServicesGroup.values,
-                    countByGroup: {
-                      for (final g in StudentServicesGroup.values)
-                        g: mapState.searchResults
-                            .where(
-                              (b) =>
-                                  b.studentServicesGroups.contains(g) &&
-                                  b.latitude != null &&
-                                  b.longitude != null,
-                            )
-                            .length,
-                    },
-                    labelOf: (g) {
-                      switch (g) {
-                        case StudentServicesGroup.support:
-                          return l10n.services_support_label;
-                        case StudentServicesGroup.admin:
-                          return l10n.services_admin_label;
-                        case StudentServicesGroup.academic:
-                          return l10n.services_academic_label;
-                        case StudentServicesGroup.it:
-                          return l10n.services_it_label;
-                        case StudentServicesGroup.security:
-                          return l10n.services_security_label;
-                        case StudentServicesGroup.careers:
-                          return l10n.services_careers_label;
-                        case StudentServicesGroup.inclusion:
-                          return l10n.services_inclusion_label;
-                      }
-                    },
-                    descriptionOf: (g) {
-                      switch (g) {
-                        case StudentServicesGroup.support:
-                          return l10n.services_support_desc;
-                        case StudentServicesGroup.admin:
-                          return l10n.services_admin_desc;
-                        case StudentServicesGroup.academic:
-                          return l10n.services_academic_desc;
-                        case StudentServicesGroup.it:
-                          return l10n.services_it_desc;
-                        case StudentServicesGroup.security:
-                          return l10n.services_security_desc;
-                        case StudentServicesGroup.careers:
-                          return l10n.services_careers_desc;
-                        case StudentServicesGroup.inclusion:
-                          return l10n.services_inclusion_desc;
-                      }
-                    },
-                    onSelectGroup: controller.selectStudentServicesGroup,
-                    onClear: controller.clearCategoryBrowse,
-                  )
-                : studentServicesSubLevel
-                ? _CategoryBuildingList(
-                    buildings: studentServicesBuildings,
-                    searchQuery: () {
-                      switch (mapState.selectedStudentServicesGroup!) {
-                        case StudentServicesGroup.support:
-                          return l10n.services_support_label;
-                        case StudentServicesGroup.admin:
-                          return l10n.services_admin_label;
-                        case StudentServicesGroup.academic:
-                          return l10n.services_academic_label;
-                        case StudentServicesGroup.it:
-                          return l10n.services_it_label;
-                        case StudentServicesGroup.security:
-                          return l10n.services_security_label;
-                        case StudentServicesGroup.careers:
-                          return l10n.services_careers_label;
-                        case StudentServicesGroup.inclusion:
-                          return l10n.services_inclusion_label;
-                      }
-                    }(),
-                    onSelectBuilding: controller.selectBuilding,
-                    onBack: () => controller.selectStudentServicesGroup(null),
-                    onClear: controller.clearCategoryBrowse,
-                  )
-                : campusHubTopLevel
-                ? _BrowseGroupPanel<CampusHubGroup>(
-                    title: l10n.home_campusHub,
-                    leadingIcon: Icons.account_balance,
-                    groups: CampusHubGroup.values,
-                    countByGroup: {
-                      for (final g in CampusHubGroup.values)
-                        g: mapState.searchResults
-                            .where(
-                              (b) =>
-                                  b.campusHubGroups.contains(g) &&
-                                  b.latitude != null &&
-                                  b.longitude != null,
-                            )
-                            .length,
-                    },
-                    labelOf: (g) {
-                      switch (g) {
-                        case CampusHubGroup.accommodation:
-                          return l10n.hub_accommodation_label;
-                        case CampusHubGroup.sport:
-                          return l10n.hub_sport_label;
-                        case CampusHubGroup.study:
-                          return l10n.hub_study_label;
-                        case CampusHubGroup.museums:
-                          return l10n.hub_museums_label;
-                        case CampusHubGroup.studentLife:
-                          return l10n.hub_studentLife_label;
-                        case CampusHubGroup.childcare:
-                          return l10n.hub_childcare_label;
-                        case CampusHubGroup.health:
-                          return l10n.hub_health_label;
-                        case CampusHubGroup.bike:
-                          return l10n.hub_bike_label;
-                        case CampusHubGroup.smoking:
-                          return l10n.hub_smoking_label;
-                      }
-                    },
-                    descriptionOf: (g) {
-                      switch (g) {
-                        case CampusHubGroup.accommodation:
-                          return l10n.hub_accommodation_desc;
-                        case CampusHubGroup.sport:
-                          return l10n.hub_sport_desc;
-                        case CampusHubGroup.study:
-                          return l10n.hub_study_desc;
-                        case CampusHubGroup.museums:
-                          return l10n.hub_museums_desc;
-                        case CampusHubGroup.studentLife:
-                          return l10n.hub_studentLife_desc;
-                        case CampusHubGroup.childcare:
-                          return l10n.hub_childcare_desc;
-                        case CampusHubGroup.health:
-                          return l10n.hub_health_desc;
-                        case CampusHubGroup.bike:
-                          return l10n.hub_bike_desc;
-                        case CampusHubGroup.smoking:
-                          return l10n.hub_smoking_desc;
-                      }
-                    },
-                    onSelectGroup: controller.selectCampusHubGroup,
-                    onClear: controller.clearCategoryBrowse,
-                  )
-                : campusHubSubLevel
-                ? _CategoryBuildingList(
-                    buildings: campusHubBuildings,
-                    searchQuery: () {
-                      switch (mapState.selectedCampusHubGroup!) {
-                        case CampusHubGroup.accommodation:
-                          return l10n.hub_accommodation_label;
-                        case CampusHubGroup.sport:
-                          return l10n.hub_sport_label;
-                        case CampusHubGroup.study:
-                          return l10n.hub_study_label;
-                        case CampusHubGroup.museums:
-                          return l10n.hub_museums_label;
-                        case CampusHubGroup.studentLife:
-                          return l10n.hub_studentLife_label;
-                        case CampusHubGroup.childcare:
-                          return l10n.hub_childcare_label;
-                        case CampusHubGroup.health:
-                          return l10n.hub_health_label;
-                        case CampusHubGroup.bike:
-                          return l10n.hub_bike_label;
-                        case CampusHubGroup.smoking:
-                          return l10n.hub_smoking_label;
-                      }
-                    }(),
-                    onSelectBuilding: controller.selectBuilding,
-                    onBack: () => controller.selectCampusHubGroup(null),
-                    onClear: controller.clearCategoryBrowse,
-                  )
-                : isCategoryBrowse
-                ? _CategoryBuildingList(
-                    buildings: mapState.searchResults,
-                    searchQuery: mapState.searchQuery,
-                    onSelectBuilding: controller.selectBuilding,
-                    onClear: controller.clearCategoryBrowse,
-                  )
-                : null,
-            mapMode: _mapMode,
-            onMapModeChanged: (mode) => setState(() => _mapMode = mode),
-            arContent: _buildArContent(),
-            // In AR mode the selected-building indoor preview owns its own
-            // AppBar (with the location name); don't float the mode toggle
-            // over it, or the two overlap. The preview's Back button returns
-            // to the picker, where the toggle is shown again.
-            showArModeToggle:
-                !(_mapMode == MapMode.ar &&
-                    mapState.selectedBuilding?.code != null),
-          );
-        },
-        error: (error, _) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(MqSpacing.space8),
+                  const SizedBox(height: MqSpacing.space4),
+                  Text(
+                    error.toString(),
+                    style: context.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          loading: () => Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.error_outline,
-                  size: 48,
-                  color: MqColors.error.withValues(alpha: 0.7),
-                ),
+                const CircularProgressIndicator(color: MqColors.red),
                 const SizedBox(height: MqSpacing.space4),
                 Text(
-                  error.toString(),
-                  style: context.textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
+                  l10n.loadingBuildings,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: isDark ? Colors.white : MqColors.contentTertiary,
+                  ),
                 ),
               ],
             ),
-          ),
-        ),
-        loading: () => Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircularProgressIndicator(color: MqColors.red),
-              const SizedBox(height: MqSpacing.space4),
-              Text(
-                l10n.loadingBuildings,
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: isDark ? Colors.white : MqColors.contentTertiary,
-                ),
-              ),
-            ],
           ),
         ),
       ),
@@ -863,6 +947,7 @@ class _MapErrorBanner extends StatelessWidget {
     required this.isPermissionBlocked,
     required this.onCenterOnLocation,
     required this.onOpenSettings,
+    required this.onDismiss,
   });
 
   final String title;
@@ -870,6 +955,7 @@ class _MapErrorBanner extends StatelessWidget {
   final bool isPermissionBlocked;
   final Future<void> Function() onCenterOnLocation;
   final Future<void> Function() onOpenSettings;
+  final VoidCallback onDismiss;
 
   @override
   Widget build(BuildContext context) {
@@ -879,15 +965,15 @@ class _MapErrorBanner extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(MqSpacing.space4),
       decoration: BoxDecoration(
-        // Deliberately NOT a glass/tinted surface. This banner sits directly
-        // over the campus map, whose colours and labels run underneath it. At
-        // the previous dark-mode value (an error tint at 0.14 alpha) the map
-        // showed straight through and the message — the one thing the user
-        // needs to read when location fails — was barely legible. Status and
-        // error copy gets an opaque surface; the Liquid Glass language is kept
-        // by the rounded shape, error-tinted border and shadow rather than by
-        // transparency.
-        color: isDark ? MqColors.charcoal900 : Colors.white,
+        // Deliberately NOT a glass/tinted surface, and deliberately the same
+        // near-white in both themes. This banner sits directly over the campus
+        // map, whose colours and labels run underneath it; a translucent or
+        // dark-tinted surface made the one message the user needs when
+        // location fails hard to read. A system message earns a solid light
+        // surface with dark text in either theme — the Liquid Glass language
+        // is carried by the rounded shape, tinted border and shadow, not by
+        // transparency. Magenta stays only as the primary action accent.
+        color: Colors.white,
         borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
         border: Border.all(
           color: MqColors.error.withValues(alpha: isDark ? 0.34 : 0.22),
@@ -921,15 +1007,23 @@ class _MapErrorBanner extends StatelessWidget {
                   ),
                 ),
               ),
+              // Always available: the user may simply not want to act on this.
+              IconButton(
+                icon: const Icon(Icons.close, size: 20),
+                color: MqColors.contentSecondary,
+                tooltip: l10n.dismiss,
+                visualDensity: VisualDensity.compact,
+                onPressed: onDismiss,
+              ),
             ],
           ),
           const SizedBox(height: MqSpacing.space2),
           Text(
             message,
             style: context.textTheme.bodySmall?.copyWith(
-              // Primary, not secondary: this is the actionable sentence, and
-              // secondary grey on white was the weakest text in the banner.
-              color: isDark ? Colors.white : MqColors.contentPrimary,
+              // Dark text on the white surface in both themes — this is the
+              // actionable sentence and must be the most legible thing here.
+              color: MqColors.contentPrimary,
             ),
           ),
           if (isPermissionBlocked) ...[
@@ -1461,10 +1555,20 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
   const _CampusBuildingInfoPanel({
     required this.selectedBuilding,
     required this.onClearSelection,
+    this.onBack,
   });
 
   final Building selectedBuilding;
+
+  /// Exits the whole panel flow and returns to the plain campus map.
   final VoidCallback onClearSelection;
+
+  /// Returns to the list this detail was opened from.
+  ///
+  /// Null when there is no list behind it — a deep link, a QR venue card or a
+  /// Your Day entry lands straight on the detail, and a Back button with no
+  /// destination is worse than none.
+  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -1579,6 +1683,21 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
                   ],
                 ),
               ),
+              // Back and Close are deliberately different actions: Back pops
+              // one level to the list behind, Close leaves the panel flow
+              // entirely. Placement is directional (Row + start/end), and the
+              // back glyph mirrors in RTL while the close cross never does.
+              if (onBack != null)
+                IconButton(
+                  icon: DirectionalBackIcon(
+                    size: MqSpacing.iconMd,
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.7)
+                        : MqColors.contentSecondary,
+                  ),
+                  tooltip: l10n.back,
+                  onPressed: onBack,
+                ),
               IconButton(
                 icon: Icon(
                   Icons.close,
@@ -1587,7 +1706,7 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
                       ? Colors.white.withValues(alpha: 0.5)
                       : MqColors.contentTertiary,
                 ),
-                tooltip: l10n.clear,
+                tooltip: l10n.close,
                 onPressed: onClearSelection,
               ),
             ],

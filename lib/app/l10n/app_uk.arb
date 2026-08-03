@@ -200,13 +200,10 @@
   "quietHoursEnd": "Закінчується о",
   "highContrastMap": "Висококонтрастна карта",
   "offlineCampusMaps": "Офлайн-карти кампусу",
-  "offlineCampusMapsDownload": "Завантажте Карти кампусу для офлайн-користування",
-  "offlineCampusMapsDownloading": "Завантаження офлайн-карт кампусу...",
-  "offlineCampusMapsReady": "Офлайн карти кампусу готові",
-  "offlineCampusMapsDownloadedLabel": "Завантажено",
-  "offlineCampusMapsAlreadyDownloaded": "Карти кампусу вже завантажені для офлайн-використання.",
-  "offlineCampusMapsRedownload": "Завантажити знову",
-  "offlineCampusMapsFailed": "Не вдалося завантажити",
+  "dismiss": "Закрити",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Входить до застосунку",
   "offlineCampusMapsBundledDetail": "Карта кампусу, список будівель і внутрішні тури працюють без підключення. Для розкладу метро в реальному часі, пішохідних маршрутів та інших онлайн-сервісів потрібне підключення.",
   "homeNextMetroLabel": "Наступне метро",

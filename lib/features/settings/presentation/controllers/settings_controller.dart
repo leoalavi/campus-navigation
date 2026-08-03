@@ -89,20 +89,6 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     return _save(currentPreferences.copyWith(highContrastMap: enabled));
   }
 
-  Future<String?> updateOfflineCampusMapsEnabled(bool enabled) async {
-    final currentPreferences = state.value ?? const UserPreferences();
-    return _save(
-      currentPreferences.copyWith(offlineCampusMapsEnabled: enabled),
-    );
-  }
-
-  Future<String?> updateOfflineCampusMapsDownloaded(bool downloaded) async {
-    final currentPreferences = state.value ?? const UserPreferences();
-    return _save(
-      currentPreferences.copyWith(offlineCampusMapsDownloaded: downloaded),
-    );
-  }
-
   Future<String?> updateCommutePreferences({
     String? commuteMode,
     String? favoriteDirection,

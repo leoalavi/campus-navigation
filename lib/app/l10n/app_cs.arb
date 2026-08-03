@@ -200,13 +200,10 @@
   "quietHoursEnd": "Končí v",
   "highContrastMap": "Vysoce kontrastní mapa",
   "offlineCampusMaps": "Offline mapy kampusu",
-  "offlineCampusMapsDownload": "Stáhněte si Campus Maps pro offline použití",
-  "offlineCampusMapsDownloading": "Stahování offline map kampusu...",
-  "offlineCampusMapsReady": "Offline mapy kampusu jsou připraveny",
-  "offlineCampusMapsDownloadedLabel": "Staženo",
-  "offlineCampusMapsAlreadyDownloaded": "Mapy kampusu jsou již staženy pro offline použití.",
-  "offlineCampusMapsRedownload": "Stáhnout znovu",
-  "offlineCampusMapsFailed": "Stahování selhalo",
+  "dismiss": "Zavřít",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Součást aplikace",
   "offlineCampusMapsBundledDetail": "Mapa kampusu, seznam budov a vnitřní prohlídky fungují bez připojení. Živé časy metra, pěší trasy a další online služby připojení vyžadují.",
   "homeNextMetroLabel": "Další metro",

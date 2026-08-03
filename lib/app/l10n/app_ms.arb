@@ -200,13 +200,10 @@
   "quietHoursEnd": "Berakhir pada",
   "highContrastMap": "Peta Kontras Tinggi",
   "offlineCampusMaps": "Peta Kampus Luar Talian",
-  "offlineCampusMapsDownload": "Muat turun Peta Kampus untuk Penggunaan Luar Talian",
-  "offlineCampusMapsDownloading": "Memuat turun peta kampus luar talian...",
-  "offlineCampusMapsReady": "Peta kampus luar talian sudah sedia",
-  "offlineCampusMapsDownloadedLabel": "Dimuat turun",
-  "offlineCampusMapsAlreadyDownloaded": "Peta kampus sudah dimuat turun untuk kegunaan luar talian.",
-  "offlineCampusMapsRedownload": "Muat turun semula",
-  "offlineCampusMapsFailed": "Muat turun gagal",
+  "dismiss": "Tolak",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Disertakan dalam apl",
   "offlineCampusMapsBundledDetail": "Peta kampus, senarai bangunan dan lawatan dalaman berfungsi tanpa sambungan. Masa metro langsung, laluan pejalan kaki dan perkhidmatan dalam talian lain memerlukannya.",
   "homeNextMetroLabel": "Metro seterusnya",

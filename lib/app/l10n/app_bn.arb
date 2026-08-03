@@ -200,13 +200,10 @@
   "quietHoursEnd": "এ শেষ হয়",
   "highContrastMap": "উচ্চ-কনট্রাস্ট মানচিত্র",
   "offlineCampusMaps": "অফলাইন ক্যাম্পাস মানচিত্র",
-  "offlineCampusMapsDownload": "অফলাইন ব্যবহারের জন্য ক্যাম্পাস মানচিত্র ডাউনলোড করুন",
-  "offlineCampusMapsDownloading": "অফলাইন ক্যাম্পাস ম্যাপ ডাউনলোড করা হচ্ছে...",
-  "offlineCampusMapsReady": "অফলাইন ক্যাম্পাস মানচিত্র প্রস্তুত",
-  "offlineCampusMapsDownloadedLabel": "ডাউনলোড হয়েছে",
-  "offlineCampusMapsAlreadyDownloaded": "অফলাইন ব্যবহারের জন্য ক্যাম্পাস মানচিত্র ইতিমধ্যে ডাউনলোড করা হয়েছে।",
-  "offlineCampusMapsRedownload": "পুনরায় ডাউনলোড করুন",
-  "offlineCampusMapsFailed": "ডাউনলোড ব্যর্থ হয়েছে",
+  "dismiss": "খারিজ করুন",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "অ্যাপে অন্তর্ভুক্ত",
   "offlineCampusMapsBundledDetail": "ক্যাম্পাস মানচিত্র, ভবনের তালিকা ও ইনডোর ট্যুর সংযোগ ছাড়াই কাজ করে। লাইভ মেট্রো সময়, হাঁটার রুট ও অন্যান্য অনলাইন পরিষেবার জন্য সংযোগ প্রয়োজন।",
   "homeNextMetroLabel": "পরবর্তী মেট্রো",

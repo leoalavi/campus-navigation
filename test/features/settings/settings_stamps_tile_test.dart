@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
 import 'package:mq_journey/app/router/route_names.dart';
-import 'package:mq_journey/features/map/data/services/offline_maps_service.dart';
 import 'package:mq_journey/features/notifications/data/datasources/fcm_service.dart';
 import 'package:mq_journey/features/notifications/domain/entities/app_notification.dart';
 import 'package:mq_journey/features/notifications/presentation/controllers/notifications_controller.dart';
@@ -17,8 +16,6 @@ import 'package:mq_journey/features/settings/presentation/pages/settings_page.da
 import 'package:mq_journey/shared/models/user_preferences.dart';
 
 class MockSettingsRepository extends Mock implements SettingsRepository {}
-
-class MockOfflineMapsService extends Mock implements OfflineMapsService {}
 
 class _FakeNotificationsController extends NotificationsController {
   @override
@@ -53,7 +50,6 @@ void main() {
   testWidgets('My Stamps tile navigates to /stamps', (tester) async {
     setupLargeViewport(tester);
     final mockSettingsRepository = MockSettingsRepository();
-    final mockOfflineMapsService = MockOfflineMapsService();
     when(
       () => mockSettingsRepository.loadPreferences(),
     ).thenAnswer((_) async => const UserPreferences());
@@ -61,7 +57,6 @@ void main() {
       (invocation) async =>
           invocation.positionalArguments[0] as UserPreferences,
     );
-    when(() => mockOfflineMapsService.isFmtcBackendReady).thenReturn(false);
 
     final router = GoRouter(
       initialLocation: '/settings',
@@ -83,7 +78,6 @@ void main() {
       ProviderScope(
         overrides: [
           settingsRepositoryProvider.overrideWithValue(mockSettingsRepository),
-          offlineMapsServiceProvider.overrideWithValue(mockOfflineMapsService),
           notificationsControllerProvider.overrideWith(
             () => _FakeNotificationsController(),
           ),

@@ -200,13 +200,10 @@
   "quietHoursEnd": "Τελειώνει στις",
   "highContrastMap": "Χάρτης υψηλής αντίθεσης",
   "offlineCampusMaps": "Χάρτες Πανεπιστημιούπολης εκτός σύνδεσης",
-  "offlineCampusMapsDownload": "Κατεβάστε τους Χάρτες Πανεπιστημιούπολης για χρήση εκτός σύνδεσης",
-  "offlineCampusMapsDownloading": "Λήψη χαρτών πανεπιστημιούπολης εκτός σύνδεσης...",
-  "offlineCampusMapsReady": "Οι χάρτες της πανεπιστημιούπολης εκτός σύνδεσης είναι έτοιμοι",
-  "offlineCampusMapsDownloadedLabel": "Λήφθηκε",
-  "offlineCampusMapsAlreadyDownloaded": "Οι χάρτες πανεπιστημιούπολης έχουν ήδη ληφθεί για χρήση εκτός σύνδεσης.",
-  "offlineCampusMapsRedownload": "Λήψη ξανά",
-  "offlineCampusMapsFailed": "Η λήψη απέτυχε",
+  "dismiss": "Απόρριψη",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Περιλαμβάνεται στην εφαρμογή",
   "offlineCampusMapsBundledDetail": "Ο χάρτης, η λίστα κτιρίων και οι εσωτερικές περιηγήσεις λειτουργούν χωρίς σύνδεση. Οι ζωντανοί χρόνοι μετρό, οι διαδρομές και άλλες διαδικτυακές υπηρεσίες χρειάζονται σύνδεση.",
   "homeNextMetroLabel": "Επόμενο Μετρό",

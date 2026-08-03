@@ -200,13 +200,10 @@
   "quietHoursEnd": "終了時刻",
   "highContrastMap": "高コントラスト地図",
   "offlineCampusMaps": "オフラインキャンパスマップ",
-  "offlineCampusMapsDownload": "オフライン使用のためにキャンパスマップをダウンロード",
-  "offlineCampusMapsDownloading": "オフラインキャンパスマップをダウンロード中…",
-  "offlineCampusMapsReady": "オフラインキャンパスマップの準備ができました",
-  "offlineCampusMapsDownloadedLabel": "ダウンロード済み",
-  "offlineCampusMapsAlreadyDownloaded": "キャンパスマップはすでにオフライン用にダウンロードされています。",
-  "offlineCampusMapsRedownload": "再ダウンロード",
-  "offlineCampusMapsFailed": "ダウンロードに失敗しました",
+  "dismiss": "閉じる",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "アプリに同梱",
   "offlineCampusMapsBundledDetail": "キャンパスマップ、建物一覧、屋内ツアーは接続なしで利用できます。メトロのリアルタイム時刻、徒歩ルートなどのオンラインサービスには接続が必要です。",
   "homeNextMetroLabel": "次の電車",

@@ -200,13 +200,10 @@
   "quietHoursEnd": "ينتهي عند",
   "highContrastMap": "خريطة عالية التباين",
   "offlineCampusMaps": "خرائط الحرم دون اتصال",
-  "offlineCampusMapsDownload": "تحميل خرائط الحرم للاستخدام دون اتصال",
-  "offlineCampusMapsDownloading": "جاري تحميل خرائط الحرم...",
-  "offlineCampusMapsReady": "خرائط الحرم دون اتصال جاهزة",
-  "offlineCampusMapsDownloadedLabel": "تم التنزيل",
-  "offlineCampusMapsAlreadyDownloaded": "خرائط الحرم الجامعي محملة بالفعل للاستخدام دون اتصال.",
-  "offlineCampusMapsRedownload": "إعادة التنزيل",
-  "offlineCampusMapsFailed": "فشل التنزيل",
+  "dismiss": "تجاهل",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "مُضمَّن في التطبيق",
   "offlineCampusMapsBundledDetail": "تعمل خريطة الحرم الجامعي وقائمة المباني والجولات الداخلية بدون اتصال. أما أوقات المترو المباشرة ومسارات المشي والخدمات الأخرى عبر الإنترنت فتحتاج إلى اتصال.",
   "homeNextMetroLabel": "المترو القادم",

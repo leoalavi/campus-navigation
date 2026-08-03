@@ -200,13 +200,10 @@
   "quietHoursEnd": "órakor ér véget",
   "highContrastMap": "Nagy kontrasztú térkép",
   "offlineCampusMaps": "Offline Campus Maps",
-  "offlineCampusMapsDownload": "Töltse le a Campus térképeket offline használatra",
-  "offlineCampusMapsDownloading": "Offline campus térképek letöltése...",
-  "offlineCampusMapsReady": "Elkészültek az offline campus térképek",
-  "offlineCampusMapsDownloadedLabel": "Letöltve",
-  "offlineCampusMapsAlreadyDownloaded": "A campus térképek már le vannak töltve offline használatra.",
-  "offlineCampusMapsRedownload": "Újratöltés",
-  "offlineCampusMapsFailed": "A letöltés sikertelen",
+  "dismiss": "Elvetés",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Az alkalmazás része",
   "offlineCampusMapsBundledDetail": "A campustérkép, az épületlista és a beltéri túrák kapcsolat nélkül is működnek. Az élő metróidők, a gyalogos útvonalak és más online szolgáltatások kapcsolatot igényelnek.",
   "homeNextMetroLabel": "Következő metró",

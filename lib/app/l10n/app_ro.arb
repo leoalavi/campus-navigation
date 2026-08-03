@@ -200,13 +200,10 @@
   "quietHoursEnd": "Se termină la",
   "highContrastMap": "Hartă cu contrast ridicat",
   "offlineCampusMaps": "Hărți offline ale campusului",
-  "offlineCampusMapsDownload": "Descărcați hărțile campusului pentru utilizare offline",
-  "offlineCampusMapsDownloading": "Se descarcă offline hărțile campusului...",
-  "offlineCampusMapsReady": "Hărțile campusului offline sunt gata",
-  "offlineCampusMapsDownloadedLabel": "Descărcat",
-  "offlineCampusMapsAlreadyDownloaded": "Hărțile campusului sunt deja descărcate pentru utilizare offline.",
-  "offlineCampusMapsRedownload": "Redescarcă",
-  "offlineCampusMapsFailed": "Descărcarea a eșuat",
+  "dismiss": "Închide",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Inclus în aplicație",
   "offlineCampusMapsBundledDetail": "Harta campusului, lista clădirilor și tururile interioare funcționează fără conexiune. Orarele live de metrou, rutele pietonale și alte servicii online necesită conexiune.",
   "homeNextMetroLabel": "Următorul metrou",

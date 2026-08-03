@@ -200,13 +200,10 @@
   "quietHoursEnd": "Endet um",
   "highContrastMap": "Hochkontrastkarte",
   "offlineCampusMaps": "Offline-Campuskarten",
-  "offlineCampusMapsDownload": "Campuskarten für Offline-Nutzung herunterladen",
-  "offlineCampusMapsDownloading": "Offline-Campuspläne werden heruntergeladen...",
-  "offlineCampusMapsReady": "Offline-Campuspläne sind fertig",
-  "offlineCampusMapsDownloadedLabel": "Heruntergeladen",
-  "offlineCampusMapsAlreadyDownloaded": "Campuskarten wurden bereits für die Offline-Nutzung heruntergeladen.",
-  "offlineCampusMapsRedownload": "Erneut herunterladen",
-  "offlineCampusMapsFailed": "Download fehlgeschlagen",
+  "dismiss": "Schließen",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "In der App enthalten",
   "offlineCampusMapsBundledDetail": "Campusplan, Gebäudeliste und Innenrundgänge funktionieren ohne Verbindung. Live-Metrozeiten, Fußwege und andere Onlinedienste benötigen eine Verbindung.",
   "homeNextMetroLabel": "Nächste U-Bahn",

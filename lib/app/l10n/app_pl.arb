@@ -200,13 +200,10 @@
   "quietHoursEnd": "Kończy się o godz",
   "highContrastMap": "Mapa o wysokim kontraście",
   "offlineCampusMaps": "Mapy kampusu offline",
-  "offlineCampusMapsDownload": "Pobierz mapy kampusu do użytku offline",
-  "offlineCampusMapsDownloading": "Pobieram mapy kampusu offline...",
-  "offlineCampusMapsReady": "Mapy kampusów offline są gotowe",
-  "offlineCampusMapsDownloadedLabel": "Pobrano",
-  "offlineCampusMapsAlreadyDownloaded": "Mapy kampusu zostały już pobrane do użytku offline.",
-  "offlineCampusMapsRedownload": "Pobierz ponownie",
-  "offlineCampusMapsFailed": "Pobieranie nie powiodło się",
+  "dismiss": "Zamknij",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Dołączone do aplikacji",
   "offlineCampusMapsBundledDetail": "Mapa kampusu, lista budynków i zwiedzanie wnętrz działają bez połączenia. Czasy metra na żywo, trasy piesze i inne usługi online go wymagają.",
   "homeNextMetroLabel": "Następne metro",

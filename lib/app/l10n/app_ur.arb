@@ -200,13 +200,10 @@
   "quietHoursEnd": "پر ختم ہوتا ہے۔",
   "highContrastMap": "ہائی کنٹراسٹ نقشہ",
   "offlineCampusMaps": "آف لائن کیمپس میپس",
-  "offlineCampusMapsDownload": "آف لائن استعمال کے لیے کیمپس کے نقشے ڈاؤن لوڈ کریں۔",
-  "offlineCampusMapsDownloading": "آف لائن کیمپس کے نقشے ڈاؤن لوڈ ہو رہے ہیں...",
-  "offlineCampusMapsReady": "کیمپس کے آف لائن نقشے تیار ہیں۔",
-  "offlineCampusMapsDownloadedLabel": "ڈاؤن لوڈ ہو گیا",
-  "offlineCampusMapsAlreadyDownloaded": "آف لائن استعمال کے لیے کیمپس کے نقشے پہلے ہی ڈاؤن لوڈ ہو چکے ہیں۔",
-  "offlineCampusMapsRedownload": "دوبارہ ڈاؤن لوڈ کریں۔",
-  "offlineCampusMapsFailed": "ڈاؤن لوڈ ناکام ہو گیا",
+  "dismiss": "برخاست کریں",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "ایپ میں شامل",
   "offlineCampusMapsBundledDetail": "کیمپس کا نقشہ، عمارتوں کی فہرست اور اندرونی ٹورز بغیر کنکشن کے کام کرتے ہیں۔ لائیو میٹرو اوقات، پیدل راستے اور دیگر آن لائن خدمات کے لیے کنکشن درکار ہے۔",
   "homeNextMetroLabel": "اگلی میٹرو",

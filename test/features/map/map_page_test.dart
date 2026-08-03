@@ -345,7 +345,7 @@ void main() {
       // The card is up, naming the building.
       expect(find.text('Building A'), findsOneWidget);
 
-      await tester.tap(find.byTooltip('Clear'));
+      await tester.tap(find.byTooltip('Close'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
 
@@ -391,7 +391,7 @@ void main() {
     router.go('/map?building=BLD-A');
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 200));
-    await tester.tap(find.byTooltip('Clear'));
+    await tester.tap(find.byTooltip('Close'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('Building A'), findsNothing);
@@ -437,7 +437,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 200));
     expect(find.text('Building A'), findsOneWidget);
 
-    await tester.tap(find.byTooltip('Clear'));
+    await tester.tap(find.byTooltip('Close'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('Building A'), findsNothing);
@@ -568,7 +568,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
 
-      await tester.tap(find.byTooltip('Clear'));
+      await tester.tap(find.byTooltip('Close'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.text('Building A'), findsNothing);

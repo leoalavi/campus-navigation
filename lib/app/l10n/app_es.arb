@@ -200,13 +200,10 @@
   "quietHoursEnd": "Termina en",
   "highContrastMap": "Mapa de alto contraste",
   "offlineCampusMaps": "Mapas del campus sin conexión",
-  "offlineCampusMapsDownload": "Descargar mapas del campus para usarlos sin conexión",
-  "offlineCampusMapsDownloading": "Descargando mapas del campus sin conexión...",
-  "offlineCampusMapsReady": "Los mapas del campus sin conexión están listos",
-  "offlineCampusMapsDownloadedLabel": "Descargado",
-  "offlineCampusMapsAlreadyDownloaded": "Los mapas del campus ya están descargados para su uso sin conexión.",
-  "offlineCampusMapsRedownload": "Volver a descargar",
-  "offlineCampusMapsFailed": "Error al descargar",
+  "dismiss": "Descartar",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Incluido en la aplicación",
   "offlineCampusMapsBundledDetail": "El mapa del campus, la lista de edificios y los recorridos interiores funcionan sin conexión. Los horarios del metro en vivo, las rutas a pie y otros servicios en línea sí la necesitan.",
   "homeNextMetroLabel": "Siguiente metro",

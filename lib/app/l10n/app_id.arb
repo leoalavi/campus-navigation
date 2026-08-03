@@ -200,13 +200,10 @@
   "quietHoursEnd": "Berakhir pada",
   "highContrastMap": "Peta Kontras Tinggi",
   "offlineCampusMaps": "Peta Kampus Offline",
-  "offlineCampusMapsDownload": "Unduh Peta Kampus untuk Penggunaan Offline",
-  "offlineCampusMapsDownloading": "Mengunduh peta kampus offline...",
-  "offlineCampusMapsReady": "Peta kampus offline sudah siap",
-  "offlineCampusMapsDownloadedLabel": "Diunduh",
-  "offlineCampusMapsAlreadyDownloaded": "Peta kampus sudah diunduh untuk penggunaan offline.",
-  "offlineCampusMapsRedownload": "Unduh ulang",
-  "offlineCampusMapsFailed": "Unduhan gagal",
+  "dismiss": "Tutup",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Termasuk dalam aplikasi",
   "offlineCampusMapsBundledDetail": "Peta kampus, daftar gedung, dan tur dalam ruangan berfungsi tanpa koneksi. Waktu metro langsung, rute jalan kaki, dan layanan daring lainnya tetap memerlukannya.",
   "homeNextMetroLabel": "Metro berikutnya",

@@ -200,13 +200,10 @@
   "quietHoursEnd": "מסתיים ב",
   "highContrastMap": "מפה בעלת ניגודיות גבוהה",
   "offlineCampusMaps": "מפות קמפוס לא מקוונות",
-  "offlineCampusMapsDownload": "הורד מפות קמפוס לשימוש לא מקוון",
-  "offlineCampusMapsDownloading": "מוריד מפות קמפוס לא מקוונות...",
-  "offlineCampusMapsReady": "מפות הקמפוס הלא מקוונות מוכנות",
-  "offlineCampusMapsDownloadedLabel": "הורד",
-  "offlineCampusMapsAlreadyDownloaded": "מפות הקמפוס כבר הורדו לשימוש לא מקוון.",
-  "offlineCampusMapsRedownload": "הורד מחדש",
-  "offlineCampusMapsFailed": "ההורדה נכשלה",
+  "dismiss": "סגירה",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "כלול באפליקציה",
   "offlineCampusMapsBundledDetail": "מפת הקמפוס, רשימת המבנים והסיורים הפנימיים פועלים ללא חיבור. זמני רכבת בזמן אמת, מסלולי הליכה ושירותים מקוונים אחרים דורשים חיבור.",
   "homeNextMetroLabel": "המטרו הבא",

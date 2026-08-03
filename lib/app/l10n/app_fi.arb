@@ -200,13 +200,10 @@
   "quietHoursEnd": "Päättyy klo",
   "highContrastMap": "Korkean kontrastin kartta",
   "offlineCampusMaps": "Offline-kampuskartat",
-  "offlineCampusMapsDownload": "Lataa kampuskartat offline-käyttöä varten",
-  "offlineCampusMapsDownloading": "Ladataan offline-kampuskarttoja...",
-  "offlineCampusMapsReady": "Offline-kampuskartat ovat valmiita",
-  "offlineCampusMapsDownloadedLabel": "Ladattu",
-  "offlineCampusMapsAlreadyDownloaded": "Kampuskartat on jo ladattu offline-käyttöä varten.",
-  "offlineCampusMapsRedownload": "Lataa uudelleen",
-  "offlineCampusMapsFailed": "Lataus epäonnistui",
+  "dismiss": "Hylkää",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "Sisältyy sovellukseen",
   "offlineCampusMapsBundledDetail": "Kampuskartta, rakennusluettelo ja sisätilakierrokset toimivat ilman yhteyttä. Metron reaaliaikaiset ajat, kävelyreitit ja muut verkkopalvelut tarvitsevat yhteyden.",
   "homeNextMetroLabel": "Seuraava metro",

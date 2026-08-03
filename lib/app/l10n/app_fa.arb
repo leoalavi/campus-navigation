@@ -200,13 +200,10 @@
   "quietHoursEnd": "به پایان می رسد",
   "highContrastMap": "نقشه با کنتراست بالا",
   "offlineCampusMaps": "نقشه های آفلاین پردیس",
-  "offlineCampusMapsDownload": "نقشه های پردیس را برای استفاده آفلاین دانلود کنید",
-  "offlineCampusMapsDownloading": "در حال دانلود نقشه های دانشگاه آفلاین...",
-  "offlineCampusMapsReady": "نقشه های آفلاین پردیس آماده است",
-  "offlineCampusMapsDownloadedLabel": "دانلود شد",
-  "offlineCampusMapsAlreadyDownloaded": "نقشه‌های پردیس قبلاً برای استفاده آفلاین دانلود شده‌اند.",
-  "offlineCampusMapsRedownload": "دانلود مجدد",
-  "offlineCampusMapsFailed": "دانلود ناموفق بود",
+  "dismiss": "بستن",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "همراه برنامه ارائه شده است",
   "offlineCampusMapsBundledDetail": "نقشه پردیس، فهرست ساختمان‌ها و تورهای داخلی بدون اتصال کار می‌کنند. زمان‌های زندهٔ مترو، مسیرهای پیاده‌روی و سایر سرویس‌های آنلاین به اتصال نیاز دارند.",
   "homeNextMetroLabel": "متروی بعدی",

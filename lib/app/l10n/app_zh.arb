@@ -200,13 +200,10 @@
   "quietHoursEnd": "结束时间",
   "highContrastMap": "高对比度地图",
   "offlineCampusMaps": "离线校园地图",
-  "offlineCampusMapsDownload": "下载校园地图以供离线使用",
-  "offlineCampusMapsDownloading": "正在下载离线校园地图…",
-  "offlineCampusMapsReady": "离线校园地图已就绪",
-  "offlineCampusMapsDownloadedLabel": "已下载",
-  "offlineCampusMapsAlreadyDownloaded": "校园地图已下载供离线使用。",
-  "offlineCampusMapsRedownload": "重新下载",
-  "offlineCampusMapsFailed": "下载失败",
+  "dismiss": "关闭",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "已包含在应用中",
   "offlineCampusMapsBundledDetail": "校园地图、建筑列表和室内导览无需联网即可使用。地铁实时时刻、步行路线及其他在线服务仍需联网。",
   "homeNextMetroLabel": "下一班地铁",

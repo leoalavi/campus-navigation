@@ -139,12 +139,20 @@ void main() {
       );
       await _tapMyLocation(tester);
       expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
+      final colour = _bannerColour(tester);
       expect(
-        _bannerColour(tester).a,
+        colour.a,
         greaterThanOrEqualTo(0.95),
         reason:
             'location errors must not be read through the map — the dark '
             'theme previously used a 0.14-alpha tint',
+      );
+      // Near-white in BOTH themes: a system message earns a solid light
+      // surface with dark text rather than a pink/glass one.
+      expect(
+        colour.r + colour.g + colour.b,
+        greaterThan(2.7),
+        reason: '\$name surface should be near-white',
       );
     });
   }
@@ -220,6 +228,44 @@ void main() {
       banner.overlaps(locate),
       isFalse,
       reason: 'the status message must not sit on top of My Location',
+    );
+  });
+
+  testWidgets('the message can be dismissed with its close button', (
+    tester,
+  ) async {
+    await _boot(tester, LocationPermissionState.servicesDisabled);
+    await _tapMyLocation(tester);
+    final l10n = AppLocalizations.of(tester.element(find.byType(MapPage)))!;
+    expect(find.text(l10n.locationServicesDisabled), findsOneWidget);
+
+    // A user who does not want Settings needs a way out.
+    await tester.tap(find.byTooltip(l10n.dismiss));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.text(l10n.locationServicesDisabled), findsNothing);
+    expect(find.byIcon(Icons.warning_amber_rounded), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('dismissing does not latch — it can be raised again', (
+    tester,
+  ) async {
+    await _boot(tester, LocationPermissionState.servicesDisabled);
+    await _tapMyLocation(tester);
+    final l10n = AppLocalizations.of(tester.element(find.byType(MapPage)))!;
+
+    await tester.tap(find.byTooltip(l10n.dismiss));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.byIcon(Icons.warning_amber_rounded), findsNothing);
+
+    await _tapMyLocation(tester);
+    expect(
+      find.text(l10n.locationServicesDisabled),
+      findsOneWidget,
+      reason: 'dismissing must not permanently suppress the message',
     );
   });
 }

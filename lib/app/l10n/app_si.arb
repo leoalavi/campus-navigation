@@ -200,13 +200,10 @@
   "quietHoursEnd": "අවසන් වේ",
   "highContrastMap": "ඉහළ පරස්පර සිතියම",
   "offlineCampusMaps": "නොබැඳි කැම්පස් සිතියම්",
-  "offlineCampusMapsDownload": "නොබැඳි භාවිතය සඳහා කැම්පස් සිතියම් බාගන්න",
-  "offlineCampusMapsDownloading": "නොබැඳි කැම්පස් සිතියම් බාගනිමින්...",
-  "offlineCampusMapsReady": "නොබැඳි කැම්පස් සිතියම් සූදානම්",
-  "offlineCampusMapsDownloadedLabel": "බාගත කරන ලදී",
-  "offlineCampusMapsAlreadyDownloaded": "නොබැඳි භාවිතය සඳහා කැම්පස් සිතියම් දැනටමත් බාගත කර ඇත.",
-  "offlineCampusMapsRedownload": "නැවත බාගන්න",
-  "offlineCampusMapsFailed": "බාගැනීම අසාර්ථක විය",
+  "dismiss": "ඉවත් කරන්න",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
   "offlineCampusMapsBundled": "යෙදුම තුළ ඇතුළත්",
   "offlineCampusMapsBundledDetail": "කැම්පස් සිතියම, ගොඩනැගිලි ලැයිස්තුව සහ ගෘහස්ථ සංචාර සම්බන්ධතාවයකින් තොරව ක්‍රියා කරයි. සජීවී මෙට්‍රෝ වේලාවන් සහ වෙනත් සබැඳි සේවා සඳහා සම්බන්ධතාවයක් අවශ්‍යයි.",
   "homeNextMetroLabel": "ඊළඟ මෙට්රෝ",
