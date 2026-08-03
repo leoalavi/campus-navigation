@@ -41,9 +41,9 @@ Color _over(Color fg, Color bg) {
 /// mid-tone campus photo (the realistic worst case for light mode).
 Color _pillBackdrop(bool isDark) {
   const photo = Color(0xFF787878);
-  final tint = MqGlass.tint(isDark).withValues(
-    alpha: MqGlass.opacityRegular(isDark),
-  );
+  final tint = MqGlass.tint(
+    isDark,
+  ).withValues(alpha: MqGlass.opacityRegular(isDark));
   return _over(tint, photo);
 }
 
@@ -64,7 +64,10 @@ void main() {
 
       test('$mode: primary label is at least as strong as secondary', () {
         final bg = _pillBackdrop(isDark);
-        final primary = _contrast(_over(MqGlass.onGlassPrimary(isDark), bg), bg);
+        final primary = _contrast(
+          _over(MqGlass.onGlassPrimary(isDark), bg),
+          bg,
+        );
         final secondary = _contrast(
           _over(MqGlass.onGlassSecondary(isDark), bg),
           bg,

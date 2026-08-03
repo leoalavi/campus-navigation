@@ -20,6 +20,7 @@ import 'package:mq_journey/features/map/presentation/widgets/map_mode_toggle.dar
 import 'package:mq_journey/features/map/presentation/widgets/map_shell.dart';
 import 'package:mq_journey/features/map/presentation/widgets/overlay_picker_sheet.dart';
 import 'package:mq_journey/features/scan/presentation/pages/indoor_preview_page.dart';
+import 'package:mq_journey/features/scan/providers/scan_providers.dart';
 import 'package:mq_journey/shared/extensions/context_extensions.dart';
 import 'package:mq_journey/shared/widgets/mq_button.dart';
 
@@ -104,11 +105,22 @@ class _MapPageState extends ConsumerState<MapPage> {
     final buildingCode = selected?.code;
 
     if (buildingCode != null) {
+      // Indoor manifest assets are keyed by the trail's stable buildingId
+      // slug (e.g. "ondaatje-14"), which can differ from the campus-map
+      // building code the user actually has selected (e.g. "14SCO" — the
+      // same physical building, resolved via the campus map/search rather
+      // than the AR picker). Resolve through the trail manifest so both
+      // paths land on the same manifest asset; fall back to the raw code
+      // for buildings with no such mapping (indoorManifestProvider then
+      // just reports "no preview" as before).
+      final trail = ref.read(trailManifestProvider).value;
+      final manifestId =
+          trail?.byMapBuildingCode(buildingCode)?.buildingId ?? buildingCode;
       // Embedded (not pushed) in the AR branch, so there's nothing to pop —
       // give it an explicit back button that clears the selection and returns
       // to the AR building picker, keeping the user inside AR mode.
       return IndoorPreviewPage(
-        buildingId: buildingCode,
+        buildingId: manifestId,
         onBack: () {
           ref.read(mapControllerProvider.notifier).clearSelection();
           setState(() {});

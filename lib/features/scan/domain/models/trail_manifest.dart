@@ -57,6 +57,20 @@ class TrailManifest {
     return null;
   }
 
+  /// Looks up a location by its campus-map building code (e.g. "14SCO"),
+  /// case-insensitively. Indoor manifest assets are named after the trail's
+  /// stable `buildingId` slug (e.g. "ondaatje-14"), which differs from the
+  /// map registry code — callers that only have the map code (from
+  /// `BuildingsRegistry`/`Building.code`) must resolve through this before
+  /// loading a manifest.
+  TrailLocation? byMapBuildingCode(String mapBuildingCode) {
+    final upper = mapBuildingCode.toUpperCase();
+    for (final l in locations) {
+      if (l.mapBuildingCode?.toUpperCase() == upper) return l;
+    }
+    return null;
+  }
+
   factory TrailManifest.fromJson(String raw) {
     final json = jsonDecode(raw) as Map<String, dynamic>;
     final locs = (json['locations'] as List)

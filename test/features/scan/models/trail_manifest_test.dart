@@ -54,6 +54,22 @@ void main() {
       expect(manifest.byId('lib-01')?.mapBuildingCode, isNull);
     });
 
+    test(
+      'byMapBuildingCode resolves the trail buildingId slug case-insensitively',
+      () {
+        final withCode = TrailManifest.fromJson(
+          '{"locations":[{"locationId":"ondaatje-14","buildingId":"ondaatje-14","mapBuildingCode":"14SCO","title":"14 Sir Christopher Ondaatje Avenue"}]}',
+        );
+        final loc = withCode.byMapBuildingCode('14sco');
+        expect(loc, isNotNull);
+        expect(loc!.buildingId, 'ondaatje-14');
+      },
+    );
+
+    test('byMapBuildingCode returns null when no location matches', () {
+      expect(manifest.byMapBuildingCode('UNKNOWN'), isNull);
+    });
+
     test('parses photos, arSceneId and stops', () {
       const raw = '''
       {"locations":[{

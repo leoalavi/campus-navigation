@@ -118,4 +118,21 @@ void main() {
       }
     },
   );
+
+  test('byMapBuildingCode bridges a campus-map building code back to its '
+      'indoor manifest (regression: AR mode entered via a map-selected '
+      'building used to request "<mapBuildingCode>.json", which never '
+      'exists — manifests are keyed by the trail buildingId slug)', () async {
+    final manifest = await TrailRepository().load();
+    final repo = IndoorRepository();
+    for (final loc in manifest.locations) {
+      final mapCode = loc.mapBuildingCode!;
+      // The raw map code alone doesn't resolve to a manifest...
+      expect(await repo.load(mapCode), isNull, reason: mapCode);
+      // ...but bridging through the trail manifest does.
+      final resolved = manifest.byMapBuildingCode(mapCode)?.buildingId;
+      expect(resolved, loc.buildingId);
+      expect(await repo.load(resolved!), isNotNull, reason: resolved);
+    }
+  });
 }
