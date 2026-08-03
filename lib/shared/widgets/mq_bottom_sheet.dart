@@ -51,7 +51,13 @@ class MqBottomSheet extends StatelessWidget {
                 MqSpacing.space5,
                 MqSpacing.space6,
               ),
-              child: child,
+              // Local Material so descendant widgets (e.g. ListTile) paint
+              // their background/ink splashes above this sheet's own
+              // DecoratedBox instead of being hidden underneath it.
+              child: Material(
+                type: MaterialType.transparency,
+                child: child,
+              ),
             ),
           ],
         ),
