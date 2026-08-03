@@ -148,9 +148,12 @@ void main() {
       );
     });
 
-    testWidgets('Close exits the whole flow, not just one level', (
+    testWidgets('Close hides the panel but keeps the destination pinned', (
       tester,
     ) async {
+      // Close dismisses the panel and forgets the list that led there — but
+      // the destination the user just looked up stays on the map. Wiping the
+      // selection here made the marker vanish the instant the panel closed.
       final c = await _boot(tester, _app());
       c.read(mapControllerProvider.notifier).updateSearchQuery('Building');
       await _settle(tester);
@@ -161,9 +164,19 @@ void main() {
       await _settle(tester);
 
       final state = c.read(mapControllerProvider).value!;
-      expect(state.selectedBuilding, isNull);
-      expect(state.searchQuery, isEmpty, reason: 'Close clears the stack');
-      expect(find.text('Building B'), findsNothing);
+      expect(
+        state.selectedBuilding?.code,
+        'BLDA',
+        reason: 'the marker must survive closing its panel',
+      );
+      expect(state.searchQuery, isEmpty, reason: 'the list is forgotten');
+      expect(
+        find.text('Building B'),
+        findsNothing,
+        reason: 'Close must not fall back to the list — that is Back\'s job',
+      );
+      // The panel itself is gone.
+      expect(find.byTooltip(_l10n(tester).close), findsNothing);
     });
 
     testWidgets('fa/RTL: Back and Close are both usable', (tester) async {
@@ -270,5 +283,42 @@ void main() {
       }
       expect(tester.takeException(), isNull);
     });
+  });
+
+  testWidgets('a tab switch clears map state without navigating', (
+    tester,
+  ) async {
+    // The bug this pins: clearing exploration state nulled the selection, the
+    // map's state->URL listener saw a stale `?building=` query and fired
+    // `goNamed('/map')`, and the router yanked the user back to Journey. The
+    // reset must be silent.
+    final c = await _boot(tester, _app());
+    c.read(mapControllerProvider.notifier).updateSearchQuery('Building');
+    await _settle(tester);
+    await tester.tap(find.text('Building A'));
+    await _settle(tester);
+
+    final router = GoRouter.of(tester.element(find.byType(MapPage)));
+    final before = router.routeInformationProvider.value.uri.toString();
+
+    // Simulate the shell telling the map it is no longer the visible branch.
+    c
+        .read(activeShellBranchIndexProvider.notifier)
+        .setIndex(ShellBranchIndex.map);
+    await _settle(tester);
+    c.read(activeShellBranchIndexProvider.notifier).setIndex(0);
+    await _settle(tester);
+
+    // State cleared...
+    final state = c.read(mapControllerProvider).value!;
+    expect(state.selectedBuilding, isNull);
+    expect(state.searchQuery, isEmpty);
+    // ...and nothing navigated on the way.
+    expect(
+      router.routeInformationProvider.value.uri.toString(),
+      before,
+      reason: 'clearing map state must not push or replace a route',
+    );
+    expect(tester.takeException(), isNull);
   });
 }

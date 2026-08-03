@@ -36,9 +36,34 @@ target 'Runner' do
 end
 
 post_install do |installer|
+  # Read the Runner app's own development team so vendored binary framework pods (e.g.
+  # ObjectBox's xcframework) can be signed with a real identity instead of "Don't Code Sign".
+  runner_team = installer.pods_project.root_object.attributes.dig('TargetAttributes')&.values&.first&.dig('DevelopmentTeam')
+  if runner_team.nil?
+    runner_project_path = File.join(__dir__, 'Runner.xcodeproj', 'project.pbxproj')
+    if File.exist?(runner_project_path)
+      contents = File.read(runner_project_path)
+      match = contents.match(/DEVELOPMENT_TEAM = (\w+);/)
+      runner_team = match[1] if match
+    end
+  end
+
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    is_resource_bundle = target.respond_to?(:product_type) && target.product_type == 'com.apple.product-type.bundle'
     target.build_configurations.each do |config|
+      # Force CocoaPods to code-sign vendored/prebuilt binary frameworks (e.g. ObjectBox's
+      # xcframework) with the app's own signing identity. Xcode 15+'s CoreDevice installer
+      # strictly rejects embedded frameworks with no code signature at all — CocoaPods'
+      # default "Don't Code Sign" setting for Pod targets no longer passes on real devices.
+      # Resource bundle targets (privacy manifests, etc.) carry no executable code and must be
+      # left alone — forcing a dev team/signing requirement on them breaks the build.
+      unless is_resource_bundle
+        config.build_settings['CODE_SIGNING_ALLOWED'] = 'YES'
+        config.build_settings['CODE_SIGNING_REQUIRED'] = 'YES'
+        config.build_settings['DEVELOPMENT_TEAM'] = runner_team if runner_team
+      end
+
       # Ensure Flutter framework is discoverable by all pods (fixes 'Flutter/Flutter.h' not found)
       config.build_settings['FRAMEWORK_SEARCH_PATHS'] ||= ['$(inherited)']
       config.build_settings['FRAMEWORK_SEARCH_PATHS'] << '"$(PODS_ROOT)/../../Flutter"'

@@ -80,9 +80,21 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
     // by the inset — and letting the list keep the remaining space — is the
     // structural fix; no timers or delays are involved.
     final viewInsets = MediaQuery.viewInsetsOf(context).bottom;
+    // Top inset must come from `viewPadding`, not `padding`: once the IME is
+    // up, `padding.top` can be reported as zero, and a header pinned to it
+    // would slide back under the notch exactly when the user is typing.
+    // `viewPadding` keeps the physical intrusion (status bar, notch, Dynamic
+    // Island, Android cutout, browser env-safe-area) regardless of the
+    // keyboard.
+    //
+    // This surface used to be a `showModalBottomSheet(useSafeArea: true)`,
+    // which supplied that inset for free. Promoting it to a full-screen route
+    // (to stop the map blurring underneath) dropped `useSafeArea` with it, so
+    // the search field and its Back control drifted up under the status bar.
+    final topInset = MediaQuery.viewPaddingOf(context).top;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: viewInsets),
+      padding: EdgeInsets.only(top: topInset, bottom: viewInsets),
       child: Material(
         color: isDark ? MqColors.charcoal900 : Colors.white,
         borderRadius: const BorderRadius.vertical(

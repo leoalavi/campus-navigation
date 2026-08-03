@@ -14,7 +14,6 @@ import 'package:mq_journey/features/map/domain/services/map_back_action.dart';
 import 'package:mq_journey/features/map/domain/services/map_branch_lifecycle.dart';
 import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/map/presentation/widgets/ar_building_picker.dart';
-import 'package:mq_journey/features/map/presentation/widgets/building_actions_sheet.dart';
 import 'package:mq_journey/features/map/presentation/widgets/building_search_sheet.dart';
 import 'package:mq_journey/features/map/presentation/widgets/campus/campus_map_view.dart';
 import 'package:mq_journey/features/map/presentation/widgets/map_mode_toggle.dart';
@@ -213,11 +212,21 @@ class _MapPageState extends ConsumerState<MapPage> {
     }
     if (!mounted) return;
     if (building != null) {
-      await BuildingActionsSheet.show(
-        context,
-        buildingId: building.id,
-        buildingName: building.name,
-      );
+      // Straight to the map with the location shown — no intermediate sheet.
+      //
+      // Picking a search result used to raise a bottom sheet whose only
+      // action was "Show in Campus Map". With a single campus map there is
+      // nothing to choose between, so it was one extra tap between the user
+      // and the thing they had just searched for.
+      //
+      // Selected directly rather than via `openBuildingOnCampusMap`: we are
+      // already on the map, so no navigation is needed — and navigating here
+      // would `goNamed` and collapse a *pushed* map (the QR venue detour),
+      // losing the route back to the venue card. `selectBuilding` bumps the
+      // selection token, which is what opens the detail panel, and the
+      // existing state→URL sync updates `?building=` when appropriate.
+      ref.read(campusMapIntentProvider.notifier).bump();
+      ref.read(mapControllerProvider.notifier).selectBuilding(building);
     }
   }
 
@@ -412,7 +421,19 @@ class _MapPageState extends ConsumerState<MapPage> {
               queryParameters: {'building': selectedBuilding.id},
             );
           }
-        } else if (currentBuilding != null) {
+        } else if (currentBuilding != null &&
+            ref.read(activeShellBranchIndexProvider) == ShellBranchIndex.map) {
+          // Dropping the `?building=` query is only correct while the user is
+          // actually looking at the Journey tab.
+          //
+          // The map branch stays mounted offstage in the shell's IndexedStack,
+          // and `ModalRoute.isCurrent` is still true there (the route *is*
+          // current within its own branch navigator). So when a tab switch
+          // cleared the map's exploration state, the selection went null, this
+          // branch fired `goNamed('/map')`, and the router pulled the user
+          // straight back to Journey — cleanup masquerading as navigation.
+          // The selection→URL sync above is deliberately *not* guarded: deep
+          // links still need it on first arrival.
           context.goNamed(RouteNames.map);
         }
       }
@@ -616,9 +637,17 @@ class _MapPageState extends ConsumerState<MapPage> {
                             onBack: cameFromList
                                 ? controller.clearSelection
                                 : null,
-                            onClearSelection: cameFromList
-                                ? controller.clearCategoryBrowse
-                                : () => _hideInfoCard(mapState.selectionToken),
+                            // Close always keeps the destination pinned; it
+                            // only dismisses the panel (and, when the detail
+                            // came from a list, forgets that list so it does
+                            // not spring back). Back is the action that
+                            // returns to the list.
+                            onClearSelection: () {
+                              _hideInfoCard(mapState.selectionToken);
+                              if (cameFromList) {
+                                controller.clearCategoryContext();
+                              }
+                            },
                           )
                         : null)
                   : facultyTopLevel

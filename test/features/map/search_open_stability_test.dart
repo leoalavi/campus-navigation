@@ -8,6 +8,7 @@ import 'package:mq_journey/features/map/data/datasources/location_source.dart';
 import 'package:mq_journey/features/map/data/repositories/map_repository_impl.dart';
 import 'package:mq_journey/features/map/domain/entities/building.dart';
 import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
+import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_journey/features/map/presentation/pages/map_page.dart';
 import 'package:mq_journey/features/map/presentation/widgets/building_search_sheet.dart';
 import 'package:mq_journey/features/map/presentation/widgets/map_shell.dart';
@@ -196,5 +197,58 @@ void main() {
     // state standing in for a still-loading registry.
     expect(find.text('Building A'), findsOneWidget);
     expect(find.text('Building B'), findsOneWidget);
+  });
+
+  testWidgets('picking a result goes straight to the map with its detail', (
+    tester,
+  ) async {
+    // No intermediate "Show in Campus Map" sheet: with one campus map there
+    // is nothing to choose, so the extra tap was pure friction.
+    await _boot(tester);
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(MapPage)),
+    );
+
+    await tester.tap(_pill);
+    await tester.pumpAndSettle();
+    expect(_sheet, findsOneWidget);
+
+    await tester.tap(find.text('Building A').last);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    // Search surface closed, and we are back on the map...
+    expect(_sheet, findsNothing);
+    expect(find.byType(MapShell), findsOneWidget);
+    // ...with the building selected (marker) and its panel open.
+    expect(
+      container.read(mapControllerProvider).value!.selectedBuilding?.code,
+      'BLDA',
+    );
+    final l10n = AppLocalizations.of(tester.element(find.byType(MapPage)))!;
+    expect(
+      find.byTooltip(l10n.close),
+      findsOneWidget,
+      reason: 'the location detail panel should be showing',
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('no intermediate action sheet is shown for a result', (
+    tester,
+  ) async {
+    await _boot(tester);
+    await tester.tap(_pill);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Building A').last);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    final l10n = AppLocalizations.of(tester.element(find.byType(MapPage)))!;
+    expect(
+      find.text(l10n.navigateOnCampus),
+      findsNothing,
+      reason: 'the single-action handoff sheet should be gone',
+    );
   });
 }

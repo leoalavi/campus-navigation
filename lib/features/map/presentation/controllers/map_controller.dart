@@ -630,6 +630,33 @@ class MapController extends AsyncNotifier<MapState> {
     state = AsyncData(current.copyWith(clearError: true));
   }
 
+  /// Clears the category/search browsing context but keeps the destination.
+  ///
+  /// Closing a location's detail panel is not the same as abandoning the
+  /// destination. [clearCategoryBrowse] wipes `selectedBuilding` too, so using
+  /// it for Close made the marker vanish from the map the moment the panel
+  /// was dismissed — the user lost the very thing they had just looked up.
+  /// This keeps the selection (and therefore the marker and the camera) and
+  /// only forgets the list that led there, so Close leaves a clean map with
+  /// the destination still pinned.
+  void clearCategoryContext() {
+    final current = state.value;
+    if (current == null) return;
+    state = AsyncData(
+      current.copyWith(
+        searchQuery: '',
+        searchResults: searchCampusBuildings(
+          current.buildings,
+          '',
+        ).take(_defaultVisibleBuildings).toList(),
+        clearSelectedFacultyGroup: true,
+        clearSelectedStudentServicesGroup: true,
+        clearSelectedCampusHubGroup: true,
+        clearError: true,
+      ),
+    );
+  }
+
   void clearCategoryBrowse() {
     final current = state.value;
     if (current == null) {
