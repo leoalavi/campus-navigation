@@ -10,13 +10,15 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		4B004946B2241F87BA79B45D /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A65177A47742331EA3E9CE3 /* Pods_Runner.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		7884E8682EC3CC0700C636F2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */; };
+		923438993020BF53006FCA68 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A65177A47742331EA3E9CE3 /* Pods_Runner.framework */; };
+		9234389A3020BF53006FCA68 /* Pods_Runner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3A65177A47742331EA3E9CE3 /* Pods_Runner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9234389B3020BF5D006FCA68 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D76AF7BAF993AD6D449B4941 /* Pods_RunnerTests.framework */; };
+		9234389C3020BF5D006FCA68 /* Pods_RunnerTests.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D76AF7BAF993AD6D449B4941 /* Pods_RunnerTests.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-		DC64FE51AF35823D1710B5BC /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D76AF7BAF993AD6D449B4941 /* Pods_RunnerTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,12 +32,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		9234389D3020BF5D006FCA68 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9234389C3020BF5D006FCA68 /* Pods_RunnerTests.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				9234389A3020BF53006FCA68 /* Pods_Runner.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC64FE51AF35823D1710B5BC /* Pods_RunnerTests.framework in Frameworks */,
+				9234389B3020BF5D006FCA68 /* Pods_RunnerTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +96,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B004946B2241F87BA79B45D /* Pods_Runner.framework in Frameworks */,
+				923438993020BF53006FCA68 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,6 +192,7 @@
 				331C807D294A63A400263BE5 /* Sources */,
 				331C807F294A63A400263BE5 /* Resources */,
 				3A83598D8F46B5A3243B8B2C /* Frameworks */,
+				9234389D3020BF5D006FCA68 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
