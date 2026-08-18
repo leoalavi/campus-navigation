@@ -19,11 +19,11 @@
 
 <br/>
 
-# MQ Navigation — Mobile Campus Wayfinding for Syllabus Sync
+# MQ Navigation - Mobile Campus Wayfinding for Syllabus Sync
 
 > **The mobile campus wayfinding companion for the Syllabus Sync ecosystem.**
 
-MQ Navigation is a Flutter-based campus wayfinding companion for the [Syllabus Sync](https://github.com/mrpouyaalavi/syllabus-sync) ecosystem. It helps students and visitors discover Macquarie University buildings, services, transport, safety resources, and campus points of interest through a mobile-first navigation experience — with dual-renderer maps, Supabase-backed routing, a compass mode, a safety toolkit, live metro countdowns, and multi-language support.
+MQ Navigation is a Flutter-based campus wayfinding companion for the [Syllabus Sync](https://github.com/leoalavi/syllabus-sync) ecosystem. It helps students and visitors discover Macquarie University buildings, services, transport, safety resources, and campus points of interest through a mobile-first navigation experience — with dual-renderer maps, Supabase-backed routing, a compass mode, a safety toolkit, live metro countdowns, and multi-language support.
 
 MQ Navigation is an independent, unofficial project and is **not affiliated with or endorsed by Macquarie University**. It began life as a standalone campus navigation prototype using Macquarie University as its initial dataset and use case, and it is now evolving into the mobile/campus wayfinding layer for the broader Syllabus Sync student platform — supporting everyday campus discovery, student onboarding, and Open Day-style visitor use cases along the way.
 
@@ -55,7 +55,7 @@ Generic campus maps (Google/Apple Maps) stop at the street kerb and don't know w
 
 ## 🔗 Syllabus Sync ecosystem role
 
-[Syllabus Sync](https://github.com/mrpouyaalavi/syllabus-sync) is the broader student experience platform — timetables, unit/class schedules, deadlines, and academic planning. MQ Navigation is its **campus and mobile wayfinding layer**: the piece that answers "where actually is that room, and how do I get there?"
+[Syllabus Sync](https://github.com/leoalavi/syllabus-sync) is the broader student experience platform — timetables, unit/class schedules, deadlines, and academic planning. MQ Navigation is its **campus and mobile wayfinding layer**: the piece that answers "where actually is that room, and how do I get there?"
 
 - **Independent app.** MQ Navigation can be launched and used entirely on its own — no Syllabus Sync account or session is required.
 - **Deep-link handoff.** Syllabus Sync can hand off a destination (a class location, Open Day item, or building) to MQ Navigation via a deep link. See the dedicated section below for the current implementation status.
@@ -323,7 +323,7 @@ scripts/              run.sh, check.sh (quality gate), sync_supabase_secrets.sh
 ### Setup
 ```bash
 # Clone and install
-git clone https://github.com/mrpouyaalavi/MQ_Navigation.git
+git clone https://github.com/leoalavi/MQ_Navigation.git
 cd MQ_Navigation
 flutter pub get
 
@@ -394,7 +394,7 @@ flutter run --dart-define-from-file=.env
 
 ## 🎓 Project origin & academic context
 
-MQ Navigation began as a standalone Flutter campus wayfinding prototype, originally developed as the **COMP3130 Mobile App Development** major project at Macquarie University (Pouya Alavi Naeini and Raouf Abedini). It has since been extended beyond that assignment scope into the mobile campus wayfinding layer for the Syllabus Sync ecosystem described above.
+MQ Navigation began as a standalone Flutter campus wayfinding prototype, originally developed as the **COMP3130 Mobile App Development** major project at Macquarie University (Leo Alavi and Raouf Abedini). It has since been extended beyond that assignment scope into the mobile campus wayfinding layer for the Syllabus Sync ecosystem described above.
 
 The original project report — written to satisfy the unit's assignment brief (app description, core features, audience personas, competitor advantages, technical credentials) — is kept for historical reference: [`PROJECT_REPORT.md`](PROJECT_REPORT.md).
 
@@ -424,7 +424,7 @@ Released under the **MIT License**. See [`LICENSE`](LICENSE).
 
 | Name | Role |
 |------|------|
-| Pouya Alavi Naeini | Lead — architecture, mapping engine, infrastructure |
+| Leo Alavi | Lead — architecture, mapping engine, infrastructure |
 | Raouf Abedini | Co-maintainer — security, backend, Supabase Edge Functions |
 
 <br/>
@@ -449,11 +449,11 @@ Built with the support of the open-source community. This project benefits from:
 ### `> ping --authors`
 
 ```text
-> Authors    : Pouya Alavi Naeini — Software Engineer | Raouf Abedini — Back-End Developer
+> Authors    : Leo Alavi — Software Engineer | Raouf Abedini — Back-End Developer
 > Origin     : COMP3130 Mobile App Development major project, Macquarie University
 > Now        : Mobile campus wayfinding layer for the Syllabus Sync ecosystem
 ```
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-EE4C2C?style=for-the-badge&logo=linkedin&logoColor=ffffff&labelColor=0f172a)](https://www.linkedin.com/in/pouya-alavi/)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-F7931E?style=for-the-badge&logo=github&logoColor=ffffff&labelColor=0f172a)](https://github.com/mrpouyaalavi)
-[![Email](https://img.shields.io/badge/Email-Contact-f59e0b?style=for-the-badge&logo=gmail&logoColor=09090b&labelColor=0f172a)](mailto:pouya@pouyaalavi.dev)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-EE4C2C?style=for-the-badge&logo=linkedin&logoColor=ffffff&labelColor=0f172a)](https://www.linkedin.com/in/leo-alavi/)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-F7931E?style=for-the-badge&logo=github&logoColor=ffffff&labelColor=0f172a)](https://github.com/leoalavi)
+[![Email](https://img.shields.io/badge/Email-Contact-f59e0b?style=for-the-badge&logo=gmail&logoColor=09090b&labelColor=0f172a)](mailto:leo@leoalavi.dev)
