@@ -64,5 +64,6 @@ final mapSheetOpenProvider = NotifierProvider<MapSheetOpenNotifier, bool>(
 
 /// Whether the persistent bottom navigation should currently be visible.
 final bottomNavVisibleProvider = Provider<bool>(
-  (ref) => ref.watch(shellChromeProvider) == 0 && !ref.watch(mapSheetOpenProvider),
+  (ref) =>
+      ref.watch(shellChromeProvider) == 0 && !ref.watch(mapSheetOpenProvider),
 );

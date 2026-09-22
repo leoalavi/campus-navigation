@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
+import 'package:mq_navigation/app/router/shell_chrome_provider.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
@@ -56,19 +57,35 @@ class MapPage extends ConsumerStatefulWidget {
 
 class _MapPageState extends ConsumerState<MapPage> {
   Future<void> _openSearchSheet() async {
-    final building = await showModalBottomSheet<Building>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const BuildingSearchSheet(),
-    );
-    if (!mounted) return;
-    if (building != null) {
-      await BuildingActionsSheet.show(
-        context,
-        buildingId: building.id,
-        buildingName: building.name,
+    final shellChrome = ref.read(shellChromeProvider.notifier);
+    shellChrome.acquire();
+    try {
+      final building = await showModalBottomSheet<Building>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => const BuildingSearchSheet(),
       );
+      if (!mounted) return;
+
+      // Query/results and their map markers belong to this modal session.
+      // Clear them before the optional action sheet while leaving an already
+      // confirmed destination and route untouched.
+      ref.read(mapControllerProvider.notifier).clearSearchSession();
+
+      if (building != null) {
+        await BuildingActionsSheet.show(
+          context,
+          buildingId: building.id,
+          buildingName: building.name,
+        );
+      }
+    } finally {
+      if (mounted) {
+        // Also covers barrier taps, back gestures and exceptional dismissal.
+        ref.read(mapControllerProvider.notifier).clearSearchSession();
+      }
+      shellChrome.release();
     }
   }
 
@@ -871,146 +888,137 @@ class _CategoryBuildingList extends StatelessWidget {
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle bar
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  top: MqSpacing.space3,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 48,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.2)
-                          : MqColors.black12,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
+          child: Material(
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(
+                    onBack != null ? MqSpacing.space2 : MqSpacing.space4,
+                    MqSpacing.space3,
+                    MqSpacing.space2,
+                    0,
                   ),
-                ),
-              ),
-
-              // Header
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(
-                  onBack != null ? MqSpacing.space2 : MqSpacing.space4,
-                  MqSpacing.space3,
-                  MqSpacing.space2,
-                  0,
-                ),
-                child: Row(
-                  children: [
-                    if (onBack != null)
+                  child: Row(
+                    children: [
+                      if (onBack != null)
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            size: 20,
+                            color: isDark
+                                ? Colors.white
+                                : MqColors.contentSecondary,
+                          ),
+                          tooltip: l10n.back,
+                          onPressed: onBack,
+                        ),
+                      Expanded(
+                        child: Text(
+                          '${_capitalize(searchQuery.trim())} (${validBuildings.length})',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: isDark
+                                    ? Colors.white
+                                    : MqColors.contentPrimary,
+                              ),
+                        ),
+                      ),
                       IconButton(
                         icon: Icon(
-                          Icons.arrow_back,
+                          Icons.close,
                           size: 20,
                           color: isDark
                               ? Colors.white
-                              : MqColors.contentSecondary,
+                              : MqColors.contentTertiary,
                         ),
-                        tooltip: l10n.back,
-                        onPressed: onBack,
+                        tooltip: l10n.clear,
+                        onPressed: onClear,
                       ),
-                    Expanded(
-                      child: Text(
-                        '${_capitalize(searchQuery.trim())} (${validBuildings.length})',
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.w600,
+                    ],
+                  ),
+                ),
+
+                // Building list
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                      MqSpacing.space2,
+                      0,
+                      MqSpacing.space2,
+                      MqSpacing.space3,
+                    ),
+                    itemCount: validBuildings.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 0),
+                    itemBuilder: (context, index) {
+                      final building = validBuildings[index];
+                      return ListTile(
+                        dense: true,
+                        leading: const Icon(
+                          Icons.location_on,
+                          color: MqColors.red,
+                          size: 20,
+                        ),
+                        title: Text(
+                          building.name,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: isDark
+                                    ? Colors.white
+                                    : MqColors.contentPrimary,
+                              ),
+                        ),
+                        subtitle: building.address != null
+                            ? Text(
+                                building.address!,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: isDark
+                                          ? Colors.white
+                                          : MqColors.charcoal600,
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : null,
+                        // Heart sits left of the chevron so the row still
+                        // feels navigable (chevron signals "drill in") while
+                        // the favourite action is always one tap away.
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FavoriteButton(
+                              buildingId: building.id,
+                              buildingName: building.name,
+                              size: 20,
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              size: 20,
                               color: isDark
                                   ? Colors.white
-                                  : MqColors.contentPrimary,
+                                  : MqColors.charcoal600,
                             ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        size: 20,
-                        color: isDark ? Colors.white : MqColors.contentTertiary,
-                      ),
-                      tooltip: l10n.clear,
-                      onPressed: onClear,
-                    ),
-                  ],
-                ),
-              ),
-
-              // Building list
-              Flexible(
-                fit: FlexFit.loose,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                    MqSpacing.space2,
-                    0,
-                    MqSpacing.space2,
-                    MqSpacing.space3,
-                  ),
-                  itemCount: validBuildings.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 0),
-                  itemBuilder: (context, index) {
-                    final building = validBuildings[index];
-                    return ListTile(
-                      dense: true,
-                      leading: const Icon(
-                        Icons.location_on,
-                        color: MqColors.red,
-                        size: 20,
-                      ),
-                      title: Text(
-                        building.name,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: isDark
-                              ? Colors.white
-                              : MqColors.contentPrimary,
+                          ],
                         ),
-                      ),
-                      subtitle: building.address != null
-                          ? Text(
-                              building.address!,
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color: isDark
-                                        ? Colors.white
-                                        : MqColors.charcoal600,
-                                  ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            )
-                          : null,
-                      // Heart sits left of the chevron so the row still
-                      // feels navigable (chevron signals "drill in") while
-                      // the favourite action is always one tap away.
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          FavoriteButton(
-                            buildingId: building.id,
-                            buildingName: building.name,
-                            size: 20,
+                        onTap: () => onSelectBuilding(building),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            MqSpacing.radiusMd,
                           ),
-                          Icon(
-                            Icons.chevron_right,
-                            size: 20,
-                            color: isDark ? Colors.white : MqColors.charcoal600,
-                          ),
-                        ],
-                      ),
-                      onTap: () => onSelectBuilding(building),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
-                      ),
-                    );
-                  },
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -1037,7 +1045,7 @@ class _CategoryBuildingList extends StatelessWidget {
 ///     support_agent / account_balance for the three sections)
 ///
 /// Visual style intentionally mirrors [_CategoryBuildingList] (glass
-/// + handle bar + close X) so the transition between top and second
+/// + close X) so the transition between top and second
 /// levels feels like one continuous panel, not two different sheets.
 class _BrowseGroupPanel<TGroup> extends StatelessWidget {
   const _BrowseGroupPanel({
@@ -1099,113 +1107,109 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle bar
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  top: MqSpacing.space3,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 48,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.2)
-                          : MqColors.black12,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                ),
-              ),
-
-              // Header: section title + close X
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(
-                  MqSpacing.space4,
-                  MqSpacing.space3,
-                  MqSpacing.space2,
-                  0,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: isDark
-                                  ? Colors.white
-                                  : MqColors.contentPrimary,
-                            ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        size: 20,
-                        color: isDark ? Colors.white : MqColors.contentTertiary,
-                      ),
-                      tooltip: l10n.clear,
-                      onPressed: onClear,
-                    ),
-                  ],
-                ),
-              ),
-
-              // One row per sub-group
-              Flexible(
-                fit: FlexFit.loose,
-                child: ListView.separated(
-                  shrinkWrap: true,
+          child: Material(
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header: section title + close X
+                Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(
+                    MqSpacing.space4,
+                    MqSpacing.space3,
                     MqSpacing.space2,
                     0,
-                    MqSpacing.space2,
-                    MqSpacing.space3,
                   ),
-                  itemCount: groups.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 0),
-                  itemBuilder: (context, index) {
-                    final group = groups[index];
-                    final count = countsByGroup[group] ?? 0;
-                    return ListTile(
-                      dense: false,
-                      leading: Icon(leadingIcon, color: MqColors.red, size: 22),
-                      title: Text(
-                        labelOf(group),
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: isDark
+                                    ? Colors.white
+                                    : MqColors.contentPrimary,
+                              ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          size: 20,
                           color: isDark
                               ? Colors.white
-                              : MqColors.contentPrimary,
+                              : MqColors.contentTertiary,
                         ),
+                        tooltip: l10n.clear,
+                        onPressed: onClear,
                       ),
-                      subtitle: Text(
-                        '${descriptionOf(group)}  ·  $count',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    ],
+                  ),
+                ),
+
+                // One row per sub-group
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                      MqSpacing.space2,
+                      0,
+                      MqSpacing.space2,
+                      MqSpacing.space3,
+                    ),
+                    itemCount: groups.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 0),
+                    itemBuilder: (context, index) {
+                      final group = groups[index];
+                      final count = countsByGroup[group] ?? 0;
+                      return ListTile(
+                        dense: false,
+                        leading: Icon(
+                          leadingIcon,
+                          color: MqColors.red,
+                          size: 22,
+                        ),
+                        title: Text(
+                          labelOf(group),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: isDark
+                                    ? Colors.white
+                                    : MqColors.contentPrimary,
+                              ),
+                        ),
+                        subtitle: Text(
+                          '${descriptionOf(group)}  ·  $count',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: isDark
+                                    ? Colors.white
+                                    : MqColors.charcoal600,
+                              ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          size: 20,
                           color: isDark ? Colors.white : MqColors.charcoal600,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Icon(
-                        Icons.chevron_right,
-                        size: 20,
-                        color: isDark ? Colors.white : MqColors.charcoal600,
-                      ),
-                      onTap: () => onSelectGroup(group),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
-                      ),
-                    );
-                  },
+                        onTap: () => onSelectGroup(group),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            MqSpacing.radiusMd,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -310,7 +310,6 @@ class _GoogleMapViewState extends ConsumerState<GoogleMapView> {
       );
     }
 
-
     final highContrast =
         ref.watch(settingsControllerProvider).value?.highContrastMap ?? false;
     final mq = MediaQuery.of(context);

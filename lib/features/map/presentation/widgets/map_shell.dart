@@ -86,8 +86,7 @@ class _MapShellState extends ConsumerState<MapShell> {
 
   /// Where the floating corner buttons sit: just above the docked sheet when
   /// one is open, otherwise their normal resting place above the safe area.
-  double _controlsBottom(double safeBottom) =>
-      _sheetHeight > 0
+  double _controlsBottom(double safeBottom) => _sheetHeight > 0
       ? _sheetHeight + _controlsGap
       : safeBottom + MqSpacing.space4;
 
@@ -202,7 +201,8 @@ class _MapShellState extends ConsumerState<MapShell> {
 
         // ── Layers button — bottom-left ────────────────────
         // **Stable anchor:** position is independent of widget.footer state.
-        if (widget.renderer == MapRendererType.campus && widget.onOpenOverlayPicker != null)
+        if (widget.renderer == MapRendererType.campus &&
+            widget.onOpenOverlayPicker != null)
           PositionedDirectional(
             start: MqSpacing.space4,
             bottom: safeBottom + MqSpacing.space4,

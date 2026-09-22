@@ -13,27 +13,39 @@ concurrency:
 # Opt into Node.js 24 for all actions now, before the June 2 2026 forced cutover.
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  # Keep every job on the same SDK instead of allowing the stable channel to
+  # move independently between runners.
+  FLUTTER_VERSION: '3.44.0'
 
 jobs:
   analyze-and-test:
     name: Analyze & Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
 
       - name: Check formatting
-        run: dart format --set-exit-if-changed .
+        # Restrict the gate to source-controlled Dart files so generated or
+        # ignored build output cannot make the result environment-dependent.
+        run: git ls-files '*.dart' -z | xargs -0 dart format --output=none --set-exit-if-changed
 
       - name: Analyze
-        run: flutter analyze --no-fatal-infos
+        # Analyze only source-controlled Dart roots. A root-level Flutter
+        # analysis can descend into generated build/ios Swift-package sources
+        # after a local or cached platform build.
+        run: |
+          dart analyze lib
+          dart analyze test
+          dart analyze tools
 
       - name: Run tests
         run: flutter test --coverage
@@ -52,7 +64,7 @@ jobs:
 
   build-android:
     name: Build Android
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
@@ -65,11 +77,12 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
 
       - name: Build APK
         run: |
@@ -88,7 +101,7 @@ jobs:
 
   build-ios:
     name: Build iOS
-    runs-on: macos-latest
+    runs-on: macos-15
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
@@ -96,18 +109,20 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: '16.4'
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
 
-      - name: Update CocoaPods repo
-        run: pod repo update
+      - name: Install locked CocoaPods dependencies
+        working-directory: ios
+        run: pod install --deployment
 
       - name: Build iOS (no code sign)
         run: |
@@ -119,7 +134,7 @@ jobs:
 
   build-web:
     name: Build & Smoke-test Web
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: analyze-and-test
     env:
       # Pull requests from forks cannot read repository secrets. These public,
@@ -133,11 +148,12 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
 
       - name: Build Web (release)
         run: |
@@ -180,7 +196,7 @@ jobs:
 
   build-macos:
     name: Build macOS
-    runs-on: macos-latest
+    runs-on: macos-15
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
@@ -188,15 +204,20 @@ jobs:
 
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: '16.4'
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
       - name: Install dependencies
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
+
+      - name: Install locked CocoaPods dependencies
+        working-directory: macos
+        run: pod install --deployment
 
       - name: Build macOS (release)
         run: |
@@ -214,7 +235,9 @@ jobs:
 
   build-windows:
     name: Build Windows
-    runs-on: windows-latest
+    # windows-latest moved to Windows Server 2025 / VS 2026, whose MSVC 14.51
+    # rejects <experimental/coroutine> used by current Flutter plugins.
+    runs-on: windows-2022
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
@@ -246,18 +269,22 @@ jobs:
           # Disable MSBuild FileTracker (FTK1011 fix): FileTracker.exe has no
           # longPathAware manifest and ignores LongPathsEnabled.  Setting
           # TrackFileAccess=false prevents tlog creation entirely (safe in CI).
+          # The preprocessor definition also keeps the existing plugins
+          # compatible if the image's VS 2022 toolset receives the same STL
+          # deprecation guard before those dependencies are upgraded.
           Set-Content -Path C:\b\Directory.Build.props `
-            -Value '<Project><PropertyGroup><TrackFileAccess>false</TrackFileAccess></PropertyGroup></Project>'
+            -Value '<Project><PropertyGroup><TrackFileAccess>false</TrackFileAccess><PreprocessorDefinitions>_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS;$(PreprocessorDefinitions)</PreprocessorDefinitions></PropertyGroup></Project>'
 
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
       - name: Install dependencies
         working-directory: 'C:\b'
         shell: powershell
-        run: flutter pub get
+        run: flutter pub get --enforce-lockfile
 
       - name: Build Windows (release)
         working-directory: 'C:\b'

@@ -14,11 +14,7 @@ OpenDayData _bulkData() => OpenDayData(
   openDayDate: DateTime(2027, 8, 14),
   lastUpdated: DateTime(2027),
   studyAreas: const [
-    OpenDayStudyArea(
-      id: 'sci',
-      name: 'Science & Engineering',
-      icon: 'science',
-    ),
+    OpenDayStudyArea(id: 'sci', name: 'Science & Engineering', icon: 'science'),
     OpenDayStudyArea(
       id: 'med',
       name: 'Medicine, Health & Human Sciences',
@@ -168,10 +164,7 @@ void main() {
     await openPicker(tester);
 
     expect(find.byType(Scrollable), findsWidgets);
-    await tester.drag(
-      find.byType(ListView).first,
-      const Offset(0, -200),
-    );
+    await tester.drag(find.byType(ListView).first, const Offset(0, -200));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
   });

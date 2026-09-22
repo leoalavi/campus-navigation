@@ -340,37 +340,39 @@ class MapController extends AsyncNotifier<MapState> {
               .where((b) => scoreBuildingMatch(b, normalized) > 0)
               .toList();
 
-    final exactMatch = searchResults.where((building) {
-      return isStrongCampusMatch(building, normalized);
-    }).toList();
-    final shouldAutoSelect =
-        exactMatch.length == 1 && searchResults.length == 1;
-    final nextSelectedBuilding = shouldAutoSelect ? exactMatch.first : null;
-    final selectionChanged =
-        nextSelectedBuilding?.id != current.selectedBuilding?.id;
-
-    if (selectionChanged) {
-      _invalidateRouteRequest();
-    }
-
     state = AsyncData(
       current.copyWith(
         searchQuery: query,
         searchResults: searchResults,
-        // Only auto-select when there is exactly one strong match
-        // (e.g. user typed an exact building name/id).
-        // Category searches like "food" or "parking" should NOT auto-select
-        // — they show all matching buildings as markers instead.
-        selectedBuilding: nextSelectedBuilding,
-        clearSelectedBuilding: !shouldAutoSelect,
-        clearRoute: selectionChanged && current.route != null,
-        isNavigating: selectionChanged ? false : current.isNavigating,
-        isLoadingRoute: selectionChanged ? false : current.isLoadingRoute,
-        clearError: true,
+        // Search results are transient map markers. A query must never replace
+        // the confirmed destination/route held in selectedBuilding.
+        //
         // Any query change resets all three drill-downs so that
         // (re-)entering Faculty / Student Services / Campus Hub
         // always lands on its top-level group cards rather than a
         // stale sub-level filter from the previous browse session.
+        clearSelectedFacultyGroup: true,
+        clearSelectedStudentServicesGroup: true,
+        clearSelectedCampusHubGroup: true,
+      ),
+    );
+  }
+
+  /// Clears state owned by the search modal without touching a confirmed map
+  /// selection, route, renderer or navigation session.
+  void clearSearchSession() {
+    final current = state.value;
+    if (current == null) {
+      return;
+    }
+
+    state = AsyncData(
+      current.copyWith(
+        searchQuery: '',
+        searchResults: searchCampusBuildings(
+          current.buildings,
+          '',
+        ).take(_defaultVisibleBuildings).toList(),
         clearSelectedFacultyGroup: true,
         clearSelectedStudentServicesGroup: true,
         clearSelectedCampusHubGroup: true,

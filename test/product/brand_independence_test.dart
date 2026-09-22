@@ -149,9 +149,7 @@ void main() {
       expect(index, contains('Campus Navigation'));
 
       final manifest =
-          jsonDecode(
-                File('${repo.path}/web/manifest.json').readAsStringSync(),
-              )
+          jsonDecode(File('${repo.path}/web/manifest.json').readAsStringSync())
               as Map<String, dynamic>;
       expect(manifest['name'], 'Campus Navigation');
       expect(

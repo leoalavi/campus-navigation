@@ -371,6 +371,90 @@ void main() {
     });
 
     test(
+      'search session never replaces or clears a confirmed destination',
+      () async {
+        final repository = _FakeMapRepository(
+          buildings: [building, secondBuilding],
+        );
+        final container = ProviderContainer(
+          overrides: [
+            mapRepositoryProvider.overrideWithValue(repository),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        await container.read(mapControllerProvider.future);
+        final notifier = container.read(mapControllerProvider.notifier);
+
+        notifier.selectBuilding(building);
+        await notifier.loadRoute();
+        final confirmedRoute = container
+            .read(mapControllerProvider)
+            .value!
+            .route;
+
+        notifier.updateSearchQuery(secondBuilding.name);
+        final duringSearch = container.read(mapControllerProvider).value!;
+        expect(duringSearch.searchQuery, secondBuilding.name);
+        expect(duringSearch.selectedBuilding, building);
+        expect(duringSearch.route, same(confirmedRoute));
+
+        notifier.clearSearchSession();
+        final afterClose = container.read(mapControllerProvider).value!;
+        expect(afterClose.searchQuery, isEmpty);
+        expect(afterClose.selectedBuilding, building);
+        expect(afterClose.route, same(confirmedRoute));
+      },
+    );
+
+    test('closing an unselected search clears its temporary results', () async {
+      final repository = _FakeMapRepository(
+        buildings: [building, secondBuilding],
+      );
+      final container = ProviderContainer(
+        overrides: [
+          mapRepositoryProvider.overrideWithValue(repository),
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await container.read(mapControllerProvider.future);
+      final notifier = container.read(mapControllerProvider.notifier);
+
+      notifier.updateSearchQuery(secondBuilding.name);
+      expect(
+        container.read(mapControllerProvider).value!.searchResults,
+        contains(secondBuilding),
+      );
+
+      notifier.clearSearchSession();
+      final afterClose = container.read(mapControllerProvider).value!;
+      expect(afterClose.searchQuery, isEmpty);
+      expect(afterClose.selectedBuilding, isNull);
+      expect(afterClose.searchResults, hasLength(2));
+      expect(afterClose.searchResults, containsAll([building, secondBuilding]));
+
+      notifier.setRenderer(MapRendererType.google);
+      expect(
+        container.read(mapControllerProvider).value!.renderer,
+        MapRendererType.google,
+      );
+      notifier.setRenderer(MapRendererType.campus);
+      final afterRendererRoundTrip = container
+          .read(mapControllerProvider)
+          .value!;
+      expect(afterRendererRoundTrip.renderer, MapRendererType.campus);
+      expect(afterRendererRoundTrip.searchQuery, isEmpty);
+      expect(afterRendererRoundTrip.selectedBuilding, isNull);
+    });
+
+    test(
       'clearSelection from focused-with-query state preserves the query (back-to-list)',
       () async {
         // Repro of the focused → list back behavior: when a user is in
