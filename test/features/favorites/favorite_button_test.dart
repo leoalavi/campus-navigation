@@ -115,9 +115,7 @@ void main() {
       () => mockFavRepo.fetchAll(),
     ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
     when(
-      () => mockFavRepo.findFavoriteId(
-        buildingId: any(named: 'buildingId'),
-      ),
+      () => mockFavRepo.findFavoriteId(buildingId: any(named: 'buildingId')),
     ).thenAnswer((_) async => 'fav-1');
     when(
       () => mockFavRepo.remove(any()),

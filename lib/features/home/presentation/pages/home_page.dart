@@ -35,7 +35,11 @@ class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   static const _backgroundAsset = 'assets/images/campus_background.jpg';
-  static const _logoAsset = 'assets/images/app_logo.png';
+  // Transparent-background mark, distinct from assets/images/app_logo.png
+  // (the opaque source flutter_launcher_icons uses for the actual app icon).
+  // Hero display sits on the photo background, so it needs alpha; the icon
+  // source must not have any.
+  static const _logoAsset = 'assets/images/app_logo_mark.png';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -15,7 +15,8 @@ final indoorTourIdsProvider = FutureProvider<Set<String>>(
 /// Scene count for a building's tour, or `null` when it ships none. Drives
 /// whether the 360° affordance is offered at all, so it must not load imagery.
 final indoorTourSceneCountProvider = FutureProvider.family<int?, String>(
-  (ref, buildingId) => ref.watch(indoorRepositoryProvider).sceneCount(buildingId),
+  (ref, buildingId) =>
+      ref.watch(indoorRepositoryProvider).sceneCount(buildingId),
 );
 
 /// The tour for a building, or `null` when it has none.

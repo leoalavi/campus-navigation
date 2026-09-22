@@ -43,10 +43,7 @@ void main() {
 
   group('initial state', () {
     test('is not loading with empty favorites', () {
-
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       final state = container.read(favoritesControllerProvider);
@@ -62,9 +59,7 @@ void main() {
         () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
 
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       await container.read(favoritesControllerProvider.notifier).load();
@@ -79,9 +74,7 @@ void main() {
         (_) async => FavoritesResult.failure('Could not load favourites.'),
       );
 
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       await container.read(favoritesControllerProvider.notifier).load();
@@ -98,9 +91,7 @@ void main() {
         () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([]));
       when(
-        () => mockFavRepo.findFavoriteId(
-          buildingId: any(named: 'buildingId'),
-        ),
+        () => mockFavRepo.findFavoriteId(buildingId: any(named: 'buildingId')),
       ).thenAnswer((_) async => null);
       when(
         () => mockFavRepo.add(
@@ -113,9 +104,7 @@ void main() {
         () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
 
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       await container
@@ -135,17 +124,13 @@ void main() {
         () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([]));
       when(
-        () => mockFavRepo.findFavoriteId(
-          buildingId: any(named: 'buildingId'),
-        ),
+        () => mockFavRepo.findFavoriteId(buildingId: any(named: 'buildingId')),
       ).thenAnswer((_) async => 'fav-1');
       when(
         () => mockFavRepo.remove(any()),
       ).thenAnswer((_) async => FavoritesResult.success(null));
 
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       await container
@@ -165,9 +150,7 @@ void main() {
         () => mockFavRepo.remove(any()),
       ).thenAnswer((_) async => FavoritesResult.success(null));
 
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       await container
@@ -191,9 +174,7 @@ void main() {
         ),
       ).thenAnswer((_) async => FavoritesResult.success(updated));
 
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       await container.read(favoritesControllerProvider.notifier).load();
@@ -234,9 +215,7 @@ void main() {
         ),
       ).thenAnswer((_) async => FavoritesResult.failure('Network down.'));
 
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       await container.read(favoritesControllerProvider.notifier).load();
@@ -266,9 +245,7 @@ void main() {
         () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
 
-      final container = makeContainer(
-        favRepository: mockFavRepo,
-      );
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
       await container.read(favoritesControllerProvider.notifier).load();

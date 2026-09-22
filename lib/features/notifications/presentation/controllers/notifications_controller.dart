@@ -131,7 +131,6 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
         .read(fcmServiceProvider)
         .requestPermission();
     state = AsyncData(current.copyWith(permissionStatus: permissionStatus));
-
   }
 
   Future<void> updatePreference(NotificationType type, bool enabled) async {

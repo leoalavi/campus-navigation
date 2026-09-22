@@ -45,8 +45,7 @@ class FavoriteBuildingSource {
   /// Newest first, matching what the Favourites page expects.
   Future<List<FavoriteBuilding>> fetchAll() async {
     final all = await _readAll();
-    final sorted = [...all]
-      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    final sorted = [...all]..sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return sorted;
   }
 
@@ -101,5 +100,8 @@ class FavoriteBuildingSource {
       (await _readAll()).any((f) => f.buildingId == buildingId);
 
   Future<String?> findId({required String buildingId}) async =>
-      (await _readAll()).where((f) => f.buildingId == buildingId).firstOrNull?.id;
+      (await _readAll())
+          .where((f) => f.buildingId == buildingId)
+          .firstOrNull
+          ?.id;
 }

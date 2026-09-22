@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -213,7 +212,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 /// silent and avoid spurious router rebuilds.
 class _OnboardingFlagListenable extends ChangeNotifier {
   _OnboardingFlagListenable(Ref ref) {
-
     // Listen to the onboarding flag (and its loading state).
     _settingsSub = ref.listen<({bool isLoading, bool hasCompleted})>(
       settingsControllerProvider.select(
@@ -232,4 +230,3 @@ class _OnboardingFlagListenable extends ChangeNotifier {
 
   ProviderSubscription<({bool isLoading, bool hasCompleted})>? _settingsSub;
 }
-

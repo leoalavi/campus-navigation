@@ -35,18 +35,37 @@ void main() {
   });
 
   test('returns null for unknown, empty and future ids', () async {
-    for (final id in const ['', '   ', 'NOT_A_BUILDING', 'ZZ99', 'LAKESIDEHO']) {
+    for (final id in const [
+      '',
+      '   ',
+      'NOT_A_BUILDING',
+      'ZZ99',
+      'LAKESIDEHO',
+    ]) {
       expect(await resolver.resolve(id), isNull, reason: '"$id"');
     }
   });
 
   test('every alias points at a building that actually exists', () async {
     // Guards against an alias table that drifts from buildings.json.
-    const sample = ['1WW', '21WW', '27WW', '16MW', '3SR', '8LR', 'CHAP', 'BIKEHUB'];
+    const sample = [
+      '1WW',
+      '21WW',
+      '27WW',
+      '16MW',
+      '3SR',
+      '8LR',
+      'CHAP',
+      'BIKEHUB',
+    ];
     for (final id in sample) {
       final r = await resolver.resolve(id);
       expect(r, isNotNull, reason: id);
-      expect(await resolver.resolve(r!), r, reason: '$id -> $r must be canonical');
+      expect(
+        await resolver.resolve(r!),
+        r,
+        reason: '$id -> $r must be canonical',
+      );
     }
   });
 }

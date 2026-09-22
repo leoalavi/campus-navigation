@@ -27,8 +27,7 @@ class BuildingIdResolver {
   Map<String, String>? _canonicalByUpper;
   Map<String, String>? _aliases;
 
-  Future<String> _load(String key) =>
-      (bundle ?? rootBundle.loadString)(key);
+  Future<String> _load(String key) => (bundle ?? rootBundle.loadString)(key);
 
   Future<void> _ensureLoaded() async {
     if (_canonicalByUpper != null) return;
@@ -36,7 +35,8 @@ class BuildingIdResolver {
       final raw = await _load('assets/data/buildings.json');
       final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
       _canonicalByUpper = {
-        for (final b in list) (b['id'] as String).toUpperCase(): b['id'] as String,
+        for (final b in list)
+          (b['id'] as String).toUpperCase(): b['id'] as String,
       };
     } catch (e, s) {
       AppLogger.warning('Could not load buildings for id resolution', e, s);

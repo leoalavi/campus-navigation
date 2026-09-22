@@ -54,17 +54,12 @@ class FavoritesController extends Notifier<FavoritesState> {
     required String buildingId,
     required String buildingName,
   }) async {
-    final existingId = await _repository.findFavoriteId(
-      buildingId: buildingId,
-    );
+    final existingId = await _repository.findFavoriteId(buildingId: buildingId);
 
     if (existingId != null) {
       await _repository.remove(existingId);
     } else {
-      await _repository.add(
-        buildingId: buildingId,
-        buildingName: buildingName,
-      );
+      await _repository.add(buildingId: buildingId, buildingName: buildingName);
     }
     await load();
   }

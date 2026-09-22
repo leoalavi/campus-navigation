@@ -31,7 +31,8 @@ void main() {
     test('localisation files carry no university branding', () {
       final offenders = <String>[];
       for (final file in filesUnder('lib/app/l10n', {'.arb'})) {
-        final json = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+        final json =
+            jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
         json.forEach((key, value) {
           if (key.startsWith('@') || value is! String) return;
           if (allowedKeys.contains(key)) return;
@@ -52,7 +53,8 @@ void main() {
     test('no "official app" or university-publisher language', () {
       final offenders = <String>[];
       for (final file in filesUnder('lib/app/l10n', {'.arb'})) {
-        final json = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+        final json =
+            jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
         json.forEach((key, value) {
           if (key.startsWith('@') || value is! String) return;
           if (RegExp(
@@ -79,7 +81,10 @@ void main() {
     expect(ProductConfig.copyright, contains('Leo Alavi'));
     expect(ProductConfig.copyright, contains('Mohammad Raouf Abedini'));
     expect(ProductConfig.copyright.toLowerCase(), isNot(contains('macquarie')));
-    expect(ProductConfig.copyright.toLowerCase(), isNot(contains('university')));
+    expect(
+      ProductConfig.copyright.toLowerCase(),
+      isNot(contains('university')),
+    );
     expect(ProductConfig.supportEmail, isNot(contains('mq.edu.au')));
   });
 
@@ -118,7 +123,8 @@ void main() {
     test('nothing advertises a Campus Navigation web app', () {
       final offenders = <String>[];
       for (final file in filesUnder('lib/app/l10n', {'.arb'})) {
-        final json = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+        final json =
+            jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
         json.forEach((key, value) {
           if (value is! String) return;
           if (RegExp(

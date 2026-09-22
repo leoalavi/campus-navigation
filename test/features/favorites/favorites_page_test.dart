@@ -87,9 +87,7 @@ void main() {
       (_) => neverComplete.future.then((_) => FavoritesResult.success([])),
     );
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     // First pump: build, postFrameCallback schedules load
     await tester.pump();
     // Second pump: load starts, isLoading transitions through true
@@ -104,9 +102,7 @@ void main() {
       (_) async => FavoritesResult.failure('Could not load favorites.'),
     );
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -119,9 +115,7 @@ void main() {
       () => mockFavRepo.fetchAll(),
     ).thenAnswer((_) async => FavoritesResult.success([]));
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -133,9 +127,7 @@ void main() {
       (_) async => FavoritesResult.success([_sampleFav, _sampleFav2]),
     );
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -158,9 +150,7 @@ void main() {
       () => mockFavRepo.fetchAll(),
     ).thenAnswer((_) async => FavoritesResult.success([favWithNote]));
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -174,9 +164,7 @@ void main() {
       () => mockFavRepo.fetchAll(),
     ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -205,9 +193,7 @@ void main() {
       ),
     ).thenAnswer((_) async => FavoritesResult.success(updated));
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -237,9 +223,7 @@ void main() {
       () => mockFavRepo.remove(any()),
     ).thenAnswer((_) async => FavoritesResult.success(null));
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -265,9 +249,7 @@ void main() {
       () => mockFavRepo.fetchAll(),
     ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
@@ -294,9 +276,7 @@ void main() {
       (_) async => FavoritesResult.failure('Could not load favorites.'),
     );
 
-    await tester.pumpWidget(
-      buildApp(favRepository: mockFavRepo),
-    );
+    await tester.pumpWidget(buildApp(favRepository: mockFavRepo));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
