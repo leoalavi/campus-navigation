@@ -431,7 +431,6 @@
   "loginSuccess": "You have been successfully logged in.",
   "welcomeTo": "Welcome to {appName}",
   "signInToAccess": "Sign in to access your {uniName} dashboard",
-  "emailPlaceholder": "your.email@student.mq.edu.au",
   "signingIn": "Signing in...",
   "signIn": "Sign In",
   "orSignWith": "Or sign in with",
@@ -496,7 +495,6 @@
   "passwordMinLength": "Password must be at least 12 characters",
   "enterFullName": "Enter your full name",
   "enterLegalName": "Enter your full legal name",
-  "emailPlaceholderExample": "your.email@mq.edu.au",
   "enterEmailDesc": "Enter your university email address",
   "enterStudentIdDesc": "Enter your 8-digit student ID number",
   "coursePlaceholder": "e.g., Bachelor of IT",
@@ -2447,5 +2445,7 @@
   "about_copyrightLabel": "Copyright",
   "@about_copyrightLabel": {
     "description": "Label for the copyright row in Settings → About."
-  }
+  },
+  "about_contactSupport": "Contact support",
+  "about_emailUnavailable": "No email app is available on this device."
 }

@@ -20,14 +20,22 @@ abstract final class ProductConfig {
 
   static String get developersLine => developers.join(' and ');
 
+  /// Team the copyright is held by. Distinct from [developers]: the two of
+  /// them are credited by name as the authors, while the rights sit with the
+  /// team identity that ships the app.
+  static const String copyrightHolder = 'Perky Coders';
+
   /// Year the product was first published. Used to build the copyright line.
   static const int copyrightYear = 2026;
 
-  static String get copyright => '© $copyrightYear $developersLine';
+  static String get copyright => '© $copyrightYear $copyrightHolder';
 
   /// Support address shown in-app and submitted as the store support contact.
-  ///
   static const String supportEmail = 'leo@leoalavi.dev';
+
+  /// Subject pre-filled on the About screen's support mailto link, so replies
+  /// arrive already identified as coming from this app.
+  static const String supportEmailSubject = 'Campus Navigation Support';
 
   /// Secondary ecosystem attribution shown only in Settings → About.
   static const String ecosystemTitle = 'Part of the Syllabus Sync ecosystem';

@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -838,31 +837,23 @@ class _CategoryBuildingList extends StatelessWidget {
     final validBuildings = buildings
         .where((b) => b.latitude != null && b.longitude != null)
         .toList();
-    final maxPanelHeight = math.min(
-      420.0,
-      MediaQuery.sizeOf(context).height * 0.52,
-    );
-
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(MqSpacing.radiusXl),
-        bottom: Radius.circular(MqSpacing.radiusXl),
       ),
       child: BackdropFilter(
         filter: ImageFilter.blur(
           sigmaX: MqSpacing.space3,
           sigmaY: MqSpacing.space3,
         ),
-        child: Container(
+        child: DecoratedBox(
           key: const ValueKey('compact-category-bottom-sheet'),
-          constraints: BoxConstraints(maxHeight: maxPanelHeight),
           decoration: BoxDecoration(
             color: isDark
                 ? MqColors.charcoal800.withValues(alpha: 0.94)
                 : Colors.white.withValues(alpha: 0.94),
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(MqSpacing.radiusXl),
-              bottom: Radius.circular(MqSpacing.radiusXl),
             ),
             border: Border.all(
               color: isDark
@@ -1074,31 +1065,23 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
     final isDark = context.isDarkMode;
     final l10n = AppLocalizations.of(context)!;
     final countsByGroup = countByGroup;
-    final maxPanelHeight = math.min(
-      420.0,
-      MediaQuery.sizeOf(context).height * 0.52,
-    );
-
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(MqSpacing.radiusXl),
-        bottom: Radius.circular(MqSpacing.radiusXl),
       ),
       child: BackdropFilter(
         filter: ImageFilter.blur(
           sigmaX: MqSpacing.space3,
           sigmaY: MqSpacing.space3,
         ),
-        child: Container(
+        child: DecoratedBox(
           key: const ValueKey('compact-category-group-bottom-sheet'),
-          constraints: BoxConstraints(maxHeight: maxPanelHeight),
           decoration: BoxDecoration(
             color: isDark
                 ? MqColors.charcoal800.withValues(alpha: 0.94)
                 : Colors.white.withValues(alpha: 0.94),
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(MqSpacing.radiusXl),
-              bottom: Radius.circular(MqSpacing.radiusXl),
             ),
             border: Border.all(
               color: isDark
@@ -1383,7 +1366,6 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(MqSpacing.radiusXl),
-        bottom: Radius.circular(MqSpacing.radiusXl),
       ),
       child: BackdropFilter(
         filter: ImageFilter.blur(
@@ -1398,7 +1380,6 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
                 : Colors.white.withValues(alpha: 0.94),
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(MqSpacing.radiusXl),
-              bottom: Radius.circular(MqSpacing.radiusXl),
             ),
             border: Border.all(
               color: isDark

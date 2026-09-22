@@ -651,8 +651,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       _InfoRow(
                         icon: Icons.info_outline,
                         label: l10n.about_independentNotice,
-                        subtitle: ProductConfig.supportEmail,
+                        subtitle: '',
                       ),
+                      const _SupportEmailRow(),
                     ],
                   ),
                   const SizedBox(height: MqSpacing.space6),
@@ -1553,7 +1554,7 @@ class _OpenDaySection extends ConsumerWidget {
           value: selected?.name ?? l10n.openDay_studyInterestNotSet,
           semanticLabel: l10n.openDay_studyInterestSemantic,
           hapticsEnabled: preferences.hapticsEnabled,
-          onTap: () => BachelorPickerSheet.show(context),
+          onTap: () => BachelorPickerSheet.show(context, ref),
         ),
         _ToggleRow(
           icon: Icons.notifications_active_outlined,
@@ -1900,7 +1901,7 @@ class _InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = context.isDarkMode;
     return Semantics(
-      label: '$label, $subtitle',
+      label: subtitle.isEmpty ? label : '$label, $subtitle',
       child: Padding(
         padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
         child: Row(
@@ -1928,15 +1929,17 @@ class _InfoRow extends StatelessWidget {
                       color: dark ? Colors.white : MqColors.contentPrimary,
                     ),
                   ),
-                  const SizedBox(height: MqSpacing.space1),
-                  Text(
-                    subtitle,
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: dark
-                          ? Colors.white.withValues(alpha: 0.72)
-                          : MqColors.slate500,
+                  if (subtitle.isNotEmpty) ...[
+                    const SizedBox(height: MqSpacing.space1),
+                    Text(
+                      subtitle,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: dark
+                            ? Colors.white.withValues(alpha: 0.72)
+                            : MqColors.slate500,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),
@@ -2269,6 +2272,112 @@ class _AboutAppRow extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Support address, rendered as an actionable contact control.
+///
+/// Opening mail is best-effort: a device with no mail client configured (a
+/// stock emulator, a locked-down managed phone) must show a message rather
+/// than appear to do nothing — or throw, which `launchUrl` does when nothing
+/// can handle `mailto:`.
+class _SupportEmailRow extends StatelessWidget {
+  const _SupportEmailRow();
+
+  Future<void> _openMail(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    // Captured before the await: `context` may be gone by the time the
+    // platform call returns.
+    final messenger = ScaffoldMessenger.of(context);
+    final uri = Uri(
+      scheme: 'mailto',
+      path: ProductConfig.supportEmail,
+      queryParameters: {'subject': ProductConfig.supportEmailSubject},
+    );
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!launched) {
+        messenger.showSnackBar(
+          SnackBar(content: Text(l10n.about_emailUnavailable)),
+        );
+      }
+    } catch (_) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.about_emailUnavailable)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final dark = context.isDarkMode;
+    return Semantics(
+      button: true,
+      label: '${l10n.about_contactSupport}, ${ProductConfig.supportEmail}',
+      hint: 'Opens your email app',
+      child: MqTactileButton(
+        onTap: () => _openMail(context),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 32,
+                height: 32,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: MqColors.red,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.mail_outline_rounded,
+                  size: 18,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(width: MqSpacing.space4),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.about_contactSupport,
+                      style: context.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: dark ? Colors.white : MqColors.contentPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: MqSpacing.space1),
+                    Text(
+                      ProductConfig.supportEmail,
+                      key: const ValueKey('about-support-email'),
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: dark
+                            ? Colors.white.withValues(alpha: 0.72)
+                            : MqColors.slate500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: MqSpacing.space2),
+              Icon(
+                Icons.open_in_new_rounded,
+                size: 18,
+                color: dark
+                    ? Colors.white.withValues(alpha: 0.32)
+                    : MqColors.contentTertiary,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -23,9 +23,27 @@ if (localPropertiesFile.exists()) {
     localPropertiesFile.inputStream().use { localProps.load(it) }
 }
 
+// Also load the repo-root `.env` — the single gitignored file the Flutter side
+// reads via `--dart-define-from-file=.env`, so one file keys both the Dart
+// build and this native manifest placeholder (same workflow as the Astronomy
+// Open Night project). Parsed as KEY=VALUE, ignoring blanks and `#` comments.
+val dotEnvFile = rootProject.file("../.env")
+val dotEnv = Properties()
+if (dotEnvFile.exists()) {
+    dotEnvFile.readLines()
+        .map { it.trim() }
+        .filter { it.isNotEmpty() && !it.startsWith("#") && it.contains("=") }
+        .forEach { line ->
+            val key = line.substringBefore("=").trim()
+            val value = line.substringAfter("=").trim().trim('"', '\'')
+            if (key.isNotEmpty()) dotEnv.setProperty(key, value)
+        }
+}
+
 val googleMapsApiKey: String =
     (secrets.getProperty("GOOGLE_MAPS_API_KEY"))
         ?: (localProps.getProperty("GOOGLE_MAPS_API_KEY"))
+        ?: (dotEnv.getProperty("GOOGLE_MAPS_API_KEY"))
         ?: (project.findProperty("GOOGLE_MAPS_API_KEY") as String?).takeIf { !it.isNullOrEmpty() }
         ?: System.getenv("GOOGLE_MAPS_API_KEY").orEmpty().ifEmpty { null }
         ?: ""

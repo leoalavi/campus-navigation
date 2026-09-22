@@ -195,7 +195,7 @@ class _StudyInterestHeader extends ConsumerWidget {
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: TextButton.icon(
-              onPressed: () => BachelorPickerSheet.show(context),
+              onPressed: () => BachelorPickerSheet.show(context, ref),
               style: TextButton.styleFrom(
                 foregroundColor: dark ? MqColors.brightRed : MqColors.red,
                 padding: const EdgeInsetsDirectional.symmetric(

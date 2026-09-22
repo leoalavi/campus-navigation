@@ -118,6 +118,11 @@ class FcmService {
         NotificationPermissionStatus.provisional,
       AuthorizationStatus.denied => NotificationPermissionStatus.denied,
       AuthorizationStatus.notDetermined => NotificationPermissionStatus.unknown,
+      // Web reports a fourth state the mobile SDKs never produce. Treated as
+      // denied because that is what it means for the user: notifications are
+      // off and the app cannot re-prompt.
+      AuthorizationStatus.deniedPermanently =>
+        NotificationPermissionStatus.denied,
     };
   }
 
@@ -148,6 +153,11 @@ class FcmService {
         NotificationPermissionStatus.provisional,
       AuthorizationStatus.denied => NotificationPermissionStatus.denied,
       AuthorizationStatus.notDetermined => NotificationPermissionStatus.unknown,
+      // Web reports a fourth state the mobile SDKs never produce. Treated as
+      // denied because that is what it means for the user: notifications are
+      // off and the app cannot re-prompt.
+      AuthorizationStatus.deniedPermanently =>
+        NotificationPermissionStatus.denied,
     };
   }
 

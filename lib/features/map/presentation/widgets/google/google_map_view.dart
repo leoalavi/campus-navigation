@@ -8,15 +8,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/core/config/env_config.dart';
+import 'package:mq_navigation/features/map/data/services/maps_key_resolver.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/google/desktop_map_fallback_view.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'web_maps_key_stub.dart'
-    if (dart.library.js_interop) 'web_maps_key.dart';
 
 /// The native `google_maps_flutter` renderer.
 ///
@@ -290,12 +288,16 @@ class _GoogleMapViewState extends ConsumerState<GoogleMapView> {
 
   @override
   Widget build(BuildContext context) {
-    final isGoogleMapsSupported =
-        kIsWeb ||
-        defaultTargetPlatform == TargetPlatform.android ||
-        defaultTargetPlatform == TargetPlatform.iOS;
+    // Resolved at runtime so a build keyed natively (Gradle manifest
+    // placeholder / Info.plist) is recognised even without a --dart-define.
+    final keyStatus = ref.watch(mapsKeyStatusProvider);
 
-    if (!isGoogleMapsSupported) {
+    // While resolving, show the OSM renderer rather than flashing an empty
+    // frame — it is a real, usable map either way.
+    final status = keyStatus.value;
+    if (status == null ||
+        status == MapsKeyStatus.unsupportedPlatform ||
+        status == MapsKeyStatus.missing) {
       return DesktopMapFallbackView(
         searchResults: widget.searchResults,
         searchQuery: widget.searchQuery,
@@ -308,21 +310,6 @@ class _GoogleMapViewState extends ConsumerState<GoogleMapView> {
       );
     }
 
-    final hasKey = kIsWeb
-        ? hasWebGoogleMapsApiKey()
-        : EnvConfig.hasGoogleMapsApiKey;
-    if (!hasKey) {
-      return DesktopMapFallbackView(
-        searchResults: widget.searchResults,
-        searchQuery: widget.searchQuery,
-        selectedBuilding: widget.selectedBuilding,
-        route: widget.route,
-        currentLocation: widget.currentLocation,
-        locationCenterRequestToken: widget.locationCenterRequestToken,
-        isNavigating: widget.isNavigating,
-        onSelectBuilding: widget.onSelectBuilding,
-      );
-    }
 
     final highContrast =
         ref.watch(settingsControllerProvider).value?.highContrastMap ?? false;

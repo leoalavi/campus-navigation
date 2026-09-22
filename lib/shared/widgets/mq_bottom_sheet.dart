@@ -69,14 +69,23 @@ class MqBottomSheet extends StatelessWidget {
                             ),
                           ),
                         ),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                          MqSpacing.space5,
-                          MqSpacing.space4,
-                          MqSpacing.space5,
-                          MqSpacing.space6,
+                      // Loose-fit so the content yields when the sheet's own
+                      // chrome (handle + padding + safe-area inset) plus the
+                      // child's preferred height exceed what the modal route
+                      // allows. Without this the Column overflows by exactly
+                      // that chrome height instead of letting the child's
+                      // scrollable shrink.
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                            MqSpacing.space5,
+                            MqSpacing.space4,
+                            MqSpacing.space5,
+                            MqSpacing.space6,
+                          ),
+                          child: child,
                         ),
-                        child: child,
                       ),
                     ],
                   ),

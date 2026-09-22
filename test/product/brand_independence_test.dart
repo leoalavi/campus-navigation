@@ -77,9 +77,13 @@ void main() {
     expect(logos, isEmpty, reason: 'university crest found: $logos');
   });
 
-  test('copyright and credits name the developers, not a university', () {
-    expect(ProductConfig.copyright, contains('Leo Alavi'));
-    expect(ProductConfig.copyright, contains('Mohammad Raouf Abedini'));
+  test('copyright names the team and credits name the developers', () {
+    // Rights sit with the team identity; the two authors are credited
+    // separately by name on the About screen.
+    expect(ProductConfig.copyright, contains('Perky Coders'));
+    expect(ProductConfig.copyright, contains('2026'));
+    expect(ProductConfig.developersLine, contains('Leo Alavi'));
+    expect(ProductConfig.developersLine, contains('Mohammad Raouf Abedini'));
     expect(ProductConfig.copyright.toLowerCase(), isNot(contains('macquarie')));
     expect(
       ProductConfig.copyright.toLowerCase(),
@@ -130,8 +134,31 @@ void main() {
   });
 
   group('Android + iOS only', () {
-    test('no Flutter web surface is configured', () {
-      expect(Directory('${repo.path}/web').existsSync(), isFalse);
+    // Web is deliberately kept BUILDABLE so CI can compile and test it, but
+    // it is never released: the shipped product is Android + iOS. So the
+    // guard is on what the build *claims*, not on whether it exists.
+    test('the web build does not present itself as a product', () {
+      final indexFile = File('${repo.path}/web/index.html');
+      if (!indexFile.existsSync()) return; // web scaffolding is optional
+      final index = indexFile.readAsStringSync();
+      expect(
+        index,
+        contains('noindex'),
+        reason: 'the CI web build must not be indexable',
+      );
+      expect(index, contains('Campus Navigation'));
+
+      final manifest =
+          jsonDecode(
+                File('${repo.path}/web/manifest.json').readAsStringSync(),
+              )
+              as Map<String, dynamic>;
+      expect(manifest['name'], 'Campus Navigation');
+      expect(
+        (manifest['description'] as String).toLowerCase(),
+        anyOf(contains('development'), contains('ci')),
+        reason: 'the manifest should mark this as a non-released build',
+      );
     });
 
     test('nothing advertises a Campus Navigation web app', () {
@@ -188,13 +215,18 @@ void main() {
   test(
     'Campus Navigation primary identity is unaffected by the ecosystem row',
     () {
-      // Home hero and the app-icon source (flutter_launcher_icons' image_path)
-      // must both be Campus Navigation's own logo, never the Syllabus Sync mark.
+      // The Home hero carries no logo at all now — the app mark identifies
+      // the product on the launcher and the store, not above copy that
+      // already names it. Critically it must never be the Syllabus Sync mark.
       final home = File(
         '${repo.path}/lib/features/home/presentation/pages/home_page.dart',
       ).readAsStringSync();
-      expect(home, contains("'assets/images/app_logo.png'"));
       expect(home, isNot(contains('syllabus_sync_logo')));
+      expect(
+        home,
+        isNot(contains('app_logo.png')),
+        reason: 'Home hero should render no logo',
+      );
 
       final pubspec = File('${repo.path}/pubspec.yaml').readAsStringSync();
       expect(pubspec, contains('image_path: "assets/images/app_logo.png"'));

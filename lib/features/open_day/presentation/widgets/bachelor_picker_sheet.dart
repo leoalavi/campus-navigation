@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/router/shell_chrome_provider.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
@@ -19,13 +20,22 @@ import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
 class BachelorPickerSheet extends ConsumerWidget {
   const BachelorPickerSheet({super.key});
 
-  static Future<void> show(BuildContext context) {
-    return showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (_) => const BachelorPickerSheet(),
-    );
+  /// Opens the picker, hiding the shell's bottom navigation for as long as it
+  /// is up so the selector owns the screen instead of floating over the tabs.
+  static Future<void> show(BuildContext context, WidgetRef ref) {
+    return ref
+        .read(shellChromeProvider.notifier)
+        .guard(
+          showModalBottomSheet<void>(
+            context: context,
+            backgroundColor: Colors.transparent,
+            isScrollControlled: true,
+            // Leave the status bar clear; the sheet may otherwise be allowed
+            // to grow taller than the window and clip its own content.
+            useSafeArea: true,
+            builder: (_) => const BachelorPickerSheet(),
+          ),
+        );
   }
 
   @override
@@ -38,11 +48,22 @@ class BachelorPickerSheet extends ConsumerWidget {
         .value
         ?.selectedBachelorId;
 
+    // Cap against the space the sheet actually has, not a fraction of the
+    // whole screen: `useSafeArea` + the sheet's own chrome already consume
+    // part of the window, and the keyboard can claim more. Using
+    // `size.height * 0.78` ignored all of that, which is what produced the
+    // "BOTTOM OVERFLOWED BY 11 PIXELS" banner on shorter viewports.
+    final media = MediaQuery.of(context);
+    final available =
+        media.size.height -
+        media.padding.top -
+        media.padding.bottom -
+        media.viewInsets.bottom;
+    final maxSheetHeight = (available * 0.88).clamp(200.0, available);
+
     return MqBottomSheet(
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height * 0.78,
-        ),
+        constraints: BoxConstraints(maxHeight: maxSheetHeight),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

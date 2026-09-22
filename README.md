@@ -265,7 +265,7 @@ Privacy is treated as an architectural concern, not a feature flag.
 |----------|--------|-------|
 | **Android emulator** (API 33+) | ✅ Verified | All features verified. |
 | **Android physical device** | ✅ Verified | Compass, flashlight, GPS, push notifications all functional. |
-| **Chrome (web)** | ✅ Core features | Auth, favourites CRUD, maps, routing, transit countdown work. Compass mode and flashlight gracefully degrade — UI shows an "unsupported on this device" fallback. |
+| **Chrome (web)** | 🧪 Build/test target | Release-mode bundles and 360° imagery are tested in CI. The web target is prepared for a future release but is not deployed. Compass mode and flashlight gracefully degrade. |
 | **iOS device** | ⚠️ Expected / not fully verified | Native build configured for iPhone (iOS 17+). Custom URL scheme `io.mqnavigation://` registered for auth callbacks. Full device testing not guaranteed. |
 | **macOS desktop** | ⚠️ Expected / not fully verified | Location, auth, and dual-renderer configured. `CFBundleURLTypes` registered so auth deep links return to the app. Google Maps falls back to OSM (plugin limitation). Full device testing not guaranteed. |
 
@@ -466,6 +466,7 @@ Built with the support of the open-source community. This project benefits from:
 
 © 2026 Leo Alavi and Mohammad Raouf Abedini. Not affiliated with, endorsed by, or published by any university.
 
-Android and iOS only — there is no web version.
+Android and iOS are the released products. A web release target is maintained
+and tested in CI, but is not currently deployed.
 
 </div>

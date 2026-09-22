@@ -367,7 +367,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 if (slide.isOpenDay) ...[
                   const SizedBox(height: MqSpacing.space6),
                   MqTactileButton(
-                    onTap: () => BachelorPickerSheet.show(context),
+                    onTap: () => BachelorPickerSheet.show(context, ref),
                     child: Container(
                       padding: const EdgeInsetsDirectional.symmetric(
                         horizontal: MqSpacing.space4,

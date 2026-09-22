@@ -37,7 +37,6 @@ class HomePage extends ConsumerWidget {
   static const _backgroundAsset = 'assets/images/campus_background.jpg';
   // Same asset flutter_launcher_icons uses as the app icon source, so the
   // hero mark on Home matches what's on the home screen/app switcher.
-  static const _logoAsset = 'assets/images/app_logo.png';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -105,7 +104,7 @@ class HomePage extends ConsumerWidget {
                     ),
                     child: Column(
                       children: [
-                        const _HeroSection(logoAsset: _logoAsset),
+                        const _HeroSection(),
                         const SizedBox(height: MqSpacing.space8),
                         _MetroCountdownCard(
                           commuteMode: preferences.commuteMode,
@@ -522,9 +521,7 @@ class _CampusBackground extends StatelessWidget {
 /// the prior top branding bar — while the CTA button remains full-width
 /// below for one-handed reachability.
 class _HeroSection extends StatelessWidget {
-  const _HeroSection({required this.logoAsset});
-
-  final String logoAsset;
+  const _HeroSection();
 
   @override
   Widget build(BuildContext context) {
@@ -600,51 +597,45 @@ class _HeroSection extends StatelessWidget {
       },
       child: Column(
         children: [
-          // Logo + welcome copy. The logo is sized to span the full
-          // height of the two-line text block so the brand mark feels
-          // like a true hero anchor — not an afterthought icon.
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Aspect-ratio-aware: the shield asset is taller than wide,
-                // so we let height drive layout and let width fall out
-                // naturally via `BoxFit.contain`. 100px gives the logo
-                // visual mass equal to title + subtitle stacked.
-                _MqShieldLogo(asset: logoAsset, size: 100),
-                const SizedBox(width: MqSpacing.space4),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        l10n.home_welcomeTitle,
-                        style: context.textTheme.headlineLarge?.copyWith(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w800,
-                          height: 1.15,
-                          letterSpacing: -0.4,
-                          color: titleColor,
-                          shadows: heroTextShadow,
-                        ),
-                      ),
-                      const SizedBox(height: MqSpacing.space1),
-                      Text(
-                        l10n.home_welcomeSubtitle,
-                        style: context.textTheme.bodyMedium?.copyWith(
-                          color: subtitleColor,
-                          fontSize: 14,
-                          height: 1.4,
-                          fontWeight: dark ? FontWeight.w700 : FontWeight.w600,
-                          shadows: subtitleTextShadow,
-                        ),
-                      ),
-                    ],
+          // Welcome copy, centred. The app mark deliberately does NOT appear
+          // here — it identifies the app on the launcher and the store, and
+          // repeating it above copy that already says the product name was
+          // just visual weight.
+          Center(
+            child: ConstrainedBox(
+              // Keeps the two lines from stretching into an unreadable
+              // measure on tablets while staying fluid on phones.
+              constraints: const BoxConstraints(maxWidth: 520),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l10n.home_welcomeTitle,
+                    textAlign: TextAlign.center,
+                    style: context.textTheme.headlineLarge?.copyWith(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w800,
+                      height: 1.15,
+                      letterSpacing: -0.4,
+                      color: titleColor,
+                      shadows: heroTextShadow,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: MqSpacing.space2),
+                  Text(
+                    l10n.home_welcomeSubtitle,
+                    textAlign: TextAlign.center,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: subtitleColor,
+                      fontSize: 14,
+                      height: 1.4,
+                      fontWeight: dark ? FontWeight.w700 : FontWeight.w600,
+                      shadows: subtitleTextShadow,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: MqSpacing.space5),
@@ -685,62 +676,6 @@ class _HeroSection extends StatelessWidget {
 /// fallback shield in case the asset isn't bundled. The fallback keeps
 /// the layout stable during initial onboarding of the asset and on any
 /// device where the asset failed to load.
-class _MqShieldLogo extends StatelessWidget {
-  const _MqShieldLogo({required this.asset, required this.size});
-
-  final String asset;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: AppLocalizations.of(context)!.macquarieUniversity,
-      image: true,
-      child: SizedBox(
-        width: size,
-        height: size,
-        child: Image.asset(
-          asset,
-          fit: BoxFit.contain,
-          filterQuality: FilterQuality.high,
-          errorBuilder: (_, _, _) => _LogoFallback(size: size),
-        ),
-      ),
-    );
-  }
-}
-
-class _LogoFallback extends StatelessWidget {
-  const _LogoFallback({required this.size});
-
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    // Pentagon-ish red shield placeholder — preserves visual mass and
-    // brand color until the official asset ships.
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: MqColors.red,
-        borderRadius: BorderRadius.circular(size * 0.18),
-        boxShadow: [
-          BoxShadow(
-            color: MqColors.red.withValues(alpha: 0.30),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Center(
-        child: Icon(
-          Icons.school_rounded,
-          color: Colors.white,
-          size: size * 0.55,
-        ),
-      ),
-    );
-  }
-}
 
 // -------------------------------------------------------------------------- //
 // FAVORITES CARD                                                             //

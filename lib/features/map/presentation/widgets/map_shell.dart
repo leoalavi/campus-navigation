@@ -1,11 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mq_navigation/app/router/shell_chrome_provider.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/shared/widgets/glass_pane.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/map_bottom_sheet.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/map_mode_toggle.dart';
 
 /// Scaffold overlay for the map screen.
@@ -13,7 +16,7 @@ import 'package:mq_navigation/features/map/presentation/widgets/map_mode_toggle.
 /// Wraps the underlying map renderer in a `Stack` to provide floating glass-styled
 /// UI components like the search bar, mode toggle, error banners, and the
 /// interactive bottom footer (routing panel or search results).
-class MapShell extends StatelessWidget {
+class MapShell extends ConsumerStatefulWidget {
   const MapShell({
     super.key,
     required this.mapView,
@@ -37,40 +40,73 @@ class MapShell extends StatelessWidget {
   final Widget? footer;
   final Widget? filterChips;
 
-  /// Vertical space the floating bottom-corner controls reserve for
-  /// themselves above the safe-area inset. The footer panel docks
-  /// above this band so it never overlaps the buttons, **and the
-  /// buttons never have to slide up to clear the panel**. This keeps
-  /// the bottom-right location button and bottom-left layers button
-  /// anchored to a stable screen position regardless of whether a
-  /// category list, route panel, or nothing is on screen — no
-  /// "jumping" when the panel toggles.
-  ///
-  /// Sized to one IconButton tap target (~48dp) plus the symmetric
-  /// `space4` (24dp) gap below it, with a small breathing gap above
-  /// for the panel.
-  static const double _bottomControlsReservedHeight = 80;
+  @override
+  ConsumerState<MapShell> createState() => _MapShellState();
+}
 
-  /// Estimated height of the top overlay content (search bar + filter
-  /// chips + renderer toggle) so the footer panel can be constrained
-  /// to stay below it and never overlap.
-  static const double _topOverlayHeight = 180;
+class _MapShellState extends ConsumerState<MapShell> {
+  /// Live height of the docked sheet, so the floating corner buttons can ride
+  /// just above it instead of being buried underneath.
+  double _sheetHeight = 0;
+
+  /// Gap held between the docked sheet's top edge and the floating corner
+  /// buttons that ride above it.
+  static const double _controlsGap = MqSpacing.space3;
+
+  /// Keeps [mapSheetOpenProvider] in step with whether a sheet is docked.
+  ///
+  /// Written from a post-frame callback: `build` must not mutate providers,
+  /// and the shell rebuilds in the same frame this is read.
+  void _syncSheetVisibility() {
+    final isOpen = widget.footer != null;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.read(mapSheetOpenProvider.notifier).set(isOpen);
+    });
+  }
+
+  /// Captured while the element is still mounted. `dispose()` cannot look up
+  /// ancestors (the element tree is already unstable there), so the notifier
+  /// is grabbed up front and only *used* on the way out.
+  MapSheetOpenNotifier? _sheetNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _sheetNotifier = ref.read(mapSheetOpenProvider.notifier);
+  }
+
+  @override
+  void dispose() {
+    // Leaving the Map tab with a sheet open must not strand the nav hidden.
+    final notifier = _sheetNotifier;
+    WidgetsBinding.instance.addPostFrameCallback((_) => notifier?.set(false));
+    super.dispose();
+  }
+
+  /// Where the floating corner buttons sit: just above the docked sheet when
+  /// one is open, otherwise their normal resting place above the safe area.
+  double _controlsBottom(double safeBottom) =>
+      _sheetHeight > 0
+      ? _sheetHeight + _controlsGap
+      : safeBottom + MqSpacing.space4;
 
   @override
   Widget build(BuildContext context) {
+    _syncSheetVisibility();
     final l10n = AppLocalizations.of(context)!;
     final safeTop = MediaQuery.of(context).padding.top;
     final safeBottom = MediaQuery.of(context).padding.bottom;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bannerWidget = banner;
-    final footerWidget = footer;
+    final bannerWidget = widget.banner;
+    final footerWidget = widget.footer;
 
     return Stack(
       children: [
         // ── Full-bleed map ─────────────────────────────────
-        Positioned.fill(child: mapView),
+        Positioned.fill(child: widget.mapView),
 
-        // ── Top overlay: search bar + renderer toggle ──────
+        // ── Top overlay: search bar + widget.renderer toggle ──────
         Positioned(
           top: safeTop + MqSpacing.space4,
           left: MqSpacing.space4,
@@ -82,7 +118,7 @@ class MapShell extends StatelessWidget {
                 button: true,
                 label: l10n.searchBuildingsPlaceholder,
                 child: GestureDetector(
-                  onTap: onOpenSearch,
+                  onTap: widget.onOpenSearch,
                   child: _GlassPane(
                     isDark: isDark,
                     child: Padding(
@@ -122,9 +158,9 @@ class MapShell extends StatelessWidget {
 
               // Category filter chips — available in both renderers so students
               // can re-filter the map without going back to the home screen.
-              if (filterChips != null) ...[
+              if (widget.filterChips != null) ...[
                 const SizedBox(height: MqSpacing.space3),
-                filterChips!,
+                widget.filterChips!,
               ],
 
               const SizedBox(height: MqSpacing.space3),
@@ -132,12 +168,12 @@ class MapShell extends StatelessWidget {
               // Renderer toggle (centered)
               Center(
                 child: MapModeToggle(
-                  value: renderer,
-                  onChanged: onRendererChanged,
+                  value: widget.renderer,
+                  onChanged: widget.onRendererChanged,
                 ),
               ),
 
-              // Error banner
+              // Error widget.banner
               if (bannerWidget != null) ...[
                 const SizedBox(height: MqSpacing.space3),
                 bannerWidget,
@@ -146,48 +182,27 @@ class MapShell extends StatelessWidget {
           ),
         ),
 
-        // ── Footer panel (route panel / building list) ─────
-        // Anchored ABOVE the floating bottom controls so the buttons
-        // can stay pinned to their corners; opening the panel must
-        // not push the buttons upward.
-        // Constrained to the available space between the top overlay
-        // area and bottom controls so the panel never overflows.
+        // ── Docked bottom sheet (route panel / category list) ──
+        // Flush to the bottom edge like the platform maps apps, so the map
+        // above it stays visible and usable. Height is user-draggable.
         if (footerWidget != null)
           Positioned(
-            bottom: safeBottom + _bottomControlsReservedHeight,
             left: 0,
             right: 0,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(
-                MqSpacing.space4,
-                0,
-                MqSpacing.space4,
-                MqSpacing.space2,
-              ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight:
-                      MediaQuery.of(context).size.height -
-                      safeTop -
-                      safeBottom -
-                      _bottomControlsReservedHeight -
-                      _topOverlayHeight -
-                      MqSpacing
-                          .space4 // overlay Y offset
-                          -
-                      MqSpacing
-                          .space3 // gap between overlay and footer
-                          -
-                      MqSpacing.space2, // footer bottom padding
-                ),
-                child: _AnimatedMapFooter(child: footerWidget),
-              ),
+            bottom: 0,
+            child: MapBottomSheet(
+              isDark: isDark,
+              onHeightChanged: (height) {
+                if (!mounted || height == _sheetHeight) return;
+                setState(() => _sheetHeight = height);
+              },
+              child: footerWidget,
             ),
           ),
 
         // ── Layers button — bottom-left ────────────────────
-        // **Stable anchor:** position is independent of footer state.
-        if (renderer == MapRendererType.campus && onOpenOverlayPicker != null)
+        // **Stable anchor:** position is independent of widget.footer state.
+        if (widget.renderer == MapRendererType.campus && widget.onOpenOverlayPicker != null)
           PositionedDirectional(
             start: MqSpacing.space4,
             bottom: safeBottom + MqSpacing.space4,
@@ -195,47 +210,24 @@ class MapShell extends StatelessWidget {
               isDark: isDark,
               icon: Icons.layers_outlined,
               tooltip: l10n.mapLayers,
-              onPressed: onOpenOverlayPicker!,
+              onPressed: widget.onOpenOverlayPicker!,
             ),
           ),
 
         // ── Location button — bottom-right ─────────────────
-        // **Stable anchor:** position is independent of footer state.
-        PositionedDirectional(
+        // **Stable anchor:** position is independent of widget.footer state.
+        AnimatedPositionedDirectional(
+          duration: const Duration(milliseconds: 220),
+          curve: Curves.easeOutCubic,
           end: MqSpacing.space4,
-          bottom: safeBottom + MqSpacing.space4,
+          bottom: _controlsBottom(safeBottom),
           child: _BrandCircleButton(
             icon: Icons.my_location,
             tooltip: l10n.centerOnLocation,
-            onPressed: onCenterOnLocation,
+            onPressed: widget.onCenterOnLocation,
           ),
         ),
       ],
-    );
-  }
-}
-
-/// Gives in-map panels the same upward entrance as a native modal sheet while
-/// keeping them in the map stack (so filters and map state stay live behind it).
-class _AnimatedMapFooter extends StatelessWidget {
-  const _AnimatedMapFooter({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: const Duration(milliseconds: 280),
-      curve: Curves.easeOutCubic,
-      builder: (context, value, child) => Opacity(
-        opacity: value,
-        child: Transform.translate(
-          offset: Offset(0, 32 * (1 - value)),
-          child: child,
-        ),
-      ),
-      child: child,
     );
   }
 }

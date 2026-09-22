@@ -431,7 +431,6 @@
   "loginSuccess": "با موفقیت وارد شدید.",
   "welcomeTo": "به {appName} خوش آمدید",
   "signInToAccess": "برای دسترسی به داشبورد {uniName} وارد شوید",
-  "emailPlaceholder": "your.email@student.mq.edu.au",
   "signingIn": "در حال ورود...",
   "signIn": "ورود",
   "orSignWith": "یا ورود با",
@@ -496,7 +495,6 @@
   "passwordMinLength": "رمز عبور باید حداقل 12 کاراکتر باشد",
   "enterFullName": "نام کامل خود را وارد کنید",
   "enterLegalName": "نام قانونی کامل خود را وارد کنید",
-  "emailPlaceholderExample": "your.email@mq.edu.au",
   "enterEmailDesc": "ایمیل دانشگاهی خود را وارد کنید",
   "enterStudentIdDesc": "شماره شناسه دانشجویی ۸ رقمی خود را وارد کنید",
   "coursePlaceholder": "مثل کارشناسی فناوری اطلاعات",
@@ -2411,5 +2409,7 @@
   "arSceneCount": "{count, plural, =1{۱ صحنه · تور ۳۶۰ درجه} other{{count} صحنه · تور ۳۶۰ درجه}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "about_contactSupport": "تماس با پشتیبانی",
+  "about_emailUnavailable": "هیچ برنامه ایمیلی روی این دستگاه در دسترس نیست."
 }

@@ -1,0 +1,35 @@
+{
+    "name": "Campus Navigation",
+    "short_name": "Campus Navigation",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#F7F3EE",
+    "theme_color": "#A6192E",
+    "description": "Campus Navigation — development/CI web build. The released product is the Android and iOS app.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

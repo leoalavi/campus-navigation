@@ -45,19 +45,21 @@ class OpenDayHomeCard extends ConsumerWidget {
   }
 }
 
-class _OnboardingCard extends StatelessWidget {
+// Consumer (not Stateless) purely so the bachelor picker can hide the shell's
+// bottom navigation while it is open — that needs a `ref`.
+class _OnboardingCard extends ConsumerWidget {
   const _OnboardingCard({required this.openDayDate});
 
   final DateTime openDayDate;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
     final dateText = OpenDayTime.formatShortDate(openDayDate);
 
     return MqTactileButton(
-      onTap: () => BachelorPickerSheet.show(context),
+      onTap: () => BachelorPickerSheet.show(context, ref),
       borderRadius: MqSpacing.radiusXl,
       // Same glassy white surface as the Metro Countdown card above —
       // gives the Open Day onboarding affordance a proper card

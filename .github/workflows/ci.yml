@@ -118,10 +118,16 @@ jobs:
             --dart-define=APP_ENV=production
 
   build-web:
-    name: Build Web
+    name: Build & Smoke-test Web
     runs-on: ubuntu-latest
     needs: analyze-and-test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    env:
+      # Pull requests from forks cannot read repository secrets. These public,
+      # non-working placeholders let the release bundle boot far enough for
+      # local asset/UI smoke tests without granting backend access.
+      WEB_SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://example.supabase.co' }}
+      WEB_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'web-ci-placeholder-anon-key' }}
+      WEB_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY || '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -136,10 +142,34 @@ jobs:
       - name: Build Web (release)
         run: |
           flutter build web --release \
-            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
-            --dart-define=GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }} \
+            --dart-define=SUPABASE_URL="$WEB_SUPABASE_URL" \
+            --dart-define=SUPABASE_ANON_KEY="$WEB_SUPABASE_ANON_KEY" \
+            --dart-define=GOOGLE_MAPS_API_KEY="$WEB_GOOGLE_MAPS_API_KEY" \
             --dart-define=APP_ENV=production
+
+      - name: Smoke-test web shell and 360° viewer
+        run: |
+          python3 -m http.server 4173 --directory build/web >/tmp/campus-web.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+
+          for attempt in {1..20}; do
+            curl --fail --silent http://127.0.0.1:4173/ >/dev/null && break
+            sleep 0.5
+          done
+
+          curl --fail --silent \
+            http://127.0.0.1:4173/assets/assets/web/indoor_viewer.html \
+            | grep 'data-viewer-state="idle"'
+          curl --fail --silent --output /dev/null \
+            http://127.0.0.1:4173/assets/assets/data/indoor/17WW_entrance.jpg
+
+          google-chrome --headless --no-sandbox --disable-gpu \
+            --enable-unsafe-swiftshader --virtual-time-budget=15000 \
+            --dump-dom \
+            'http://127.0.0.1:4173/assets/assets/web/indoor_viewer.html?panorama=../data/indoor/17WW_entrance.jpg' \
+            > /tmp/indoor-viewer.html
+          grep 'data-viewer-state="ready"' /tmp/indoor-viewer.html
 
       - name: Upload web build
         uses: actions/upload-artifact@v4

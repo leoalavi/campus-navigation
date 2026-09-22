@@ -86,7 +86,7 @@ docs/superpowers/
 .antigravitycli/
 
 
-# Campus Navigation is an Android + iOS product. There is deliberately no web
-# build: Syllabus Sync hands off to the installed app, or offers the App Store /
-# Google Play listings. Do not re-add a `web/` directory.
-/web/
+# Web is kept BUILDABLE so CI can compile and test it, but Campus Navigation
+# is not released as a web app: the shipped product is Android + iOS, and
+# Syllabus Sync hands off to the installed app or offers the store listings.
+# `web/` is therefore tracked (not ignored) — it just never gets deployed.

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -153,16 +152,15 @@ class _DesktopMapFallbackViewState
     return Stack(
       children: [
         _buildFlutterMap(isDark, visibleBuildings),
-        // On web the Google Maps renderer falls back to OSM whenever no
-        // Maps JS API key is configured. Surface that so users understand
-        // why tiles look different from Google Maps rather than thinking
-        // the app is broken.
-        if (kIsWeb)
-          const Positioned(
-            left: MqSpacing.space3,
-            bottom: MqSpacing.space3,
-            child: _OsmFallbackBadge(),
-          ),
+        // Whenever this view stands in for Google Maps the tiles are
+        // OpenStreetMap's, so say so. Previously the badge only appeared on
+        // web, which left desktop (where `google_maps_flutter` has no
+        // implementation at all) presenting OSM under a "Google Maps" label.
+        const Positioned(
+          left: MqSpacing.space3,
+          bottom: MqSpacing.space3,
+          child: _OsmFallbackBadge(),
+        ),
       ],
     );
   }

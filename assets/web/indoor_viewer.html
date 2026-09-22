@@ -92,7 +92,7 @@
     }
   </style>
 </head>
-<body>
+<body data-viewer-state="idle">
   <div id="panorama"></div>
   <script>
     // Custom hotspot DOM: big arrow badge + persistent label. Used via
@@ -132,6 +132,7 @@
 
     function loadTour(config) {
       try {
+        document.body.dataset.viewerState = 'loading';
         var scenes = (config && config.scenes) || {};
         Object.keys(scenes).forEach(function (sceneId) {
           (scenes[sceneId].hotSpots || []).forEach(function (hs) {
@@ -144,10 +145,49 @@
         });
         mqViewer = pannellum.viewer('panorama', config);
         mqViewer.on('scenechange', reportSceneChange);
+        mqViewer.on('load', function () {
+          document.body.dataset.viewerState = 'ready';
+        });
+        mqViewer.on('error', function () {
+          document.body.dataset.viewerState = 'error';
+        });
       } catch (e) {
+        document.body.dataset.viewerState = 'error';
         console.error('Pannellum load failed:', e);
       }
     }
+
+    // A same-origin panorama query provides a tiny, framework-independent
+    // browser smoke-test entry point for CI. Production tours still call
+    // loadTour() with their full multi-scene manifest from Flutter. Restrict
+    // this path to the bundled indoor asset directory so it cannot turn the
+    // viewer into a remote-image fetcher.
+    (function loadSmokePanorama() {
+      var value = new URLSearchParams(window.location.search).get('panorama');
+      if (!value) return;
+      var url = new URL(value, window.location.href);
+      if (url.origin !== window.location.origin ||
+          url.pathname.indexOf('/assets/assets/data/indoor/') === -1) {
+        document.body.dataset.viewerState = 'error';
+        return;
+      }
+      loadTour({
+        default: {
+          firstScene: 'smoke',
+          autoLoad: true,
+          showControls: false
+        },
+        scenes: {
+          smoke: {
+            type: 'equirectangular',
+            panorama: url.href,
+            hfov: 90,
+            minHfov: 55,
+            maxHfov: 110
+          }
+        }
+      });
+    })();
   </script>
 </body>
 </html>
