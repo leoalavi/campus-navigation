@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/core/config/product_config.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
@@ -1947,70 +1948,97 @@ class _InfoRow extends StatelessWidget {
 }
 
 /// Subtle secondary-brand attribution used only in Settings → About.
+///
+/// Deliberately the only place `syllabus_sync_logo.png` appears — Campus
+/// Navigation is an independent product, and the Syllabus Sync mark must
+/// never be its primary identity (Home hero, splash, app icon, nav bar all
+/// use Campus Navigation's own logo). Tapping the row opens Syllabus Sync's
+/// own site; Campus Navigation itself has no web app to hand off to.
 class _EcosystemInfoRow extends StatelessWidget {
   const _EcosystemInfoRow();
 
   static const logoAsset = 'assets/images/syllabus_sync_logo.png';
 
+  Future<void> _openSyllabusSync() async {
+    final uri = Uri.parse(ProductConfig.ecosystemUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final dark = context.isDarkMode;
     return Semantics(
-      container: true,
+      button: true,
+      hint: 'Opens syllabus-sync.app',
       label:
           '${ProductConfig.ecosystemTitle}. '
           '${ProductConfig.ecosystemDescription} '
           '${ProductConfig.ecosystemIntegrationDescription}',
-      child: Padding(
-        padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(MqSpacing.radiusSm),
-              child: Image.asset(
-                logoAsset,
-                key: const ValueKey('about-syllabus-sync-logo'),
-                width: 36,
-                height: 36,
-                fit: BoxFit.contain,
-                semanticLabel: 'Syllabus Sync logo',
+      child: MqTactileButton(
+        onTap: _openSyllabusSync,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(MqSpacing.radiusSm),
+                child: Image.asset(
+                  logoAsset,
+                  key: const ValueKey('about-syllabus-sync-logo'),
+                  width: 36,
+                  height: 36,
+                  fit: BoxFit.contain,
+                  excludeFromSemantics: true,
+                ),
               ),
-            ),
-            const SizedBox(width: MqSpacing.space4),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    ProductConfig.ecosystemTitle,
-                    style: context.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: dark ? Colors.white : MqColors.contentPrimary,
+              const SizedBox(width: MqSpacing.space4),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ProductConfig.ecosystemTitle,
+                      style: context.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: dark ? Colors.white : MqColors.contentPrimary,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: MqSpacing.space1),
-                  Text(
-                    ProductConfig.ecosystemDescription,
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: dark
-                          ? Colors.white.withValues(alpha: 0.72)
-                          : MqColors.slate500,
+                    const SizedBox(height: MqSpacing.space1),
+                    Text(
+                      ProductConfig.ecosystemDescription,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: dark
+                            ? Colors.white.withValues(alpha: 0.72)
+                            : MqColors.slate500,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: MqSpacing.space1),
-                  Text(
-                    ProductConfig.ecosystemIntegrationDescription,
-                    style: context.textTheme.bodySmall?.copyWith(
-                      color: dark
-                          ? Colors.white.withValues(alpha: 0.62)
-                          : MqColors.contentSecondary,
+                    const SizedBox(height: MqSpacing.space1),
+                    Text(
+                      ProductConfig.ecosystemIntegrationDescription,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: dark
+                            ? Colors.white.withValues(alpha: 0.62)
+                            : MqColors.contentSecondary,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: MqSpacing.space2),
+              // External-link glyph, not a chevron: this leaves the app,
+              // it doesn't push a new in-app screen.
+              Icon(
+                Icons.open_in_new_rounded,
+                size: 18,
+                color: dark
+                    ? Colors.white.withValues(alpha: 0.32)
+                    : MqColors.contentTertiary,
+              ),
+            ],
+          ),
         ),
       ),
     );

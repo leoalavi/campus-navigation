@@ -36,6 +36,10 @@ abstract final class ProductConfig {
   static const String ecosystemIntegrationDescription =
       'Built to work seamlessly with Syllabus Sync through shared navigation and deep-linking.';
 
+  /// Where the About → ecosystem row opens when tapped. Campus Navigation
+  /// itself has no web app; this points at Syllabus Sync's own site, not us.
+  static const String ecosystemUrl = 'https://syllabus-sync.app';
+
   /// Canonical privacy-policy URL.
   ///
   /// `null` until the policy is actually hosted. The UI must degrade to

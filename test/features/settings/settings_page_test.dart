@@ -3,6 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:url_launcher_platform_interface/link.dart';
+import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
 import 'package:mq_navigation/features/settings/presentation/pages/settings_page.dart';
@@ -19,6 +22,30 @@ import 'package:mq_navigation/shared/models/user_preferences.dart';
 class MockSettingsRepository extends Mock implements SettingsRepository {}
 
 class MockOfflineMapsService extends Mock implements OfflineMapsService {}
+
+/// The real platform implementation, restored after each test that swaps in
+/// [_FakeUrlLauncher] — otherwise later tests (or other files sharing this
+/// isolate) would keep talking to the fake.
+final _originalUrlLauncher = UrlLauncherPlatform.instance;
+
+/// Records the last URL the ecosystem row asked to open, instead of hitting
+/// a real (nonexistent in the test environment) platform channel.
+class _FakeUrlLauncher extends UrlLauncherPlatform
+    with MockPlatformInterfaceMixin {
+  String? launchedUrl;
+
+  @override
+  LinkDelegate? get linkDelegate => null;
+
+  @override
+  Future<bool> canLaunch(String url) async => true;
+
+  @override
+  Future<bool> launchUrl(String url, LaunchOptions options) async {
+    launchedUrl = url;
+    return true;
+  }
+}
 
 class _FakeNotificationsController extends NotificationsController {
   @override
@@ -142,7 +169,10 @@ void main() {
     testWidgets('About shows subtle Syllabus Sync ecosystem attribution', (
       tester,
     ) async {
-      tester.view.physicalSize = const Size(390, 844);
+      // Smallest common iPhone width (SE / mini) — the tightest layout the
+      // three-line row + logo + external-link glyph has to fit without
+      // overflowing.
+      tester.view.physicalSize = const Size(375, 667);
       tester.view.devicePixelRatio = 1;
       addTearDown(() {
         tester.view.resetPhysicalSize();
@@ -161,10 +191,78 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.text(
+          'Built to work seamlessly with Syllabus Sync through shared '
+          'navigation and deep-linking.',
+        ),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const ValueKey('about-syllabus-sync-logo')),
         findsOneWidget,
       );
+      // The Campus Navigation identity itself is unaffected by the ecosystem
+      // row: the app name still renders, and the Syllabus Sync logo does not
+      // appear anywhere else on the page (e.g. duplicated at the top of About).
       expect(find.text('Campus Navigation'), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('about-syllabus-sync-logo')),
+        findsOneWidget,
+      );
+
+      // No RenderFlex overflow (or any other) exception on the tightest
+      // supported width.
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets(
+      'ecosystem row exposes a tappable semantics node with a sensible label',
+      (tester) async {
+        final handle = tester.ensureSemantics();
+
+        setupLargeViewport(tester);
+        await tester.pumpWidget(buildTestApp());
+        await tester.pumpAndSettle();
+
+        final title = find.text('Part of the Syllabus Sync ecosystem');
+        await tester.scrollUntilVisible(title, 500);
+        await tester.pumpAndSettle();
+
+        final node = tester.getSemantics(
+          find.bySemanticsLabel(
+            RegExp('Part of the Syllabus Sync ecosystem.*'),
+          ),
+        );
+        expect(
+          node.flagsCollection.isButton,
+          isTrue,
+          reason: 'ecosystem row must announce itself as tappable',
+        );
+        expect(node.label, contains('Part of the Syllabus Sync ecosystem'));
+        expect(node.label, contains('Campus Navigation is part of'));
+        handle.dispose();
+      },
+    );
+
+    testWidgets('tapping the ecosystem row opens the Syllabus Sync site', (
+      tester,
+    ) async {
+      final fakeLauncher = _FakeUrlLauncher();
+      UrlLauncherPlatform.instance = fakeLauncher;
+      addTearDown(() => UrlLauncherPlatform.instance = _originalUrlLauncher);
+
+      setupLargeViewport(tester);
+      await tester.pumpWidget(buildTestApp());
+      await tester.pumpAndSettle();
+
+      final title = find.text('Part of the Syllabus Sync ecosystem');
+      await tester.scrollUntilVisible(title, 500);
+      await tester.pumpAndSettle();
+
+      await tester.tap(title);
+      await tester.pumpAndSettle();
+
+      expect(fakeLauncher.launchedUrl, 'https://syllabus-sync.app');
       expect(tester.takeException(), isNull);
     });
 

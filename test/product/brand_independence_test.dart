@@ -184,4 +184,26 @@ void main() {
     expect(references.single, endsWith('settings_page.dart'));
     expect(ProductConfig.appName, 'Campus Navigation');
   });
+
+  test(
+    'Campus Navigation primary identity is unaffected by the ecosystem row',
+    () {
+      // Home hero and the app-icon source (flutter_launcher_icons' image_path)
+      // must both be Campus Navigation's own logo, never the Syllabus Sync mark.
+      final home = File(
+        '${repo.path}/lib/features/home/presentation/pages/home_page.dart',
+      ).readAsStringSync();
+      expect(home, contains("'assets/images/app_logo.png'"));
+      expect(home, isNot(contains('syllabus_sync_logo')));
+
+      final pubspec = File('${repo.path}/pubspec.yaml').readAsStringSync();
+      expect(pubspec, contains('image_path: "assets/images/app_logo.png"'));
+
+      // Splash / launch screen also stays on Campus Navigation's own asset.
+      expect(
+        File('${repo.path}/lib/app/mq_navigation_app.dart').readAsStringSync(),
+        isNot(contains('syllabus_sync_logo')),
+      );
+    },
+  );
 }
