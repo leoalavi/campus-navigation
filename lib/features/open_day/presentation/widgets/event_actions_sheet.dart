@@ -23,7 +23,7 @@ import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
 ///      renderer, single-marker focused state on the venue. The
 ///      embedded Google Maps view supports gesture-based zoom/pan and
 ///      uses the user's current location for spatial context, while
-///      keeping the user *inside* MQ Navigation rather than booting
+///      keeping the user *inside* Campus Navigation rather than booting
 ///      out to the OS-level Maps app.
 ///
 /// Implementation note: both actions perform two side effects in

@@ -1,13 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_navigation/features/auth/data/repositories/auth_repository.dart';
-import 'package:mq_navigation/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:mq_navigation/features/favorites/data/repositories/favorite_building_repository.dart';
 import 'package:mq_navigation/features/favorites/domain/entities/favorite_building.dart';
 import 'package:mq_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
-
-class MockAuthRepository extends Mock implements AuthRepository {}
 
 class MockFavoriteBuildingRepository extends Mock
     implements FavoriteBuildingRepository {}
@@ -16,7 +12,6 @@ final _now = DateTime.now();
 
 final _sampleFav = FavoriteBuilding(
   id: 'fav-1',
-  userId: 'user-1',
   buildingId: 'BLD',
   buildingName: 'Test Building',
   note: null,
@@ -25,36 +20,31 @@ final _sampleFav = FavoriteBuilding(
 );
 
 ProviderContainer makeContainer({
-  required AuthRepository authRepository,
   required FavoriteBuildingRepository favRepository,
 }) {
   return ProviderContainer(
     overrides: [
-      authRepositoryProvider.overrideWithValue(authRepository),
       favoriteBuildingRepositoryProvider.overrideWithValue(favRepository),
     ],
   );
 }
 
 void main() {
-  late MockAuthRepository mockAuthRepo;
   late MockFavoriteBuildingRepository mockFavRepo;
 
   setUp(() {
-    mockAuthRepo = MockAuthRepository();
     mockFavRepo = MockFavoriteBuildingRepository();
-    // FavoritesController.build() now calls ref.listen(authControllerProvider),
-    // which triggers AuthController.build() → mockAuthRepo.isAuthenticated.
-    // Stub it here so tests don't need Supabase initialised.
-    when(() => mockAuthRepo.isAuthenticated).thenReturn(false);
+    // The controller loads from the device on build - there is no sign-in to
+    // wait for - so every test needs this stubbed.
+    when(
+      () => mockFavRepo.fetchAll(),
+    ).thenAnswer((_) async => FavoritesResult.success(const []));
   });
 
   group('initial state', () {
     test('is not loading with empty favorites', () {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());
@@ -68,13 +58,11 @@ void main() {
 
   group('load', () {
     test('loads favorites for authenticated user', () async {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
       when(
-        () => mockFavRepo.fetchAll(userId: any(named: 'userId')),
+        () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());
@@ -87,13 +75,11 @@ void main() {
     });
 
     test('sets error on failure', () async {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
-      when(() => mockFavRepo.fetchAll(userId: any(named: 'userId'))).thenAnswer(
+      when(() => mockFavRepo.fetchAll()).thenAnswer(
         (_) async => FavoritesResult.failure('Could not load favourites.'),
       );
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());
@@ -108,30 +94,26 @@ void main() {
 
   group('toggle', () {
     test('adds when not favorited', () async {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
       when(
-        () => mockFavRepo.fetchAll(userId: any(named: 'userId')),
+        () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([]));
       when(
         () => mockFavRepo.findFavoriteId(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
         ),
       ).thenAnswer((_) async => null);
       when(
         () => mockFavRepo.add(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
           buildingName: any(named: 'buildingName'),
         ),
       ).thenAnswer((_) async => FavoritesResult.success(_sampleFav));
       // Reload after toggle returns the new list
       when(
-        () => mockFavRepo.fetchAll(userId: any(named: 'userId')),
+        () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());
@@ -142,7 +124,6 @@ void main() {
 
       verify(
         () => mockFavRepo.add(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
           buildingName: any(named: 'buildingName'),
         ),
@@ -150,13 +131,11 @@ void main() {
     });
 
     test('removes when already favorited', () async {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
       when(
-        () => mockFavRepo.fetchAll(userId: any(named: 'userId')),
+        () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([]));
       when(
         () => mockFavRepo.findFavoriteId(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
         ),
       ).thenAnswer((_) async => 'fav-1');
@@ -165,7 +144,6 @@ void main() {
       ).thenAnswer((_) async => FavoritesResult.success(null));
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());
@@ -180,16 +158,14 @@ void main() {
 
   group('remove', () {
     test('removes a favorite by id', () async {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
       when(
-        () => mockFavRepo.fetchAll(userId: any(named: 'userId')),
+        () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([]));
       when(
         () => mockFavRepo.remove(any()),
       ).thenAnswer((_) async => FavoritesResult.success(null));
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());
@@ -204,9 +180,8 @@ void main() {
 
   group('updateNote', () {
     test('updates note', () async {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
       when(
-        () => mockFavRepo.fetchAll(userId: any(named: 'userId')),
+        () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
       final updated = _sampleFav.copyWith(note: 'my note');
       when(
@@ -217,7 +192,6 @@ void main() {
       ).thenAnswer((_) async => FavoritesResult.success(updated));
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());
@@ -234,53 +208,24 @@ void main() {
     });
   });
 
-  group('unauthenticated paths', () {
-    test('load returns to initial state when userId is null', () async {
-      when(() => mockAuthRepo.userId).thenReturn(null);
-
-      final container = makeContainer(
-        authRepository: mockAuthRepo,
-        favRepository: mockFavRepo,
-      );
+  group('local-only storage', () {
+    // Favourites live on the device, so a cold start loads them immediately
+    // rather than waiting for (or requiring) an account.
+    test('loads from the device on build without any sign-in', () async {
+      final container = makeContainer(favRepository: mockFavRepo);
       addTearDown(() => container.dispose());
 
-      await container.read(favoritesControllerProvider.notifier).load();
+      container.read(favoritesControllerProvider);
+      await Future<void>.delayed(Duration.zero);
 
-      final state = container.read(favoritesControllerProvider);
-      expect(state.favorites, isEmpty);
-      expect(state.error, isNull);
-      // Critically: the repository must NOT be hit for anonymous users —
-      // otherwise we'd leak Supabase queries on every cold start.
-      verifyNever(() => mockFavRepo.fetchAll(userId: any(named: 'userId')));
-    });
-
-    test('toggle is a no-op when userId is null', () async {
-      when(() => mockAuthRepo.userId).thenReturn(null);
-
-      final container = makeContainer(
-        authRepository: mockAuthRepo,
-        favRepository: mockFavRepo,
-      );
-      addTearDown(() => container.dispose());
-
-      await container
-          .read(favoritesControllerProvider.notifier)
-          .toggle(buildingId: 'BLD', buildingName: 'Library');
-
-      verifyNever(
-        () => mockFavRepo.findFavoriteId(
-          userId: any(named: 'userId'),
-          buildingId: any(named: 'buildingId'),
-        ),
-      );
+      verify(() => mockFavRepo.fetchAll()).called(greaterThanOrEqualTo(1));
     });
   });
 
   group('updateNote edge cases', () {
     test('failure leaves prior favorite untouched in state', () async {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
       when(
-        () => mockFavRepo.fetchAll(userId: any(named: 'userId')),
+        () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
       when(
         () => mockFavRepo.updateNote(
@@ -290,7 +235,6 @@ void main() {
       ).thenAnswer((_) async => FavoritesResult.failure('Network down.'));
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());
@@ -318,13 +262,11 @@ void main() {
 
   group('isFavorited', () {
     test('returns true for favorited building', () async {
-      when(() => mockAuthRepo.userId).thenReturn('user-1');
       when(
-        () => mockFavRepo.fetchAll(userId: any(named: 'userId')),
+        () => mockFavRepo.fetchAll(),
       ).thenAnswer((_) async => FavoritesResult.success([_sampleFav]));
 
       final container = makeContainer(
-        authRepository: mockAuthRepo,
         favRepository: mockFavRepo,
       );
       addTearDown(() => container.dispose());

@@ -13,18 +13,11 @@ abstract final class RouteNames {
   // Detail screens (pushed on top of shell)
   static const String buildingDetail = 'building-detail';
 
+  /// Full-screen 360° tour for a building.
+  static const String indoorPreview = 'indoor-preview';
+
   // Safety
   static const String safetyToolkit = 'safety';
-
-  // Auth
-  static const String auth = 'auth';
-  static const String login = 'login';
-  static const String signup = 'signup';
-
-  /// Web-only route that handles the Supabase email-confirmation PKCE redirect.
-  static const String authCallback = 'auth-callback';
-
-  static const String resetPassword = 'reset-password';
 
   // Favorites
   static const String favorites = 'favorites';

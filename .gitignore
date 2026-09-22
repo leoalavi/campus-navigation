@@ -85,3 +85,8 @@ docs/superpowers/
 # Antigravity CLI workspace metadata
 .antigravitycli/
 
+
+# Campus Navigation is an Android + iOS product. There is deliberately no web
+# build: Syllabus Sync hands off to the installed app, or offers the App Store /
+# Google Play listings. Do not re-add a `web/` directory.
+/web/

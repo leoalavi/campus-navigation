@@ -1,0 +1,10 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/NEXTSENSE_entrance.jpg",
+      "description": "NextSense \u2014 2 Gymnasium Road",
+      "neighbours": []
+    }
+  ]
+}

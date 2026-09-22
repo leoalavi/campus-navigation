@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/core/config/product_config.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/core/utils/haptics.dart';
-import 'package:mq_navigation/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
@@ -34,7 +34,7 @@ ThemeData _settingsDarkReadableTheme(BuildContext context) {
 /// Main settings screen for managing app-wide preferences.
 ///
 /// Reacts to changes in [SettingsController]. Uses custom styled widgets
-/// rather than standard Material tiles to match the MQ design system,
+/// rather than standard Material tiles to match the app's design system,
 /// including a red radial gradient background in dark mode.
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -110,8 +110,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final settingsState = ref.watch(settingsControllerProvider);
-    ref.watch(authControllerProvider);
-    final userEmail = ref.watch(authRepositoryProvider).userEmail;
     final dark = context.isDarkMode;
 
     final body = settingsState.when(
@@ -125,7 +123,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             //   so the screen no longer reads as muddy beige. We then
             //   layer two very subtle decorative washes:
             //
-            //   1. A soft red corner glow in the top-right (Macquarie
+            //   1. A soft red corner glow in the top-right (brand
             //      brand accent, ~5% alpha — present, not loud).
             //   2. A whisper-thin warm cream wash at the bottom (~12%
             //      alpha of `sand100`, the lighter of the two sands)
@@ -163,7 +161,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               // in light mode. Anchored off-screen at top-right so it
               // reads as a soft accent, not a visible blob. Alpha is
               // intentionally low (5%) so the page reads as fundamentally
-              // white with a whisper of Macquarie red.
+              // white with a whisper of brand red.
               //
               // **Previously this Stack also had a bottom-left
               // `sand100@45%` radial wash.** Because that wash was
@@ -635,8 +633,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       ),
                       _InfoRow(
                         icon: Icons.people_outline,
-                        label: l10n.about_theTeam,
-                        subtitle: l10n.about_theTeam_desc,
+                        label: l10n.about_developedBy,
+                        subtitle: ProductConfig.developersLine,
+                      ),
+                      _InfoRow(
+                        icon: Icons.copyright_outlined,
+                        label: l10n.about_copyrightLabel,
+                        subtitle: ProductConfig.copyright,
+                      ),
+                      _InfoRow(
+                        icon: Icons.info_outline,
+                        label: l10n.about_independentNotice,
+                        subtitle: ProductConfig.supportEmail,
                       ),
                     ],
                   ),
@@ -678,34 +686,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: MqSpacing.space6),
-
-                  // ── Account section ──────────────────────────
-                  _SectionHeader(title: l10n.account),
-                  _SettingsCard(
-                    children: [
-                      _InfoRow(
-                        icon: Icons.person_outline,
-                        label: l10n.signedInAs,
-                        // Guard against an empty email in the brief window
-                        // between sign-out and the router redirect firing.
-                        subtitle: userEmail?.isNotEmpty == true
-                            ? userEmail!
-                            : l10n.notSignedInLabel,
-                      ),
-                      _TapRow(
-                        icon: Icons.logout_rounded,
-                        label: l10n.signOut,
-                        value: '',
-                        hapticsEnabled: preferences.hapticsEnabled,
-                        onTap: () async {
-                          await ref
-                              .read(authControllerProvider.notifier)
-                              .signOut();
-                        },
-                      ),
-                    ],
                   ),
                   const SizedBox(height: MqSpacing.space6),
 
@@ -1407,7 +1387,7 @@ class KineticHeader extends StatelessWidget {
   // at ~3.5:1 contrast against `charcoal800` — under WCAG AA's 4.5:1
   // requirement and noticeably dim on screen. Lerp'ing 30% toward white
   // gives a pink-red (~#D9505F) that lifts to ~6:1 while keeping the
-  // Macquarie red identity unmistakably present. Light mode keeps the
+  // brand red identity unmistakably present. Light mode keeps the
   // pure brand red, which has strong contrast against white anyway.
   static final Color _darkHeaderColor = Color.lerp(
     MqColors.red,

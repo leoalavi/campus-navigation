@@ -100,7 +100,7 @@ class SafetyPoiSource {
       description: 'University Health Service appointments',
     ),
     EmergencyContact(
-      label: 'MQ Afterhours Support',
+      label: 'Afterhours Support',
       phoneNumber: '1800 275 227',
       isEmergency: false,
       description: '1800 CRISIS — Mental health support line',
@@ -108,7 +108,7 @@ class SafetyPoiSource {
   ];
 
   String get securityShuttleInfo =>
-      'The MQ Security Shuttle provides 24/7 on-demand transport '
+      'The campus security shuttle provides 24/7 on-demand transport '
       'around campus during semester. Call Campus Security to request '
       'a pickup from your current location to your destination on campus. '
       'The shuttle is free for all students and staff.';

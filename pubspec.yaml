@@ -1,5 +1,5 @@
 name: mq_navigation
-description: MQ Navigation — Macquarie University campus navigation mobile app.
+description: Campus Navigation — an independent campus wayfinding app for Android and iOS.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -38,6 +38,9 @@ dependencies:
   # UI
   cupertino_icons: ^1.0.8
 
+  # 360° indoor tours (hosts the bundled Pannellum viewer)
+  flutter_inappwebview: ^6.1.5
+
   # Utilities
   app_links: ^7.0.0
   connectivity_plus: ^7.0.0
@@ -63,8 +66,11 @@ flutter:
   generate: true
   assets:
     - assets/data/
+    - assets/data/indoor/
     - assets/maps/
     - assets/images/
+    - assets/web/
+    - assets/web/pannellum/
 
 flutter_launcher_icons:
   android: true

@@ -1,3 +1,0 @@
-// Copy this file to `web/google_maps_config.js` for local web runs or generate
-// it in CI before `flutter build web`. This file is gitignored on purpose.
-window.GOOGLE_MAPS_API_KEY = "your-web-maps-key";

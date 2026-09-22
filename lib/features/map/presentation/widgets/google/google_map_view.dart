@@ -578,7 +578,7 @@ class _GoogleMapViewState extends ConsumerState<GoogleMapView> {
   /// continent-scale view — exactly the screenshot the user reported.
   ///
   /// 5 km comfortably covers walking to anywhere on or directly adjacent
-  /// to Macquarie's campus while filtering out clearly nonsensical fixes.
+  /// to the campus while filtering out clearly nonsensical fixes.
   static const double _maxLocationFitDistanceMetres = 5000;
 
   void _fitRouteBounds() {

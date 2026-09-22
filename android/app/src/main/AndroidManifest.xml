@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
-        android:label="mq_navigation"
+        android:label="Campus Navigation"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data
@@ -32,20 +32,37 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!-- Deep link: custom scheme for Supabase auth callbacks -->
+            <!-- Legacy "meet here" links. The app has no accounts, so the
+                 former Supabase auth-callback filters (io.mqnavigation://callback
+                 and https://mqnavigation.io/auth) were removed with the auth
+                 feature; this host is kept because links to it are already in
+                 the wild. -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="io.mqnavigation" android:host="callback"/>
                 <data android:scheme="io.mqnavigation" android:host="meet"/>
             </intent-filter>
-            <!-- App Links: verified domain links (requires assetlinks.json) -->
+            <!-- Public navigation contract: mqnav://open?destination=<id>
+                 This is the handoff Syllabus Sync uses. A custom scheme needs
+                 no domain verification, so it works the moment the app is
+                 installed - which is why it, not the App Link below, is the
+                 primary transport. See lib/features/deep_link/deep_link_contract.dart -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="mqnav" android:host="open"/>
+            </intent-filter>
+            <!-- Same payload over https. Only routes to the app once
+                 https://mqnavigation.app/.well-known/assetlinks.json is served
+                 with this app's signing-certificate fingerprint; until then
+                 Android opens it in a browser, so treat it as an enhancement. -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="mqnavigation.io" android:pathPrefix="/auth"/>
+                <data android:scheme="https" android:host="mqnavigation.app" android:path="/open"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

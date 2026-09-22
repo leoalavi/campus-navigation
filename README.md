@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- Typing animation -->
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=20&duration=2800&pause=700&color=A6192E&center=true&vCenter=true&width=860&lines=Mobile+campus+wayfinding+for+Syllabus+Sync;Flutter+%E2%80%A2+Dart+%E2%80%A2+Riverpod+%E2%80%A2+Supabase;Campus+locations+%E2%80%A2+Favourites+%E2%80%A2+Safety+support;Privacy-aware+design+%E2%80%A2+Testing+%E2%80%A2+Accessibility)](https://readme-typing-svg.demolab.com)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=20&duration=2800&pause=700&color=A6192E&center=true&vCenter=true&width=860&lines=Campus+Navigation+for+Syllabus+Sync;Flutter+%E2%80%A2+Dart+%E2%80%A2+Riverpod+%E2%80%A2+Supabase;Campus+locations+%E2%80%A2+Favourites+%E2%80%A2+Safety+support;Privacy-aware+design+%E2%80%A2+Testing+%E2%80%A2+Accessibility)](https://readme-typing-svg.demolab.com)
 
 <!-- Badges -->
 ![License: MIT](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)
@@ -19,13 +19,13 @@
 
 <br/>
 
-# MQ Navigation - Mobile Campus Wayfinding for Syllabus Sync
+# Campus Navigation — Mobile Campus Wayfinding for Syllabus Sync
 
 > **The mobile campus wayfinding companion for the Syllabus Sync ecosystem.**
 
-MQ Navigation is a Flutter-based campus wayfinding companion for the [Syllabus Sync](https://github.com/leoalavi/syllabus-sync) ecosystem. It helps students and visitors discover Macquarie University buildings, services, transport, safety resources, and campus points of interest through a mobile-first navigation experience — with dual-renderer maps, Supabase-backed routing, a compass mode, a safety toolkit, live metro countdowns, and multi-language support.
+Campus Navigation is a Flutter-based campus wayfinding companion for the [Syllabus Sync](https://github.com/leoalavi/syllabus-sync) ecosystem. It helps students and visitors discover campus buildings, services, transport, safety resources, and points of interest through a mobile-first navigation experience — with dual-renderer maps, Supabase-backed routing, a compass mode, a safety toolkit, live metro countdowns, and multi-language support.
 
-MQ Navigation is an independent, unofficial project and is **not affiliated with or endorsed by Macquarie University**. It began life as a standalone campus navigation prototype using Macquarie University as its initial dataset and use case, and it is now evolving into the mobile/campus wayfinding layer for the broader Syllabus Sync student platform — supporting everyday campus discovery, student onboarding, and Open Day-style visitor use cases along the way.
+Campus Navigation is an **independent product developed and maintained by Leo Alavi and Mohammad Raouf Abedini**. It is **not affiliated with, endorsed by, or published by any university** — it displays real-world campus place names the way any map app does. The maps, navigation data and 360° imagery are the developers' own work. It is the mobile campus-wayfinding layer for the broader Syllabus Sync student platform — supporting everyday campus discovery, student onboarding, and Open Day-style visitor use cases along the way.
 
 **[📖 Project Origin & Academic Context](#-project-origin--academic-context)** &nbsp;·&nbsp; **[📸 Screenshots](#screenshots)** &nbsp;·&nbsp; **[🏗️ Architecture](docs/ARCHITECTURE.md)** &nbsp;·&nbsp; **[🔐 Security Posture](docs/SECURITY_POSTURE.md)**
 
@@ -37,11 +37,11 @@ MQ Navigation is an independent, unofficial project and is **not affiliated with
 
 ## 🎯 Problem & Value Proposition
 
-Generic campus maps (Google/Apple Maps) stop at the street kerb and don't know which door is *18 Wally's Walk*. Existing university portals often require sign-on and offer a poor mobile experience. MQ Navigation addresses this by providing:
+Generic campus maps (Google/Apple Maps) stop at the street kerb and don't know which door is *18 Wally's Walk*. Existing university portals often require sign-on and offer a poor mobile experience. Campus Navigation addresses this by providing:
 
 - **Mobile-first campus wayfinding** — Building and key location discovery optimised for phone-sized screens.
 - **Building and location discovery** — 161+ named campus buildings, services, and points of interest pinpointed at the correct entrance.
-- **Syllabus Sync deep-link handoff** — Syllabus Sync can hand a destination (a class, event, or building) straight to MQ Navigation for the wayfinding step. See [Deep linking from Syllabus Sync](#-deep-linking-from-syllabus-sync).
+- **Syllabus Sync deep-link handoff** — Syllabus Sync can hand a destination (a class, event, or building) straight to Campus Navigation for the wayfinding step. See [Deep linking from Syllabus Sync](#-deep-linking-from-syllabus-sync).
 - **Favourites and saved places** — Heart-toggle, edit-note, and swipe-to-delete for personalised place saving (cloud-synced when signed in).
 - **Safety and support information** — One-tap access to emergency contacts, AEDs, first aid, campus shuttle, and torch.
 - **Routing and transit** — Server-side walking/driving/cycling/transit routing via a Supabase Edge proxy; live metro countdown on the home screen.
@@ -55,14 +55,14 @@ Generic campus maps (Google/Apple Maps) stop at the street kerb and don't know w
 
 ## 🔗 Syllabus Sync ecosystem role
 
-[Syllabus Sync](https://github.com/leoalavi/syllabus-sync) is the broader student experience platform — timetables, unit/class schedules, deadlines, and academic planning. MQ Navigation is its **campus and mobile wayfinding layer**: the piece that answers "where actually is that room, and how do I get there?"
+[Syllabus Sync](https://github.com/leoalavi/syllabus-sync) is the broader student experience platform — timetables, unit/class schedules, deadlines, and academic planning. Campus Navigation is its **campus and mobile wayfinding layer**: the piece that answers "where actually is that room, and how do I get there?"
 
-- **Independent app.** MQ Navigation can be launched and used entirely on its own — no Syllabus Sync account or session is required.
-- **Deep-link handoff.** Syllabus Sync can hand off a destination (a class location, Open Day item, or building) to MQ Navigation via a deep link. See the dedicated section below for the current implementation status.
+- **Independent app.** Campus Navigation can be launched and used entirely on its own — no Syllabus Sync account or session is required.
+- **Deep-link handoff.** Syllabus Sync can hand off a destination (a class location, Open Day item, or building) to Campus Navigation via a deep link. See the dedicated section below for the current implementation status.
 - **Shared backend.** Both apps can point at the same Supabase project, sharing schema, Auth users, and Edge Functions (e.g. `maps-routes`, `tfnsw-proxy`) rather than each running its own backend.
-- **Future direction:** Syllabus Sync handles academic planning, MQ Navigation handles campus routing, and a planned "Sylla" AI assistant layer sits across both to help students plan and navigate their day.
+- **Future direction:** Syllabus Sync handles academic planning, Campus Navigation handles campus routing, and a planned "Sylla" AI assistant layer sits across both to help students plan and navigate their day.
 
-MQ Navigation is a separate project from **MQ Journey**, an Open Day-focused visitor experience. This repository is not MQ Journey — Open Day browsing here is one supported use case among several, not the product's primary identity.
+Campus Navigation is a separate project from **MQ Journey**, an Open Day-focused visitor experience. This repository is not MQ Journey — Open Day browsing here is one supported use case among several, not the product's primary identity.
 
 <br/>
 
@@ -75,9 +75,9 @@ MQ Navigation is a separate project from **MQ Journey**, an Open Day-focused vis
 The intended integration point between the two products is a deep link handoff:
 
 1. A user is inside Syllabus Sync, viewing a class, campus location, Open Day destination, or building.
-2. They tap a **"Navigate" / "Open in MQ Navigation"** button.
-3. Syllabus Sync opens MQ Navigation via a deep link.
-4. If MQ Navigation is installed, it opens directly to the relevant destination or map context.
+2. They tap a **"Navigate" / "Open in Campus Navigation"** button.
+3. Syllabus Sync opens Campus Navigation via a deep link.
+4. If Campus Navigation is installed, it opens directly to the relevant destination or map context.
 5. If it isn't installed, the user should be prompted to install the app (or land on a fallback/download page) — this half of the flow lives on the Syllabus Sync side.
 
 **What's implemented today in this repo:**
@@ -89,12 +89,12 @@ The intended integration point between the two products is a deep link handoff:
 - A custom URL scheme, `io.mqnavigation://`, is registered on Android and iOS. Today it is wired for two concrete flows: Supabase auth callbacks (`io.mqnavigation://callback`) and a "meet here" pin (`io.mqnavigation://meet?lat=...&lng=...`), handled in [`lib/app/mq_navigation_app.dart`](lib/app/mq_navigation_app.dart). An Android App Link is also verified for `https://mqnavigation.io/auth`.
 - The `/open` route itself is reachable via in-app and web navigation and is unit-tested at the parsing level, but it is **not yet registered as an OS-level intent filter / universal link** (no `io.mqnavigation://open` or `https://mqnavigation.io/open` entry exists in the Android manifest or iOS entitlements yet).
 
-**In short:** the Syllabus Sync → MQ Navigation handoff contract and internal routing exist and are stable for integrators to build against, but the last mile — registering `/open` as an externally-tappable link and building the "not installed" fallback page — is a **planned integration**, not a fully wired end-to-end flow yet. Treat the example URLs above as the target contract, not a guarantee that tapping them from another app opens MQ Navigation today.
+**In short:** the Syllabus Sync → Campus Navigation handoff contract and internal routing exist and are stable for integrators to build against, but the last mile — registering `/open` as an externally-tappable link and building the "not installed" fallback page — is a **planned integration**, not a fully wired end-to-end flow yet. Treat the example URLs above as the target contract, not a guarantee that tapping them from another app opens Campus Navigation today.
 
 **Architecture at a glance:**
 
 ```
-Syllabus Sync                          MQ Navigation
+Syllabus Sync                          Campus Navigation
 ──────────────                         ─────────────
 academic planning                      receives deep link
 timetable / deadlines          ──▶     resolves building / destination
@@ -102,7 +102,7 @@ campus location references             opens map or route context
 "Navigate" button                      handles campus wayfinding
 
 Fallback (planned): app installed → open destination directly
-                     app not installed → prompt to install MQ Navigation
+                     app not installed → prompt to install Campus Navigation
 ```
 
 <br/>
@@ -166,13 +166,13 @@ Open Day event browsing is one supported use case built on top of this feature s
 
 ## 🏗️ Technical Architecture Overview
 
-MQ Navigation is built on a modern Flutter stack designed for mobile usability, type safety, privacy-aware data handling, and maintainable feature modules.
+Campus Navigation is built on a modern Flutter stack designed for mobile usability, type safety, privacy-aware data handling, and maintainable feature modules.
 
 ### System Architecture
 
 ```mermaid
 graph TD
-    A[MQ Navigation - Flutter Mobile] -->|HTTPS/WSS| B(Supabase Backend)
+    A[Campus Navigation - Flutter Mobile] -->|HTTPS/WSS| B(Supabase Backend)
     S[Syllabus Sync - Web Platform] -->|HTTPS/WSS| B
     S -.->|deep link handoff, planned| A
 
@@ -246,12 +246,12 @@ Privacy is treated as an architectural concern, not a feature flag.
 
 | Persona | Goals | Relevant capability |
 |---------|-------|---------------------|
-| **A Syllabus Sync user** planning a class or event. | Tap "Navigate" on a class/location in Syllabus Sync and get turn-by-turn help finding the building. | Deep-link handoff into MQ Navigation's map and routing. |
+| **A Syllabus Sync user** planning a class or event. | Tap "Navigate" on a class/location in Syllabus Sync and get turn-by-turn help finding the building. | Deep-link handoff into Campus Navigation's map and routing. |
 | **"Open Day Olivia"** — Year 12 prospective student visiting campus for the first time. | Find the Faculty of Arts building, the Library, and where her parents parked. | Illustrated campus map with 161+ named buildings — Google Maps shows roads, not which door is *18 Wally's Walk*. |
 | **"Commuter Chen"** — first-year student catching the Metro. | Know if he's late for his 9am tutorial, or find the nearest defibrillator. | Live metro countdown on the home screen + Safety Toolkit one tap away. |
 | **"International Isha"** — new student navigating campus in a second language. | Read the app in her preferred language. Save rooms mentioned by her supervisor. | 35-language i18n with RTL layout support for Arabic, Farsi, Hebrew, and Urdu. |
 
-**Why a dedicated campus app over Google/Apple Maps?** Generic maps stop at the street. MQ Navigation starts at the building entrance — with a privacy-aware approach and campus-specific data baked in.
+**Why a dedicated campus app over Google/Apple Maps?** Generic maps stop at the street. Campus Navigation starts at the building entrance — with a privacy-aware approach and campus-specific data baked in.
 
 <br/>
 
@@ -394,7 +394,7 @@ flutter run --dart-define-from-file=.env
 
 ## 🎓 Project origin & academic context
 
-MQ Navigation began as a standalone Flutter campus wayfinding prototype, originally developed as the **COMP3130 Mobile App Development** major project at Macquarie University (Leo Alavi and Raouf Abedini). It has since been extended beyond that assignment scope into the mobile campus wayfinding layer for the Syllabus Sync ecosystem described above.
+Campus Navigation began as a standalone Flutter campus wayfinding prototype, originally developed as the **COMP3130 Mobile App Development** major project at Macquarie University (Leo Alavi and Raouf Abedini). It has since been extended beyond that assignment scope into the mobile campus wayfinding layer for the Syllabus Sync ecosystem described above.
 
 The original project report — written to satisfy the unit's assignment brief (app description, core features, audience personas, competitor advantages, technical credentials) — is kept for historical reference: [`PROJECT_REPORT.md`](PROJECT_REPORT.md).
 
@@ -411,7 +411,7 @@ Released under the **MIT License**. See [`LICENSE`](LICENSE).
 
 ### Roadmap
 - Full Syllabus Sync deep-link integration — register `/open` as a tappable external link (custom scheme + universal/app link) and add the "not installed" fallback/install page.
-- Shared campus location data contract between MQ Navigation and Syllabus Sync.
+- Shared campus location data contract between Campus Navigation and Syllabus Sync.
 - Better building metadata and indoor directions.
 - Offline campus map assets.
 - Accessibility improvements (screen reader passes, reduced-motion coverage).
@@ -457,3 +457,15 @@ Built with the support of the open-source community. This project benefits from:
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-EE4C2C?style=for-the-badge&logo=linkedin&logoColor=ffffff&labelColor=0f172a)](https://www.linkedin.com/in/leo-alavi/)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-F7931E?style=for-the-badge&logo=github&logoColor=ffffff&labelColor=0f172a)](https://github.com/leoalavi)
 [![Email](https://img.shields.io/badge/Email-Contact-f59e0b?style=for-the-badge&logo=gmail&logoColor=09090b&labelColor=0f172a)](mailto:leo@leoalavi.dev)
+
+---
+
+<div align="center">
+
+**Campus Navigation** — developed by Leo Alavi and Mohammad Raouf Abedini.
+
+© 2026 Leo Alavi and Mohammad Raouf Abedini. Not affiliated with, endorsed by, or published by any university.
+
+Android and iOS only — there is no web version.
+
+</div>

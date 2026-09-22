@@ -1,7 +1,12 @@
-/// Public deep-link contract for MQ Navigation.
+/// Public deep-link contract for Campus Navigation.
+///
+/// The app's display name changed from "MQ Navigation" to "Campus
+/// Navigation", but this contract did NOT: the `mqnavigation.app` domain,
+/// the `/open` path and every parameter name below are unchanged, so links
+/// already emitted by companion apps keep resolving.
 ///
 /// This file is the **single source of truth** that sister apps (e.g. the
-/// Syllabus Sync companion) rely on when generating "Open in MQ Navigation"
+/// Syllabus Sync companion) rely on when generating "Open in Campus Navigation"
 /// links. Internal GoRouter paths can change freely — the contract below
 /// should not.
 ///
@@ -20,10 +25,29 @@
 ///   mqnav://open?q=library
 ///   https://mqnavigation.app/open?lat=-33.7738&lng=151.1126
 ///
-/// The matching "Download MQ Navigation" fallback (shown when the app is
-/// not installed) is the responsibility of Syllabus Sync — universal-link
-/// resolution on iOS / app-link resolution on Android will surface the
-/// Play Store / App Store listing automatically when the app is absent.
+/// The matching "Download Campus Navigation" fallback (shown when the app is
+/// not installed) is the responsibility of Syllabus Sync. It must present an
+/// explicit App Store / Google Play chooser: Campus Navigation is an Android +
+/// iOS product with NO web build, so there is nothing to fall back to in a
+/// browser.
+///
+/// ## Transport
+///
+/// Two transports carry the same `/open` payload:
+///
+///   * `mqnav://open?...` — the custom scheme. Always available once the app
+///     is installed, needs no domain verification, and is the reliable primary
+///     handoff. `io.mqnavigation://` remains registered for the pre-existing
+///     auth/meet links and is NOT part of this public contract.
+///   * `https://mqnavigation.app/open?...` — App Links / Universal Links.
+///     Nicer when it works, but only after the domain serves
+///     `/.well-known/assetlinks.json` and `/.well-known/apple-app-site-
+///     association`. Treat as an enhancement, never the only path.
+///
+/// The former `io.mqnavigation://callback` and `https://mqnavigation.io/auth`
+/// links were removed together with the authentication feature — Campus
+/// Navigation has no accounts. `io.mqnavigation://meet` is retained because
+/// "meet here" links to it are already in circulation.
 library;
 
 /// Query parameter names. Keep these stable — renaming is a breaking
@@ -33,6 +57,38 @@ abstract final class MqNavDeepLinkParams {
   static const query = 'q';
   static const latitude = 'lat';
   static const longitude = 'lng';
+}
+
+/// Transport constants. Sister apps build links from these; the app registers
+/// the matching intent filters / URL types natively.
+abstract final class MqNavDeepLink {
+  /// Custom scheme — the dependable handoff, no domain setup required.
+  static const scheme = 'mqnav';
+
+  /// Verified-link domain. Requires well-known files to be served before it
+  /// resolves to the app rather than a browser.
+  static const host = 'mqnavigation.app';
+
+  /// The single public entry path. Internal routes may move; this may not.
+  static const path = '/open';
+
+  /// Legacy custom scheme kept for the pre-existing auth + "meet here" links.
+  static const legacyScheme = 'io.mqnavigation';
+
+  /// Whether [uri] is addressed to this app's public entry point, over either
+  /// transport. Anything else must be ignored so unrelated links (Supabase
+  /// auth callbacks, OS-generated URLs) are not mistaken for navigation.
+  static bool isOpenLink(Uri uri) {
+    final path = uri.path.isEmpty ? '/' : uri.path;
+    if (uri.scheme == scheme) {
+      // `mqnav://open?x=1` parses with host 'open' and an empty path.
+      return uri.host == 'open' || path == MqNavDeepLink.path;
+    }
+    if (uri.scheme == 'https' && uri.host == host) {
+      return path == MqNavDeepLink.path;
+    }
+    return false;
+  }
 }
 
 /// Result of parsing a deep-link payload. Used by the router to decide
@@ -84,4 +140,16 @@ MqNavDeepLinkTarget parseMqNavDeepLink(Map<String, String> params) {
     return DeepLinkMeetAt(latitude: lat, longitude: lng);
   }
   return const DeepLinkFallback();
+}
+
+/// Builds the canonical `/open` link for a building.
+///
+/// Exposed so the app itself (Share, "copy link") emits exactly the shape it
+/// documents, rather than a hand-assembled string that could drift from the
+/// contract sister apps implement.
+Uri buildCampusNavBuildingLink(String buildingId, {bool https = false}) {
+  final query = {MqNavDeepLinkParams.destination: buildingId};
+  return https
+      ? Uri.https(MqNavDeepLink.host, MqNavDeepLink.path, query)
+      : Uri(scheme: MqNavDeepLink.scheme, host: 'open', queryParameters: query);
 }

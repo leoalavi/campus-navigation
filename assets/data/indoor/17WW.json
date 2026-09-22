@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/17WW_entrance.jpg",
+      "description": "Entrance",
+      "neighbours": []
+    },
+    {
+      "id": "lobby",
+      "image": "indoor/17WW_lobby.jpg",
+      "description": "Lobby",
+      "neighbours": []
+    },
+    {
+      "id": "john-theatre-g02",
+      "image": "indoor/17WW_john-theatre-g02.jpg",
+      "description": "John Theatre G02",
+      "neighbours": []
+    },
+    {
+      "id": "t2-theatre-g25",
+      "image": "indoor/17WW_t2-theatre-g25.jpg",
+      "description": "T2 Theatre G25",
+      "neighbours": []
+    }
+  ]
+}

@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/notification_remote_source.dart';
 import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
 
 enum NotificationPermissionStatus {
@@ -41,15 +40,12 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class FcmService {
   FcmService({
     required FirebaseMessaging? messaging,
-    required NotificationRemoteSource remoteSource,
     required LocalNotificationsService localNotificationsService,
   }) : _messaging = messaging,
-       _remoteSource = remoteSource,
        _localNotificationsService = localNotificationsService;
 
   /// Null when Firebase was not initialised (e.g. missing GoogleService-Info.plist).
   final FirebaseMessaging? _messaging;
-  final NotificationRemoteSource _remoteSource;
   final LocalNotificationsService _localNotificationsService;
   StreamSubscription<String>? _tokenRefreshSubscription;
   StreamSubscription<RemoteMessage>? _foregroundSubscription;
@@ -155,58 +151,11 @@ class FcmService {
     };
   }
 
-  String? _currentUserId;
-
-  Future<void> syncToken(String userId) async {
-    if (!_isSupported) {
-      return;
-    }
-
-    _currentUserId = userId;
-
-    // Promote to a local non-nullable variable so the Dart analyser does not
-    // complain about repeated null-asserted field access below.
-    final fcm = _messaging!;
-    final token = await fcm.getToken();
-    if (token == null || token.isEmpty) {
-      return;
-    }
-
-    await _remoteSource.upsertFcmToken(
-      userId: userId,
-      token: token,
-      platform: defaultTargetPlatform == TargetPlatform.iOS ? 'ios' : 'android',
-    );
-
-    _tokenRefreshSubscription ??= fcm.onTokenRefresh.listen((token) async {
-      final currentId = _currentUserId;
-      if (token.isEmpty || currentId == null) {
-        return;
-      }
-      try {
-        await _remoteSource.upsertFcmToken(
-          userId: currentId,
-          token: token,
-          platform: defaultTargetPlatform == TargetPlatform.iOS
-              ? 'ios'
-              : 'android',
-        );
-      } catch (error, stackTrace) {
-        AppLogger.warning('Failed to refresh FCM token', error, stackTrace);
-      }
-    });
-  }
-
-  Future<void> removeToken(String userId) async {
-    if (!_isSupported) {
-      return;
-    }
-
-    final token = await _messaging!.getToken();
-    if (token != null && token.isNotEmpty) {
-      await _remoteSource.deleteFcmToken(userId: userId, token: token);
-    }
-  }
+  // Token registration was removed with accounts: Campus Navigation has no
+  // server-side user to address a push at, so no FCM registration token is
+  // ever requested or transmitted. Firebase Messaging is retained only for the
+  // notification-permission flow and foreground message display that local
+  // reminders share. See docs/PRIVACY.md.
 
   Future<void> dispose() async {
     await _tokenRefreshSubscription?.cancel();
@@ -225,7 +174,6 @@ final fcmServiceProvider = Provider<FcmService>((ref) {
       : null;
   final service = FcmService(
     messaging: messaging,
-    remoteSource: ref.watch(notificationRemoteSourceProvider),
     localNotificationsService: ref.watch(localNotificationsServiceProvider),
   );
   ref.onDispose(() => service.dispose());

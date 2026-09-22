@@ -49,7 +49,7 @@ class Building {
   final double? campusX;
   final double? campusY;
 
-  /// Which of the four MQ faculty groups this building belongs to,
+  /// Which of the four faculty groups this building belongs to,
   /// if any. Drives the **Faculty** category two-level drill-down on
   /// the map: top level shows the four [FacultyGroup] cards, second
   /// level shows only buildings whose `facultyGroup == selected`.
@@ -240,7 +240,7 @@ enum BuildingCategory {
   }
 }
 
-/// The four top-level Macquarie University faculty groups used by
+/// The four top-level faculty groups used by
 /// the **Faculty** category browse drill-down. The order here is the
 /// canonical display order on the first-level faculty list.
 ///
@@ -256,7 +256,7 @@ enum FacultyGroup {
   ),
   business(
     id: 'business',
-    label: 'Macquarie Business School',
+    label: 'Business School',
     description: 'Business, Economics, Marketing',
     icon: '\u{1F4BC}',
   ),
@@ -343,7 +343,7 @@ enum StudentServicesGroup {
   inclusion(
     id: 'inclusion',
     label: 'Accessibility & Inclusion',
-    description: 'Walanga Muru, Macquarie International, accessibility',
+    description: 'Indigenous, international and accessibility support',
     icon: '\u{1F30F}',
   );
 

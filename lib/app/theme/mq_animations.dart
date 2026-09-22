@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 
-/// Macquarie University animation timing tokens.
+/// Campus Navigation animation timing tokens.
 ///
 /// Provides consistent durations and curves across the app,
 /// preventing magic-number animation values.

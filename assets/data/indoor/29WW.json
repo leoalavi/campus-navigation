@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/29WW_entrance.jpg",
+      "description": "Entrance \u2014 29 Wally's Walk",
+      "neighbours": [
+        {
+          "targetId": "theatre-1",
+          "heading": 75,
+          "label": "Theatre 1"
+        }
+      ],
+      "previewHeading": 75,
+      "previewPitch": 0
+    },
+    {
+      "id": "theatre-1",
+      "image": "indoor/29WW_theatre-1.jpg",
+      "description": "Theatre 1",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": -125,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": 58,
+      "previewPitch": 0
+    }
+  ]
+}

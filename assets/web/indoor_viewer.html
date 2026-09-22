@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Lock the viewer to its own (localhost / same) origin. Panorama images
+       and the Pannellum lib load from 'self'; remote fetches/beacons are
+       blocked, so a panorama ref can never exfiltrate or pull off-origin
+       content. Inline script/style are the bundled viewer's own.
+
+       'unsafe-eval' is required for 'script-src': on native platforms
+       (iOS/Android), flutter_inappwebview's evaluateJavascript() runs through
+       the OS webview's own privileged JS-injection API and is genuinely
+       unaffected by this page's CSP. On Flutter *web*, flutter_inappwebview_web
+       has no such native hook — its evaluateJavascript() (and the loadTour()/
+       selectScene() calls Flutter makes through it) is implemented as a plain
+       `iframe.contentWindow.eval(source)` call, which IS subject to this
+       document's own CSP. Without 'unsafe-eval' every one of those calls
+       throws an EvalError that the plugin swallows, so `loadTour()` silently
+       never runs and the viewer stays blank forever — this was the confirmed
+       root cause of the web AR/360° viewer failing to render. The alternative
+       (routing the initial tour config through the iframe's URL/postMessage
+       instead of eval) would remove the need for this, but scene-switching
+       still goes through evaluateJavascript today, so 'unsafe-eval' stays
+       necessary either way. All script content here is our own bundled HTML/
+       JS — never third-party or user-supplied — so this does not open an XSS
+       vector; 'connect-src' and 'img-src' remain locked to 'self'/data:/blob:. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; worker-src blob:; child-src blob:">
+  <title>Indoor Preview</title>
+  <link rel="stylesheet" href="pannellum/pannellum.css">
+  <script src="pannellum/pannellum.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    #panorama { width: 100%; height: 100%; }
+
+    /* Custom navigation hotspot: a large, high-contrast arrow badge with an
+       always-visible label pill underneath. Pannellum's default scene
+       hotspot is a subtle 26px sprite that disappears against busy
+       panoramas — far too weak for campus wayfinding. */
+    .mq-hotspot {
+      width: 56px;
+      height: 56px;
+      cursor: pointer;
+      /* Kill Pannellum's default hotspot chrome: the pnlm-scene/pnlm-sprite
+         classes paint a small light sprite circle behind our badge, which
+         showed as a stray white dot on the marker. */
+      background: none !important;
+      background-image: none !important;
+      border-radius: 0;
+    }
+    /* Remove Pannellum's built-in control chrome entirely: the zoom +/-
+       buttons and the fullscreen toggle in the top-left corner. Redundant
+       with the config's showControls:false, but guarantees they never flash
+       in during load. */
+    .pnlm-controls-container,
+    .pnlm-zoom-controls,
+    .pnlm-fullscreen-toggle-button,
+    .pnlm-orientation-button {
+      display: none !important;
+    }
+    .mq-hotspot .mq-hotspot-arrow {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #A6192E; /* MqColors.red — Campus Navigation brand */
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 30px;
+      line-height: 1;
+      transition: transform 120ms ease;
+    }
+    .mq-hotspot:hover .mq-hotspot-arrow { transform: scale(1.12); }
+    .mq-hotspot .mq-hotspot-label {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: rgba(0, 0, 0, 0.78);
+      color: #ffffff;
+      font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="panorama"></div>
+  <script>
+    // Custom hotspot DOM: big arrow badge + persistent label. Used via
+    // Pannellum's createTooltipFunc, which hands us the hotspot container.
+    function mqCreateHotspot(hotSpotDiv, args) {
+      // Strip Pannellum's sprite classes so no default icon/dot renders
+      // behind the custom badge (belt-and-braces with the CSS reset above).
+      hotSpotDiv.classList.remove('pnlm-sprite', 'pnlm-scene', 'pnlm-info');
+      hotSpotDiv.classList.add('mq-hotspot');
+      var arrow = document.createElement('div');
+      arrow.className = 'mq-hotspot-arrow';
+      arrow.textContent = '↑'; // upward arrow: "head this way"
+      hotSpotDiv.appendChild(arrow);
+      var label = document.createElement('div');
+      label.className = 'mq-hotspot-label';
+      label.textContent = args.text || 'Go';
+      hotSpotDiv.appendChild(label);
+    }
+
+    var mqViewer = null;
+
+    function reportSceneChange(sceneId) {
+      if (window.flutter_inappwebview &&
+          window.flutter_inappwebview.callHandler) {
+        window.flutter_inappwebview.callHandler(
+          'indoorSceneChanged',
+          sceneId
+        );
+      }
+    }
+
+    function selectScene(sceneId) {
+      if (mqViewer && mqViewer.getScene() !== sceneId) {
+        mqViewer.loadScene(sceneId);
+      }
+    }
+
+    function loadTour(config) {
+      try {
+        var scenes = (config && config.scenes) || {};
+        Object.keys(scenes).forEach(function (sceneId) {
+          (scenes[sceneId].hotSpots || []).forEach(function (hs) {
+            hs.createTooltipFunc = mqCreateHotspot;
+            hs.createTooltipArgs = { text: hs.text };
+            // The custom tooltip fully replaces the default sprite + hover
+            // tooltip, so drop the plain text to avoid double rendering.
+            delete hs.text;
+          });
+        });
+        mqViewer = pannellum.viewer('panorama', config);
+        mqViewer.on('scenechange', reportSceneChange);
+      } catch (e) {
+        console.error('Pannellum load failed:', e);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/MQTH_entrance.jpg",
+      "description": "Entrance",
+      "neighbours": []
+    },
+    {
+      "id": "foyer",
+      "image": "indoor/MQTH_foyer.jpg",
+      "description": "Theatre foyer",
+      "neighbours": []
+    }
+  ]
+}

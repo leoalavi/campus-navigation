@@ -17,16 +17,16 @@ import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 import 'package:mq_navigation/shared/models/user_preferences.dart';
 import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
 
-/// Home screen for the MQ Navigation app.
+/// Home screen for the Campus Navigation app.
 ///
 /// Structure (top → bottom):
-///   1. Hero — official MQ shield logo + welcome copy + CTA
+///   1. Hero — app logo + welcome copy + CTA
 ///   2. Metro Countdown glanceable card (configurable from Settings)
 ///   3. Quick Access — 2 featured tiles + 3 supporting tiles
 ///
 /// Removed intentionally:
 ///   - The dedicated top app-bar / branded header. The hero now carries
-///     the brand identity via the official MQ shield logo, eliminating
+///     the brand identity via the app logo, eliminating
 ///     vertical clutter and the prior "icon + wordmark" duplication.
 ///   - "Transport" Quick Access item — the Metro Countdown card already
 ///     covers the same intent in a more glanceable form.
@@ -35,7 +35,7 @@ class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   static const _backgroundAsset = 'assets/images/campus_background.jpg';
-  static const _logoAsset = 'assets/images/mq_logo.png';
+  static const _logoAsset = 'assets/images/app_logo.png';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -515,7 +515,7 @@ class _CampusBackground extends StatelessWidget {
 // WELCOME + CTA HERO                                                         //
 // -------------------------------------------------------------------------- //
 
-/// Hero block. Lays out the official MQ shield logo to the left of the
+/// Hero block. Lays out the app logo to the left of the
 /// welcome copy so the brand identity travels with the message — replacing
 /// the prior top branding bar — while the CTA button remains full-width
 /// below for one-handed reachability.
@@ -679,7 +679,7 @@ class _HeroSection extends StatelessWidget {
   }
 }
 
-/// Renders the official MQ shield logo at a given size, with a graceful
+/// Renders the app logo at a given size, with a graceful
 /// fallback shield in case the asset isn't bundled. The fallback keeps
 /// the layout stable during initial onboarding of the asset and on any
 /// device where the asset failed to load.

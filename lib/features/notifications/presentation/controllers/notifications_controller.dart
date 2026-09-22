@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/router/app_router.dart';
-import 'package:mq_navigation/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/core/network/connectivity_service.dart';
 import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
@@ -59,11 +58,10 @@ final notificationsControllerProvider =
 final notificationsStreamProvider = StreamProvider<List<AppNotification>>((
   ref,
 ) {
-  final userId = ref.watch(authRepositoryProvider).userId;
-  if (userId == null) {
-    return Stream.value(const <AppNotification>[]);
-  }
-  return ref.watch(notificationRepositoryProvider).watchNotifications(userId);
+  // Campus Navigation has no accounts, so there is no server-side inbox to
+  // stream. Notifications the app raises are local reminders, delivered by the
+  // OS rather than listed here.
+  return Stream.value(const <AppNotification>[]);
 });
 
 final unreadNotificationsCountProvider = Provider<int>((ref) {
@@ -110,18 +108,8 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
     final permissionStatus = await ref
         .read(fcmServiceProvider)
         .getPermissionStatus();
-    final userId = ref.read(authRepositoryProvider).userId;
-    final preferences = userId == null
-        ? NotificationPreference.defaults()
-        : await ref
-              .read(notificationRepositoryProvider)
-              .fetchPreferences(userId);
-
-    if (userId != null &&
-        (permissionStatus == NotificationPermissionStatus.granted ||
-            permissionStatus == NotificationPermissionStatus.provisional)) {
-      await ref.read(fcmServiceProvider).syncToken(userId);
-    }
+    // Preferences are device-local: there is no account to sync them to.
+    final preferences = NotificationPreference.defaults();
 
     final initialState = NotificationsState(
       permissionStatus: permissionStatus,
@@ -144,17 +132,10 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
         .requestPermission();
     state = AsyncData(current.copyWith(permissionStatus: permissionStatus));
 
-    final userId = ref.read(authRepositoryProvider).userId;
-    if (userId != null &&
-        (permissionStatus == NotificationPermissionStatus.granted ||
-            permissionStatus == NotificationPermissionStatus.provisional)) {
-      await ref.read(fcmServiceProvider).syncToken(userId);
-    }
   }
 
   Future<void> updatePreference(NotificationType type, bool enabled) async {
     final current = state.value;
-    final userId = ref.read(authRepositoryProvider).userId;
     if (current == null) {
       return;
     }
@@ -174,14 +155,6 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
     );
 
     try {
-      if (userId != null) {
-        await ref
-            .read(notificationRepositoryProvider)
-            .savePreference(
-              userId,
-              updatedPreferences.firstWhere((item) => item.type == type),
-            );
-      }
       state = AsyncData(
         current.copyWith(preferences: updatedPreferences, isSyncing: false),
       );
@@ -198,7 +171,6 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
 
   Future<void> updateStudyPromptTime(TimeOfDay time) async {
     final current = state.value;
-    final userId = ref.read(authRepositoryProvider).userId;
     if (current == null) {
       return;
     }
@@ -219,16 +191,6 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
     );
 
     try {
-      if (userId != null) {
-        await ref
-            .read(notificationRepositoryProvider)
-            .savePreference(
-              userId,
-              updatedPreferences.firstWhere(
-                (item) => item.type == NotificationType.studyPrompt,
-              ),
-            );
-      }
       state = AsyncData(
         current.copyWith(preferences: updatedPreferences, isSyncing: false),
       );
@@ -243,13 +205,9 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
     return ref.read(notificationRepositoryProvider).markRead(notificationId);
   }
 
-  Future<void> markAllRead() async {
-    final userId = ref.read(authRepositoryProvider).userId;
-    if (userId == null) {
-      return;
-    }
-    await ref.read(notificationRepositoryProvider).markAllRead(userId);
-  }
+  // Kept so the inbox UI keeps its contract; with no server-side inbox there
+  // is nothing to mark.
+  Future<void> markAllRead() async {}
 
   Future<void> deleteNotification(String notificationId) {
     return ref

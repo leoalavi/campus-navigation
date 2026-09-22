@@ -1,0 +1,28 @@
+{
+  "nodes": [
+    {
+      "id": "centre",
+      "image": "indoor/SPORT_centre.jpg",
+      "description": "Sport and Aquatic Centre",
+      "neighbours": []
+    },
+    {
+      "id": "planetarium-approach",
+      "image": "indoor/SPORT_planetarium-approach.jpg",
+      "description": "Before the planetarium",
+      "neighbours": []
+    },
+    {
+      "id": "planetarium-entrance",
+      "image": "indoor/SPORT_planetarium-entrance.jpg",
+      "description": "Planetarium entrance",
+      "neighbours": []
+    },
+    {
+      "id": "street",
+      "image": "indoor/SPORT_street.jpg",
+      "description": "Sport and Aquatic Centre \u2014 10 Gymnasium Road",
+      "neighbours": []
+    }
+  ]
+}

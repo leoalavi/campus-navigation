@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Macquarie University brand colour palette.
+/// Campus Navigation brand colour palette.
 ///
 /// Sourced from the web app's mq-tokens.css and tailwind config.
 abstract final class MqColors {

@@ -11,7 +11,6 @@ final _now = DateTime.now();
 
 final _sampleFav = FavoriteBuilding(
   id: 'fav-1',
-  userId: 'user-1',
   buildingId: 'BLD',
   buildingName: 'Test Building',
   note: null,
@@ -31,10 +30,10 @@ void main() {
   group('fetchAll', () {
     test('returns list on success', () async {
       when(
-        () => mockSource.fetchAll(userId: any(named: 'userId')),
+        () => mockSource.fetchAll(),
       ).thenAnswer((_) async => [_sampleFav]);
 
-      final result = await repository.fetchAll(userId: 'user-1');
+      final result = await repository.fetchAll();
 
       expect(result.success, isTrue);
       expect(result.data, hasLength(1));
@@ -43,10 +42,10 @@ void main() {
 
     test('returns failure on error', () async {
       when(
-        () => mockSource.fetchAll(userId: any(named: 'userId')),
+        () => mockSource.fetchAll(),
       ).thenThrow(Exception('network error'));
 
-      final result = await repository.fetchAll(userId: 'user-1');
+      final result = await repository.fetchAll();
 
       expect(result.success, isFalse);
       expect(result.error, isNotNull);
@@ -57,7 +56,6 @@ void main() {
     test('returns favorite on success', () async {
       when(
         () => mockSource.add(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
           buildingName: any(named: 'buildingName'),
           note: any(named: 'note'),
@@ -65,7 +63,6 @@ void main() {
       ).thenAnswer((_) async => _sampleFav);
 
       final result = await repository.add(
-        userId: 'user-1',
         buildingId: 'BLD',
         buildingName: 'Test Building',
       );
@@ -77,7 +74,6 @@ void main() {
     test('returns failure on error', () async {
       when(
         () => mockSource.add(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
           buildingName: any(named: 'buildingName'),
           note: any(named: 'note'),
@@ -85,7 +81,6 @@ void main() {
       ).thenThrow(Exception('db error'));
 
       final result = await repository.add(
-        userId: 'user-1',
         buildingId: 'BLD',
         buildingName: 'Test Building',
       );
@@ -135,13 +130,11 @@ void main() {
     test('returns true when favorited', () async {
       when(
         () => mockSource.isFavorited(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
         ),
       ).thenAnswer((_) async => true);
 
       final result = await repository.isFavorited(
-        userId: 'user-1',
         buildingId: 'BLD',
       );
 
@@ -152,13 +145,11 @@ void main() {
     test('returns false when not favorited', () async {
       when(
         () => mockSource.isFavorited(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
         ),
       ).thenAnswer((_) async => false);
 
       final result = await repository.isFavorited(
-        userId: 'user-1',
         buildingId: 'BLD',
       );
 
@@ -171,13 +162,11 @@ void main() {
     test('returns id when found', () async {
       when(
         () => mockSource.findId(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
         ),
       ).thenAnswer((_) async => 'fav-1');
 
       final result = await repository.findFavoriteId(
-        userId: 'user-1',
         buildingId: 'BLD',
       );
 
@@ -187,13 +176,11 @@ void main() {
     test('returns null on error', () async {
       when(
         () => mockSource.findId(
-          userId: any(named: 'userId'),
           buildingId: any(named: 'buildingId'),
         ),
       ).thenThrow(Exception('error'));
 
       final result = await repository.findFavoriteId(
-        userId: 'user-1',
         buildingId: 'BLD',
       );
 

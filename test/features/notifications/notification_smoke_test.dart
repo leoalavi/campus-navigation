@@ -12,8 +12,6 @@ import 'package:mq_navigation/features/notifications/domain/entities/reminder_re
 import 'package:mq_navigation/shared/models/user_preferences.dart';
 import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
 import 'package:mq_navigation/core/network/connectivity_service.dart';
-import 'package:mq_navigation/features/auth/data/repositories/auth_repository.dart';
-import 'package:mq_navigation/features/auth/presentation/controllers/auth_controller.dart';
 
 class MockLocalNotificationsService extends Mock
     implements LocalNotificationsService {}
@@ -25,15 +23,12 @@ class MockNotificationRepository extends Mock
 
 class MockSettingsRepository extends Mock implements SettingsRepository {}
 
-class MockAuthRepository extends Mock implements AuthRepository {}
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late MockLocalNotificationsService mockLocalNotifications;
   late MockFcmService mockFcm;
   late MockNotificationRepository mockRepo;
   late MockSettingsRepository mockSettingsRepo;
-  late MockAuthRepository mockAuthRepo;
 
   setUpAll(() {
     registerFallbackValue(
@@ -60,10 +55,6 @@ void main() {
     mockFcm = MockFcmService();
     mockRepo = MockNotificationRepository();
     mockSettingsRepo = MockSettingsRepository();
-    mockAuthRepo = MockAuthRepository();
-
-    when(() => mockAuthRepo.userId).thenReturn(null);
-    when(() => mockAuthRepo.isAuthenticated).thenReturn(false);
 
     when(
       () => mockSettingsRepo.loadPreferences(),
@@ -91,7 +82,6 @@ void main() {
     when(
       () => mockFcm.getPermissionStatus(),
     ).thenAnswer((_) async => NotificationPermissionStatus.granted);
-    when(() => mockFcm.syncToken(any())).thenAnswer((_) async {});
 
     when(
       () => mockRepo.fetchPreferences(any()),
@@ -110,7 +100,6 @@ void main() {
         connectivityStatusProvider.overrideWith(
           (ref) => Stream.value(ConnectivityStatus.online),
         ),
-        authRepositoryProvider.overrideWithValue(mockAuthRepo),
       ],
     );
   }

@@ -13,6 +13,9 @@ import 'package:mq_navigation/core/error/error_boundary.dart';
 import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
 import 'package:mq_navigation/features/open_day/data/open_day_reminder_scheduler.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/deep_link/building_id_resolver.dart';
+import 'package:mq_navigation/features/deep_link/deep_link_contract.dart';
 
 /// The root Flutter application widget.
 ///
@@ -45,35 +48,70 @@ class _MqNavigationAppState extends ConsumerState<MqNavigationApp> {
   Future<void> _listenForDeepLinks() async {
     final initial = await _appLinks.getInitialLink();
     if (initial != null && mounted) {
-      _handleDeepLink(initial);
+      // Cold start: the link that launched the app. Awaited so a resolved
+      // destination replaces the map root before the user sees it.
+      await _handleDeepLink(initial);
     }
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       if (!mounted) {
         return;
       }
-      _handleDeepLink(uri);
+      // Warm start: fire-and-forget, the stream callback cannot be async.
+      unawaited(_handleDeepLink(uri));
     });
   }
 
-  void _handleDeepLink(Uri uri) {
-    if (uri.host != 'meet' || uri.scheme != 'io.mqnavigation') {
+  Future<void> _handleDeepLink(Uri uri) async {
+    // Public `/open` contract (mqnav:// and https://mqnavigation.app) — the
+    // entry point Syllabus Sync uses. See deep_link_contract.dart.
+    if (MqNavDeepLink.isOpenLink(uri)) {
+      await _handleOpenLink(uri);
       return;
     }
-
-    final latStr = uri.queryParameters['lat'];
-    final lngStr = uri.queryParameters['lng'];
-
-    // Guard: both parameters must be present and parseable.
-    // Previously null values produced '/meet?lat=null&lng=null', which
-    // navigated to MapPage with null coords and silently ignored navigation.
-    final lat = latStr != null ? double.tryParse(latStr) : null;
-    final lng = lngStr != null ? double.tryParse(lngStr) : null;
-    if (lat == null || lng == null) {
-      return;
+    // Pre-existing "meet here" link on the legacy scheme. Left intact so
+    // links already in the wild keep working.
+    if (uri.scheme == MqNavDeepLink.legacyScheme && uri.host == 'meet') {
+      // Guard: both parameters must be present and parseable. Null values
+      // previously produced '/meet?lat=null&lng=null', which navigated to
+      // MapPage with null coords and silently ignored navigation.
+      final lat = double.tryParse(uri.queryParameters['lat'] ?? '');
+      final lng = double.tryParse(uri.queryParameters['lng'] ?? '');
+      if (lat == null || lng == null) return;
+      ref.read(appRouterProvider).go('/meet?lat=$lat&lng=$lng');
     }
+    // Anything else (Supabase auth callbacks, unrelated URLs) is not ours.
+  }
 
+  /// Routes an `/open` payload, resolving partner building ids first.
+  ///
+  /// A destination that names nothing we know does NOT silently become the map
+  /// root: the user tapped "Navigate" expecting a place, so the map is opened
+  /// with the id as a search term instead, which either finds it by name or
+  /// shows an honest empty result. That also keeps ids minted by a future
+  /// Syllabus Sync release from dead-ending.
+  Future<void> _handleOpenLink(Uri uri) async {
+    final target = parseMqNavDeepLink(uri.queryParameters);
     final router = ref.read(appRouterProvider);
-    router.go('/meet?lat=$lat&lng=$lng');
+    if (target is DeepLinkBuilding) {
+      final canonical = await ref
+          .read(buildingIdResolverProvider)
+          .resolve(target.buildingId);
+      if (!mounted) return;
+      if (canonical == null) {
+        AppLogger.warning(
+          'Deep link named an unknown building: ${target.buildingId}',
+        );
+        router.go('/map?q=${Uri.encodeQueryComponent(target.buildingId)}');
+        return;
+      }
+      router.go('/map/building/${Uri.encodeComponent(canonical)}');
+      return;
+    }
+    // Search / meet-at / fallback need no resolution — reuse the router's
+    // own contract mapping so there is one place that decides this.
+    router.go(
+      Uri(path: '/open', queryParameters: uri.queryParameters).toString(),
+    );
   }
 
   @override
@@ -142,7 +180,7 @@ class _SplashView extends StatelessWidget {
 
   const _SplashView({required this.isLoading, this.errorMessage});
 
-  static const _backgroundAsset = 'assets/images/login_background.png';
+  static const _backgroundAsset = 'assets/images/splash_background.png';
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +225,7 @@ class _SplashView extends StatelessWidget {
                       const Icon(Icons.explore, size: 72, color: MqColors.red),
                       const SizedBox(height: 16),
                       const Text(
-                        'MQ Navigation',
+                        'Campus Navigation',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,

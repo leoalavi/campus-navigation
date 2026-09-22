@@ -3,7 +3,7 @@ import Flutter
 import GoogleMaps
 import UIKit
 
-/// App delegate for MQ Navigation.
+/// App delegate for Campus Navigation.
 ///
 /// Plugin registration is performed by calling
 /// `GeneratedPluginRegistrant.register(with: self)` at the top of
@@ -34,7 +34,7 @@ import UIKit
 
     // ── Firebase (optional) ───────────────────────────────────────────────
     // Firebase is used exclusively for FCM push notifications.
-    // MQ Navigation's primary backend is Supabase; Firebase can be absent when
+    // Campus Navigation's primary backend is Supabase; Firebase can be absent when
     // GoogleService-Info.plist is not in the bundle (dev builds / CI without
     // secrets). The file-existence guard prevents a fatal crash so the app
     // launches normally even without a Firebase config.

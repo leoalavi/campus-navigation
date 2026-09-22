@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Universal Links for the public navigation contract.
+	     Requires https://mqnavigation.app/.well-known/apple-app-site-association
+	     to be served (application/json, no redirect) listing
+	     <TEAM_ID>.com.pouya.mqnavigation with the /open path.
+	     Until that file is live, iOS falls back to opening the URL in Safari -
+	     which is why mqnav:// is the primary transport. -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:mqnavigation.app</string>
+	</array>
+</dict>
+</plist>

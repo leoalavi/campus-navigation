@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 
-/// Macquarie University typography scale.
+/// Campus Navigation typography scale.
 ///
 /// Primary: system sans-serif.  Secondary: system serif.
 /// To enable branded fonts, add Work Sans and Source Serif Pro to

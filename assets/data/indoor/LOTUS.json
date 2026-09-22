@@ -1,0 +1,32 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/LOTUS_entrance.jpg",
+      "description": "Entrance \u2014 27 Wally's Walk",
+      "neighbours": [
+        {
+          "targetId": "lotus",
+          "heading": 35,
+          "label": "Lotus Theatre"
+        }
+      ],
+      "previewHeading": 35,
+      "previewPitch": 0
+    },
+    {
+      "id": "lotus",
+      "image": "indoor/LOTUS_lotus.jpg",
+      "description": "Lotus Theatre",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": -120,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -10,
+      "previewPitch": 0
+    }
+  ]
+}

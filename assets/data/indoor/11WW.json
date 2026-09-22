@@ -1,0 +1,22 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/11WW_entrance.jpg",
+      "description": "Entrance",
+      "neighbours": []
+    },
+    {
+      "id": "room-150",
+      "image": "indoor/11WW_room-150.jpg",
+      "description": "Room 150",
+      "neighbours": []
+    },
+    {
+      "id": "room-160",
+      "image": "indoor/11WW_room-160.jpg",
+      "description": "Room 160",
+      "neighbours": []
+    }
+  ]
+}

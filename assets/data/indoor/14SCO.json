@@ -1,0 +1,46 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/14SCO_entrance.jpg",
+      "description": "Entrance",
+      "neighbours": []
+    },
+    {
+      "id": "lobby",
+      "image": "indoor/14SCO_lobby.jpg",
+      "description": "Lobby",
+      "neighbours": []
+    },
+    {
+      "id": "exhibition-hall",
+      "image": "indoor/14SCO_exhibition-hall.jpg",
+      "description": "Exhibition Hall",
+      "neighbours": []
+    },
+    {
+      "id": "theatre-100-door-a",
+      "image": "indoor/14SCO_theatre-100-door-a.jpg",
+      "description": "Theatre 100, Door A",
+      "neighbours": []
+    },
+    {
+      "id": "theatre-100-door-b",
+      "image": "indoor/14SCO_theatre-100-door-b.jpg",
+      "description": "Theatre 100, Door B",
+      "neighbours": []
+    },
+    {
+      "id": "theatres-3-4",
+      "image": "indoor/14SCO_theatres-3-4.jpg",
+      "description": "Theatres 3 and 4",
+      "neighbours": []
+    },
+    {
+      "id": "mason-theatre-foyer",
+      "image": "indoor/14SCO_mason-theatre-foyer.jpg",
+      "description": "Foyer outside Mason Theatre",
+      "neighbours": []
+    }
+  ]
+}

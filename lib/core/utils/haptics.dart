@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-/// Macquarie University haptic feedback wrapper.
+/// Haptic feedback wrapper.
 ///
 /// Respects the user's "Haptic Feedback" preference.
 abstract final class MqHaptics {

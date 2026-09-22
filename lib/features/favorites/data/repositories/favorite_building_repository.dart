@@ -7,11 +7,9 @@ class FavoriteBuildingRepository {
 
   final FavoriteBuildingSource _source;
 
-  Future<FavoritesResult<List<FavoriteBuilding>>> fetchAll({
-    required String userId,
-  }) async {
+  Future<FavoritesResult<List<FavoriteBuilding>>> fetchAll() async {
     try {
-      final list = await _source.fetchAll(userId: userId);
+      final list = await _source.fetchAll();
       return FavoritesResult.success(list);
     } catch (e) {
       return FavoritesResult.failure('Could not load favourites.');
@@ -19,14 +17,12 @@ class FavoriteBuildingRepository {
   }
 
   Future<FavoritesResult<FavoriteBuilding>> add({
-    required String userId,
     required String buildingId,
     required String buildingName,
     String? note,
   }) async {
     try {
       final fav = await _source.add(
-        userId: userId,
         buildingId: buildingId,
         buildingName: buildingName,
         note: note,
@@ -59,26 +55,19 @@ class FavoriteBuildingRepository {
   }
 
   Future<FavoritesResult<bool>> isFavorited({
-    required String userId,
     required String buildingId,
   }) async {
     try {
-      final result = await _source.isFavorited(
-        userId: userId,
-        buildingId: buildingId,
-      );
+      final result = await _source.isFavorited(buildingId: buildingId);
       return FavoritesResult.success(result);
     } catch (e) {
       return FavoritesResult.failure('Could not check favourite status.');
     }
   }
 
-  Future<String?> findFavoriteId({
-    required String userId,
-    required String buildingId,
-  }) async {
+  Future<String?> findFavoriteId({required String buildingId}) async {
     try {
-      return await _source.findId(userId: userId, buildingId: buildingId);
+      return await _source.findId(buildingId: buildingId);
     } catch (_) {
       return null;
     }

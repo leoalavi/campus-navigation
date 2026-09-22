@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 class FavoriteBuilding {
   const FavoriteBuilding({
     required this.id,
-    required this.userId,
     required this.buildingId,
     required this.buildingName,
     this.note,
@@ -13,7 +12,6 @@ class FavoriteBuilding {
   });
 
   final String id;
-  final String userId;
   final String buildingId;
   final String buildingName;
   final String? note;
@@ -23,7 +21,6 @@ class FavoriteBuilding {
   factory FavoriteBuilding.fromJson(Map<String, dynamic> json) {
     return FavoriteBuilding(
       id: json['id'] as String,
-      userId: json['user_id'] as String,
       buildingId: json['building_id'] as String,
       buildingName: json['building_name'] as String,
       note: json['note'] as String?,
@@ -34,7 +31,6 @@ class FavoriteBuilding {
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'user_id': userId,
     'building_id': buildingId,
     'building_name': buildingName,
     'note': note,
@@ -44,7 +40,6 @@ class FavoriteBuilding {
 
   FavoriteBuilding copyWith({
     String? id,
-    String? userId,
     String? buildingId,
     String? buildingName,
     String? note,
@@ -54,7 +49,6 @@ class FavoriteBuilding {
   }) {
     return FavoriteBuilding(
       id: id ?? this.id,
-      userId: userId ?? this.userId,
       buildingId: buildingId ?? this.buildingId,
       buildingName: buildingName ?? this.buildingName,
       note: clearNote ? null : (note ?? this.note),

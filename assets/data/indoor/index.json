@@ -1,0 +1,19 @@
+{
+  "_comment": "Building ids that ship a 360 tour, with scene counts. Generated from assets/data/indoor/<id>.json - keep in sync when tours change.",
+  "tours": {
+    "10HA": 2,
+    "11WW": 3,
+    "14SCO": 7,
+    "17WW": 4,
+    "1CC": 12,
+    "23WW": 4,
+    "25WW": 2,
+    "29WW": 2,
+    "AINS": 4,
+    "LOTUS": 2,
+    "MQTH": 2,
+    "NEXTSENSE": 1,
+    "OBS": 2,
+    "SPORT": 4
+  }
+}

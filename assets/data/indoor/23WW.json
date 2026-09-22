@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/23WW_entrance.jpg",
+      "description": "Entrance \u2014 23 Wally's Walk",
+      "neighbours": [
+        {
+          "targetId": "price",
+          "heading": -104,
+          "label": "Price Theatre"
+        },
+        {
+          "targetId": "theatre-1",
+          "heading": -95,
+          "label": "Theatre 1"
+        },
+        {
+          "targetId": "theatre-2",
+          "heading": -86,
+          "label": "Theatre 2"
+        }
+      ],
+      "previewHeading": -95,
+      "previewPitch": 0
+    },
+    {
+      "id": "price",
+      "image": "indoor/23WW_price.jpg",
+      "description": "Price Theatre",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": -90,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -10,
+      "previewPitch": 0
+    },
+    {
+      "id": "theatre-1",
+      "image": "indoor/23WW_theatre-1.jpg",
+      "description": "Theatre 1",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 60,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -10,
+      "previewPitch": 0
+    },
+    {
+      "id": "theatre-2",
+      "image": "indoor/23WW_theatre-2.jpg",
+      "description": "Theatre 2",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 72,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": 0,
+      "previewPitch": 0
+    }
+  ]
+}

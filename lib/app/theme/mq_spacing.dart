@@ -1,4 +1,4 @@
-/// Macquarie University spacing & radius tokens.
+/// Campus Navigation spacing & radius tokens.
 ///
 /// Mapped from --c-space-* and --c-radius-* CSS custom properties.
 abstract final class MqSpacing {

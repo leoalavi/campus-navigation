@@ -1,0 +1,16 @@
+{
+  "nodes": [
+    {
+      "id": "approach",
+      "image": "indoor/OBS_approach.jpg",
+      "description": "Observatory approach",
+      "neighbours": []
+    },
+    {
+      "id": "entrance",
+      "image": "indoor/OBS_entrance.jpg",
+      "description": "Observatory entrance",
+      "neighbours": []
+    }
+  ]
+}

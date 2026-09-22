@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>MQ Navigation</string>
+	<string>Campus Navigation</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>mq_navigation</string>
+	<string>Campus Navigation</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -29,7 +29,12 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<!-- Legacy scheme: Supabase auth callback + "meet here" links. -->
 				<string>io.mqnavigation</string>
+				<!-- Public navigation contract used by Syllabus Sync:
+				     mqnav://open?destination=<buildingId>
+				     See lib/features/deep_link/deep_link_contract.dart -->
+				<string>mqnav</string>
 			</array>
 		</dict>
 	</array>
@@ -40,7 +45,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>MQ Navigation uses your location to navigate you around campus.</string>
+	<string>Campus Navigation uses your location to show where you are on campus and guide you to your destination.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -6,7 +6,6 @@ void main() {
 
   final fullJson = {
     'id': 'fav-1',
-    'user_id': 'user-1',
     'building_id': 'BLD',
     'building_name': 'Library',
     'note': 'my favourite spot',
@@ -16,7 +15,6 @@ void main() {
 
   final expected = FavoriteBuilding(
     id: 'fav-1',
-    userId: 'user-1',
     buildingId: 'BLD',
     buildingName: 'Library',
     note: 'my favourite spot',
@@ -28,7 +26,6 @@ void main() {
     test('parses all fields', () {
       final result = FavoriteBuilding.fromJson(fullJson);
       expect(result.id, 'fav-1');
-      expect(result.userId, 'user-1');
       expect(result.buildingId, 'BLD');
       expect(result.buildingName, 'Library');
       expect(result.note, 'my favourite spot');
@@ -47,7 +44,6 @@ void main() {
     test('produces correct map', () {
       final json = expected.toJson();
       expect(json['id'], 'fav-1');
-      expect(json['user_id'], 'user-1');
       expect(json['building_id'], 'BLD');
       expect(json['building_name'], 'Library');
       expect(json['note'], 'my favourite spot');
@@ -85,7 +81,6 @@ void main() {
     test('equal when ids match', () {
       final a = FavoriteBuilding(
         id: 'same-id',
-        userId: 'u1',
         buildingId: 'BLD',
         buildingName: 'A',
         createdAt: now,
@@ -93,7 +88,6 @@ void main() {
       );
       final b = FavoriteBuilding(
         id: 'same-id',
-        userId: 'u2',
         buildingId: 'BLD2',
         buildingName: 'B',
         createdAt: now,

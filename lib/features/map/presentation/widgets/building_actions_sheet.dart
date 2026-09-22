@@ -5,6 +5,7 @@ import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/indoor/providers/indoor_providers.dart';
 import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
 import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
@@ -18,7 +19,7 @@ import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
 /// on Open Day domain types.
 ///
 /// Both actions route **through the in-app Navigation tab** so the
-/// user never leaves MQ Navigation:
+/// user never leaves Campus Navigation:
 ///   1. **View in Campus Map** → campus renderer, building selected.
 ///   2. **Navigate with Google Maps** → Google renderer, building selected.
 ///
@@ -74,6 +75,9 @@ class BuildingActionsSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final sceneCount = ref
+        .watch(indoorTourSceneCountProvider(buildingId))
+        .value;
     final dark = context.isDarkMode;
 
     return MqBottomSheet(
@@ -117,6 +121,37 @@ class BuildingActionsSheet extends ConsumerWidget {
                 onTap: () => Navigator.pop(context, MapRendererType.campus),
               ),
             ),
+            // Offered only for buildings that actually ship a tour, so the
+            // sheet never advertises a 360° view that would open empty.
+            if (sceneCount != null)
+              Semantics(
+                button: true,
+                label: l10n.arExploreTitle,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.threesixty_rounded,
+                    color: dark
+                        ? Colors.white.withValues(alpha: 0.85)
+                        : MqColors.contentPrimary,
+                  ),
+                  title: Text(
+                    l10n.arExploreTitle,
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  subtitle: Text(l10n.arSceneCount(sceneCount)),
+                  onTap: () {
+                    // Pop with no renderer so `show` skips the map-renderer
+                    // branch, then open the viewer on the same navigator.
+                    Navigator.pop(context);
+                    context.pushNamed(
+                      RouteNames.indoorPreview,
+                      pathParameters: {'buildingId': buildingId},
+                    );
+                  },
+                ),
+              ),
             Semantics(
               button: true,
               label: l10n.openDay_navigateWithGoogleSemantic(buildingName),

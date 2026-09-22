@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "entrance",
+      "image": "indoor/1CC_entrance.jpg",
+      "description": "Entrance",
+      "neighbours": []
+    },
+    {
+      "id": "stairs",
+      "image": "indoor/1CC_stairs.jpg",
+      "description": "Stairs",
+      "neighbours": []
+    },
+    {
+      "id": "room-101",
+      "image": "indoor/1CC_room-101.jpg",
+      "description": "Room 101",
+      "neighbours": []
+    },
+    {
+      "id": "room-105",
+      "image": "indoor/1CC_room-105.jpg",
+      "description": "Room 105",
+      "neighbours": []
+    },
+    {
+      "id": "room-106",
+      "image": "indoor/1CC_room-106.jpg",
+      "description": "Room 106",
+      "neighbours": []
+    },
+    {
+      "id": "room-107",
+      "image": "indoor/1CC_room-107.jpg",
+      "description": "Room 107",
+      "neighbours": []
+    },
+    {
+      "id": "lounge-108",
+      "image": "indoor/1CC_lounge-108.jpg",
+      "description": "Lounge 108",
+      "neighbours": []
+    },
+    {
+      "id": "room-109",
+      "image": "indoor/1CC_room-109.jpg",
+      "description": "Room 109",
+      "neighbours": []
+    },
+    {
+      "id": "room-112",
+      "image": "indoor/1CC_room-112.jpg",
+      "description": "Room 112",
+      "neighbours": []
+    },
+    {
+      "id": "room-114",
+      "image": "indoor/1CC_room-114.jpg",
+      "description": "Room 114",
+      "neighbours": []
+    },
+    {
+      "id": "room-115",
+      "image": "indoor/1CC_room-115.jpg",
+      "description": "Room 115",
+      "neighbours": []
+    },
+    {
+      "id": "room-116",
+      "image": "indoor/1CC_room-116.jpg",
+      "description": "Room 116",
+      "neighbours": []
+    }
+  ]
+}
