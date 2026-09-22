@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
@@ -16,44 +18,72 @@ class MqBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = context.isDarkMode;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: dark ? MqColors.charcoal800 : Colors.white,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(MqSpacing.radiusXl),
-        ),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (showHandle)
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  top: MqSpacing.space3,
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 720),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(MqSpacing.radiusXl),
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: dark
+                    ? MqColors.charcoal800.withValues(alpha: 0.92)
+                    : Colors.white.withValues(alpha: 0.92),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(MqSpacing.radiusXl),
                 ),
-                child: Container(
-                  width: 36,
-                  height: 4,
-                  decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
                     color: dark
-                        ? Colors.white.withAlpha(26)
-                        : MqColors.charcoal800.withAlpha(26),
-                    borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
+                        ? Colors.white.withValues(alpha: 0.10)
+                        : Colors.white.withValues(alpha: 0.80),
                   ),
                 ),
               ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(
-                MqSpacing.space5,
-                MqSpacing.space4,
-                MqSpacing.space5,
-                MqSpacing.space6,
+              child: Material(
+                color: Colors.transparent,
+                child: SafeArea(
+                  top: false,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (showHandle)
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            top: MqSpacing.space3,
+                          ),
+                          child: Container(
+                            width: 36,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: dark
+                                  ? Colors.white.withAlpha(45)
+                                  : MqColors.charcoal800.withAlpha(35),
+                              borderRadius: BorderRadius.circular(
+                                MqSpacing.radiusFull,
+                              ),
+                            ),
+                          ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                          MqSpacing.space5,
+                          MqSpacing.space4,
+                          MqSpacing.space5,
+                          MqSpacing.space6,
+                        ),
+                        child: child,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              child: child,
             ),
-          ],
+          ),
         ),
       ),
     );

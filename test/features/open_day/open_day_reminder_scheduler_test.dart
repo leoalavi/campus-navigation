@@ -90,9 +90,9 @@ void main() {
       'schedules a reminder for each future event, lead-time minutes before',
       () async {
         // Arrange — fix `now` so the test isn't time-of-day-flaky.
-        final now = DateTime(2026, 8, 8, 9, 0); // 9:00 AM local on Open Day
-        final eventA = _event(id: 'a', startTime: DateTime(2026, 8, 8, 10, 0));
-        final eventB = _event(id: 'b', startTime: DateTime(2026, 8, 8, 11, 0));
+        final now = DateTime(2027, 8, 14, 9, 0); // 9:00 AM local on Open Day
+        final eventA = _event(id: 'a', startTime: DateTime(2027, 8, 14, 10, 0));
+        final eventB = _event(id: 'b', startTime: DateTime(2027, 8, 14, 11, 0));
 
         // Act
         await scheduler.reschedule(
@@ -106,12 +106,12 @@ void main() {
         expect(fake.scheduled, hasLength(2));
         expect(
           fake.scheduled[0].scheduledFor,
-          DateTime(2026, 8, 8, 9, 45),
+          DateTime(2027, 8, 14, 9, 45),
           reason: '10:00 minus 15 min = 9:45',
         );
         expect(
           fake.scheduled[1].scheduledFor,
-          DateTime(2026, 8, 8, 10, 45),
+          DateTime(2027, 8, 14, 10, 45),
           reason: '11:00 minus 15 min = 10:45',
         );
         // The cancel-except call is what wipes stale reminders; its
@@ -125,16 +125,16 @@ void main() {
     );
 
     test('skips events whose reminder time has already passed', () async {
-      final now = DateTime(2026, 8, 8, 12, 0);
+      final now = DateTime(2027, 8, 14, 12, 0);
       // Reminder for 10:00 event would fire at 9:45 — already in the past.
       final pastEvent = _event(
         id: 'past',
-        startTime: DateTime(2026, 8, 8, 10, 0),
+        startTime: DateTime(2027, 8, 14, 10, 0),
       );
       // Reminder for 13:00 event fires at 12:45 — still in the future.
       final futureEvent = _event(
         id: 'future',
-        startTime: DateTime(2026, 8, 8, 13, 0),
+        startTime: DateTime(2027, 8, 14, 13, 0),
       );
 
       await scheduler.reschedule(
@@ -195,8 +195,8 @@ void main() {
     });
 
     test('lead-time changes shift the scheduled fire time correctly', () async {
-      final now = DateTime(2026, 8, 8, 9, 0);
-      final event = _event(id: 'a', startTime: DateTime(2026, 8, 8, 10, 0));
+      final now = DateTime(2027, 8, 14, 9, 0);
+      final event = _event(id: 'a', startTime: DateTime(2027, 8, 14, 10, 0));
 
       // 30-minute lead — reminder fires at 9:30.
       await scheduler.reschedule(
@@ -205,7 +205,7 @@ void main() {
         selectedBachelor: _bachelor('computing'),
         now: now,
       );
-      expect(fake.scheduled.single.scheduledFor, DateTime(2026, 8, 8, 9, 30));
+      expect(fake.scheduled.single.scheduledFor, DateTime(2027, 8, 14, 9, 30));
 
       // 60-minute lead — reminder fires at 9:00 (at `now`, but `isBefore`
       // is strict so 9:00 == 9:00 still schedules, not skips).
@@ -216,7 +216,7 @@ void main() {
         selectedBachelor: _bachelor('computing'),
         now: now,
       );
-      expect(fake.scheduled.single.scheduledFor, DateTime(2026, 8, 8, 9, 0));
+      expect(fake.scheduled.single.scheduledFor, DateTime(2027, 8, 14, 9, 0));
     });
 
     test(

@@ -3,6 +3,28 @@ import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart
 import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
 
 void main() {
+  group('TfNSW request contract', () {
+    test('anonymous requests use the anon JWT as a Bearer token', () {
+      final headers = tfnswRequestHeaders();
+
+      expect(headers['apikey'], isNotEmpty);
+      expect(headers['Authorization'], 'Bearer ${headers['apikey']}');
+    });
+
+    test('parses real stop results and rejects error payloads', () {
+      final stops = parseTransitStops([
+        {'id': '211310', 'name': 'Macquarie University Station'},
+        {'id': '211340', 'name': 'Macquarie Park Station'},
+      ]);
+
+      expect(stops.map((stop) => stop.id), containsAll(['211310', '211340']));
+      expect(
+        () => parseTransitStops({'error': 'stop_search_unavailable'}),
+        throwsFormatException,
+      );
+    });
+  });
+
   group('dedupeTransitStops', () {
     test(
       'collapses parent station + platform variants into one cleaner entry',

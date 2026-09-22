@@ -90,4 +90,4 @@ listed on the store listing, with a new "last updated" date.
 
 ## Contact
 
-Questions about this policy: **support@campusnavigation.app**
+Questions about this policy: **leo@leoalavi.dev**

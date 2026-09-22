@@ -11,6 +11,7 @@ type Departure = {
 
 type StopSearchResult = {
   id: string;
+  modes?: number[];
   name: string;
 };
 
@@ -164,7 +165,7 @@ async function searchStops({
     signal: AbortSignal.timeout(10000),
   });
   if (!upstream.ok) {
-    return [];
+    throw new Error(`TfNSW stop finder returned ${upstream.status}`);
   }
 
   const payload = await upstream.json() as {
@@ -172,6 +173,8 @@ async function searchStops({
       disassembledName?: string;
       id?: string;
       name?: string;
+      modes?: number[];
+      assignedStops?: Array<{ modes?: number[] }>;
       parent?: { id?: string };
       type?: string;
     }>;
@@ -186,7 +189,9 @@ async function searchStops({
     .map((location) => {
       const id = location.id ?? location.parent?.id ?? "";
       const name = location.disassembledName ?? location.name ?? id;
-      return { id, name };
+      const modes = location.modes ??
+        (location.assignedStops ?? []).flatMap((stop) => stop.modes ?? []);
+      return { id, modes, name };
     })
     .filter((stop) => stop.id.length > 0 && stop.name.length > 0)
     .filter((stop) => stopMatchesMode(stop, mode))
@@ -197,7 +202,8 @@ async function searchStops({
       seenIds.add(stop.id);
       return true;
     })
-    .slice(0, 8);
+    .slice(0, 8)
+    .map(({ id, name }) => ({ id, name }));
 }
 
 function stopMatchesMode(
@@ -208,6 +214,13 @@ function stopMatchesMode(
     return true;
   }
 
+  const requestedMode = Number(modeToMotType(mode));
+  if ((stop.modes ?? []).length > 0) {
+    return stop.modes!.includes(requestedMode);
+  }
+
+  // Older TfNSW records occasionally omit `modes`. Keep a conservative
+  // naming fallback for those records instead of discarding valid stops.
   const name = stop.name.toLowerCase();
   if (mode === "metro" || mode === "train") {
     return name.includes("station");
@@ -228,10 +241,13 @@ Deno.serve(async (req) => {
     return cors;
   }
 
+  const isStopSearch = new URL(req.url).searchParams.get("action") ===
+    "stop-search";
+
   try {
     const apiKey = getEnvOrThrow("TFNSW_API_KEY");
     const url = new URL(req.url);
-    if (url.searchParams.get("action") === "stop-search") {
+    if (isStopSearch) {
       const stops = await searchStops({
         apiKey,
         mode: normalizeMode(url.searchParams.get("mode")),
@@ -409,12 +425,15 @@ Deno.serve(async (req) => {
       },
     });
   } catch (_error) {
-    return new Response(JSON.stringify([]), {
-      headers: {
-        ...jsonCorsHeaders(req, { allowedOrigins }),
-        "Content-Type": "application/json",
+    return new Response(
+      JSON.stringify(isStopSearch ? { error: "stop_search_unavailable" } : []),
+      {
+        headers: {
+          ...jsonCorsHeaders(req, { allowedOrigins }),
+          "Content-Type": "application/json",
+        },
+        status: isStopSearch ? 502 : 200,
       },
-      status: 200,
-    });
+    );
   }
 });

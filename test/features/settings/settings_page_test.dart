@@ -77,7 +77,7 @@ void main() {
         selectedBachelorProvider.overrideWithValue(null),
         openDayDataProvider.overrideWith(
           (ref) async => OpenDayData(
-            openDayDate: DateTime(2026, 8, 22),
+            openDayDate: DateTime(2027, 8, 14),
             lastUpdated: DateTime.now(),
             studyAreas: const [],
             bachelors: const [],
@@ -137,6 +137,93 @@ void main() {
       expect(find.text(l10n.notifications.toUpperCase()), findsOneWidget);
       expect(find.text(l10n.about.toUpperCase()), findsOneWidget);
       expect(find.text(l10n.dangerZone.toUpperCase()), findsOneWidget);
+    });
+
+    testWidgets('About shows subtle Syllabus Sync ecosystem attribution', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(390, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      await tester.pumpWidget(buildTestApp());
+      await tester.pumpAndSettle();
+      final title = find.text('Part of the Syllabus Sync ecosystem');
+      await tester.scrollUntilVisible(title, 500);
+      await tester.pumpAndSettle();
+
+      expect(title, findsOneWidget);
+      expect(
+        find.text('Campus Navigation is part of the Syllabus Sync ecosystem.'),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('about-syllabus-sync-logo')),
+        findsOneWidget,
+      );
+      expect(find.text('Campus Navigation'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('puts Main Transport before the commute summary', (
+      tester,
+    ) async {
+      setupLargeViewport(tester);
+      await tester.pumpWidget(buildTestApp());
+      await tester.pumpAndSettle();
+
+      final transport = find.byKey(
+        const ValueKey('commute-main-transport-card'),
+      );
+      final summary = find.byKey(const ValueKey('commute-summary-card'));
+      expect(transport, findsOneWidget);
+      expect(summary, findsOneWidget);
+      expect(
+        tester.getTopLeft(transport).dy,
+        lessThan(tester.getTopLeft(summary).dy),
+      );
+    });
+
+    testWidgets('preferred-stop search shows and selects real results', (
+      tester,
+    ) async {
+      setupLargeViewport(tester);
+      when(
+        () => mockSettingsRepository.loadPreferences(),
+      ).thenAnswer((_) async => const UserPreferences(commuteMode: 'metro'));
+      await tester.pumpWidget(buildTestApp());
+      await tester.pumpAndSettle();
+
+      final BuildContext context = tester.element(find.byType(SettingsPage));
+      final l10n = AppLocalizations.of(context)!;
+      final preferredStop = find.text(l10n.favoriteStopIdLabel);
+      await tester.ensureVisible(preferredStop);
+      await tester.tap(preferredStop);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextFormField).last, 'Macquarie');
+      await tester.pump(const Duration(milliseconds: 350));
+      await tester.pumpAndSettle();
+      expect(find.text('Macquarie University Station'), findsOneWidget);
+
+      await tester.tap(find.text('Macquarie University Station'));
+      await tester.pumpAndSettle();
+      verify(
+        () => mockSettingsRepository.savePreferences(
+          any(
+            that: isA<UserPreferences>()
+                .having((p) => p.favoriteStopId, 'favoriteStopId', '10101403')
+                .having(
+                  (p) => p.favoriteStopName,
+                  'favoriteStopName',
+                  'Macquarie University Station',
+                ),
+          ),
+        ),
+      ).called(1);
     });
 
     // Campus Navigation has no accounts: Settings must offer no sign-in,

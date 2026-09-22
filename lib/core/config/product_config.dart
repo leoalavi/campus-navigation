@@ -27,9 +27,14 @@ abstract final class ProductConfig {
 
   /// Support address shown in-app and submitted as the store support contact.
   ///
-  /// Deliberately a product address rather than a personal or university one,
-  /// so support can be handed over without changing the store listings.
-  static const String supportEmail = 'support@campusnavigation.app';
+  static const String supportEmail = 'leo@leoalavi.dev';
+
+  /// Secondary ecosystem attribution shown only in Settings → About.
+  static const String ecosystemTitle = 'Part of the Syllabus Sync ecosystem';
+  static const String ecosystemDescription =
+      'Campus Navigation is part of the Syllabus Sync ecosystem.';
+  static const String ecosystemIntegrationDescription =
+      'Built to work seamlessly with Syllabus Sync through shared navigation and deep-linking.';
 
   /// Canonical privacy-policy URL.
   ///

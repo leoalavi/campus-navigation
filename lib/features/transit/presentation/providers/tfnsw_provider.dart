@@ -57,6 +57,22 @@ final tfnswStopSearchProvider = FutureProvider.autoDispose
       return _searchStops(mode: search.mode, query: search.query);
     });
 
+/// Edge Functions with JWT verification enabled still require an
+/// `Authorization` header for an anonymous client. Campus Navigation has no
+/// account flow, so the public anon JWT is the correct fallback token.
+///
+/// Keeping this in one helper prevents stop search and departures from
+/// drifting apart again and makes the anonymous request contract testable.
+Map<String, String> tfnswRequestHeaders({String? accessToken}) {
+  final bearer = accessToken?.trim().isNotEmpty == true
+      ? accessToken!.trim()
+      : EnvConfig.supabaseAnonKey;
+  return {
+    'Authorization': 'Bearer $bearer',
+    'apikey': EnvConfig.supabaseAnonKey,
+  };
+}
+
 Future<List<MetroDeparture>> _fetchDepartures({
   required String favoriteDirection,
   required String favoriteRoute,
@@ -80,10 +96,7 @@ Future<List<MetroDeparture>> _fetchDepartures({
       Uri.parse(
         '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
       ).replace(queryParameters: query),
-      headers: {
-        if (token != null) 'Authorization': 'Bearer $token',
-        'apikey': EnvConfig.supabaseAnonKey,
-      },
+      headers: tfnswRequestHeaders(accessToken: token),
     );
 
     if (response.statusCode != 200) {
@@ -117,27 +130,33 @@ Future<List<TransitStop>> _searchStops({
       Uri.parse('${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy').replace(
         queryParameters: {'action': 'stop-search', 'mode': mode, 'q': trimmed},
       ),
-      headers: {
-        if (token != null) 'Authorization': 'Bearer $token',
-        'apikey': EnvConfig.supabaseAnonKey,
-      },
+      headers: tfnswRequestHeaders(accessToken: token),
     );
 
     if (response.statusCode != 200) {
-      return const [];
+      throw StateError('TfNSW stop search failed (${response.statusCode})');
     }
 
     final dynamic decoded = jsonDecode(response.body);
-    final list = (decoded as List<dynamic>)
-        .whereType<Map<String, dynamic>>()
-        .map(TransitStop.fromJson)
-        .where((stop) => stop.id.isNotEmpty && stop.name.isNotEmpty)
-        .toList();
-    return dedupeTransitStops(list);
+    return parseTransitStops(decoded);
   } catch (error, stackTrace) {
     AppLogger.warning('TfNSW stop search failed', error, stackTrace);
-    return const [];
+    rethrow;
   }
+}
+
+/// Parses the proxy payload while preserving a distinction between a valid
+/// empty result and a malformed/error response.
+List<TransitStop> parseTransitStops(dynamic decoded) {
+  if (decoded is! List<dynamic>) {
+    throw const FormatException('TfNSW stop search response is not a list');
+  }
+  final stops = decoded
+      .whereType<Map<String, dynamic>>()
+      .map(TransitStop.fromJson)
+      .where((stop) => stop.id.isNotEmpty && stop.name.isNotEmpty)
+      .toList();
+  return dedupeTransitStops(stops);
 }
 
 /// TfNSW returns the parent station and each platform stop as separate

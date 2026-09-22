@@ -8,7 +8,7 @@ no affiliation is implied, and no web version is advertised.
 | App name | Campus Navigation |
 | Developer / publisher | Leo Alavi and Mohammad Raouf Abedini |
 | Copyright | © 2026 Leo Alavi and Mohammad Raouf Abedini |
-| Support email | support@campusnavigation.app |
+| Support email | leo@leoalavi.dev |
 | Privacy policy URL | *pending* — see `ProductConfig.privacyPolicyUrl` |
 | Category | Navigation (secondary: Travel) |
 | Platforms | iOS, Android |

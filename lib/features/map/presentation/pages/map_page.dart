@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -837,6 +838,10 @@ class _CategoryBuildingList extends StatelessWidget {
     final validBuildings = buildings
         .where((b) => b.latitude != null && b.longitude != null)
         .toList();
+    final maxPanelHeight = math.min(
+      420.0,
+      MediaQuery.sizeOf(context).height * 0.52,
+    );
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
@@ -849,7 +854,8 @@ class _CategoryBuildingList extends StatelessWidget {
           sigmaY: MqSpacing.space3,
         ),
         child: Container(
-          constraints: const BoxConstraints(maxHeight: 240),
+          key: const ValueKey('compact-category-bottom-sheet'),
+          constraints: BoxConstraints(maxHeight: maxPanelHeight),
           decoration: BoxDecoration(
             color: isDark
                 ? MqColors.charcoal800.withValues(alpha: 0.94)
@@ -945,7 +951,9 @@ class _CategoryBuildingList extends StatelessWidget {
 
               // Building list
               Flexible(
+                fit: FlexFit.loose,
                 child: ListView.separated(
+                  shrinkWrap: true,
                   padding: const EdgeInsetsDirectional.fromSTEB(
                     MqSpacing.space2,
                     0,
@@ -1066,6 +1074,10 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
     final isDark = context.isDarkMode;
     final l10n = AppLocalizations.of(context)!;
     final countsByGroup = countByGroup;
+    final maxPanelHeight = math.min(
+      420.0,
+      MediaQuery.sizeOf(context).height * 0.52,
+    );
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
@@ -1078,7 +1090,8 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
           sigmaY: MqSpacing.space3,
         ),
         child: Container(
-          constraints: const BoxConstraints(maxHeight: 360),
+          key: const ValueKey('compact-category-group-bottom-sheet'),
+          constraints: BoxConstraints(maxHeight: maxPanelHeight),
           decoration: BoxDecoration(
             color: isDark
                 ? MqColors.charcoal800.withValues(alpha: 0.94)
@@ -1162,7 +1175,9 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
 
               // One row per sub-group
               Flexible(
+                fit: FlexFit.loose,
                 child: ListView.separated(
+                  shrinkWrap: true,
                   padding: const EdgeInsetsDirectional.fromSTEB(
                     MqSpacing.space2,
                     0,

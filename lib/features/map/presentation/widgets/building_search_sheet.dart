@@ -164,11 +164,11 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
 
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: 0.5,
-      minChildSize: 0.15,
-      maxChildSize: 0.9,
+      initialChildSize: 0.34,
+      minChildSize: 0.20,
+      maxChildSize: 0.88,
       snap: true,
-      snapSizes: const <double>[0.15, 0.5, 0.9],
+      snapSizes: const <double>[0.20, 0.34, 0.88],
       builder: (context, scrollController) {
         return Material(
           color: isDark ? MqColors.charcoal800 : null,

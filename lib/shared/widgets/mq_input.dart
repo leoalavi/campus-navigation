@@ -11,10 +11,12 @@ class MqInput extends StatelessWidget {
     this.suffixIcon,
     this.obscureText = false,
     this.keyboardType,
+    this.textInputAction,
     this.autofillHints,
     this.validator,
     this.onChanged,
     this.enabled = true,
+    this.autofocus = false,
     this.maxLines = 1,
   });
 
@@ -25,10 +27,12 @@ class MqInput extends StatelessWidget {
   final Widget? suffixIcon;
   final bool obscureText;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
   final Iterable<String>? autofillHints;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
   final bool enabled;
+  final bool autofocus;
   final int maxLines;
 
   @override
@@ -43,10 +47,12 @@ class MqInput extends StatelessWidget {
       ),
       obscureText: obscureText,
       keyboardType: keyboardType,
+      textInputAction: textInputAction,
       autofillHints: autofillHints,
       validator: validator,
       onChanged: onChanged,
       enabled: enabled,
+      autofocus: autofocus,
       maxLines: maxLines,
     );
   }

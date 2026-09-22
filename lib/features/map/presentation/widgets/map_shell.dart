@@ -180,7 +180,7 @@ class MapShell extends StatelessWidget {
                           -
                       MqSpacing.space2, // footer bottom padding
                 ),
-                child: footerWidget,
+                child: _AnimatedMapFooter(child: footerWidget),
               ),
             ),
           ),
@@ -211,6 +211,31 @@ class MapShell extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Gives in-map panels the same upward entrance as a native modal sheet while
+/// keeping them in the map stack (so filters and map state stay live behind it).
+class _AnimatedMapFooter extends StatelessWidget {
+  const _AnimatedMapFooter({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 280),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) => Opacity(
+        opacity: value,
+        child: Transform.translate(
+          offset: Offset(0, 32 * (1 - value)),
+          child: child,
+        ),
+      ),
+      child: child,
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
@@ -347,15 +349,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   // are the ones that most directly change what the
                   // user sees on the Home screen (Metro Countdown).
                   _SectionHeader(title: l10n.commutePreferences),
-                  _CommutePreviewTile(
-                    direction: preferences.favoriteDirection,
-                    mode: preferences.commuteMode,
-                    route: preferences.favoriteRoute,
-                    stopId: preferences.favoriteStopId,
-                    stopName: preferences.favoriteStopName,
-                    l10n: l10n,
-                  ),
                   _SettingsCard(
+                    key: const ValueKey('commute-main-transport-card'),
                     children: [
                       _TapRow(
                         icon: Icons.commute_outlined,
@@ -459,6 +454,16 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           ),
                         ),
                     ],
+                  ),
+                  const SizedBox(height: MqSpacing.space3),
+                  _CommutePreviewTile(
+                    key: const ValueKey('commute-summary-card'),
+                    direction: preferences.favoriteDirection,
+                    mode: preferences.commuteMode,
+                    route: preferences.favoriteRoute,
+                    stopId: preferences.favoriteStopId,
+                    stopName: preferences.favoriteStopName,
+                    l10n: l10n,
                   ),
                   const SizedBox(height: MqSpacing.space6),
 
@@ -636,6 +641,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         label: l10n.about_developedBy,
                         subtitle: ProductConfig.developersLine,
                       ),
+                      const _EcosystemInfoRow(),
                       _InfoRow(
                         icon: Icons.copyright_outlined,
                         label: l10n.about_copyrightLabel,
@@ -894,11 +900,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     required String mode,
     required WidgetRef ref,
   }) async {
+    final preferences = ref.read(settingsControllerProvider).value;
     final selected = await showModalBottomSheet<TransitStop>(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => _StopSearchSheet(mode: mode),
+      builder: (_) => _StopSearchSheet(
+        mode: mode,
+        currentStop: TransitStop(
+          id: preferences?.favoriteStopId ?? '',
+          name: preferences?.favoriteStopName ?? '',
+        ),
+      ),
     );
     if (selected != null && context.mounted) {
       final message = await ref
@@ -1122,16 +1135,18 @@ class _PickerItem<T> {
 }
 
 class _StopSearchSheet extends ConsumerStatefulWidget {
-  const _StopSearchSheet({required this.mode});
+  const _StopSearchSheet({required this.mode, required this.currentStop});
 
   @override
   ConsumerState<_StopSearchSheet> createState() => _StopSearchSheetState();
 
   final String mode;
+  final TransitStop currentStop;
 }
 
 class _StopSearchSheetState extends ConsumerState<_StopSearchSheet> {
   late final TextEditingController _controller;
+  Timer? _debounce;
   String _query = '';
 
   @override
@@ -1142,6 +1157,7 @@ class _StopSearchSheetState extends ConsumerState<_StopSearchSheet> {
 
   @override
   void dispose() {
+    _debounce?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -1172,9 +1188,11 @@ class _StopSearchSheetState extends ConsumerState<_StopSearchSheet> {
         mediaQuery.size.height -
         mediaQuery.padding.top -
         mediaQuery.padding.bottom;
-    final sheetHeight = (usableHeight * 0.72 - mediaQuery.viewInsets.bottom)
-        .clamp(220.0, usableHeight * 0.72)
-        .toDouble();
+    final targetFraction = trimmedQuery.length < 2 ? 0.54 : 0.72;
+    final sheetHeight =
+        (usableHeight * targetFraction - mediaQuery.viewInsets.bottom)
+            .clamp(340.0, usableHeight * targetFraction)
+            .toDouble();
 
     final sheet = AnimatedPadding(
       duration: const Duration(milliseconds: 180),
@@ -1198,80 +1216,96 @@ class _StopSearchSheetState extends ConsumerState<_StopSearchSheet> {
                 hint: l10n.favoriteStopIdHint,
                 label: l10n.favoriteStopSearchLabel,
                 prefixIcon: Icons.search_rounded,
-                onChanged: (value) => setState(() => _query = value),
+                autofocus: true,
+                textInputAction: TextInputAction.search,
+                onChanged: (value) {
+                  _debounce?.cancel();
+                  final normalized = value.trim();
+                  if (normalized.length < 2) {
+                    setState(() => _query = normalized);
+                    return;
+                  }
+                  _debounce = Timer(const Duration(milliseconds: 300), () {
+                    if (mounted) setState(() => _query = normalized);
+                  });
+                },
               ),
               const SizedBox(height: MqSpacing.space4),
               Expanded(
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 160),
-                  // Pin results to the top of the available area —
-                  // AnimatedSwitcher's default layoutBuilder uses
-                  // `Stack(alignment: Alignment.center)`, which was
-                  // pushing short result lists to the middle of the
-                  // sheet, leaving an awkward gap below the search
-                  // field. A topCenter Stack makes results appear
-                  // directly under the input regardless of count.
-                  layoutBuilder: (currentChild, previousChildren) {
-                    return Stack(
-                      alignment: Alignment.topCenter,
-                      children: <Widget>[...previousChildren, ?currentChild],
-                    );
-                  },
-                  child: trimmedQuery.length < 2
-                      ? _StopSearchMessage(text: l10n.favoriteStopSearchPrompt)
-                      : searchResults.when(
-                          data: (stops) {
-                            if (stops.isEmpty) {
-                              return _StopSearchMessage(
-                                text: l10n.favoriteStopSearchEmpty,
-                              );
-                            }
-                            return ListView.separated(
+                child: trimmedQuery.length < 2
+                    ? widget.currentStop.id.isEmpty
+                          ? _StopSearchMessage(
+                              text: l10n.favoriteStopSearchPrompt,
+                            )
+                          : ListView(
+                              key: const ValueKey('current-preferred-stop'),
                               shrinkWrap: true,
-                              itemCount: stops.length,
-                              separatorBuilder: (_, _) =>
-                                  const Divider(height: 1),
-                              itemBuilder: (context, index) {
-                                final stop = stops[index];
-                                return ListTile(
+                              children: [
+                                ListTile(
                                   leading: Icon(
                                     _stopIcon(widget.mode),
                                     color: MqColors.red,
                                   ),
                                   title: Text(
-                                    stop.name,
-                                    style: context.textTheme.titleSmall
-                                        ?.copyWith(
-                                          color: dark
-                                              ? Colors.white
-                                              : MqColors.contentPrimary,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                    widget.currentStop.name.isEmpty
+                                        ? widget.currentStop.id
+                                        : widget.currentStop.name,
                                   ),
-                                  subtitle: Text(
-                                    stop.id,
-                                    style: context.textTheme.bodySmall
-                                        ?.copyWith(
-                                          color: dark
-                                              ? MqColors.contentSecondaryDark
-                                              : MqColors.contentSecondary,
-                                        ),
-                                  ),
-                                  onTap: () => Navigator.pop(context, stop),
-                                );
-                              },
+                                  subtitle: Text(widget.currentStop.id),
+                                  trailing: const Icon(Icons.check_rounded),
+                                ),
+                                _StopSearchMessage(
+                                  text: l10n.favoriteStopSearchPrompt,
+                                ),
+                              ],
+                            )
+                    : searchResults.when(
+                        data: (stops) {
+                          if (stops.isEmpty) {
+                            return _StopSearchMessage(
+                              text: l10n.favoriteStopSearchEmpty,
                             );
-                          },
-                          error: (_, _) => _StopSearchMessage(
-                            text: l10n.favoriteStopSearchError,
-                          ),
-                          loading: () => const Center(
-                            child: CircularProgressIndicator(
-                              color: MqColors.red,
-                            ),
-                          ),
+                          }
+                          return ListView.separated(
+                            itemCount: stops.length,
+                            separatorBuilder: (_, _) =>
+                                const Divider(height: 1),
+                            itemBuilder: (context, index) {
+                              final stop = stops[index];
+                              return ListTile(
+                                leading: Icon(
+                                  _stopIcon(widget.mode),
+                                  color: MqColors.red,
+                                ),
+                                title: Text(
+                                  stop.name,
+                                  style: context.textTheme.titleSmall?.copyWith(
+                                    color: dark
+                                        ? Colors.white
+                                        : MqColors.contentPrimary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  stop.id,
+                                  style: context.textTheme.bodySmall?.copyWith(
+                                    color: dark
+                                        ? MqColors.contentSecondaryDark
+                                        : MqColors.contentSecondary,
+                                  ),
+                                ),
+                                onTap: () => Navigator.pop(context, stop),
+                              );
+                            },
+                          );
+                        },
+                        error: (_, _) => _StopSearchMessage(
+                          text: l10n.favoriteStopSearchError,
                         ),
-                ),
+                        loading: () => const Center(
+                          child: CircularProgressIndicator(color: MqColors.red),
+                        ),
+                      ),
               ),
               const SizedBox(height: MqSpacing.space3),
               Row(
@@ -1606,7 +1640,7 @@ class _OpenDaySection extends ConsumerWidget {
 
 /// Charcoal card container with subtle border, matching the reference.
 class _SettingsCard extends StatelessWidget {
-  const _SettingsCard({required this.children});
+  const _SettingsCard({super.key, required this.children});
 
   final List<Widget> children;
 
@@ -1912,12 +1946,84 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
+/// Subtle secondary-brand attribution used only in Settings → About.
+class _EcosystemInfoRow extends StatelessWidget {
+  const _EcosystemInfoRow();
+
+  static const logoAsset = 'assets/images/syllabus_sync_logo.png';
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = context.isDarkMode;
+    return Semantics(
+      container: true,
+      label:
+          '${ProductConfig.ecosystemTitle}. '
+          '${ProductConfig.ecosystemDescription} '
+          '${ProductConfig.ecosystemIntegrationDescription}',
+      child: Padding(
+        padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(MqSpacing.radiusSm),
+              child: Image.asset(
+                logoAsset,
+                key: const ValueKey('about-syllabus-sync-logo'),
+                width: 36,
+                height: 36,
+                fit: BoxFit.contain,
+                semanticLabel: 'Syllabus Sync logo',
+              ),
+            ),
+            const SizedBox(width: MqSpacing.space4),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ProductConfig.ecosystemTitle,
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: dark ? Colors.white : MqColors.contentPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: MqSpacing.space1),
+                  Text(
+                    ProductConfig.ecosystemDescription,
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: dark
+                          ? Colors.white.withValues(alpha: 0.72)
+                          : MqColors.slate500,
+                    ),
+                  ),
+                  const SizedBox(height: MqSpacing.space1),
+                  Text(
+                    ProductConfig.ecosystemIntegrationDescription,
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: dark
+                          ? Colors.white.withValues(alpha: 0.62)
+                          : MqColors.contentSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// Compact summary tile that sits at the top of the Commute Preferences
 /// section. Exists primarily so the user understands that the preferences
 /// below aren't cosmetic — they directly drive the Metro Countdown card
 /// on the Home screen.
 class _CommutePreviewTile extends StatelessWidget {
   const _CommutePreviewTile({
+    super.key,
     required this.direction,
     required this.mode,
     required this.route,

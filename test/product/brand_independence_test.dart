@@ -86,6 +86,20 @@ void main() {
       isNot(contains('university')),
     );
     expect(ProductConfig.supportEmail, isNot(contains('mq.edu.au')));
+    expect(ProductConfig.supportEmail, 'leo@leoalavi.dev');
+  });
+
+  test('retired support address is absent from public product files', () {
+    final offenders = <String>[];
+    for (final file in [
+      ...filesUnder('lib', {'.dart', '.arb'}),
+      ...filesUnder('docs', {'.md'}),
+    ]) {
+      if (file.readAsStringSync().contains('support@campusnavigation.app')) {
+        offenders.add(file.path);
+      }
+    }
+    expect(offenders, isEmpty, reason: offenders.join('\n'));
   });
 
   group('no authentication surface', () {
@@ -156,5 +170,18 @@ void main() {
       }
     }
     expect(offenders, isEmpty, reason: offenders.take(5).join('\n'));
+  });
+
+  test('Syllabus Sync logo is referenced only by the About row', () {
+    final references = <String>[];
+    for (final file in filesUnder('lib', {'.dart'})) {
+      final text = file.readAsStringSync();
+      if (text.contains('assets/images/syllabus_sync_logo.png')) {
+        references.add(file.path);
+      }
+    }
+    expect(references, hasLength(1));
+    expect(references.single, endsWith('settings_page.dart'));
+    expect(ProductConfig.appName, 'Campus Navigation');
   });
 }
