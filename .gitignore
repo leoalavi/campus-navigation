@@ -74,6 +74,9 @@ android/secrets.properties
 # Flutter plugins file
 .flutter-plugins
 
+# Supabase CLI local state (project ref, pooler URL, cached versions)
+supabase/.temp/
+
 # Codex desktop workspace metadata
 .codex/
 logs/
