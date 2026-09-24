@@ -11,8 +11,10 @@ We maintain a strict quality gate to ensure campus-ready stability.
     ```
 
 ## Definition of Done
-- All **154 tests** pass.
-- No new linter warnings in `lib/`.
+- `./scripts/check.sh --quick` passes: formatting, analysis, the full test suite,
+  localisation generation, and the privacy and secret-scan guards.
+- CI is green: it also runs `dart analyze` on `lib/`, `test/` and `tools/`, and
+  `deno check` on the Supabase Edge Functions.
 - `CONTRIBUTING.md` and `README.md` updated if feature surface changes.
 - RTL layout verified for Arabic (ar) and Farsi (fa) locales.
 
