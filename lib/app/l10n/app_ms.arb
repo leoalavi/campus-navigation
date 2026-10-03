@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Lencana diperoleh!",
-  "scanBadgeVisited": "Dilawati"
+  "scanBadgeVisited": "Dilawati",
+  "openDay_enable": "Tunjukkan Hari Terbuka",
+  "openDay_enableSemantic": "Tunjukkan jadual Hari Terbuka, tab Imbas dan peringatan",
+  "openDay_finishedTitle": "Hari Terbuka ini telah tamat",
+  "openDay_finishedBody": "Sesi Hari Terbuka seterusnya akan dipaparkan di sini sebaik sahaja diumumkan.",
+  "openDay_programPending": "Program sesi Hari Terbuka ini belum diterbitkan. Sesi akan dipaparkan di sini sebaik sahaja diumumkan."
 }

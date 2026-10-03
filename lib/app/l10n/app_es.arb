@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "¡Insignia obtenida!",
-  "scanBadgeVisited": "Visitado"
+  "scanBadgeVisited": "Visitado",
+  "openDay_enable": "Mostrar Jornada de Puertas Abiertas",
+  "openDay_enableSemantic": "Mostrar el programa, la pestaña Escanear y los recordatorios de la Jornada de Puertas Abiertas",
+  "openDay_finishedTitle": "Esta Jornada de Puertas Abiertas ha terminado",
+  "openDay_finishedBody": "Las sesiones de la próxima Jornada aparecerán aquí cuando se anuncien.",
+  "openDay_programPending": "El programa de sesiones de esta Jornada de Puertas Abiertas aún no se ha publicado. Las sesiones aparecerán aquí cuando se anuncie."
 }

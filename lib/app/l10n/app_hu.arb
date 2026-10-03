@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Jelvényt szerzett!",
-  "scanBadgeVisited": "Meglátogatva"
+  "scanBadgeVisited": "Meglátogatva",
+  "openDay_enable": "Nyílt nap megjelenítése",
+  "openDay_enableSemantic": "A nyílt nap programjának, a Beolvasás lapnak és az emlékeztetőknek a megjelenítése",
+  "openDay_finishedTitle": "Ez a nyílt nap véget ért",
+  "openDay_finishedBody": "A következő nyílt nap programja itt jelenik meg, amint meghirdetik.",
+  "openDay_programPending": "Ennek a nyílt napnak a programja még nem jelent meg. Az előadások itt jelennek meg, amint meghirdetik."
 }

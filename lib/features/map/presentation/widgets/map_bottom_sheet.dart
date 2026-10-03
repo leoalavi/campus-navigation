@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:campus_navigation/app/theme/mq_colors.dart';
 import 'package:campus_navigation/app/theme/mq_spacing.dart';
 
@@ -13,13 +14,15 @@ import 'package:campus_navigation/app/theme/mq_spacing.dart';
 /// Behaviour mirrors the platform maps apps:
 ///   * flush to the bottom edge, rounded top corners only;
 ///   * opens at a compact height and can be dragged up to [_expandedFraction]
-///     or back down;
+///     or back down. These are *caps*: a panel with less content (a selected
+///     building's name and code) gets a sheet that fits it rather than a
+///     mostly empty 38% slab, while long lists still open compact and scroll;
 ///   * the child owns its own scrolling — the drag gesture lives on the
 ///     handle/header band, so dragging the sheet never fights a ListView
 ///     inside it (the nested-scroll trap `DraggableScrollableSheet` sets when
 ///     its controller isn't threaded into the child);
-///   * height is reported through [onHeightChanged] so the map's floating
-///     corner buttons can ride above it.
+///   * the *rendered* height is reported through [onHeightChanged] so the
+///     map's floating corner buttons ride exactly above its top edge.
 class MapBottomSheet extends StatefulWidget {
   const MapBottomSheet({
     super.key,
@@ -52,17 +55,34 @@ class _MapBottomSheetState extends State<MapBottomSheet>
   late double _fraction = MapBottomSheet.collapsedFraction;
   double _dragStartFraction = MapBottomSheet.collapsedFraction;
 
-  void _reportHeight(double available) {
+  /// Height the sheet actually rendered at (≤ the fraction cap when the
+  /// content is shorter). Drives the floating controls and drag start.
+  double _renderedHeight = 0;
+
+  void _onRendered(Size size) {
+    if (size.height == _renderedHeight) return;
+    _renderedHeight = size.height;
     final onHeightChanged = widget.onHeightChanged;
     if (onHeightChanged == null) return;
-    // Deferred: this fires during layout, and the listener repositions other
-    // widgets in the same frame.
+    // Deferred: reported from layout, and the listener repositions other
+    // widgets.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) onHeightChanged(_fraction * available);
+      if (mounted) onHeightChanged(_renderedHeight);
     });
   }
 
-  void _onDragStart(DragStartDetails _) => _dragStartFraction = _fraction;
+  void _onDragStart(DragStartDetails _, double available) {
+    // Start from what the user sees: a content-sized sheet is shorter than
+    // its cap, and dragging should move it immediately, not after the
+    // finger has covered the invisible gap up to the cap.
+    if (available > 0 && _renderedHeight > 0) {
+      _fraction = (_renderedHeight / available).clamp(
+        MapBottomSheet._minFraction,
+        MapBottomSheet._expandedFraction,
+      );
+    }
+    _dragStartFraction = _fraction;
+  }
 
   void _onDragUpdate(DragUpdateDetails details, double available) {
     if (available <= 0) return;
@@ -98,7 +118,6 @@ class _MapBottomSheetState extends State<MapBottomSheet>
       );
     }
     setState(() => _fraction = target);
-    _reportHeight(available);
   }
 
   @override
@@ -107,92 +126,123 @@ class _MapBottomSheetState extends State<MapBottomSheet>
     // Space between the top of the screen and the bottom edge, minus the
     // status bar — the sheet may use a fraction of this, never more.
     final available = media.size.height - media.padding.top;
-    _reportHeight(available);
 
-    final height = _fraction * available;
+    final maxHeight = _fraction * available;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 220),
       curve: Curves.easeOutCubic,
-      height: height,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(MqSpacing.radiusXl),
-        ),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: widget.isDark
-                  ? MqColors.charcoal800.withValues(alpha: 0.92)
-                  : Colors.white.withValues(alpha: 0.92),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(MqSpacing.radiusXl),
-              ),
-              border: Border(
-                top: BorderSide(
-                  color: widget.isDark
-                      ? Colors.white.withValues(alpha: 0.10)
-                      : Colors.white.withValues(alpha: 0.80),
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: _SizeReporter(
+        onSize: _onRendered,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(MqSpacing.radiusXl),
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: widget.isDark
+                    ? MqColors.charcoal800.withValues(alpha: 0.92)
+                    : Colors.white.withValues(alpha: 0.92),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(MqSpacing.radiusXl),
                 ),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: MqColors.charcoal800.withValues(
-                    alpha: widget.isDark ? 0.34 : 0.12,
+                border: Border(
+                  top: BorderSide(
+                    color: widget.isDark
+                        ? Colors.white.withValues(alpha: 0.10)
+                        : Colors.white.withValues(alpha: 0.80),
                   ),
-                  blurRadius: 22,
-                  offset: const Offset(0, -6),
                 ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  // Drag band. Owns the vertical gesture so the list below
-                  // keeps its own scrolling intact.
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onVerticalDragStart: _onDragStart,
-                    onVerticalDragUpdate: (d) => _onDragUpdate(d, available),
-                    onVerticalDragEnd: (d) => _onDragEnd(d, available),
-                    child: Semantics(
-                      label: 'Drag to resize',
-                      child: SizedBox(
-                        height: 28,
-                        width: double.infinity,
-                        child: Center(
-                          child: Container(
-                            key: const ValueKey('map-sheet-drag-handle'),
-                            width: 36,
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: widget.isDark
-                                  ? Colors.white.withAlpha(45)
-                                  : MqColors.charcoal800.withAlpha(35),
-                              borderRadius: BorderRadius.circular(
-                                MqSpacing.radiusFull,
+                boxShadow: [
+                  BoxShadow(
+                    color: MqColors.charcoal800.withValues(
+                      alpha: widget.isDark ? 0.34 : 0.12,
+                    ),
+                    blurRadius: 22,
+                    offset: const Offset(0, -6),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Drag band. Owns the vertical gesture so the list below
+                    // keeps its own scrolling intact.
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onVerticalDragStart: (d) => _onDragStart(d, available),
+                      onVerticalDragUpdate: (d) => _onDragUpdate(d, available),
+                      onVerticalDragEnd: (d) => _onDragEnd(d, available),
+                      child: Semantics(
+                        label: 'Drag to resize',
+                        child: SizedBox(
+                          height: 28,
+                          width: double.infinity,
+                          child: Center(
+                            child: Container(
+                              key: const ValueKey('map-sheet-drag-handle'),
+                              width: 36,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: widget.isDark
+                                    ? Colors.white.withAlpha(45)
+                                    : MqColors.charcoal800.withAlpha(35),
+                                borderRadius: BorderRadius.circular(
+                                  MqSpacing.radiusFull,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: MediaQuery.removePadding(
-                      context: context,
-                      removeTop: true,
-                      child: widget.child,
+                    // Loose: the panel may be shorter than the cap.
+                    Flexible(
+                      child: MediaQuery.removePadding(
+                        context: context,
+                        removeTop: true,
+                        child: widget.child,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+/// Reports its child's laid-out size after every layout that changes it.
+class _SizeReporter extends SingleChildRenderObjectWidget {
+  const _SizeReporter({required this.onSize, required super.child});
+
+  final ValueChanged<Size> onSize;
+
+  @override
+  _RenderSizeReporter createRenderObject(BuildContext context) =>
+      _RenderSizeReporter(onSize);
+
+  @override
+  void updateRenderObject(BuildContext context, _RenderSizeReporter r) =>
+      r.onSize = onSize;
+}
+
+class _RenderSizeReporter extends RenderProxyBox {
+  _RenderSizeReporter(this.onSize);
+
+  ValueChanged<Size> onSize;
+
+  @override
+  void performLayout() {
+    super.performLayout();
+    onSize(size);
   }
 }

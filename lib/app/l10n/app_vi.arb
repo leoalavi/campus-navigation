@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Đã nhận huy hiệu!",
-  "scanBadgeVisited": "Đã ghé thăm"
+  "scanBadgeVisited": "Đã ghé thăm",
+  "openDay_enable": "Hiển thị Ngày hội Tư vấn",
+  "openDay_enableSemantic": "Hiển thị lịch trình, thẻ Quét và lời nhắc của Ngày hội Tư vấn",
+  "openDay_finishedTitle": "Ngày hội Tư vấn này đã kết thúc",
+  "openDay_finishedBody": "Các buổi của Ngày hội Tư vấn tiếp theo sẽ xuất hiện tại đây khi được công bố.",
+  "openDay_programPending": "Chương trình các buổi của Ngày hội Tư vấn này chưa được công bố. Các buổi sẽ xuất hiện tại đây khi được công bố."
 }

@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Badge verdiend!",
-  "scanBadgeVisited": "Bezocht"
+  "scanBadgeVisited": "Bezocht",
+  "openDay_enable": "Open Dag tonen",
+  "openDay_enableSemantic": "Programma, Scan-tabblad en herinneringen van de Open Dag tonen",
+  "openDay_finishedTitle": "Deze Open Dag is afgelopen",
+  "openDay_finishedBody": "De sessies van de volgende Open Dag verschijnen hier zodra ze bekend zijn.",
+  "openDay_programPending": "Het sessieprogramma voor deze Open Dag is nog niet gepubliceerd. De sessies verschijnen hier zodra het bekend is."
 }

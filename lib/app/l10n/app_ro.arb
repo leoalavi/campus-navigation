@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Insignă obținută!",
-  "scanBadgeVisited": "Vizitat"
+  "scanBadgeVisited": "Vizitat",
+  "openDay_enable": "Afișează Ziua Porților Deschise",
+  "openDay_enableSemantic": "Afișează programul, fila Scanare și mementourile Zilei Porților Deschise",
+  "openDay_finishedTitle": "Această Zi a Porților Deschise s-a încheiat",
+  "openDay_finishedBody": "Sesiunile următoarei Zile a Porților Deschise vor apărea aici după ce sunt anunțate.",
+  "openDay_programPending": "Programul sesiunilor acestei Zile a Porților Deschise nu a fost încă publicat. Sesiunile vor apărea aici după ce este anunțat."
 }

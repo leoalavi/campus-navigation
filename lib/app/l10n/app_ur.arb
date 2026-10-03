@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "بیج حاصل کیا!",
-  "scanBadgeVisited": "دیکھا گیا"
+  "scanBadgeVisited": "دیکھا گیا",
+  "openDay_enable": "اوپن ڈے دکھائیں",
+  "openDay_enableSemantic": "اوپن ڈے کا شیڈول، اسکین ٹیب اور یاد دہانیاں دکھائیں",
+  "openDay_finishedTitle": "یہ اوپن ڈے ختم ہو گیا ہے",
+  "openDay_finishedBody": "اگلے اوپن ڈے کے سیشن اعلان ہوتے ہی یہاں دکھائی دیں گے۔",
+  "openDay_programPending": "اس اوپن ڈے کا سیشن پروگرام ابھی شائع نہیں ہوا۔ اعلان ہوتے ہی سیشن یہاں دکھائی دیں گے۔"
 }

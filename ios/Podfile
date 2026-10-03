@@ -1,4 +1,9 @@
-platform :ios, '17.0'
+# iOS 15.0 is the highest minimum among the app's native dependencies:
+# Firebase Core/Messaging (SPM), GoogleMaps 9.4 and Google-Maps-iOS-Utils 6.1
+# all require 15.0; every other plugin needs 14.0 or lower. It is also the
+# lowest target current Xcode accepts. (connectivity_plus's iOS 26 API is
+# behind `#available`, so it needs a recent SDK, not a higher target.)
+platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -68,6 +73,14 @@ post_install do |installer|
       config.build_settings['FRAMEWORK_SEARCH_PATHS'] ||= ['$(inherited)']
       config.build_settings['FRAMEWORK_SEARCH_PATHS'] << '"$(PODS_ROOT)/../../Flutter"'
       config.build_settings['FRAMEWORK_SEARCH_PATHS'] << '"$(PODS_CONFIGURATION_BUILD_DIR)/Flutter"'
+
+      # Raise any pod below the app's minimum to it (never lower one). Current
+      # Xcode rejects pod targets below iOS 15 outright ("... is set to 12.0,
+      # but the range of supported deployment target versions is 15.0 to
+      # ..."), which failed release builds.
+      if Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] || '0') < Gem::Version.new('15.0')
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      end
 
       # Fix "double-quoted include in framework header" errors from PromisesObjC and others
       config.build_settings['CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER'] = 'NO'

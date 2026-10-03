@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Odznak získán!",
-  "scanBadgeVisited": "Navštíveno"
+  "scanBadgeVisited": "Navštíveno",
+  "openDay_enable": "Zobrazit Den otevřených dveří",
+  "openDay_enableSemantic": "Zobrazit program Dne otevřených dveří, kartu Skenovat a připomínky",
+  "openDay_finishedTitle": "Tento Den otevřených dveří skončil",
+  "openDay_finishedBody": "Program příštího Dne otevřených dveří se zde zobrazí po jeho zveřejnění.",
+  "openDay_programPending": "Program tohoto Dne otevřených dveří zatím nebyl zveřejněn. Jednotlivé akce se zde zobrazí po jeho oznámení."
 }

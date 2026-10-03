@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "बैज अर्जित किया!",
-  "scanBadgeVisited": "देखा गया"
+  "scanBadgeVisited": "देखा गया",
+  "openDay_enable": "ओपन डे दिखाएँ",
+  "openDay_enableSemantic": "ओपन डे का कार्यक्रम, स्कैन टैब और रिमाइंडर दिखाएँ",
+  "openDay_finishedTitle": "यह ओपन डे समाप्त हो गया है",
+  "openDay_finishedBody": "अगले ओपन डे के सत्र घोषित होते ही यहाँ दिखाई देंगे।",
+  "openDay_programPending": "इस ओपन डे का सत्र कार्यक्रम अभी प्रकाशित नहीं हुआ है। घोषणा होते ही सत्र यहाँ दिखाई देंगे।"
 }

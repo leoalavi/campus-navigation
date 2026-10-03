@@ -41,6 +41,14 @@ class OpenDayHomeCard extends ConsumerWidget {
     // sessions that haven't ended yet; once the day is over, fall back to
     // the first sessions so the card still previews the schedule.
     final now = ref.watch(openDayNowProvider);
+
+    // Once the whole Open Day is over, say so — previewing last event's
+    // sessions as if they were upcoming would mislead. A new dataset with a
+    // future date brings the normal cards back automatically.
+    if (isOpenDayOver(data, now)) {
+      return _FinishedCard(openDayDate: data.openDayDate);
+    }
+
     final notEnded = events.where((e) => e.endTime.isAfter(now)).toList();
     final preview = (notEnded.isEmpty ? events : notEnded).take(2).toList();
 
@@ -50,6 +58,7 @@ class OpenDayHomeCard extends ConsumerWidget {
             selected: selected,
             upcoming: preview,
             openDayDate: data.openDayDate,
+            hasProgram: data.hasProgram,
           );
   }
 }
@@ -161,11 +170,15 @@ class _PreviewCard extends StatelessWidget {
     required this.selected,
     required this.upcoming,
     required this.openDayDate,
+    required this.hasProgram,
   });
 
   final OpenDayBachelor selected;
   final List<OpenDayEvent> upcoming;
   final DateTime openDayDate;
+
+  /// False until the official session program is published.
+  final bool hasProgram;
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +246,9 @@ class _PreviewCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsetsDirectional.only(top: 4),
                 child: Text(
-                  l10n.openDay_noSessionsYet,
+                  hasProgram
+                      ? l10n.openDay_noSessionsYet
+                      : l10n.openDay_programPending,
                   style: context.textTheme.bodySmall?.copyWith(
                     color: dark
                         ? Colors.white.withValues(alpha: 0.72)
@@ -278,6 +293,107 @@ class _MicroEventRow extends StatelessWidget {
               ? Colors.white.withValues(alpha: 0.78)
               : MqColors.contentSecondary,
         ),
+      ),
+    );
+  }
+}
+
+/// Whether every session of [data] has ended by [now]. With no sessions the
+/// day itself (Sydney date) is the boundary.
+@visibleForTesting
+bool isOpenDayOver(OpenDayData data, DateTime now) {
+  if (data.events.isEmpty) {
+    return now.isAfter(data.openDayDate.add(const Duration(days: 1)));
+  }
+  final lastEnd = data.events
+      .map((e) => e.endTime)
+      .reduce((a, b) => a.isAfter(b) ? a : b);
+  return now.isAfter(lastEnd);
+}
+
+/// Shown after the Open Day has passed, until a new dataset ships.
+class _FinishedCard extends StatelessWidget {
+  const _FinishedCard({required this.openDayDate});
+
+  final DateTime openDayDate;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final dark = context.isDarkMode;
+    final dateText = OpenDayTime.formatShortDate(openDayDate);
+    return Container(
+      key: const ValueKey('open-day-finished-card'),
+      padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
+      decoration: BoxDecoration(
+        color: dark
+            ? MqColors.charcoal800.withValues(alpha: 0.94)
+            : Colors.white.withValues(alpha: 0.94),
+        borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
+        border: Border.all(
+          color: dark
+              ? Colors.white.withValues(alpha: 0.08)
+              : MqColors.charcoal800.withValues(alpha: 0.06),
+          width: 0.6,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: MqColors.charcoal800.withValues(alpha: dark ? 0.30 : 0.10),
+            blurRadius: 18,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: MqColors.red.withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.event_available_rounded,
+              color: MqColors.red,
+              size: 22,
+            ),
+          ),
+          const SizedBox(width: MqSpacing.space3),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  l10n.openDay_headerWithDate(dateText).toUpperCase(),
+                  style: context.textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.2,
+                    color: MqColors.red,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  l10n.openDay_finishedTitle,
+                  style: context.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: dark ? Colors.white : MqColors.contentPrimary,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  l10n.openDay_finishedBody,
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: dark
+                        ? Colors.white.withValues(alpha: 0.72)
+                        : MqColors.contentSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

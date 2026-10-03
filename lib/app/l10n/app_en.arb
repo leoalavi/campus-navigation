@@ -2034,6 +2034,11 @@
   "home_transport": "Transport",
   "home_studentServices": "Student Services",
   "openDay_section": "Open Day",
+  "openDay_finishedTitle": "This Open Day has finished",
+  "@openDay_finishedTitle": {
+    "description": "Home card title once every Open Day session has ended, until the next Open Day dataset ships."
+  },
+  "openDay_finishedBody": "Sessions for the next Open Day will appear here once they are announced.",
   "openDay_studyInterest": "Study interest",
   "openDay_studyInterestNotSet": "Not set",
   "openDay_studyInterestSemantic": "Open Day study interest",
@@ -2676,5 +2681,9 @@
   "@openDay_enable": {
     "description": "Settings toggle that opts in to the optional Open Day experience (home cards, Scan tab, sessions, reminders)."
   },
-  "openDay_enableSemantic": "Show the Open Day schedule, Scan tab and reminders"
+  "openDay_enableSemantic": "Show the Open Day schedule, Scan tab and reminders",
+  "openDay_programPending": "The session program for this Open Day hasn't been published yet. Sessions will appear here once it's announced.",
+  "@openDay_programPending": {
+    "description": "Shown where Open Day sessions would appear while the next Open Day date is known but its official session program has not been published."
+  }
 }

@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "ब्याज प्राप्त भयो!",
-  "scanBadgeVisited": "भ्रमण गरियो"
+  "scanBadgeVisited": "भ्रमण गरियो",
+  "openDay_enable": "खुला दिवस देखाउनुहोस्",
+  "openDay_enableSemantic": "खुला दिवसको तालिका, स्क्यान ट्याब र रिमाइन्डरहरू देखाउनुहोस्",
+  "openDay_finishedTitle": "यो खुला दिवस सकियो",
+  "openDay_finishedBody": "अर्को खुला दिवसका सत्रहरू घोषणा भएपछि यहाँ देखिनेछन्।",
+  "openDay_programPending": "यो खुला दिवसको सत्र कार्यक्रम अझै प्रकाशित भएको छैन। घोषणा भएपछि सत्रहरू यहाँ देखिनेछन्।"
 }

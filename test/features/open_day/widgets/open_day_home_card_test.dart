@@ -39,7 +39,9 @@ Widget _app({
 }) {
   return ProviderScope(
     overrides: [
-      if (now != null) openDayNowProvider.overrideWithValue(now),
+      // Default to a week before the event; never the wall clock, which
+      // drifts past the fixture date and flips the card to "finished".
+      openDayNowProvider.overrideWithValue(now ?? DateTime(2026, 8, 15, 9)),
       settingsControllerProvider.overrideWith(
         () => _FakeSettingsController(
           UserPreferences(selectedBachelorId: selectedBachelorId),
@@ -125,7 +127,7 @@ void main() {
     expect(find.textContaining('Morning Venue'), findsNothing);
   });
 
-  testWidgets('preview falls back to the schedule once the day is over', (
+  testWidgets('says the Open Day has finished once every session ended', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -137,14 +139,28 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.textContaining(_event.venueName), findsOneWidget);
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(OpenDayHomeCard)),
+    )!;
+    expect(find.text(l10n.openDay_finishedTitle), findsOneWidget);
+    // Last event's sessions are no longer presented as upcoming.
+    expect(find.textContaining(_event.venueName), findsNothing);
   });
 
   testWidgets(
     'shows the empty-sessions copy when the selected degree has none',
     (tester) async {
+      // A published program with nothing for this degree.
+      final otherDegree = OpenDayEvent(
+        id: 'evt-other',
+        title: 'Business Info Session',
+        startTime: DateTime(2026, 8, 22, 10),
+        endTime: DateTime(2026, 8, 22, 11),
+        venueName: 'Other Venue',
+        bachelorIds: const ['business'],
+      );
       await tester.pumpWidget(
-        _app(events: const [], selectedBachelorId: 'comp-sci'),
+        _app(events: [otherDegree], selectedBachelorId: 'comp-sci'),
       );
       await tester.pumpAndSettle();
 
@@ -154,4 +170,19 @@ void main() {
       expect(find.text(l10n.openDay_noSessionsYet), findsOneWidget);
     },
   );
+
+  testWidgets('says the program is not published yet when there are no '
+      'sessions at all (date announced, program pending)', (tester) async {
+    await tester.pumpWidget(
+      _app(events: const [], selectedBachelorId: 'comp-sci'),
+    );
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(OpenDayHomeCard)),
+    )!;
+    expect(find.text(l10n.openDay_programPending), findsOneWidget);
+    expect(find.text(l10n.openDay_noSessionsYet), findsNothing);
+    expect(find.text(l10n.openDay_finishedTitle), findsNothing);
+  });
 }

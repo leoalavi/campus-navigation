@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Märke intjänat!",
-  "scanBadgeVisited": "Besökt"
+  "scanBadgeVisited": "Besökt",
+  "openDay_enable": "Visa öppet hus",
+  "openDay_enableSemantic": "Visa program, Skanna-fliken och påminnelser för öppet hus",
+  "openDay_finishedTitle": "Det här öppna huset är slut",
+  "openDay_finishedBody": "Passen för nästa öppna hus visas här när de har annonserats.",
+  "openDay_programPending": "Programmet för det här öppna huset har inte publicerats ännu. Passen visas här när det har annonserats."
 }

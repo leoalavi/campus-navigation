@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Ansaitsit merkin!",
-  "scanBadgeVisited": "Vierailtu"
+  "scanBadgeVisited": "Vierailtu",
+  "openDay_enable": "Näytä avoimien ovien päivä",
+  "openDay_enableSemantic": "Näytä avoimien ovien päivän ohjelma, Skannaa-välilehti ja muistutukset",
+  "openDay_finishedTitle": "Tämä avoimien ovien päivä on päättynyt",
+  "openDay_finishedBody": "Seuraavan avoimien ovien päivän ohjelma näkyy täällä, kun se julkaistaan.",
+  "openDay_programPending": "Tämän avoimien ovien päivän ohjelmaa ei ole vielä julkaistu. Tilaisuudet näkyvät täällä, kun ohjelma julkaistaan."
 }

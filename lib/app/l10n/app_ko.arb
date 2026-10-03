@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "배지 획득!",
-  "scanBadgeVisited": "방문함"
+  "scanBadgeVisited": "방문함",
+  "openDay_enable": "오픈 데이 표시",
+  "openDay_enableSemantic": "오픈 데이 일정, 스캔 탭 및 알림 표시",
+  "openDay_finishedTitle": "이번 오픈 데이가 종료되었습니다",
+  "openDay_finishedBody": "다음 오픈 데이 세션은 발표되는 대로 여기에 표시됩니다.",
+  "openDay_programPending": "이번 오픈 데이의 세션 프로그램은 아직 공개되지 않았습니다. 발표되면 여기에 표시됩니다."
 }

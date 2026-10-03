@@ -71,11 +71,22 @@ Future<void> _loadRealFonts() async {
   if (!Directory(root).existsSync()) return;
   Future<ByteData> read(String f) async =>
       ByteData.sublistView(await File('$root/$f').readAsBytes());
-  final roboto = FontLoader('Roboto')
-    ..addFont(read('Roboto-Regular.ttf'))
-    ..addFont(read('Roboto-Medium.ttf'))
-    ..addFont(read('Roboto-Bold.ttf'));
-  await roboto.load();
+  // 'FlutterTest' is what a TextStyle with no family resolves to in tests;
+  // on a device the same style gets the platform font. Map both to Roboto.
+  for (final family in const ['Roboto', 'FlutterTest']) {
+    final loader = FontLoader(family);
+    for (final w in const [
+      'Thin',
+      'Light',
+      'Regular',
+      'Medium',
+      'Bold',
+      'Black',
+    ]) {
+      loader.addFont(read('Roboto-$w.ttf'));
+    }
+    await loader.load();
+  }
   await (FontLoader(
     'MaterialIcons',
   )..addFont(read('MaterialIcons-Regular.otf'))).load();
@@ -153,7 +164,7 @@ Widget _scaled(BuildContext context, Widget child, double scale) => MediaQuery(
   child: child,
 );
 
-List _appOverrides({required bool openDay}) {
+List _appOverrides({required bool openDay, DateTime? now}) {
   final repo = _MockSettingsRepository();
   when(repo.loadPreferences).thenAnswer(
     (_) async => UserPreferences(
@@ -175,7 +186,7 @@ List _appOverrides({required bool openDay}) {
       _FakeNotificationsController.new,
     ),
     tfnswMetroProvider.overrideWith((ref) => Stream.value(const [])),
-    openDayNowProvider.overrideWithValue(DateTime(2026, 8, 15, 9, 30)),
+    openDayNowProvider.overrideWithValue(now ?? DateTime(2026, 8, 15, 9, 30)),
     // The real bundled dataset, parsed up front: asset loading doesn't
     // complete inside a widget-test frame, which would hide every Open Day
     // card and leave the opted-in layout unreviewed.
@@ -288,6 +299,25 @@ void main() {
           await _shoot(tester, 'settings_${od}_bottom_$tag');
         });
       }
+
+      testWidgets('home (openday, after the event) – $tag', (tester) async {
+        _setViewport(tester, size);
+        await tester.pumpWidget(
+          _wrap(
+            const HomePage(),
+            textScale: scale,
+            router: true,
+            overrides: _appOverrides(openDay: true, now: DateTime(2027, 8, 16)),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+        expect(
+          find.byKey(const ValueKey('open-day-finished-card')),
+          findsOneWidget,
+        );
+        await _shoot(tester, 'home_openday_finished_$tag');
+      });
 
       testWidgets('map shell with category sheet – $tag', (tester) async {
         _setViewport(tester, size);

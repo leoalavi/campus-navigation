@@ -17,6 +17,7 @@ import 'package:campus_navigation/features/transit/presentation/providers/tfnsw_
 import 'package:campus_navigation/shared/extensions/context_extensions.dart';
 import 'package:campus_navigation/shared/models/user_preferences.dart';
 import 'package:campus_navigation/shared/widgets/mq_tactile_button.dart';
+import 'package:campus_navigation/shared/widgets/word_safe_text.dart';
 
 /// Home screen for the Campus Navigation app.
 ///
@@ -1038,7 +1039,7 @@ class _BentoHeroCard extends StatelessWidget {
                 child: Icon(icon, color: Colors.white),
               ),
               const SizedBox(height: MqSpacing.space4),
-              Text(
+              WordSafeText(
                 heroLabel,
                 style: context.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
@@ -1118,11 +1119,10 @@ class _TertiaryQuickRow extends StatelessWidget {
                           color: MqColors.red,
                         ),
                         const SizedBox(height: MqSpacing.space2),
-                        Text(
+                        WordSafeText(
                           items[i].label,
                           maxLines: 2,
                           textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
                           style: context.textTheme.labelMedium?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: isDark ? Colors.white : MqColors.black,

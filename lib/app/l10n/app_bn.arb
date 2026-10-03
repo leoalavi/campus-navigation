@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "ব্যাজ অর্জিত!",
-  "scanBadgeVisited": "পরিদর্শন করা হয়েছে"
+  "scanBadgeVisited": "পরিদর্শন করা হয়েছে",
+  "openDay_enable": "ওপেন ডে দেখান",
+  "openDay_enableSemantic": "ওপেন ডে-র সূচি, স্ক্যান ট্যাব ও রিমাইন্ডার দেখান",
+  "openDay_finishedTitle": "এই ওপেন ডে শেষ হয়েছে",
+  "openDay_finishedBody": "পরবর্তী ওপেন ডে-র সেশন ঘোষণা হলে এখানে দেখা যাবে।",
+  "openDay_programPending": "এই ওপেন ডে-র সেশন সূচি এখনও প্রকাশিত হয়নি। ঘোষণা হলে সেশনগুলো এখানে দেখা যাবে।"
 }

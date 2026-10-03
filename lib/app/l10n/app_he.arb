@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "זכית בתג!",
-  "scanBadgeVisited": "ביקרת"
+  "scanBadgeVisited": "ביקרת",
+  "openDay_enable": "הצגת יום פתוח",
+  "openDay_enableSemantic": "הצגת לוח הזמנים, לשונית הסריקה והתזכורות של היום הפתוח",
+  "openDay_finishedTitle": "היום הפתוח הזה הסתיים",
+  "openDay_finishedBody": "המפגשים של היום הפתוח הבא יופיעו כאן ברגע שיפורסמו.",
+  "openDay_programPending": "תוכנית המפגשים של היום הפתוח הזה עדיין לא פורסמה. המפגשים יופיעו כאן ברגע שתפורסם."
 }

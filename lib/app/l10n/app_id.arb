@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Lencana diperoleh!",
-  "scanBadgeVisited": "Dikunjungi"
+  "scanBadgeVisited": "Dikunjungi",
+  "openDay_enable": "Tampilkan Open Day",
+  "openDay_enableSemantic": "Tampilkan jadwal Open Day, tab Pindai, dan pengingat",
+  "openDay_finishedTitle": "Open Day ini telah berakhir",
+  "openDay_finishedBody": "Sesi Open Day berikutnya akan muncul di sini setelah diumumkan.",
+  "openDay_programPending": "Program sesi Open Day ini belum dipublikasikan. Sesi akan muncul di sini setelah diumumkan."
 }

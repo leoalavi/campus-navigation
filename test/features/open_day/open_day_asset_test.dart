@@ -7,7 +7,10 @@ import 'package:campus_navigation/features/open_day/domain/entities/open_day_dat
 import 'package:campus_navigation/features/open_day/presentation/widgets/open_day_home_sections.dart';
 
 /// Integrity guard for the official Open Day dataset
-/// (`assets/data/open_day.json`, sourced from the MQ Open Day 2026 PDF).
+/// (`assets/data/open_day.json`). The next Open Day is Saturday 14 August
+/// 2027; its session program is not published yet, so the bundled dataset
+/// carries the date, degrees and suggested stops but no sessions. The 2026
+/// sessions are archived in docs/open-day/ and guarded by the golden test.
 ///
 /// Catches data drift: every session/stop must point at a real building code,
 /// every event must reference known degrees, and the schedule must parse.
@@ -32,8 +35,25 @@ void main() {
   test('dataset parses with the expected shape', () {
     expect(data.studyAreas, isNotEmpty);
     expect(data.bachelors, isNotEmpty);
-    expect(data.events, isNotEmpty);
     expect(data.suggestedStops, isNotEmpty);
+  });
+
+  test('the active Open Day is Saturday 14 August 2027', () {
+    expect(data.openDayDate, DateTime(2027, 8, 14));
+    expect(data.openDayDate.weekday, DateTime.saturday);
+  });
+
+  test('no past (2026) sessions are presented as the upcoming program', () {
+    // Until the official 2027 program is published the dataset must say so
+    // by having no sessions — never by re-using last year's.
+    for (final e in data.events) {
+      expect(
+        e.startTime.year,
+        data.openDayDate.year,
+        reason: 'session ${e.id} is not on the active Open Day',
+      );
+    }
+    expect(data.hasProgram, data.events.isNotEmpty);
   });
 
   test('every bachelor maps to a known study area', () {

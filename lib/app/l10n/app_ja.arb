@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "バッジを獲得しました！",
-  "scanBadgeVisited": "訪問済み"
+  "scanBadgeVisited": "訪問済み",
+  "openDay_enable": "オープンデーを表示",
+  "openDay_enableSemantic": "オープンデーの日程、スキャンタブ、リマインダーを表示",
+  "openDay_finishedTitle": "今回のオープンデーは終了しました",
+  "openDay_finishedBody": "次回のオープンデーのセッションは、発表され次第ここに表示されます。",
+  "openDay_programPending": "このオープンデーのセッションプログラムはまだ公開されていません。発表され次第、ここに表示されます。"
 }

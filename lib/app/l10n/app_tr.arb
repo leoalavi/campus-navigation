@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Rozet kazanıldı!",
-  "scanBadgeVisited": "Ziyaret edildi"
+  "scanBadgeVisited": "Ziyaret edildi",
+  "openDay_enable": "Açık Günü Göster",
+  "openDay_enableSemantic": "Açık Gün programını, Tara sekmesini ve hatırlatıcıları göster",
+  "openDay_finishedTitle": "Bu Açık Gün sona erdi",
+  "openDay_finishedBody": "Bir sonraki Açık Günün oturumları duyurulduğunda burada görünecek.",
+  "openDay_programPending": "Bu Açık Günün oturum programı henüz yayımlanmadı. Oturumlar duyurulduğunda burada görünecek."
 }

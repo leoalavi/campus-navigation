@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "获得徽章！",
-  "scanBadgeVisited": "已访问"
+  "scanBadgeVisited": "已访问",
+  "openDay_enable": "显示开放日",
+  "openDay_enableSemantic": "显示开放日日程、扫描标签页和提醒",
+  "openDay_finishedTitle": "本次开放日已结束",
+  "openDay_finishedBody": "下一次开放日的场次公布后将显示在这里。",
+  "openDay_programPending": "本次开放日的场次安排尚未公布。公布后将显示在这里。"
 }

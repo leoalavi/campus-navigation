@@ -1412,99 +1412,137 @@ class _CampusBuildingInfoPanel extends StatelessWidget {
               ),
             ],
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          selectedBuilding.name,
-                          style: Theme.of(context).textTheme.headlineMedium
-                              ?.copyWith(
-                                color: isDark
-                                    ? Colors.white
-                                    : MqColors.contentPrimary,
-                                letterSpacing: -0.5,
+          // Scrolls when the photo + description outgrow a compact sheet
+          // on a short phone, instead of overflowing.
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            selectedBuilding.name,
+                            style: Theme.of(context).textTheme.headlineMedium
+                                ?.copyWith(
+                                  color: isDark
+                                      ? Colors.white
+                                      : MqColors.contentPrimary,
+                                  letterSpacing: -0.5,
+                                ),
+                          ),
+                          const SizedBox(height: MqSpacing.space1),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: '${l10n.buildingCode}: ',
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: isDark
+                                              ? Colors.white
+                                              : MqColors.contentTertiary,
+                                        ),
+                                    children: [
+                                      TextSpan(
+                                        text: selectedBuilding.code,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: isDark
+                                              ? Colors.white
+                                              : MqColors.contentPrimary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                        ),
-                        const SizedBox(height: MqSpacing.space1),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Text.rich(
-                                TextSpan(
-                                  text: '${l10n.buildingCode}: ',
-                                  style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(
-                                        color: isDark
-                                            ? Colors.white
-                                            : MqColors.contentTertiary,
-                                      ),
-                                  children: [
-                                    TextSpan(
-                                      text: selectedBuilding.code,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: isDark
-                                            ? Colors.white
-                                            : MqColors.contentPrimary,
-                                      ),
+                              if (selectedBuilding.category !=
+                                  BuildingCategory.other) ...[
+                                const SizedBox(width: MqSpacing.space2),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: MqSpacing.space3,
+                                    vertical: MqSpacing.space1,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: MqColors.red.withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(
+                                      MqSpacing.radiusFull,
                                     ),
-                                  ],
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (selectedBuilding.category !=
-                                BuildingCategory.other) ...[
-                              const SizedBox(width: MqSpacing.space2),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: MqSpacing.space3,
-                                  vertical: MqSpacing.space1,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: MqColors.red.withValues(alpha: 0.15),
-                                  borderRadius: BorderRadius.circular(
-                                    MqSpacing.radiusFull,
+                                  ),
+                                  child: Text(
+                                    selectedBuilding.category.name
+                                        .toUpperCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: MqColors.red,
+                                          letterSpacing: 1.2,
+                                        ),
                                   ),
                                 ),
-                                child: Text(
-                                  selectedBuilding.category.name.toUpperCase(),
-                                  style: Theme.of(context).textTheme.labelSmall
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: MqColors.red,
-                                        letterSpacing: 1.2,
-                                      ),
-                                ),
-                              ),
+                              ],
                             ],
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      size: MqSpacing.iconMd,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.5)
-                          : MqColors.contentTertiary,
+                    IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        size: MqSpacing.iconMd,
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.5)
+                            : MqColors.contentTertiary,
+                      ),
+                      tooltip: l10n.clear,
+                      onPressed: onClearSelection,
                     ),
-                    tooltip: l10n.clear,
-                    onPressed: onClearSelection,
+                  ],
+                ),
+                // Hero photo for the buildings that bundle one (the same
+                // asset the Google-renderer panel shows).
+                if (selectedBuilding.photo != null) ...[
+                  const SizedBox(height: MqSpacing.space4),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+                    child: Image.asset(
+                      selectedBuilding.photo!,
+                      key: const ValueKey('campus-building-photo'),
+                      height: 140,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      excludeFromSemantics: true,
+                      errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                    ),
                   ),
                 ],
-              ),
-            ],
+                if ((selectedBuilding.description ?? '').trim().isNotEmpty) ...[
+                  const SizedBox(height: MqSpacing.space3),
+                  Text(
+                    selectedBuilding.description!,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      height: 1.4,
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.78)
+                          : MqColors.contentSecondary,
+                    ),
+                  ),
+                ],
+              ],
+            ),
           ),
         ),
       ),

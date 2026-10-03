@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Abzeichen erhalten!",
-  "scanBadgeVisited": "Besucht"
+  "scanBadgeVisited": "Besucht",
+  "openDay_enable": "Tag der offenen Tür anzeigen",
+  "openDay_enableSemantic": "Programm, Scan-Tab und Erinnerungen zum Tag der offenen Tür anzeigen",
+  "openDay_finishedTitle": "Dieser Tag der offenen Tür ist vorbei",
+  "openDay_finishedBody": "Die Veranstaltungen des nächsten Tags der offenen Tür erscheinen hier, sobald sie bekannt sind.",
+  "openDay_programPending": "Das Programm für diesen Tag der offenen Tür wurde noch nicht veröffentlicht. Die Veranstaltungen erscheinen hier, sobald es bekannt ist."
 }

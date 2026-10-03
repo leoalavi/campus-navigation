@@ -1,0 +1,902 @@
+{
+  "//": "ARCHIVE — Open Day 2026 (Saturday 15 August 2026) info-session program, removed from the bundled dataset after the event. Source: the official 2026 info-sessions PDF. Kept for reference only; NOT bundled into the app.",
+  "openDayDate": "2026-08-15",
+  "lastUpdated": "2026-06-29",
+  "events": [
+    {
+      "id": "evt-10-v1",
+      "title": "Bachelor of Media and Communications",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 1, 10 Hadenfeld Avenue",
+      "buildingCode": "10HA",
+      "repeating": true,
+      "bachelorIds": [
+        "media-comms"
+      ]
+    },
+    {
+      "id": "evt-10-v2",
+      "title": "Primary teaching",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": false,
+      "bachelorIds": [
+        "primary-teaching"
+      ]
+    },
+    {
+      "id": "evt-10-v3",
+      "title": "Bachelor of Arts",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "arts"
+      ]
+    },
+    {
+      "id": "evt-10-v4",
+      "title": "Bachelor of Economics",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": false,
+      "bachelorIds": [
+        "economics"
+      ]
+    },
+    {
+      "id": "evt-10-v5",
+      "title": "Bachelor of Professional Accounting",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": [
+        "professional-accounting"
+      ]
+    },
+    {
+      "id": "evt-10-v6",
+      "title": "Women in business",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-10-v7",
+      "title": "Psychology",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "psychology"
+      ]
+    },
+    {
+      "id": "evt-10-v8",
+      "title": "Critical Indigenous Studies major",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Johan van Vloten Theatre (G02), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "indigenous-studies"
+      ]
+    },
+    {
+      "id": "evt-10-v9",
+      "title": "Bachelor of Criminology and Bachelor of Security Studies",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "criminology",
+        "security-studies"
+      ]
+    },
+    {
+      "id": "evt-10-v10",
+      "title": "Bachelor of Engineering (Honours)",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "engineering"
+      ]
+    },
+    {
+      "id": "evt-10-v11",
+      "title": "Bachelor of Science",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "science"
+      ]
+    },
+    {
+      "id": "evt-10-v12",
+      "title": "Bachelor of Cyber Security",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "cyber-security"
+      ]
+    },
+    {
+      "id": "evt-10-v13",
+      "title": "Bachelor of Clinical Science and postgraduate pathways, including Doctor of Medicine",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": true,
+      "bachelorIds": [
+        "clinical-science"
+      ]
+    },
+    {
+      "id": "evt-11-v2",
+      "title": "Macquarie Entry: Pathways for high school students",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-11-v3",
+      "title": "Bachelor of Business",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "business"
+      ]
+    },
+    {
+      "id": "evt-11-v4",
+      "title": "Bachelor of Exercise and Sports Science",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": true,
+      "bachelorIds": [
+        "exercise-sports-science"
+      ]
+    },
+    {
+      "id": "evt-11-v5",
+      "title": "Macquarie Entry: Pathways for non-school applicants",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-11-v6",
+      "title": "Bachelor of Business Analytics",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": [
+        "business-analytics"
+      ]
+    },
+    {
+      "id": "evt-11-v7",
+      "title": "Bachelor of Laws",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "laws"
+      ]
+    },
+    {
+      "id": "evt-11-v8",
+      "title": "Languages and cultures",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Johan van Vloten Theatre (G02), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": true,
+      "bachelorIds": [
+        "languages-cultures"
+      ]
+    },
+    {
+      "id": "evt-11-v9",
+      "title": "Bachelor of Social Sciences",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": true,
+      "bachelorIds": [
+        "social-sciences"
+      ]
+    },
+    {
+      "id": "evt-11-v10",
+      "title": "Bachelor of Information Technology",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "it"
+      ]
+    },
+    {
+      "id": "evt-11-v11",
+      "title": "Bachelor of Environment",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": false,
+      "bachelorIds": [
+        "environment"
+      ]
+    },
+    {
+      "id": "evt-11-v13",
+      "title": "Empowering women in STEMM",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-11-v16",
+      "title": "Early childhood teaching",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "C122 Exhibition Space, 25 Wally's Walk",
+      "buildingCode": "25WW",
+      "repeating": false,
+      "bachelorIds": [
+        "early-childhood-teaching"
+      ]
+    },
+    {
+      "id": "evt-12-v2",
+      "title": "Early entry application workshop",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-12-v3",
+      "title": "Bachelor of Medical Sciences",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "medical-sciences"
+      ]
+    },
+    {
+      "id": "evt-12-v4",
+      "title": "Speech and hearing sciences",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": false,
+      "bachelorIds": [
+        "speech-hearing"
+      ]
+    },
+    {
+      "id": "evt-12-v5",
+      "title": "Pathways to a degree through Macquarie University College",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-12-v6",
+      "title": "Bachelor of Marketing and Media",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": [
+        "marketing-media"
+      ]
+    },
+    {
+      "id": "evt-12-v7",
+      "title": "Bachelor of Commerce",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "evt-12-v9",
+      "title": "History and archaeology",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": true,
+      "bachelorIds": [
+        "history-archaeology"
+      ]
+    },
+    {
+      "id": "evt-12-v10",
+      "title": "Bachelor of Science",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "science"
+      ]
+    },
+    {
+      "id": "evt-12-v11",
+      "title": "Bachelor of Health Sciences",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "health-sciences"
+      ]
+    },
+    {
+      "id": "evt-12-v12",
+      "title": "Bachelor of Game Design and Development",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": false,
+      "bachelorIds": [
+        "game-design"
+      ]
+    },
+    {
+      "id": "evt-12-v13",
+      "title": "Doctor of Physiotherapy",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": [
+        "physiotherapy"
+      ]
+    },
+    {
+      "id": "evt-12-v14",
+      "title": "Master of Public Health",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 102, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": [
+        "public-health"
+      ]
+    },
+    {
+      "id": "evt-12-v15",
+      "title": "Applying linguistics: Putting language science into practice",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 202, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-12-v16",
+      "title": "Bachelor of International Studies",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "C122 Exhibition Space, 25 Wally's Walk",
+      "buildingCode": "25WW",
+      "repeating": false,
+      "bachelorIds": [
+        "international-studies"
+      ]
+    },
+    {
+      "id": "evt-13-v1",
+      "title": "Bachelor of Media and Communications",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 1, 10 Hadenfeld Avenue",
+      "buildingCode": "10HA",
+      "repeating": true,
+      "bachelorIds": [
+        "media-comms"
+      ]
+    },
+    {
+      "id": "evt-13-v2",
+      "title": "Bachelor of Actuarial Studies + Co-op program",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": false,
+      "bachelorIds": [
+        "actuarial"
+      ]
+    },
+    {
+      "id": "evt-13-v3",
+      "title": "Bachelor of Laws",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "laws"
+      ]
+    },
+    {
+      "id": "evt-13-v4",
+      "title": "Maximise your marks: Pro tips from a senior HSC marker",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-13-v5",
+      "title": "From high school to higher ed: A parent's guide to uni",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-13-v6",
+      "title": "Get a career advantage with a Macquarie business degree",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-13-v7",
+      "title": "Psychology",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "psychology"
+      ]
+    },
+    {
+      "id": "evt-13-v8",
+      "title": "Bachelor of Planning",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Johan van Vloten Theatre (G02), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "planning"
+      ]
+    },
+    {
+      "id": "evt-13-v9",
+      "title": "Secondary teaching",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "secondary-teaching"
+      ]
+    },
+    {
+      "id": "evt-13-v10",
+      "title": "Bachelor of Engineering (Honours)",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "engineering"
+      ]
+    },
+    {
+      "id": "evt-13-v11",
+      "title": "Bachelor of Biodiversity and Conservation",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": false,
+      "bachelorIds": [
+        "biodiversity-conservation"
+      ]
+    },
+    {
+      "id": "evt-13-v12",
+      "title": "Bachelor of Cyber Security",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "cyber-security"
+      ]
+    },
+    {
+      "id": "evt-13-v13",
+      "title": "Bachelor of Clinical Science and postgraduate pathways, including Doctor of Medicine",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": true,
+      "bachelorIds": [
+        "clinical-science"
+      ]
+    },
+    {
+      "id": "evt-13-v16",
+      "title": "Marketing",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "C122 Exhibition Space, 25 Wally's Walk",
+      "buildingCode": "25WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-14-v2",
+      "title": "Bachelor of Arts",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": true,
+      "bachelorIds": [
+        "arts"
+      ]
+    },
+    {
+      "id": "evt-14-v3",
+      "title": "Bachelor of Commerce",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "evt-14-v4",
+      "title": "Bachelor of Applied Finance",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": false,
+      "bachelorIds": [
+        "applied-finance"
+      ]
+    },
+    {
+      "id": "evt-14-v5",
+      "title": "Pathways to a degree through Macquarie University College",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-14-v6",
+      "title": "Bachelor of Social Sciences",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": [
+        "social-sciences"
+      ]
+    },
+    {
+      "id": "evt-14-v7",
+      "title": "Early entry application workshop",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-14-v8",
+      "title": "Languages and cultures",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Johan van Vloten Theatre (G02), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": true,
+      "bachelorIds": [
+        "languages-cultures"
+      ]
+    },
+    {
+      "id": "evt-14-v9",
+      "title": "Bachelor of Security Studies",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "security-studies"
+      ]
+    },
+    {
+      "id": "evt-14-v10",
+      "title": "Bachelor of Science",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "science"
+      ]
+    },
+    {
+      "id": "evt-14-v12",
+      "title": "Bachelor of Information Technology",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "it"
+      ]
+    },
+    {
+      "id": "evt-14-v13",
+      "title": "Bachelor of Exercise and Sports Science",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": true,
+      "bachelorIds": [
+        "exercise-sports-science"
+      ]
+    },
+    {
+      "id": "evt-14-v14",
+      "title": "Chiropractic science",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 102, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": [
+        "chiropractic"
+      ]
+    },
+    {
+      "id": "evt-14-v16",
+      "title": "History and archaeology",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "C122 Exhibition Space, 25 Wally's Walk",
+      "buildingCode": "25WW",
+      "repeating": true,
+      "bachelorIds": [
+        "history-archaeology"
+      ]
+    },
+    {
+      "id": "evt-15-v1",
+      "title": "Bachelor of Media and Communications",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 1, 10 Hadenfeld Avenue",
+      "buildingCode": "10HA",
+      "repeating": true,
+      "bachelorIds": [
+        "media-comms"
+      ]
+    },
+    {
+      "id": "evt-15-v2",
+      "title": "Macquarie Entry: Pathways for high school students",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-15-v3",
+      "title": "Bachelor of Criminology",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": false,
+      "bachelorIds": [
+        "criminology"
+      ]
+    },
+    {
+      "id": "evt-15-v4",
+      "title": "Maximise your marks: Pro tips from a senior HSC marker",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-15-v6",
+      "title": "Bachelor of Marketing and Media",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": [
+        "marketing-media"
+      ]
+    },
+    {
+      "id": "evt-15-v7",
+      "title": "Bachelor of Business",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "business"
+      ]
+    },
+    {
+      "id": "evt-15-v9",
+      "title": "Primary and early childhood teaching",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "primary-early-childhood-teaching"
+      ]
+    },
+    {
+      "id": "evt-15-v10",
+      "title": "Bachelor of Medical Sciences",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "medical-sciences"
+      ]
+    },
+    {
+      "id": "evt-15-v11",
+      "title": "Bachelor of Information Technology",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "it"
+      ]
+    },
+    {
+      "id": "evt-15-v12",
+      "title": "Bachelor of Engineering (Honours)",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "engineering"
+      ]
+    },
+    {
+      "id": "evt-15-v13",
+      "title": "Bachelor of Health Sciences",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": true,
+      "bachelorIds": [
+        "health-sciences"
+      ]
+    }
+  ]
+}

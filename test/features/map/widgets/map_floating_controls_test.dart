@@ -19,6 +19,7 @@ void main() {
     WidgetTester tester, {
     required Size size,
     required bool withSheet,
+    Widget? footer,
   }) async {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1;
@@ -38,14 +39,16 @@ void main() {
               onCenterOnLocation: () {},
               onOpenSearch: () {},
               onOpenOverlayPicker: () {},
-              footer: withSheet
-                  ? ListView(
-                      children: [
-                        for (var i = 0; i < 30; i++)
-                          ListTile(title: Text('Service $i')),
-                      ],
-                    )
-                  : null,
+              footer:
+                  footer ??
+                  (withSheet
+                      ? ListView(
+                          children: [
+                            for (var i = 0; i < 30; i++)
+                              ListTile(title: Text('Service $i')),
+                          ],
+                        )
+                      : null),
             ),
           ),
         ),
@@ -114,5 +117,43 @@ void main() {
       lessThanOrEqualTo(sheetTop(tester)),
     );
     expect(tester.getBottomLeft(layers).dy, isNot(compactLayers + 1000));
+  });
+
+  testWidgets('a short panel gets a short sheet, not an empty 38% slab', (
+    tester,
+  ) async {
+    const size = Size(390, 844);
+    await pumpShell(
+      tester,
+      size: size,
+      withSheet: true,
+      footer: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(title: Text('18 Wally\'s Walk'), subtitle: Text('18WW')),
+        ],
+      ),
+    );
+    final sheetHeight = size.height - sheetTop(tester);
+    final cap = (size.height) * MapBottomSheet.collapsedFraction;
+    expect(sheetHeight, lessThan(cap * 0.6), reason: 'fits its content');
+    expect(sheetHeight, greaterThan(60));
+    // Controls ride the real (short) sheet edge, not the 38% cap.
+    final controlsBottom = tester.getBottomLeft(locate).dy;
+    expect(controlsBottom, lessThanOrEqualTo(sheetTop(tester)));
+    expect(sheetTop(tester) - controlsBottom, lessThan(40));
+  });
+
+  testWidgets('a long list still opens at the compact cap and scrolls', (
+    tester,
+  ) async {
+    const size = Size(390, 844);
+    await pumpShell(tester, size: size, withSheet: true);
+    final sheetHeight = size.height - sheetTop(tester);
+    final available = size.height; // no top inset in this harness
+    expect(
+      sheetHeight,
+      closeTo(available * MapBottomSheet.collapsedFraction, 2),
+    );
   });
 }

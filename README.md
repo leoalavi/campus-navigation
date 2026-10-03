@@ -266,7 +266,7 @@ Privacy is treated as an architectural concern, not a feature flag.
 | **Android emulator** (API 33+) | ✅ Verified | All features verified. |
 | **Android physical device** | ✅ Verified | Compass, flashlight, GPS, push notifications all functional. |
 | **Chrome (web)** | 🧪 Build/test target | Release-mode bundles and 360° imagery are tested in CI. The web target is prepared for a future release but is not deployed. Compass mode and flashlight gracefully degrade. |
-| **iOS device** | ⚠️ Expected / not fully verified | Native build configured for iPhone (iOS 17+). Custom URL schemes `mqnav://` and `io.mqnavigation://` registered. Full device testing not guaranteed. |
+| **iOS device** | ⚠️ Expected / not fully verified | Native build configured for iPhone (iOS 15+ — the minimum set by Firebase and Google Maps). Custom URL schemes `mqnav://` and `io.mqnavigation://` registered. Full device testing not guaranteed. |
 | **macOS desktop** | ⚠️ Expected / not fully verified | Location and dual-renderer configured. Google Maps falls back to OSM (plugin limitation). Full device testing not guaranteed. |
 
 If a platform-specific issue surfaces, the relevant feature renders a typed `MapStateError` fallback rather than crashing.

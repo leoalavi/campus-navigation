@@ -93,3 +93,9 @@ docs/superpowers/
 # is not released as a web app: the shipped product is Android + iOS, and
 # Syllabus Sync hands off to the installed app or offers the store listings.
 # `web/` is therefore tracked (not ignored) — it just never gets deployed.
+
+# Android release signing — never commit keystores or their passwords
+*.jks
+*.keystore
+!android/app/debug.keystore
+android/key.properties

@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Emblema conquistado!",
-  "scanBadgeVisited": "Visitado"
+  "scanBadgeVisited": "Visitado",
+  "openDay_enable": "Mostrar Dia Aberto",
+  "openDay_enableSemantic": "Mostrar a programação do Dia Aberto, a guia Escanear e os lembretes",
+  "openDay_finishedTitle": "Este Dia Aberto terminou",
+  "openDay_finishedBody": "As sessões do próximo Dia Aberto aparecerão aqui assim que forem anunciadas.",
+  "openDay_programPending": "A programação de sessões deste Dia Aberto ainda não foi publicada. As sessões aparecerão aqui assim que for anunciada."
 }

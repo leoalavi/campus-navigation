@@ -190,6 +190,12 @@ class OpenDayData {
   });
 
   final DateTime openDayDate;
+
+  /// Whether this Open Day's info-session program has been published. The
+  /// date is announced well before the sessions; until then [events] is
+  /// empty and the UI says so plainly instead of implying a search found
+  /// nothing.
+  bool get hasProgram => events.isNotEmpty;
   final DateTime lastUpdated;
   final List<OpenDayStudyArea> studyAreas;
   final List<OpenDayBachelor> bachelors;

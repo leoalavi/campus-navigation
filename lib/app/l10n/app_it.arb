@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Distintivo ottenuto!",
-  "scanBadgeVisited": "Visitato"
+  "scanBadgeVisited": "Visitato",
+  "openDay_enable": "Mostra Open Day",
+  "openDay_enableSemantic": "Mostra il programma dell'Open Day, la scheda Scansiona e i promemoria",
+  "openDay_finishedTitle": "Questo Open Day è terminato",
+  "openDay_finishedBody": "Le sessioni del prossimo Open Day appariranno qui non appena saranno annunciate.",
+  "openDay_programPending": "Il programma delle sessioni di questo Open Day non è ancora stato pubblicato. Le sessioni appariranno qui non appena verrà annunciato."
 }

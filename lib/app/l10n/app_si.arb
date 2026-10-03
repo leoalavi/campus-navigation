@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "ලාංඡනය දිනා ගත්තා!",
-  "scanBadgeVisited": "බැලුවා"
+  "scanBadgeVisited": "බැලුවා",
+  "openDay_enable": "විවෘත දිනය පෙන්වන්න",
+  "openDay_enableSemantic": "විවෘත දින කාලසටහන, ස්කෑන් ටැබය සහ සිහිකැඳවීම් පෙන්වන්න",
+  "openDay_finishedTitle": "මෙම විවෘත දිනය අවසන් විය",
+  "openDay_finishedBody": "ඊළඟ විවෘත දිනයේ සැසි ප්‍රකාශයට පත් කළ විට මෙහි දිස්වේ.",
+  "openDay_programPending": "මෙම විවෘත දිනයේ සැසි වැඩසටහන තවම ප්‍රකාශයට පත් කර නැත. ප්‍රකාශයට පත් කළ විට සැසි මෙහි දිස්වේ."
 }

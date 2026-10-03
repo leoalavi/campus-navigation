@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Merke opptjent!",
-  "scanBadgeVisited": "Besøkt"
+  "scanBadgeVisited": "Besøkt",
+  "openDay_enable": "Vis åpen dag",
+  "openDay_enableSemantic": "Vis program, Skann-fanen og påminnelser for åpen dag",
+  "openDay_finishedTitle": "Denne åpne dagen er over",
+  "openDay_finishedBody": "Øktene for neste åpne dag vises her når de er kunngjort.",
+  "openDay_programPending": "Programmet for denne åpne dagen er ikke publisert ennå. Øktene vises her når det er kunngjort."
 }

@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "حصلت على شارة!",
-  "scanBadgeVisited": "تمت الزيارة"
+  "scanBadgeVisited": "تمت الزيارة",
+  "openDay_enable": "إظهار يوم الانفتاح",
+  "openDay_enableSemantic": "إظهار جدول يوم الانفتاح وتبويب المسح والتذكيرات",
+  "openDay_finishedTitle": "انتهى يوم الانفتاح هذا",
+  "openDay_finishedBody": "ستظهر هنا جلسات يوم الانفتاح القادم فور الإعلان عنها.",
+  "openDay_programPending": "لم يُنشر برنامج جلسات يوم الانفتاح هذا بعد. ستظهر الجلسات هنا فور الإعلان عنها."
 }

@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Badge optjent!",
-  "scanBadgeVisited": "Besøgt"
+  "scanBadgeVisited": "Besøgt",
+  "openDay_enable": "Vis Åbent Hus",
+  "openDay_enableSemantic": "Vis Åbent Hus-program, Scan-fanen og påmindelser",
+  "openDay_finishedTitle": "Dette Åbent Hus er slut",
+  "openDay_finishedBody": "Sessioner til næste Åbent Hus vises her, når de er offentliggjort.",
+  "openDay_programPending": "Programmet for dette Åbent Hus er endnu ikke offentliggjort. Sessionerne vises her, når det er annonceret."
 }

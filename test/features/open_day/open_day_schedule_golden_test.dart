@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:campus_navigation/features/open_day/domain/entities/open_day_data.dart';
 import 'package:campus_navigation/features/open_day/domain/services/open_day_time.dart';
@@ -108,7 +108,12 @@ void main() {
     // Times are compared as Sydney wall-clock, the same way every screen
     // renders them — a device-local `.hour` would read 00:00 under UTC.
     tzdata.initializeTimeZones();
-    final raw = await rootBundle.loadString('assets/data/open_day.json');
+    // The 2026 program is archived (not bundled) since the next Open Day is
+    // 2027 and its sessions aren't published yet; this keeps guarding the
+    // archived data against the official 2026 timetable.
+    final raw = File(
+      'docs/open-day/open_day_2026_sessions.json',
+    ).readAsStringSync();
     data = OpenDayData.fromJson(jsonDecode(raw) as Map<String, dynamic>);
   });
 

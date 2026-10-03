@@ -540,4 +540,44 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
     }
   });
+
+  testWidgets('campus building panel shows the building photo and fits a '
+      'small phone', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(320, 568));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final withPhoto = Building.fromJson({
+      'id': 'MQTH',
+      'code': 'MQTH',
+      'name': 'Macquarie Theatre',
+      'location': {'lat': -33.775, 'lng': 151.113},
+      'category': 'academic',
+      'photo': 'assets/photos/MQTH.jpg',
+      'description':
+          '21 Wally\'s Walk is home to the Macquarie Theatre, one of the '
+          'largest tiered lecture theatres, plus tutorial rooms. The '
+          'fixed-seat auditorium hosts lectures, events and ceremonies.',
+    });
+    fakeRepository = _FakeMapRepository(buildings: [withPhoto]);
+
+    final router = GoRouter(
+      initialLocation: '/map?building=MQTH',
+      routes: [
+        GoRoute(
+          path: '/map',
+          name: RouteNames.map,
+          builder: (context, state) =>
+              MapPage(initialBuildingId: state.uri.queryParameters['building']),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(buildTestApp(router: router));
+    for (var i = 0; i < 6; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+
+    expect(find.byKey(const ValueKey('campus-building-photo')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }

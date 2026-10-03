@@ -80,8 +80,9 @@ no affiliation is implied, and no web version is advertised.
 
 | Question | Answer |
 |---|---|
-| Does your app collect or share user data? | **No** |
-| Location | Accessed on-device only; not collected or transmitted |
+| Does your app collect or share user data? | **Yes — location only, processed ephemerally** (see next row) |
+| Location (precise) | Sent to our backend only when the user asks for directions (origin coordinates, forwarded to the routing provider) or for nearby transit stops (forwarded to TfNSW). Used solely to compute that result; **not stored, not logged against a user, not shared for advertising**. Declare as *collected*, *processed ephemerally*, purpose *App functionality*, not required (the campus map works without it). |
+| Camera | Used on-device to read Open Day QR codes; no images leave the device — not collected |
 | Personal info / identifiers | None — the app has no accounts |
 | Analytics / crash logs | None bundled |
 | Ads | None |
@@ -94,7 +95,9 @@ no affiliation is implied, and no web version is advertised.
 
 - [ ] iPhone 6.7" and 6.5" screenshots (App Store requires both)
 - [ ] Android phone screenshots + 1024×500 feature graphic
-- [ ] 1024×1024 App Store icon without alpha/rounded corners
+- [x] 1024×1024 App Store icon without alpha/rounded corners — `docs/store/icons/app-store-icon-1024.png`
+- [x] 512×512 Google Play hi-res icon — `docs/store/icons/google-play-icon-512.png`
+  (both derived from `assets/images/app_logo.png` by `tool/branding/build_icon_assets.py`)
 - [ ] Short preview video (optional)
 
 Screenshots must not include the university crest or any signage that implies

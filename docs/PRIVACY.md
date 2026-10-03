@@ -17,7 +17,9 @@ here, the app does not do it.
 * **No tracking or analytics.** No analytics, attribution or crash-reporting
   SDK is bundled.
 * **No sale or sharing of personal information.** Ever, to anyone.
-* **Your location never leaves your device.**
+* **Your location is never stored or tracked.** It is sent only for the moment
+  it takes to answer a request you make (directions, nearby stops) — see
+  [Location](#location).
 
 ## What the app stores on your device
 
@@ -39,10 +41,25 @@ Location access is **optional**. The app asks for it only when you use a
 feature that needs it, and it works without it — you can browse the map, search
 buildings, open 360° tours and read directions with location switched off.
 
-When you grant it, your coordinates are used **on your device** to show where
-you are and to orient walking directions. Your location is **not** transmitted
-to us and **not** stored on any server. You can revoke the permission at any
-time in your device settings.
+When you grant it, your coordinates are used on your device to show where you
+are and to orient walking directions. They leave your device in only two cases,
+both started by you:
+
+* **Directions** — when you ask for a route, your starting point is sent to our
+  routing service, which passes it to the routing provider to calculate the
+  route and returns the result.
+* **Nearby stops** — when you look up transport near you, your position is sent
+  to our transport service, which queries Transport for NSW Open Data.
+
+In both cases the coordinates are used only to answer that request. They are
+**not stored**, not linked to any identity (there is no account), and not used
+for tracking or advertising. You can revoke the permission at any time in your
+device settings; the map, search and 360° tours still work without it.
+
+## Camera
+
+The camera is used only to read Open Day QR codes, on your device. No photo or
+video is captured, stored or sent anywhere.
 
 ## Network requests the app makes
 

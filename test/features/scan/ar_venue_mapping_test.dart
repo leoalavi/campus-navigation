@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -73,8 +74,18 @@ void main() {
   });
 
   test('every Open Day building code resolves to an AR manifest', () {
+    // Venues come from the suggested stops and (until the 2027 program is
+    // published) the archived 2026 sessions, which used the same theatres.
+    final archived = OpenDayData.fromJson(
+      jsonDecode(
+            File(
+              'docs/open-day/open_day_2026_sessions.json',
+            ).readAsStringSync(),
+          )
+          as Map<String, dynamic>,
+    );
     final codes = <String>{
-      for (final e in openDay.events)
+      for (final e in [...openDay.events, ...archived.events])
         if (e.buildingCode != null && e.buildingCode!.isNotEmpty)
           e.buildingCode!.toUpperCase(),
     };

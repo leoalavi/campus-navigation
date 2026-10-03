@@ -112,7 +112,11 @@ class _OpenDayBody extends StatelessWidget {
         _StudyInterestHeader(selected: selected, openDayDate: data.openDayDate),
         const SizedBox(height: MqSpacing.space5),
 
-        if (nothingToShow) _EmptyEventsState(hasSelection: hasSelection),
+        if (nothingToShow)
+          _EmptyEventsState(
+            hasSelection: hasSelection,
+            programPublished: data.hasProgram,
+          ),
 
         // 1. Degree-first section — ONLY sessions for the exact selected
         //    degree. Primary (red) header so it reads as the main content.
@@ -496,13 +500,23 @@ class _EventTile extends ConsumerWidget {
 }
 
 class _EmptyEventsState extends StatelessWidget {
-  const _EmptyEventsState({required this.hasSelection});
+  const _EmptyEventsState({
+    required this.hasSelection,
+    this.programPublished = true,
+  });
 
   final bool hasSelection;
+
+  /// False while the next Open Day's program hasn't been published: then
+  /// the message says so instead of implying a filter matched nothing.
+  final bool programPublished;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: ValueKey(
+        programPublished ? 'open-day-no-matches' : 'open-day-program-pending',
+      ),
       padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -516,7 +530,9 @@ class _EmptyEventsState extends StatelessWidget {
           ),
           const SizedBox(height: MqSpacing.space3),
           Text(
-            hasSelection
+            !programPublished
+                ? AppLocalizations.of(context)!.openDay_programPending
+                : hasSelection
                 ? AppLocalizations.of(context)!.openDay_noEventsForSelection
                 : AppLocalizations.of(context)!.openDay_noEventsNoneSelected,
             textAlign: TextAlign.center,

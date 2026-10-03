@@ -2612,5 +2612,10 @@
     }
   },
   "scanBadgeEarned": "Zdobyto odznakę!",
-  "scanBadgeVisited": "Odwiedzono"
+  "scanBadgeVisited": "Odwiedzono",
+  "openDay_enable": "Pokaż Dzień Otwarty",
+  "openDay_enableSemantic": "Pokaż program Dnia Otwartego, kartę Skanuj i przypomnienia",
+  "openDay_finishedTitle": "Ten Dzień Otwarty się zakończył",
+  "openDay_finishedBody": "Sesje następnego Dnia Otwartego pojawią się tutaj po ich ogłoszeniu.",
+  "openDay_programPending": "Program sesji tego Dnia Otwartego nie został jeszcze opublikowany. Sesje pojawią się tutaj po jego ogłoszeniu."
 }
