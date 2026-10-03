@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/timetable/data/repositories/timetable_repository.dart';
-import 'package:mq_journey/features/timetable/domain/entities/timetable_class.dart';
+import 'package:mq_navigation/features/timetable/data/repositories/timetable_repository.dart';
+import 'package:mq_navigation/features/timetable/domain/entities/timetable_class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

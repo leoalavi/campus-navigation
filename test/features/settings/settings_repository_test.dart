@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_journey/core/security/secure_storage_service.dart';
-import 'package:mq_journey/features/settings/data/repositories/settings_repository.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/core/security/secure_storage_service.dart';
+import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 class MockSecureStorageService extends Mock implements SecureStorageService {}
 

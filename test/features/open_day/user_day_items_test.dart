@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_progress.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
-import 'package:mq_journey/features/scan/providers/trail_providers.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_progress.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/providers/trail_providers.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 class _FakeSettingsController extends SettingsController {
   _FakeSettingsController(this._prefs);

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_canonical_message.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_canonical_message.dart';
 
 void main() {
   test('canonical message is UTF-8 with frozen field order and final LF', () {

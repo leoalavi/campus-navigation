@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/shared/widgets/glass_surface.dart';
+import 'package:mq_navigation/shared/widgets/glass_surface.dart';
 
 /// A floating glass "island" app bar for pages whose body is live media
 /// (camera feed, 360° panorama). Pair with

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
-import 'package:mq_journey/features/scan/domain/qr/signed_qr_payload.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_validation_result.dart';
+import 'package:mq_navigation/features/scan/domain/qr/signed_qr_payload.dart';
 
 class SignedQrParser {
   const SignedQrParser({required this.knownKeyIds});

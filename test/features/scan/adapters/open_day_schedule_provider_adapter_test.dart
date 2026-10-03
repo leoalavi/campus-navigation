@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/data/adapters/open_day_schedule_provider_adapter.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/scan/data/adapters/open_day_schedule_provider_adapter.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
 
 void main() {
   group('OpenDayScheduleProviderAdapter', () {

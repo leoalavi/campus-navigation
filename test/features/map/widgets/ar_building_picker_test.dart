@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/map/presentation/widgets/ar_building_picker.dart';
-import 'package:mq_journey/features/scan/providers/scan_providers.dart';
-import 'package:mq_journey/features/scan/data/repositories/trail_repository.dart';
-import 'package:mq_journey/features/scan/data/repositories/indoor_repository.dart';
-import 'package:mq_journey/features/scan/data/repositories/buildings_repository.dart';
-import 'package:mq_journey/features/scan/domain/models/buildings_registry.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
-import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/ar_building_picker.dart';
+import 'package:mq_navigation/features/scan/providers/scan_providers.dart';
+import 'package:mq_navigation/features/scan/data/repositories/trail_repository.dart';
+import 'package:mq_navigation/features/scan/data/repositories/indoor_repository.dart';
+import 'package:mq_navigation/features/scan/data/repositories/buildings_repository.dart';
+import 'package:mq_navigation/features/scan/domain/models/buildings_registry.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/domain/models/indoor_manifest.dart';
 
 class _MultiFakeTrailRepository extends TrailRepository {
   @override

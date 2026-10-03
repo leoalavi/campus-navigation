@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/timetable/data/repositories/timetable_repository.dart';
-import 'package:mq_journey/features/timetable/domain/entities/timetable_class.dart';
-import 'package:mq_journey/features/timetable/presentation/providers/timetable_provider.dart';
+import 'package:mq_navigation/features/timetable/data/repositories/timetable_repository.dart';
+import 'package:mq_navigation/features/timetable/domain/entities/timetable_class.dart';
+import 'package:mq_navigation/features/timetable/presentation/providers/timetable_provider.dart';
 
 class _FakeTimetableRepository implements TimetableRepository {
   _FakeTimetableRepository(this._classes);

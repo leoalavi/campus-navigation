@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/photo_gallery.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/photo_gallery.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 
 void main() {
   testWidgets('renders one page per photo with dots', (tester) async {

@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/core/security/secure_storage_service.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/core/security/secure_storage_service.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
 
 /// Versioned cache key. **Bump the suffix whenever `buildings.json`
 /// changes shape (new tags, new aliases, schema changes)** — every

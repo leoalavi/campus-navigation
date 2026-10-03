@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/theme/mq_animations.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/core/utils/haptics.dart';
+import 'package:mq_navigation/app/theme/mq_animations.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/core/utils/haptics.dart';
 
 /// Reusable tactile wrapper that adds:
 /// - squishy press-in scale animation

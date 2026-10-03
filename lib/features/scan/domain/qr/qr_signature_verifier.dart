@@ -1,7 +1,7 @@
 import 'package:cryptography/cryptography.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_canonical_message.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
-import 'package:mq_journey/features/scan/domain/qr/signed_qr_parser.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_canonical_message.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_validation_result.dart';
+import 'package:mq_navigation/features/scan/domain/qr/signed_qr_parser.dart';
 
 class QrSignatureVerifier {
   QrSignatureVerifier({required Map<String, List<int>> publicKeys})

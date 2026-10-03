@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart'
     show debugPrint, kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 
 enum LocationPermissionState {
   granted,

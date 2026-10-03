@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/domain/services/building_search.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/services/building_search.dart';
 
 void main() {
   final buildings = [

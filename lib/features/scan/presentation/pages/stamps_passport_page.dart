@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/stamp_progress_ring.dart';
-import 'package:mq_journey/features/scan/providers/scan_providers.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/shared/extensions/context_extensions.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/stamp_catalog_entry.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/stamp_progress_ring.dart';
+import 'package:mq_navigation/features/scan/providers/scan_providers.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 
 class StampsPassportPage extends ConsumerWidget {
   const StampsPassportPage({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/domain/models/buildings_registry.dart';
+import 'package:mq_navigation/features/scan/domain/models/buildings_registry.dart';
 
 void main() {
   group('BuildingsRegistry', () {

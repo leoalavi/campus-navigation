@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/core/error/app_exception.dart';
+import 'package:mq_navigation/core/error/app_exception.dart';
 
 void main() {
   group('AppException hierarchy', () {

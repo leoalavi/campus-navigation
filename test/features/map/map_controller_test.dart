@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
-import 'package:mq_journey/app/router/route_names.dart';
-import 'package:mq_journey/features/map/data/datasources/location_source.dart';
-import 'package:mq_journey/features/map/data/repositories/map_repository_impl.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/domain/entities/nav_instruction.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
-import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_navigation/app/router/route_names.dart';
+import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
+import 'package:mq_navigation/features/map/data/repositories/map_repository_impl.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/entities/nav_instruction.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 void main() {
   group('MapController', () {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/indoor_tour_view.dart';
-import 'package:mq_journey/features/scan/providers/scan_providers.dart';
-import 'package:mq_journey/shared/widgets/glass_app_bar.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/scan/domain/models/indoor_manifest.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/indoor_tour_view.dart';
+import 'package:mq_navigation/features/scan/providers/scan_providers.dart';
+import 'package:mq_navigation/shared/widgets/glass_app_bar.dart';
 
 /// Pure scene resolution (spec refinement #3): a valid stop scene wins;
 /// otherwise fall back to the entrance scene; otherwise null (Pannellum uses

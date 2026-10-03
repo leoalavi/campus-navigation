@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/stamp_catalog_entry.dart';
 
 @immutable
 class StampAward {

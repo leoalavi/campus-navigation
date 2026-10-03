@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:mq_journey/features/favorites/domain/entities/favorite_building.dart';
+import 'package:mq_navigation/features/favorites/domain/entities/favorite_building.dart';
 
 class FavoriteBuildingSource {
   FavoriteBuildingSource({required SupabaseClient client}) : _client = client;

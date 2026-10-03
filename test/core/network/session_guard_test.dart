@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/core/network/session_guard.dart';
+import 'package:mq_navigation/core/network/session_guard.dart';
 
 void main() {
   test('sessionGuardProvider resolves to false instead of throwing when '

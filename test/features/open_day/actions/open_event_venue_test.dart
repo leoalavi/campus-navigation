@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/features/open_day/presentation/actions/open_event_venue.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/map/data/datasources/building_registry_source.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/presentation/actions/open_event_venue.dart';
 
 const _building = Building(
   id: 'wallys-1',

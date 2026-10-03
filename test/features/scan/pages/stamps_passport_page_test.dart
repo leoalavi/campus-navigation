@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
-import 'package:mq_journey/features/scan/presentation/pages/stamps_passport_page.dart';
-import 'package:mq_journey/features/scan/providers/scan_providers.dart';
-import 'package:mq_journey/features/settings/data/repositories/settings_repository.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/stamp_catalog_entry.dart';
+import 'package:mq_navigation/features/scan/presentation/pages/stamps_passport_page.dart';
+import 'package:mq_navigation/features/scan/providers/scan_providers.dart';
+import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 class MockSettingsRepository extends Mock implements SettingsRepository {}
 

@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/features/open_day/presentation/pages/your_day_page.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
-import 'package:mq_journey/features/scan/providers/trail_providers.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/map/data/datasources/building_registry_source.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/presentation/pages/your_day_page.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/providers/trail_providers.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 class _FakeSettingsController extends SettingsController {
   _FakeSettingsController(this._prefs);

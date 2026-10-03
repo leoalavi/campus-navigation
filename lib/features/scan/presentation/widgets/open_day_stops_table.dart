@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/scan/domain/contracts/schedule_provider.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/schedule_provider.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
 
 class OpenDayStopsTable extends StatelessWidget {
   const OpenDayStopsTable({

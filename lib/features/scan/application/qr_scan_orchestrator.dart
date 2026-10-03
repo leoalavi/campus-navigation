@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:mq_journey/features/scan/domain/contracts/progress_api.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/progress_api.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_validation_result.dart';
 
 typedef QrValidate =
     Future<QrValidationResult> Function(

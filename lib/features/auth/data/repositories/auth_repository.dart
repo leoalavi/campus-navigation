@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:mq_journey/features/auth/domain/services/auth_service.dart';
+import 'package:mq_navigation/features/auth/domain/services/auth_service.dart';
 
 class AuthRepository {
   AuthRepository({required AuthService authService})

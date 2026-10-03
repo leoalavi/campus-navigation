@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/features/scan/domain/contracts/my_day_api.dart';
-import 'package:mq_journey/features/scan/domain/contracts/my_day_entry.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/my_day_api.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/my_day_entry.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 
 class SettingsMyDayApiAdapter implements MyDayApi {
   SettingsMyDayApiAdapter(this._ref);

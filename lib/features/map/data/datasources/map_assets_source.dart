@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/features/map/domain/entities/campus_overlay_meta.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/map/domain/entities/campus_overlay_meta.dart';
 
 class MapAssetsException implements Exception {
   const MapAssetsException(this.message);

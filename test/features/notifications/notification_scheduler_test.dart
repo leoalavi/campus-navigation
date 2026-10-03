@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_journey/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_journey/features/notifications/domain/entities/notification_preferences.dart';
-import 'package:mq_journey/features/notifications/domain/services/notification_scheduler.dart';
+import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:mq_navigation/features/notifications/domain/services/notification_scheduler.dart';
 
 void main() {
   group('NotificationPreference.normalized', () {

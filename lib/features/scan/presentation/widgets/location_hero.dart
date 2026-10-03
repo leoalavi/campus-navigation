@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/location_content.dart';
 
 class LocationHero extends StatelessWidget {
   const LocationHero({super.key, required this.content});

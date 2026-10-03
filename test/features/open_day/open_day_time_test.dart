@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/open_day/domain/services/open_day_time.dart';
+import 'package:mq_navigation/features/open_day/domain/services/open_day_time.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 void main() {

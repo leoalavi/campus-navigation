@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/presentation/actions/open_building_on_map.dart';
-import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/shared/async/bounded_provider_read.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/map/data/datasources/building_registry_source.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/presentation/actions/open_building_on_map.dart';
+import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/shared/async/bounded_provider_read.dart';
 
 /// How long to wait for the building registry before giving up on it.
 ///

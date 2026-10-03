@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
 
 /// Design tokens for the Liquid Glass-inspired ("Glass UI layer") material.
 /// See docs/superpowers/specs/2026-07-19-liquid-glass-ui-design.md.

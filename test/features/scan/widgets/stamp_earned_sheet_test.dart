@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
-import 'package:mq_journey/features/scan/domain/services/stamp_award_calculator.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/stamp_earned_sheet.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/stamp_catalog_entry.dart';
+import 'package:mq_navigation/features/scan/domain/services/stamp_award_calculator.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/stamp_earned_sheet.dart';
 
 const _award = StampAward(
   stamp: StampCatalogEntry(

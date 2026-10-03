@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:mq_journey/features/scan/domain/qr/qr_public_key_registry.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_signature_verifier.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_public_key_registry.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_signature_verifier.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_validation_result.dart';
 
 Future<void> main(List<String> arguments) async {
   if (arguments.length != 2) {

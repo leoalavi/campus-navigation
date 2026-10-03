@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/features/timetable/data/repositories/timetable_repository.dart';
-import 'package:mq_journey/features/timetable/domain/entities/timetable_class.dart';
+import 'package:mq_navigation/features/timetable/data/repositories/timetable_repository.dart';
+import 'package:mq_navigation/features/timetable/domain/entities/timetable_class.dart';
 
 final timetableClassesProvider = FutureProvider<List<TimetableClass>>((ref) {
   return ref.watch(timetableRepositoryProvider).loadClasses();

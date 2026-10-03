@@ -3,20 +3,20 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/router/route_names.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
-import 'package:mq_journey/features/open_day/presentation/widgets/open_day_home_card.dart';
-import 'package:mq_journey/features/open_day/presentation/widgets/open_day_home_sections.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/features/transit/domain/entities/metro_departure.dart';
-import 'package:mq_journey/features/transit/presentation/providers/tfnsw_provider.dart';
-import 'package:mq_journey/shared/extensions/context_extensions.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
-import 'package:mq_journey/shared/widgets/mq_tactile_button.dart';
-import 'package:mq_journey/shared/widgets/open_day_wordmark.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/router/route_names.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_navigation/features/open_day/presentation/widgets/open_day_home_card.dart';
+import 'package:mq_navigation/features/open_day/presentation/widgets/open_day_home_sections.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/features/transit/domain/entities/metro_departure.dart';
+import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
+import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
+import 'package:mq_navigation/shared/widgets/open_day_wordmark.dart';
 
 /// Home screen for the MQ Journey app.
 ///

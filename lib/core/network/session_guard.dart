@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
 
 /// Provider for the session guard function.
 ///

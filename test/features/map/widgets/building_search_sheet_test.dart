@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/map/data/datasources/location_source.dart';
-import 'package:mq_journey/features/map/data/repositories/map_repository_impl.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
-import 'package:mq_journey/features/map/presentation/widgets/building_search_sheet.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
+import 'package:mq_navigation/features/map/data/repositories/map_repository_impl.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/building_search_sheet.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 class _FakeSettingsController extends SettingsController {
   @override

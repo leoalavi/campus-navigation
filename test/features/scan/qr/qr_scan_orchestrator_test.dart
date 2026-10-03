@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/application/qr_scan_orchestrator.dart';
-import 'package:mq_journey/features/scan/domain/contracts/progress_api.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
-import 'package:mq_journey/features/scan/domain/fakes/fake_progress_api.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_public_key_registry.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_signature_verifier.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
+import 'package:mq_navigation/features/scan/application/qr_scan_orchestrator.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/progress_api.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_navigation/features/scan/domain/fakes/fake_progress_api.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_public_key_registry.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_signature_verifier.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_validation_result.dart';
 
 void main() {
   const manifest = TrailManifest(

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/core/network/connectivity_service.dart';
+import 'package:mq_navigation/core/network/connectivity_service.dart';
 
 const _methodChannel = MethodChannel('dev.fluttercommunity.plus/connectivity');
 const _eventChannel = MethodChannel(

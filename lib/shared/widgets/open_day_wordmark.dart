@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/shared/widgets/campus_text.dart';
+import 'package:mq_navigation/shared/widgets/campus_text.dart';
 
 /// The "(OPEN DAY)us" campaign wordmark, rendered in type rather than as a
 /// bitmap so it stays crisp at any size and can be tinted per surface.

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as latlong;
-import 'package:mq_journey/features/map/domain/entities/campus_overlay_meta.dart';
+import 'package:mq_navigation/features/map/domain/entities/campus_overlay_meta.dart';
 
 /// Renders the campus blueprint image as a [FlutterMap] overlay layer.
 class CampusMapOverlay extends StatelessWidget {

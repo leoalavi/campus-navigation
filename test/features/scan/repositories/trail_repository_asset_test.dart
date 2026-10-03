@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/data/repositories/trail_repository.dart';
-import 'package:mq_journey/features/scan/data/repositories/indoor_repository.dart';
-import 'package:mq_journey/features/scan/data/repositories/buildings_repository.dart';
+import 'package:mq_navigation/features/scan/data/repositories/trail_repository.dart';
+import 'package:mq_navigation/features/scan/data/repositories/indoor_repository.dart';
+import 'package:mq_navigation/features/scan/data/repositories/buildings_repository.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

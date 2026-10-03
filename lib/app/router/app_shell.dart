@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
-import 'package:mq_journey/app/router/immersive_viewer_active_provider.dart';
-import 'package:mq_journey/app/router/liquid_tab_bar.dart';
-import 'package:mq_journey/app/router/route_names.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/shared/widgets/glass_surface.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_navigation/app/router/immersive_viewer_active_provider.dart';
+import 'package:mq_navigation/app/router/liquid_tab_bar.dart';
+import 'package:mq_navigation/app/router/route_names.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/shared/widgets/glass_surface.dart';
 
 /// Stable identity for the single tab bar so its metaball animation state is
 /// preserved when the surrounding glass swaps render modes (see [AppShell]).

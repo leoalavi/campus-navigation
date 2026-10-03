@@ -2,11 +2,11 @@ import 'dart:math' as math;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/domain/entities/nav_instruction.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
-import 'package:mq_journey/features/map/presentation/widgets/compass_mode_view.dart';
-import 'package:mq_journey/features/map/presentation/widgets/map_view_helpers.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/entities/nav_instruction.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/compass_mode_view.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 
 /// Pure function extracted from CompassModeView for heading -> angle conversion.
 /// Returns radians, 0 = pointing up (north).

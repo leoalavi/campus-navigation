@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/features/favorites/presentation/controllers/favorites_controller.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
 
 class FavoriteButton extends ConsumerWidget {
   const FavoriteButton({

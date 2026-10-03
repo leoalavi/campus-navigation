@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/scan/domain/models/indoor_manifest.dart';
 
 class IndoorRepository {
   /// Loads the indoor manifest for [buildingId], or `null` when no manifest

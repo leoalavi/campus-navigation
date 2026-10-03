@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_journey/core/network/session_guard.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/features/auth/data/repositories/auth_repository.dart';
-import 'package:mq_journey/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:mq_journey/features/favorites/data/repositories/favorite_building_repository.dart';
-import 'package:mq_journey/features/favorites/domain/entities/favorite_building.dart';
-import 'package:mq_journey/features/favorites/presentation/controllers/favorites_controller.dart';
-import 'package:mq_journey/features/favorites/presentation/widgets/favorite_button.dart';
+import 'package:mq_navigation/core/network/session_guard.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/features/auth/data/repositories/auth_repository.dart';
+import 'package:mq_navigation/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:mq_navigation/features/favorites/data/repositories/favorite_building_repository.dart';
+import 'package:mq_navigation/features/favorites/domain/entities/favorite_building.dart';
+import 'package:mq_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
+import 'package:mq_navigation/features/favorites/presentation/widgets/favorite_button.dart';
 
 class MockAuthRepository extends Mock implements AuthRepository {}
 

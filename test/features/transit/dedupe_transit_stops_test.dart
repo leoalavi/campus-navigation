@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/transit/domain/entities/transit_stop.dart';
-import 'package:mq_journey/features/transit/presentation/providers/tfnsw_provider.dart';
+import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
+import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
 
 void main() {
   group('dedupeTransitStops', () {

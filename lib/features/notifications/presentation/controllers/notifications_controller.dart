@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/app/router/app_router.dart';
-import 'package:mq_journey/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/core/network/session_guard.dart';
-import 'package:mq_journey/core/network/connectivity_service.dart';
-import 'package:mq_journey/features/notifications/data/datasources/fcm_service.dart';
-import 'package:mq_journey/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_journey/features/notifications/data/repositories/notification_repository_impl.dart';
-import 'package:mq_journey/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_journey/features/notifications/domain/entities/notification_preferences.dart';
-import 'package:mq_journey/features/notifications/domain/services/notification_scheduler.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/app/router/app_router.dart';
+import 'package:mq_navigation/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/core/network/session_guard.dart';
+import 'package:mq_navigation/core/network/connectivity_service.dart';
+import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
+import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:mq_navigation/features/notifications/data/repositories/notification_repository_impl.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:mq_navigation/features/notifications/domain/services/notification_scheduler.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 @immutable
 class NotificationsState {

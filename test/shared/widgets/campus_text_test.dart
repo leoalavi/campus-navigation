@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/shared/widgets/campus_text.dart';
+import 'package:mq_navigation/shared/widgets/campus_text.dart';
 
 /// The exact strings the campus data ships, which mix Latin letters with
 /// digits and punctuation — the combination that reorders under RTL.

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 
 class PhotoGallery extends StatefulWidget {
   const PhotoGallery({

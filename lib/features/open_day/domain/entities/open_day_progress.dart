@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
 
 /// A single entry in the user's saved "Your Day" list.
 ///

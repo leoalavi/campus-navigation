@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as latlong;
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
-import 'package:mq_journey/features/map/domain/services/campus_projection.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/domain/services/campus_projection.dart';
 
 /// Renders the current-location dot, GPS accuracy circle, and route origin dot.
 class CampusMapLocationLayer extends StatelessWidget {

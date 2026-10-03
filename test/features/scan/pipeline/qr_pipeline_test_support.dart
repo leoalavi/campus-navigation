@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:mq_journey/features/scan/application/qr_scan_orchestrator.dart';
-import 'package:mq_journey/features/scan/domain/contracts/progress_api.dart';
-import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_public_key_registry.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_signature_verifier.dart';
-import 'package:mq_journey/features/scan/domain/services/stamp_award_calculator.dart';
+import 'package:mq_navigation/features/scan/application/qr_scan_orchestrator.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/progress_api.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/stamp_catalog_entry.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_public_key_registry.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_signature_verifier.dart';
+import 'package:mq_navigation/features/scan/domain/services/stamp_award_calculator.dart';
 
 class QrPipelineFixture {
   const QrPipelineFixture({

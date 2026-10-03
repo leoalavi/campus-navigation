@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/indoor_webview.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/scene_rail.dart';
+import 'package:mq_navigation/features/scan/domain/models/indoor_manifest.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/indoor_webview.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/scene_rail.dart';
 
 /// Builds the panorama viewer for a scene. Injectable so widget tests can
 /// substitute a fake and never build the real `InAppWebView` platform view

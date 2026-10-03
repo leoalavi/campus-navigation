@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:mq_journey/features/scan/domain/contracts/progress_api.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/progress_api.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visit_event.dart';
 
 class FakeProgressApi implements ProgressApi {
   final _visited = <String>{};

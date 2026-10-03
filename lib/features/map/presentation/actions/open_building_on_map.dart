@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/router/route_names.dart';
-import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_navigation/app/router/route_names.dart';
+import 'package:mq_navigation/features/map/data/datasources/building_registry_source.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
 
 /// How a caller wants the Campus Map to enter the navigation stack.
 ///

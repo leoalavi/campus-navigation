@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/card_visit_badge.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/card_visit_badge.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 
 Widget _app(Widget child, {Brightness brightness = Brightness.light}) =>
     MaterialApp(

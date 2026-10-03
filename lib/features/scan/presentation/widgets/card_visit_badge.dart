@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visited_state.dart';
 
 /// "Visited" / "Reward earned" pill shown on a location card once the user has
 /// been there. Uses the MQ Open Day pink ([MqColors.brightRed]) in both light

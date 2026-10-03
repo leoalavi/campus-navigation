@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/shared/widgets/mq_bottom_sheet.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
 
 class BuildingActionsSheet extends StatelessWidget {
   const BuildingActionsSheet({

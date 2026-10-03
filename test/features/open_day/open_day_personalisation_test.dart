@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/features/open_day/domain/services/open_day_personalisation.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/domain/services/open_day_personalisation.dart';
 
 /// Small fixture mirroring the shape of `assets/data/open_day.json` but with
 /// just enough rows to exercise the ranking + live-status rules.

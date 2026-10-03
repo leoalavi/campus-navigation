@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/router/route_names.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/core/utils/haptics.dart';
-import 'package:mq_journey/features/open_day/data/open_day_providers.dart';
-import 'package:mq_journey/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/features/transit/domain/entities/transit_stop.dart';
-import 'package:mq_journey/features/transit/presentation/providers/tfnsw_provider.dart';
-import 'package:mq_journey/shared/extensions/context_extensions.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
-import 'package:mq_journey/shared/widgets/mq_bottom_sheet.dart';
-import 'package:mq_journey/shared/widgets/mq_input.dart';
-import 'package:mq_journey/shared/widgets/mq_tactile_button.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/router/route_names.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/core/utils/haptics.dart';
+import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:mq_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
+import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
+import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
+import 'package:mq_navigation/shared/widgets/mq_input.dart';
+import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
 
 /// Dark-mode foreground on Settings (replaces [MqColors.contentPrimaryDark] / alabaster).
 ThemeData _settingsDarkReadableTheme(BuildContext context) {

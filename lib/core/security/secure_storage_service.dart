@@ -3,8 +3,8 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mq_journey/core/error/app_exception.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
+import 'package:mq_navigation/core/error/app_exception.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Encrypted key-value storage backed by Keychain (iOS) / Keystore (Android).

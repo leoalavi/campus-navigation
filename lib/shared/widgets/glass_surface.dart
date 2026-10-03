@@ -1,9 +1,9 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_glass.dart';
-import 'package:mq_journey/shared/widgets/glass_shader.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_glass.dart';
+import 'package:mq_navigation/shared/widgets/glass_shader.dart';
 
 /// Variants of the Liquid Glass-inspired ("Glass UI layer") material.
 enum GlassVariant { bar, control, content }

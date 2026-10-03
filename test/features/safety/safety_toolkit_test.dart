@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/theme/mq_theme.dart';
-import 'package:mq_journey/features/safety/data/datasources/safety_poi_source.dart';
-import 'package:mq_journey/features/safety/domain/entities/emergency_contact.dart';
-import 'package:mq_journey/features/safety/domain/entities/safety_poi.dart';
-import 'package:mq_journey/features/safety/presentation/pages/safety_toolkit_page.dart';
-import 'package:mq_journey/features/safety/presentation/widgets/safety_action_card.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_theme.dart';
+import 'package:mq_navigation/features/safety/data/datasources/safety_poi_source.dart';
+import 'package:mq_navigation/features/safety/domain/entities/emergency_contact.dart';
+import 'package:mq_navigation/features/safety/domain/entities/safety_poi.dart';
+import 'package:mq_navigation/features/safety/presentation/pages/safety_toolkit_page.dart';
+import 'package:mq_navigation/features/safety/presentation/widgets/safety_action_card.dart';
 
 Widget _testApp(Widget widget) {
   return MaterialApp(

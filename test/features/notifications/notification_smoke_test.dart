@@ -1,19 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_journey/features/notifications/data/datasources/fcm_service.dart';
-import 'package:mq_journey/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_journey/features/notifications/data/repositories/notification_repository_impl.dart';
-import 'package:mq_journey/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_journey/features/notifications/domain/entities/notification_preferences.dart';
-import 'package:mq_journey/features/notifications/domain/services/notification_scheduler.dart';
-import 'package:mq_journey/features/notifications/presentation/controllers/notifications_controller.dart';
-import 'package:mq_journey/features/notifications/domain/entities/reminder_request.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
-import 'package:mq_journey/features/settings/data/repositories/settings_repository.dart';
-import 'package:mq_journey/core/network/connectivity_service.dart';
-import 'package:mq_journey/features/auth/data/repositories/auth_repository.dart';
-import 'package:mq_journey/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
+import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:mq_navigation/features/notifications/data/repositories/notification_repository_impl.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:mq_navigation/features/notifications/domain/services/notification_scheduler.dart';
+import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/reminder_request.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
+import 'package:mq_navigation/core/network/connectivity_service.dart';
+import 'package:mq_navigation/features/auth/data/repositories/auth_repository.dart';
+import 'package:mq_navigation/features/auth/presentation/controllers/auth_controller.dart';
 
 class MockLocalNotificationsService extends Mock
     implements LocalNotificationsService {}

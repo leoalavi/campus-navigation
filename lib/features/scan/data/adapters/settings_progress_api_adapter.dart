@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/features/scan/domain/contracts/progress_api.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/progress_api.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> ensureAnonSession({SupabaseClient? supabaseClient}) async {

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:mq_journey/features/auth/domain/services/auth_service.dart';
-import 'package:mq_journey/features/auth/data/repositories/auth_repository.dart';
+import 'package:mq_navigation/features/auth/domain/services/auth_service.dart';
+import 'package:mq_navigation/features/auth/data/repositories/auth_repository.dart';
 
 class MockAuthService extends Mock implements AuthService {}
 

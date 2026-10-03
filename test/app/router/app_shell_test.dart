@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/router/app_shell.dart';
-import 'package:mq_journey/app/router/liquid_tab_bar.dart';
-import 'package:mq_journey/shared/widgets/glass_surface.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/router/app_shell.dart';
+import 'package:mq_navigation/app/router/liquid_tab_bar.dart';
+import 'package:mq_navigation/shared/widgets/glass_surface.dart';
 
 GoRouter _shellRouter() {
   return GoRouter(

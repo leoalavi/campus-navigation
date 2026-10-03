@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/stamp_progress_ring.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/stamp_progress_ring.dart';
 
 void main() {
   testWidgets('renders the collected/total count as text', (tester) async {

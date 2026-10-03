@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/features/map/data/datasources/building_registry_source.dart';
-import 'package:mq_journey/features/map/data/datasources/campus_routes_remote_source.dart';
-import 'package:mq_journey/features/map/data/datasources/location_source.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/data/datasources/building_registry_source.dart';
+import 'package:mq_navigation/features/map/data/datasources/campus_routes_remote_source.dart';
+import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 
 abstract interface class MapRepository {
   Future<List<Building>> getBuildings({bool forceRefresh = false});

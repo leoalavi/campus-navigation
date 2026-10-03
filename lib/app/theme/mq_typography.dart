@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
 
 /// Macquarie University typography scale.
 ///

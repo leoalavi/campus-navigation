@@ -1,5 +1,5 @@
-import 'package:mq_journey/features/scan/domain/contracts/schedule_provider.dart';
-import 'package:mq_journey/features/scan/domain/contracts/schedule_slot.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/schedule_provider.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/schedule_slot.dart';
 
 class FakeScheduleProvider implements ScheduleProvider {
   @override

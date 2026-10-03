@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
-import 'package:mq_journey/features/map/domain/services/geo_utils.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
 
 void main() {
   group('haversineMetres', () {

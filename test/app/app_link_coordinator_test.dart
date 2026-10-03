@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/app_link_coordinator.dart';
+import 'package:mq_navigation/app/app_link_coordinator.dart';
 
 void main() {
   test('signed Open Day links use the verified QR ingress only', () async {

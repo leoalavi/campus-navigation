@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
 
 void main() {
   group('Building.fromJson', () {

@@ -1,7 +1,7 @@
-import 'package:mq_journey/features/scan/domain/contracts/schedule_provider.dart';
-import 'package:mq_journey/features/scan/domain/contracts/schedule_slot.dart';
-import 'package:mq_journey/features/open_day/domain/services/open_day_personalisation.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/schedule_provider.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/schedule_slot.dart';
+import 'package:mq_navigation/features/open_day/domain/services/open_day_personalisation.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
 
 class OpenDayScheduleProviderAdapter implements ScheduleProvider {
   OpenDayScheduleProviderAdapter({

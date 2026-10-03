@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:mq_journey/features/scan/domain/models/buildings_registry.dart';
+import 'package:mq_navigation/features/scan/domain/models/buildings_registry.dart';
 
 class BuildingsRepository {
   BuildingsRegistry? _cached;

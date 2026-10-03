@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
-import 'package:mq_journey/shared/widgets/glass_surface.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/features/scan/domain/models/indoor_manifest.dart';
+import 'package:mq_navigation/shared/widgets/glass_surface.dart';
 
 /// Fixed chip width so scene scrolling is index-based (reaches chips a lazy
 /// list never built — GlobalKey/ensureVisible cannot).

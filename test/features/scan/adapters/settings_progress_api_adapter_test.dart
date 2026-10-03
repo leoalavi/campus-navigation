@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_adapter.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visited_state.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/features/scan/data/adapters/settings_progress_api_adapter.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visited_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MockSupabaseClient extends Mock implements SupabaseClient {}

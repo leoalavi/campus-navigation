@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/app/theme/mq_theme.dart';
-import 'package:mq_journey/app/theme/mq_typography.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/app/theme/mq_theme.dart';
+import 'package:mq_navigation/app/theme/mq_typography.dart';
 
 void main() {
   group('MqColors', () {

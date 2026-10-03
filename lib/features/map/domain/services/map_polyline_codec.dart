@@ -1,4 +1,4 @@
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 
 /// Decodes Google encoded polyline strings into point samples that both map
 /// renderers can reuse.

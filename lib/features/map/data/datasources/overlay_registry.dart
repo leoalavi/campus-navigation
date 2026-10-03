@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:mq_journey/features/map/domain/entities/map_overlay.dart';
+import 'package:mq_navigation/features/map/domain/entities/map_overlay.dart';
 
 class OverlayRegistry {
   static const overlays = <MapOverlay>[

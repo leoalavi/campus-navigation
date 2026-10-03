@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/features/open_day/presentation/widgets/open_day_home_sections.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/presentation/widgets/open_day_home_sections.dart';
 
 /// Integrity guard for the official Open Day dataset
 /// (`assets/data/open_day.json`, sourced from the MQ Open Day 2026 PDF).

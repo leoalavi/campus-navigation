@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_public_key_registry.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_signature_verifier.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_public_key_registry.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_signature_verifier.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_validation_result.dart';
 
 void main() {
   test(

@@ -1,5 +1,5 @@
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_progress.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_progress.dart';
 
 /// Pure, secondary gamification logic for Open Day.
 ///

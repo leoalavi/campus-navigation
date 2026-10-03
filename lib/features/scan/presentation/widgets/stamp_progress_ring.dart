@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/shared/extensions/context_extensions.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 
 class StampProgressRing extends StatelessWidget {
   const StampProgressRing({

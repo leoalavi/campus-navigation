@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
 
 /// Every Open Day venue that the campus map can show must also resolve to an
 /// AR manifest, by *stable code* — never by display title.

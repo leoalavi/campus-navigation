@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/features/open_day/domain/services/open_day_time.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/domain/services/open_day_time.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 
 /// Golden copy of the official MQ Open Day 2026 "info sessions" grid, taken

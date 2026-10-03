@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
 
 /// Whether the device currently has network connectivity.
 enum ConnectivityStatus { online, offline }

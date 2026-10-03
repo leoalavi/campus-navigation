@@ -1,13 +1,13 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/features/scan/domain/services/stamp_award_calculator.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/stamp_progress_ring.dart';
-import 'package:mq_journey/shared/extensions/context_extensions.dart';
-import 'package:mq_journey/shared/widgets/mq_bottom_sheet.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/scan/domain/services/stamp_award_calculator.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/stamp_progress_ring.dart';
+import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
 
 enum StampSheetAction { viewPassport, keepExploring }
 

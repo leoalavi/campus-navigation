@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/data/repositories/trail_repository.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/data/repositories/trail_repository.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

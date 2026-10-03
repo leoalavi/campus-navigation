@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:mq_journey/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_journey/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
 
 class NotificationRemoteSource {
   NotificationRemoteSource(this._client);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/shared/widgets/glass_surface.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/shared/widgets/glass_surface.dart';
 
 /// Frosted-glass container. Thin wrapper over [GlassSurface] (control tier) so
 /// existing call sites keep working while sharing one glass implementation.

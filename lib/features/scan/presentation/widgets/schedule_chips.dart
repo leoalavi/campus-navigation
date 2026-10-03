@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/scan/domain/contracts/schedule_slot.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/schedule_slot.dart';
 
 class ScheduleChips extends StatelessWidget {
   const ScheduleChips({super.key, this.liveNow, this.comingUpNext});

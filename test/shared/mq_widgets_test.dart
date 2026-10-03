@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/theme/mq_theme.dart';
-import 'package:mq_journey/shared/widgets/mq_button.dart';
-import 'package:mq_journey/shared/widgets/mq_card.dart';
-import 'package:mq_journey/shared/widgets/mq_input.dart';
+import 'package:mq_navigation/app/theme/mq_theme.dart';
+import 'package:mq_navigation/shared/widgets/mq_button.dart';
+import 'package:mq_navigation/shared/widgets/mq_card.dart';
+import 'package:mq_navigation/shared/widgets/mq_input.dart';
 
 /// Wraps a widget with MaterialApp for testing.
 Widget testApp(Widget child) {

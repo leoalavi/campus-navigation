@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/core/utils/result.dart';
+import 'package:mq_navigation/core/utils/result.dart';
 
 void main() {
   group('Result', () {

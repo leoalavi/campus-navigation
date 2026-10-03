@@ -1,7 +1,7 @@
 import 'package:latlong2/latlong.dart';
-import 'package:mq_journey/features/map/domain/entities/campus_overlay_meta.dart';
-import 'package:mq_journey/features/map/domain/entities/campus_point.dart';
-import 'package:mq_journey/features/map/domain/services/campus_projection.dart';
+import 'package:mq_navigation/features/map/domain/entities/campus_overlay_meta.dart';
+import 'package:mq_navigation/features/map/domain/entities/campus_point.dart';
+import 'package:mq_navigation/features/map/domain/services/campus_projection.dart';
 
 class CampusProjectionImpl implements CampusProjection {
   const CampusProjectionImpl(this.meta);

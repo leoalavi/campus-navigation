@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/app/router/liquid_tab_bar.dart';
+import 'package:mq_navigation/app/router/liquid_tab_bar.dart';
 
 void main() {
   Finder viewfinder() => find.byWidgetPredicate(

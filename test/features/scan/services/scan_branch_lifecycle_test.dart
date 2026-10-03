@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/domain/services/scan_branch_lifecycle.dart';
+import 'package:mq_navigation/features/scan/domain/services/scan_branch_lifecycle.dart';
 
 void main() {
   const scanIndex = 2;

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_signature_verifier.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_validation_result.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_signature_verifier.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_validation_result.dart';
 
 void main() {
   const keyId = 'mqj-open-day-2026-01';

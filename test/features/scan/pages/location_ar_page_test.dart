@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/domain/models/indoor_manifest.dart';
-import 'package:mq_journey/features/scan/presentation/pages/location_ar_page.dart';
+import 'package:mq_navigation/features/scan/domain/models/indoor_manifest.dart';
+import 'package:mq_navigation/features/scan/presentation/pages/location_ar_page.dart';
 
 void main() {
   final manifest = IndoorManifest.fromJson(

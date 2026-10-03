@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/map/presentation/widgets/map_mode_toggle.dart';
-import 'package:mq_journey/shared/widgets/glass_surface.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/map_mode_toggle.dart';
+import 'package:mq_navigation/shared/widgets/glass_surface.dart';
 
 void main() {
   testWidgets('mode toggle is a control-tier GlassSurface', (tester) async {

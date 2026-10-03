@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/application/qr_scan_orchestrator.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_navigation/features/scan/application/qr_scan_orchestrator.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visit_event.dart';
 
 import 'qr_pipeline_test_support.dart';
 

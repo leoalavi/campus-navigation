@@ -3,14 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:mq_journey/app/router/active_shell_branch_index_provider.dart';
-import 'package:mq_journey/app/router/route_names.dart';
-import 'package:mq_journey/core/config/env_config.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/features/map/data/datasources/location_source.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/features/transit/domain/entities/metro_departure.dart';
-import 'package:mq_journey/features/transit/domain/entities/transit_stop.dart';
+import 'package:mq_navigation/app/router/active_shell_branch_index_provider.dart';
+import 'package:mq_navigation/app/router/route_names.dart';
+import 'package:mq_navigation/core/config/env_config.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/features/transit/domain/entities/metro_departure.dart';
+import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 typedef TfnswDeparturesFetcher =

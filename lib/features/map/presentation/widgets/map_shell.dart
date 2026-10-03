@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart' show CustomSemanticsAction;
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_glass.dart';
-import 'package:mq_journey/features/map/presentation/widgets/map_mode_toggle.dart';
-import 'package:mq_journey/shared/widgets/glass_pane.dart';
-import 'package:mq_journey/shared/widgets/glass_surface.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_glass.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/map_mode_toggle.dart';
+import 'package:mq_navigation/shared/widgets/glass_pane.dart';
+import 'package:mq_navigation/shared/widgets/glass_surface.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
 
 class MapShell extends StatefulWidget {
   const MapShell({

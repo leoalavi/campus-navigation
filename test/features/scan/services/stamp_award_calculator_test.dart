@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
-import 'package:mq_journey/features/scan/domain/services/stamp_award_calculator.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/stamp_catalog_entry.dart';
+import 'package:mq_navigation/features/scan/domain/services/stamp_award_calculator.dart';
 
 void main() {
   const catalog = [

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mq_journey/features/map/domain/entities/campus_point.dart';
+import 'package:mq_navigation/features/map/domain/entities/campus_point.dart';
 
 /// A campus building with its metadata and GPS coordinates.
 @immutable

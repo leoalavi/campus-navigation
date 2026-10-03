@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/core/security/secure_storage_service.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/core/security/secure_storage_service.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 const _themeModeKey = 'settings.theme_mode';
 const _localeCodeKey = 'settings.locale_code';

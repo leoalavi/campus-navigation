@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/timetable/domain/entities/timetable_class.dart';
+import 'package:mq_navigation/features/timetable/domain/entities/timetable_class.dart';
 
 void main() {
   group('TimetableClass', () {

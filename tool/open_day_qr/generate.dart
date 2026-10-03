@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:cryptography/cryptography.dart';
 import 'package:crypto/crypto.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_canonical_message.dart';
-import 'package:mq_journey/features/scan/domain/qr/qr_public_key_registry.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_canonical_message.dart';
+import 'package:mq_navigation/features/scan/domain/qr/qr_public_key_registry.dart';
 
 import 'canonical_payload.dart';
 import 'signing_key_validation.dart';

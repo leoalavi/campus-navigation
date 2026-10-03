@@ -1,5 +1,5 @@
-import 'package:mq_journey/features/favorites/data/datasources/favorite_building_source.dart';
-import 'package:mq_journey/features/favorites/domain/entities/favorite_building.dart';
+import 'package:mq_navigation/features/favorites/data/datasources/favorite_building_source.dart';
+import 'package:mq_navigation/features/favorites/domain/entities/favorite_building.dart';
 
 class FavoriteBuildingRepository {
   FavoriteBuildingRepository({required FavoriteBuildingSource source})

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/map/domain/entities/route_leg.dart';
-import 'package:mq_journey/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_journey/features/notifications/domain/entities/reminder_request.dart';
-import 'package:mq_journey/features/open_day/data/open_day_reminder_scheduler.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_journey/shared/models/user_preferences.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/reminder_request.dart';
+import 'package:mq_navigation/features/open_day/data/open_day_reminder_scheduler.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 class _FakeLocalNotifications extends LocalNotificationsService {
   _FakeLocalNotifications();

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
-import 'package:mq_journey/features/scan/domain/contracts/schedule_provider.dart';
-import 'package:mq_journey/features/scan/domain/contracts/schedule_slot.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/open_day_stops_table.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/schedule_provider.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/schedule_slot.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/open_day_stops_table.dart';
 
 class _NoSchedule implements ScheduleProvider {
   @override

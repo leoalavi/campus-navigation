@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/features/auth/data/repositories/auth_repository.dart';
-import 'package:mq_journey/features/auth/domain/services/auth_service.dart';
+import 'package:mq_navigation/features/auth/data/repositories/auth_repository.dart';
+import 'package:mq_navigation/features/auth/domain/services/auth_service.dart';
 
 /// Provides the AuthRepository instance.
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

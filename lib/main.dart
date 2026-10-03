@@ -1,5 +1,5 @@
-import 'package:mq_journey/app/bootstrap/bootstrap.dart';
-import 'package:mq_journey/app/mq_journey_app.dart';
+import 'package:mq_navigation/app/bootstrap/bootstrap.dart';
+import 'package:mq_navigation/app/mq_navigation_app.dart';
 
 /// Main entry point for the MQ Journey application.
 /// Delegates immediately to the bootstrap layer which handles all asynchronous

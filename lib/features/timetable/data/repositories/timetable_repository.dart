@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/features/timetable/domain/entities/timetable_class.dart';
+import 'package:mq_navigation/features/timetable/domain/entities/timetable_class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _timetableClassesKey = 'timetable.classes';

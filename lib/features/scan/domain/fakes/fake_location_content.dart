@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/features/scan/domain/contracts/location_content.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/location_content.dart';
 
 final fakeLocationContentProvider = Provider.family<LocationContent?, String>((
   ref,

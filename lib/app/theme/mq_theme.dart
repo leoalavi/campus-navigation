@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_spacing.dart';
-import 'package:mq_journey/app/theme/mq_typography.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/app/theme/mq_typography.dart';
 
 /// Builds the [ThemeData] for the MQ Journey app.
 abstract final class MqTheme {

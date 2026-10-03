@@ -5,9 +5,9 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:mq_journey/core/logging/app_logger.dart';
-import 'package:mq_journey/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_journey/features/notifications/domain/entities/reminder_request.dart';
+import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/reminder_request.dart';
 
 /// Top-level background notification response handler.
 ///

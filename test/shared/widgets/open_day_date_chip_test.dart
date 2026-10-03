@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_journey/shared/widgets/open_day_wordmark.dart';
+import 'package:mq_navigation/shared/widgets/open_day_wordmark.dart';
 
 /// The brand date chip is unlocalised Latin text, so in an RTL page its
 /// leading "15" was reordered to the far end ("AUGUST 2026 · 10AM – 4PM 15").

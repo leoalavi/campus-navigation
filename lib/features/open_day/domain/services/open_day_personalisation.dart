@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mq_journey/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
 
 /// Snapshot of the Open Day schedule relative to a point in time, biased
 /// toward the user's selected study interest.

@@ -4,21 +4,21 @@ import 'dart:ui' as ui;
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_journey/app/bootstrap/app_initialization.dart';
-import 'package:mq_journey/app/app_link_coordinator.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/app/router/app_router.dart';
-import 'package:mq_journey/app/theme/mq_colors.dart';
-import 'package:mq_journey/app/theme/mq_theme.dart';
-import 'package:mq_journey/core/error/error_boundary.dart';
-import 'package:mq_journey/features/notifications/presentation/controllers/notifications_controller.dart';
-import 'package:mq_journey/features/open_day/data/open_day_reminder_scheduler.dart';
-import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
-import 'package:mq_journey/features/scan/application/qr_scan_orchestrator.dart';
-import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_adapter.dart';
-import 'package:mq_journey/features/scan/providers/scan_providers.dart';
-import 'package:mq_journey/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_journey/shared/widgets/open_day_wordmark.dart';
+import 'package:mq_navigation/app/bootstrap/app_initialization.dart';
+import 'package:mq_navigation/app/app_link_coordinator.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/router/app_router.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_theme.dart';
+import 'package:mq_navigation/core/error/error_boundary.dart';
+import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
+import 'package:mq_navigation/features/open_day/data/open_day_reminder_scheduler.dart';
+import 'package:mq_navigation/features/scan/application/pending_stamp_award_controller.dart';
+import 'package:mq_navigation/features/scan/application/qr_scan_orchestrator.dart';
+import 'package:mq_navigation/features/scan/data/adapters/settings_progress_api_adapter.dart';
+import 'package:mq_navigation/features/scan/providers/scan_providers.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/widgets/open_day_wordmark.dart';
 
 /// The root Flutter application widget.
 ///

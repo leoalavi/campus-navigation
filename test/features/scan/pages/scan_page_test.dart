@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_journey/app/l10n/generated/app_localizations.dart';
-import 'package:mq_journey/features/scan/data/adapters/settings_progress_api_adapter.dart';
-import 'package:mq_journey/features/scan/application/pending_stamp_award_controller.dart';
-import 'package:mq_journey/features/scan/domain/contracts/stamp_catalog_entry.dart';
-import 'package:mq_journey/features/scan/domain/contracts/visit_event.dart';
-import 'package:mq_journey/shared/widgets/glass_surface.dart';
-import 'package:mq_journey/features/scan/domain/fakes/fake_progress_api.dart';
-import 'package:mq_journey/features/scan/domain/models/trail_manifest.dart';
-import 'package:mq_journey/features/scan/presentation/pages/scan_page.dart';
-import 'package:mq_journey/features/scan/presentation/widgets/scanner_view.dart';
-import 'package:mq_journey/features/scan/providers/scan_providers.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/features/scan/data/adapters/settings_progress_api_adapter.dart';
+import 'package:mq_navigation/features/scan/application/pending_stamp_award_controller.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/stamp_catalog_entry.dart';
+import 'package:mq_navigation/features/scan/domain/contracts/visit_event.dart';
+import 'package:mq_navigation/shared/widgets/glass_surface.dart';
+import 'package:mq_navigation/features/scan/domain/fakes/fake_progress_api.dart';
+import 'package:mq_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:mq_navigation/features/scan/presentation/pages/scan_page.dart';
+import 'package:mq_navigation/features/scan/presentation/widgets/scanner_view.dart';
+import 'package:mq_navigation/features/scan/providers/scan_providers.dart';
 
 const _fixtureManifest = TrailManifest(
   locations: [
