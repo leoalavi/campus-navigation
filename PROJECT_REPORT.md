@@ -1,13 +1,13 @@
-# MQ Navigation: Project Report
+# Campus Navigation: Project Report
 *Find your way around Macquarie without selling your data.*
 
 ### Application Overview
-The Macquarie University campus contains over 150 buildings spread across a wide area. New students, open day visitors, and temporary staff struggle to locate lecture theaters, first aid rooms, and transit options. MQ Navigation solves this navigation problem. The application displays two map renderers: a Google Maps view for satellite imagery and marker clustering, and a custom illustrated campus map for direct visual navigation. Users can search the building database, calculate walking routes, toggle an on-device compass, and view live train departures.
+The Macquarie University campus contains over 150 buildings spread across a wide area. New students, open day visitors, and temporary staff struggle to locate lecture theaters, first aid rooms, and transit options. Campus Navigation solves this navigation problem. The application displays two map renderers: a Google Maps view for satellite imagery and marker clustering, and a custom illustrated campus map for direct visual navigation. Users can search the building database, calculate walking routes, toggle an on-device compass, and view live train departures.
 
-We designed the application with a focus on user privacy. Unlike commercial mapping services, MQ Navigation does not collect telemetry, location history, or personal identifiers. Users can run the application without registering an account. Those who want to sync bookmarked buildings across devices can create a secure email login, while others run the app without authentication using local device storage.
+We designed the application with a focus on user privacy. Unlike commercial mapping services, Campus Navigation does not collect telemetry, location history, or personal identifiers. Users can run the application without registering an account. Those who want to sync bookmarked buildings across devices can create a secure email login, while others run the app without authentication using local device storage.
 
 ### Core Capabilities
-MQ Navigation structures its features into seven modules:
+Campus Navigation structures its features into seven modules:
 
 1. **Authentication and Account Management**: Users sign up and sign in through Supabase Auth using email and password. The repository layer maps Supabase errors to friendly messages, detects silent existing-user responses (an empty `identities` array on the returned user record), and surfaces edge cases like duplicate accounts, weak passwords, and network failures. The application also supports forgot-password flow via Supabase reset emails. Authentication is **optional** — most of the application runs without an account.
 2. **Building Favorites (CRUD)**: Authenticated users perform full CRUD on the `favorite_buildings` Supabase table. **Create** by tapping the heart icon on any building card, **Read** on the dedicated Favourites page with pull-to-refresh, **Update** by adding or editing a personal note via the kebab menu, and **Delete** by swiping a row or selecting Remove. The controller uses optimistic UI updates with rollback on failure.
@@ -25,13 +25,13 @@ We defined three user groups to guide the application design:
 3. **Evening Commuters**: Students and staff leaving campus after dark require quick access to safety shuttles, flashlight toggles, and live train timetables.
 
 #### User Persona: Sarah (First-Year Student)
-Sarah has a ten-minute window to walk from a lab in the Business School (4 Eastern Road) to a tutorial in 18 Wally's Walk. General maps bundle building names together without showing entrance locations. Sarah opens MQ Navigation, types "18WW" into the search bar, and starts a walking route. The application guides her through campus walkways, shows her next turn, and alerts her when she reaches the entry doors.
+Sarah has a ten-minute window to walk from a lab in the Business School (4 Eastern Road) to a tutorial in 18 Wally's Walk. General maps bundle building names together without showing entrance locations. Sarah opens Campus Navigation, types "18WW" into the search bar, and starts a walking route. The application guides her through campus walkways, shows her next turn, and alerts her when she reaches the entry doors.
 
 #### User Persona: Marcus (Open Day Visitor)
 Marcus wants to explore the engineering labs. He does not want to register an account or share his location. He opens the app, bypasses sign-up, and views the campus layout on the illustrated map. He marks the Engineering building as a favorite, adding a personal note to visit the robotics display.
 
 #### The Competitive Advantage
-Generic mapping tools lack accurate pedestrian data for campus-specific paths. They direct users to perimeter roads instead of pedestrian plazas. The university's official web map loads with high latency, demands single sign-on credentials, and fails to offer routing. MQ Navigation loads without delay, offers turn-by-turn campus routing, provides safety contacts, and operates without trackers.
+Generic mapping tools lack accurate pedestrian data for campus-specific paths. They direct users to perimeter roads instead of pedestrian plazas. The university's official web map loads with high latency, demands single sign-on credentials, and fails to offer routing. Campus Navigation loads without delay, offers turn-by-turn campus routing, provides safety contacts, and operates without trackers.
 
 ### Technical Specifications
 #### Test Credentials

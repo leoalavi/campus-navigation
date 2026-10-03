@@ -2183,7 +2183,7 @@
     "description": "Footnote on commute onboarding slide crediting TfNSW open data"
   },
   "onboardingPrivacyTitle": "Privacy First",
-  "onboardingPrivacyBody": "No tracking. Your location and timetable stay entirely on your device. An optional account unlocks cloud-synced favourites.",
+  "onboardingPrivacyBody": "No accounts, no tracking. Your location and timetable stay entirely on your device.",
   "onboardingOpenDayTitle": "Open Day Ready",
   "onboardingOpenDayBody": "Discover campus events, track schedule, and get notified for the Open Day.",
   "onboardingSkip": "Skip",
@@ -2301,7 +2301,7 @@
   "safetyIneedHelpMsg": "If you are in immediate danger, call 000 (Emergency) or Campus Security on (02) 9850 7111. This app does not share your location automatically.",
   "safetyNavigateToSecurity": "Navigate to Security",
   "safetyPrivacyNote": "Your location is never shared automatically. You choose when to call or navigate.",
-  "privacyBadge": "Private by design: optional account, zero tracking, no location history.",
+  "privacyBadge": "Private by design: no account, zero tracking, no location history.",
   "authTitle": "Welcome back",
   "authSubtitle": "Use your account or create one to save favourite buildings.",
   "authLoginTitle": "Sign In",

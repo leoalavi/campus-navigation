@@ -77,10 +77,11 @@ void main() {
     expect(logos, isEmpty, reason: 'university crest found: $logos');
   });
 
-  test('copyright names the team and credits name the developers', () {
-    // Rights sit with the team identity; the two authors are credited
-    // separately by name on the About screen.
-    expect(ProductConfig.copyright, contains('Perky Coders'));
+  test('copyright names Syllabus Sync and credits name the developers', () {
+    // Copyright sits with the Syllabus Sync ecosystem (no invented legal
+    // suffix); the two authors are credited separately by name on About.
+    expect(ProductConfig.copyright, '© 2026 Syllabus Sync');
+    expect(ProductConfig.copyright, isNot(contains('Perky')));
     expect(ProductConfig.copyright, contains('2026'));
     expect(ProductConfig.developersLine, contains('Leo Alavi'));
     expect(ProductConfig.developersLine, contains('Mohammad Raouf Abedini'));
@@ -109,6 +110,32 @@ void main() {
   group('no authentication surface', () {
     test('the auth feature is gone', () {
       expect(Directory('${repo.path}/lib/features/auth').existsSync(), isFalse);
+    });
+
+    test('no shown string promises an account', () {
+      // Only strings the app actually references matter; unused legacy auth
+      // strings in the ARB files are never displayed.
+      final source = filesUnder('lib', {'.dart'})
+          .where((f) => !f.path.contains('l10n/generated'))
+          .map((f) => f.readAsStringSync())
+          .join('\n');
+      final en =
+          jsonDecode(
+                File('${repo.path}/lib/app/l10n/app_en.arb').readAsStringSync(),
+              )
+              as Map<String, dynamic>;
+      final offenders = <String>[];
+      en.forEach((key, value) {
+        if (key.startsWith('@') || value is! String) return;
+        if (!RegExp('l10n\\.$key\\b').hasMatch(source)) return;
+        if (RegExp(
+          r'optional account|create (an )?account|sign (in|up)\b|log ?in\b',
+          caseSensitive: false,
+        ).hasMatch(value)) {
+          offenders.add('$key = $value');
+        }
+      });
+      expect(offenders, isEmpty, reason: offenders.join('\n'));
     });
 
     test('no sign-in/sign-out routes or calls remain in source', () {

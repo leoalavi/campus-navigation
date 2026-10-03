@@ -1,6 +1,6 @@
 # Notification Flow Matrix
 
-All notification paths in MQ Navigation — push and local.
+All notification paths in Campus Navigation — push and local.
 
 ## Notification Types
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12+ system splash. Without this the OS falls back to the
+         launcher icon and, for a non-adaptive icon, draws it on a white
+         circular backplate. Here the canonical rounded tile sits on the
+         brand red with an icon background of the same red, so no circle
+         is visible - matching the Flutter startup screen. -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:windowSplashScreenBackground">#A6192E</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">#A6192E</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_icon_android12</item>
+        <item name="android:statusBarColor">#A6192E</item>
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>

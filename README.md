@@ -62,7 +62,7 @@ Generic campus maps (Google/Apple Maps) stop at the street kerb and don't know w
 - **Shared backend.** Both apps can point at the same Supabase project, sharing schema and Edge Functions (e.g. `maps-routes`, `tfnsw-proxy`) rather than each running its own backend.
 - **Future direction:** Syllabus Sync handles academic planning, Campus Navigation handles campus routing, and a planned "Sylla" AI assistant layer sits across both to help students plan and navigate their day.
 
-**MQ Journey**, the Open Day visitor app built from the same codebase, has been merged into Campus Navigation — there is now one app. Its history is preserved in this repository, and its Open Day features (personalised sessions, Your Day, QR scanning, stamps passport, building photos and 360° hotspots) ship here. Navigation stays the primary experience: **Open Day is opt-in** — switch it on in *Settings → Open Day → Show Open Day*, by choosing a study interest during onboarding, or by scanning a printed Open Day QR code. MQ Journey's original docs are archived in [`docs/mq-journey/`](docs/mq-journey/).
+**MQ Journey**, the Open Day visitor app built from the same codebase, has been merged into Campus Navigation — there is now one app. Its history is preserved in this repository, and its Open Day features (personalised sessions, Your Day, QR scanning, stamps passport, building photos and 360° hotspots) ship here. Navigation stays the primary experience: **Open Day is opt-in** — switch it on in *Settings → Open Day → Show Open Day* or by scanning a printed Open Day QR code. First-run onboarding never asks Open Day questions; the study interest is set inside Open Day once it is on. MQ Journey's original docs are archived in [`docs/mq-journey/`](docs/mq-journey/).
 
 <br/>
 

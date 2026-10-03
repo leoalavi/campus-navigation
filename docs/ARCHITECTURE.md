@@ -1,4 +1,4 @@
-# MQ Navigation: Technical Architecture (2026)
+# Campus Navigation: Technical Architecture (2026)
 
 ## Overview
 Feature-First Clean Architecture for high-concurrency campus navigation, transit data, compass mode, and safety toolkit. Privacy by design: optional anonymous account, zero tracking, zero location history.

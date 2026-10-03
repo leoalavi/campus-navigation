@@ -5,7 +5,6 @@ import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:campus_navigation/app/router/route_names.dart';
 import 'package:campus_navigation/app/theme/mq_colors.dart';
 import 'package:campus_navigation/app/theme/mq_spacing.dart';
-import 'package:campus_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
 import 'package:campus_navigation/shared/widgets/mq_tactile_button.dart';
 import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
 
@@ -14,14 +13,12 @@ class _OnboardingSlideData {
   final String title;
   final String body;
   final String? footnote;
-  final bool isOpenDay;
 
   const _OnboardingSlideData({
     required this.icon,
     required this.title,
     required this.body,
     this.footnote,
-    this.isOpenDay = false,
   });
 }
 
@@ -88,11 +85,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final mediaQuery = MediaQuery.of(context);
     final bottomPadding = mediaQuery.padding.bottom;
 
-    final selectedBachelorId = ref
-        .watch(settingsControllerProvider)
-        .value
-        ?.selectedBachelorId;
-
     final List<_OnboardingSlideData> slides = [
       _OnboardingSlideData(
         icon: Icons.map_rounded,
@@ -105,12 +97,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         body: l10n.onboardingTransitBody,
         footnote: l10n.onboardingTransitDataAttribution,
       ),
-      _OnboardingSlideData(
-        icon: Icons.explore_rounded,
-        title: l10n.onboardingOpenDayTitle,
-        body: l10n.onboardingOpenDayBody,
-        isOpenDay: true,
-      ),
+      // Open Day is optional and opted into later (Settings → Open Day),
+      // so first-run onboarding never asks for a study interest.
       _OnboardingSlideData(
         icon: Icons.security_rounded,
         title: l10n.onboardingPrivacyTitle,
@@ -180,7 +168,6 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       return _buildSlideContent(
                         slide: slides[index],
                         isDark: isDark,
-                        selectedBachelorId: selectedBachelorId,
                       );
                     },
                   ),
@@ -281,144 +268,118 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   Widget _buildSlideContent({
     required _OnboardingSlideData slide,
     required bool isDark,
-    required String? selectedBachelorId,
   }) {
     final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Semantics(
-            label: l10n.onboardingSlideIconLabel(slide.title),
-            child: Container(
-              padding: const EdgeInsetsDirectional.all(MqSpacing.space8),
-              decoration: BoxDecoration(
-                color: isDark ? MqColors.charcoal700 : Colors.white,
-                borderRadius: BorderRadius.circular(32),
-                border: Border.all(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.05)
-                      : MqColors.charcoal800.withValues(alpha: 0.05),
-                ),
-              ),
-              child: Icon(
-                slide.icon,
-                size: 80,
-                color: isDark ? MqColors.brightRed : MqColors.red,
+    // Short screens (iPhone SE) and large text don't fit the full-size hero:
+    // shrink it, and let the slide scroll as a last resort rather than
+    // overflow. When everything fits it stays vertically centred.
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxHeight < 520;
+        return SingleChildScrollView(
+          padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: (constraints.maxHeight - MqSpacing.space6 * 2).clamp(
+                0,
+                double.infinity,
               ),
             ),
-          ),
-          const SizedBox(height: 48),
-          TweenAnimationBuilder<double>(
-            tween: Tween(begin: 0.0, end: 1.0),
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeOutCubic,
-            builder: (context, value, child) {
-              return Opacity(
-                opacity: value,
-                child: Transform.translate(
-                  offset: Offset(0, 20 * (1 - value)),
-                  child: child,
-                ),
-              );
-            },
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Semantics(
-                  label: slide.title,
-                  header: true,
-                  child: Text(
-                    slide.title,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Semantics(
-                  label: slide.body,
-                  child: Text(
-                    slide.body,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: isDark ? Colors.white : MqColors.black87,
-                      height: 1.5,
-                    ),
-                  ),
-                ),
-                if (slide.footnote != null) ...[
-                  const SizedBox(height: MqSpacing.space4),
+            child: IntrinsicHeight(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Semantics(
-                    label: slide.footnote,
-                    child: Text(
-                      slide.footnote!,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: isDark
-                            ? MqColors.contentSecondaryDark
-                            : MqColors.contentSecondary,
-                        height: 1.45,
-                      ),
-                    ),
-                  ),
-                ],
-                if (slide.isOpenDay) ...[
-                  const SizedBox(height: MqSpacing.space6),
-                  MqTactileButton(
-                    onTap: () => BachelorPickerSheet.show(context, ref),
+                    label: l10n.onboardingSlideIconLabel(slide.title),
                     child: Container(
-                      padding: const EdgeInsetsDirectional.symmetric(
-                        horizontal: MqSpacing.space4,
-                        vertical: MqSpacing.space3,
+                      padding: EdgeInsetsDirectional.all(
+                        compact ? MqSpacing.space5 : MqSpacing.space8,
                       ),
                       decoration: BoxDecoration(
                         color: isDark ? MqColors.charcoal700 : Colors.white,
-                        borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+                        borderRadius: BorderRadius.circular(32),
                         border: Border.all(
-                          color: selectedBachelorId != null
-                              ? (isDark ? MqColors.brightRed : MqColors.red)
-                              : (isDark ? Colors.white24 : MqColors.black12),
-                          width: selectedBachelorId != null ? 2 : 1,
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.05)
+                              : MqColors.charcoal800.withValues(alpha: 0.05),
                         ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            selectedBachelorId != null
-                                ? Icons.check_circle_rounded
-                                : Icons.school_rounded,
-                            color: selectedBachelorId != null
-                                ? (isDark ? MqColors.brightRed : MqColors.red)
-                                : (isDark
-                                      ? Colors.white70
-                                      : MqColors.charcoal800.withValues(
-                                          alpha: 0.54,
-                                        )),
-                            size: 20,
-                          ),
-                          const SizedBox(width: MqSpacing.space2),
-                          Text(
-                            selectedBachelorId != null
-                                ? l10n.openDay_studyInterestSaved
-                                : l10n.openDay_selectStudyInterest,
-                            style: TextStyle(
-                              color: isDark ? Colors.white : MqColors.black87,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                      child: Icon(
+                        slide.icon,
+                        size: compact ? 56 : 80,
+                        color: isDark ? MqColors.brightRed : MqColors.red,
                       ),
                     ),
                   ),
+                  SizedBox(height: compact ? MqSpacing.space6 : 48),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOutCubic,
+                    builder: (context, value, child) {
+                      return Opacity(
+                        opacity: value,
+                        child: Transform.translate(
+                          offset: Offset(0, 20 * (1 - value)),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Semantics(
+                          label: slide.title,
+                          header: true,
+                          child: Text(
+                            slide.title,
+                            style: Theme.of(context).textTheme.headlineMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: -0.5,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Semantics(
+                          label: slide.body,
+                          child: Text(
+                            slide.body,
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: isDark
+                                      ? Colors.white
+                                      : MqColors.black87,
+                                  height: 1.5,
+                                ),
+                          ),
+                        ),
+                        if (slide.footnote != null) ...[
+                          const SizedBox(height: MqSpacing.space4),
+                          Semantics(
+                            label: slide.footnote,
+                            child: Text(
+                              slide.footnote!,
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    color: isDark
+                                        ? MqColors.contentSecondaryDark
+                                        : MqColors.contentSecondary,
+                                    height: 1.45,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
                 ],
-              ],
+              ),
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

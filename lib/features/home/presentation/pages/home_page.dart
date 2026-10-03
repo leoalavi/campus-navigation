@@ -126,9 +126,8 @@ class HomePage extends ConsumerWidget {
                         ),
                         const SizedBox(height: MqSpacing.space4),
                         // Optional Open Day block — only present once the
-                        // user has switched Open Day on (Settings, the
-                        // onboarding study-interest picker, or scanning an
-                        // Open Day QR code).
+                        // user has switched Open Day on (Settings or by
+                        // scanning an Open Day QR code).
                         if (preferences.openDayEnabled) ...[
                           // Study interest: onboarding CTA before a choice,
                           // compact preview after.

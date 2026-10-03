@@ -172,7 +172,7 @@ void main() {
       // Smallest common iPhone width (SE / mini) — the tightest layout the
       // three-line row + logo + external-link glyph has to fit without
       // overflowing.
-      tester.view.physicalSize = const Size(375, 667);
+      tester.view.physicalSize = const Size(320, 568);
       tester.view.devicePixelRatio = 1;
       addTearDown(() {
         tester.view.resetPhysicalSize();
@@ -187,16 +187,18 @@ void main() {
 
       expect(title, findsOneWidget);
       expect(
-        find.text('Campus Navigation is part of the Syllabus Sync ecosystem.'),
-        findsOneWidget,
-      );
-      expect(
         find.text(
-          'Built to work seamlessly with Syllabus Sync through shared '
-          'navigation and deep-linking.',
+          'Works seamlessly with Syllabus Sync through shared navigation '
+          'and deep-linking.',
         ),
         findsOneWidget,
       );
+      // Copyright lives inside the ecosystem row, not a separate row, and
+      // never names the retired "Perky Coders" identity.
+      expect(find.text('© 2026 Syllabus Sync'), findsOneWidget);
+      expect(find.textContaining('Perky'), findsNothing);
+      // The real app icon heads About, not a placeholder glyph.
+      expect(find.byKey(const ValueKey('about-app-icon')), findsOneWidget);
       expect(
         find.byKey(const ValueKey('about-syllabus-sync-logo')),
         findsOneWidget,
@@ -239,7 +241,8 @@ void main() {
           reason: 'ecosystem row must announce itself as tappable',
         );
         expect(node.label, contains('Part of the Syllabus Sync ecosystem'));
-        expect(node.label, contains('Campus Navigation is part of'));
+        expect(node.label, contains('Works seamlessly with Syllabus Sync'));
+        expect(node.label, contains('© 2026 Syllabus Sync'));
         handle.dispose();
       },
     );

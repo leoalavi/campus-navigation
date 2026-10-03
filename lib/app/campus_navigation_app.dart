@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui' as ui;
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ import 'package:campus_navigation/app/bootstrap/app_initialization.dart';
 import 'package:campus_navigation/app/app_link_coordinator.dart';
 import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:campus_navigation/app/router/app_router.dart';
-import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/startup_screen.dart';
 import 'package:campus_navigation/app/theme/mq_theme.dart';
 import 'package:campus_navigation/core/error/error_boundary.dart';
 import 'package:campus_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
@@ -220,15 +219,19 @@ class _CampusNavigationAppState extends ConsumerState<CampusNavigationApp> {
   }
 }
 
-/// A premium, beautiful Flutter-native splash view.
-/// Shows while Firebase and Supabase initialisation completes asynchronously.
+/// Startup screen shown only while services initialise — never held open
+/// artificially.
+///
+/// Continues the native launch screen exactly: brand red with the canonical
+/// app tile (`assets/images/app_icon_tile.png`, derived from the app icon
+/// artwork) at 112pt in the dead centre, the same size and position iOS'
+/// LaunchScreen and Android's launch/Android 12 splash draw it. The wordmark
+/// and progress then fade in beneath it, so the hand-off reads as one screen.
 class _SplashView extends StatelessWidget {
   final bool isLoading;
   final String? errorMessage;
 
   const _SplashView({required this.isLoading, this.errorMessage});
-
-  static const _backgroundAsset = 'assets/images/splash_background.png';
 
   @override
   Widget build(BuildContext context) {
@@ -236,95 +239,11 @@ class _SplashView extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: MqTheme.light,
       darkTheme: MqTheme.dark,
-      home: Scaffold(
-        backgroundColor: MqColors.charcoal900,
-        body: Stack(
-          children: [
-            // Background image (blurred, premium)
-            Positioned.fill(
-              child: ImageFiltered(
-                imageFilter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                child: Image.asset(
-                  _backgroundAsset,
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
-                  errorBuilder: (_, _, _) => const SizedBox.shrink(),
-                ),
-              ),
-            ),
-            // Dark scrim for premium readability
-            Positioned.fill(
-              child: Container(color: Colors.black.withValues(alpha: 0.55)),
-            ),
-            // Centered branding/loading content
-            SafeArea(
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 4,
-                        width: 120,
-                        color: MqColors.red,
-                        margin: const EdgeInsets.only(bottom: 32),
-                      ),
-                      const Icon(Icons.explore, size: 72, color: MqColors.red),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'Campus Navigation',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      const SizedBox(height: 48),
-                      if (isLoading) ...[
-                        const SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              MqColors.red,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Starting campus navigation...',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white.withValues(alpha: 0.7),
-                          ),
-                        ),
-                      ] else ...[
-                        const Icon(
-                          Icons.warning_amber_rounded,
-                          size: 40,
-                          color: MqColors.red,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          errorMessage ?? 'Service initialisation failed.',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      // Rendered through `builder` (no routes): this temporary app must not
+      // try to resolve the platform's initial route — the real GoRouter,
+      // mounted once initialisation finishes, honours deep links.
+      builder: (context, _) =>
+          StartupScreen(isLoading: isLoading, errorMessage: errorMessage),
     );
   }
 }

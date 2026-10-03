@@ -90,18 +90,29 @@ class _MapPageState extends ConsumerState<MapPage> {
   }
 
   void _openOverlayPicker() {
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: Theme.of(context).brightness == Brightness.dark
-          ? MqColors.charcoal800
-          : Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(MqSpacing.radiusXl),
-        ),
-      ),
-      builder: (_) => const OverlayPickerSheet(),
-    );
+    // A focused map sheet: hide the shell's bottom navigation while it is up
+    // (same contract as the search and study-interest sheets). Opening on the
+    // root navigator keeps the sheet above the floating nav, so its SafeArea
+    // reflects the device inset rather than the nav island's height.
+    ref
+        .read(shellChromeProvider.notifier)
+        .guard(
+          showModalBottomSheet<void>(
+            context: context,
+            useRootNavigator: true,
+            isScrollControlled: true,
+            useSafeArea: true,
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? MqColors.charcoal800
+                : Colors.white,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(MqSpacing.radiusXl),
+              ),
+            ),
+            builder: (_) => const OverlayPickerSheet(),
+          ),
+        );
   }
 
   void _handleNavigationParams(MapState mapState) {

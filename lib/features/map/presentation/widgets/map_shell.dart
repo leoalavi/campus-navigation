@@ -53,6 +53,14 @@ class _MapShellState extends ConsumerState<MapShell> {
   /// buttons that ride above it.
   static const double _controlsGap = MqSpacing.space3;
 
+  /// Height of the floating round buttons (IconButton's default 48dp target).
+  static const double _controlButtonSize = 48;
+
+  /// Highest the floating controls may ride, as a fraction of the map's
+  /// height, before they would collide with the top search overlay. Above
+  /// this the sheet is "expanded" and the controls step aside.
+  static const double _maxControlsFraction = 0.72;
+
   /// Keeps [mapSheetOpenProvider] in step with whether a sheet is docked.
   ///
   /// Written from a post-frame callback: `build` must not mutate providers,
@@ -99,6 +107,7 @@ class _MapShellState extends ConsumerState<MapShell> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bannerWidget = widget.banner;
     final footerWidget = widget.footer;
+    final mapHeight = MediaQuery.sizeOf(context).height;
 
     return Stack(
       children: [
@@ -199,33 +208,53 @@ class _MapShellState extends ConsumerState<MapShell> {
             ),
           ),
 
-        // ── Layers button — bottom-left ────────────────────
-        // **Stable anchor:** position is independent of widget.footer state.
-        if (widget.renderer == MapRendererType.campus &&
-            widget.onOpenOverlayPicker != null)
-          PositionedDirectional(
-            start: MqSpacing.space4,
-            bottom: safeBottom + MqSpacing.space4,
-            child: _GlassIconButton(
-              isDark: isDark,
-              icon: Icons.layers_outlined,
-              tooltip: l10n.mapLayers,
-              onPressed: widget.onOpenOverlayPicker!,
-            ),
-          ),
-
-        // ── Location button — bottom-right ─────────────────
-        // **Stable anchor:** position is independent of widget.footer state.
-        AnimatedPositionedDirectional(
-          duration: const Duration(milliseconds: 220),
-          curve: Curves.easeOutCubic,
-          end: MqSpacing.space4,
-          bottom: _controlsBottom(safeBottom),
-          child: _BrandCircleButton(
-            icon: Icons.my_location,
-            tooltip: l10n.centerOnLocation,
-            onPressed: widget.onCenterOnLocation,
-          ),
+        // ── Floating map controls: Layers (start) + Locate me (end) ──
+        // One positioned bar for both buttons, so they always share the same
+        // anchor: just above the docked sheet's live top edge when a sheet is
+        // open, otherwise above the safe area / nav island. When an expanded
+        // sheet leaves no room above it (as in Google Maps) the bar fades out
+        // instead of colliding with the search overlay.
+        Builder(
+          builder: (context) {
+            final bottom = _controlsBottom(safeBottom);
+            final hasRoom =
+                bottom + _controlButtonSize <= mapHeight * _maxControlsFraction;
+            return AnimatedPositionedDirectional(
+              key: const ValueKey('map-floating-controls'),
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
+              start: MqSpacing.space4,
+              end: MqSpacing.space4,
+              bottom: bottom,
+              child: IgnorePointer(
+                ignoring: !hasRoom,
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 160),
+                  opacity: hasRoom ? 1 : 0,
+                  child: Row(
+                    children: [
+                      if (widget.renderer == MapRendererType.campus &&
+                          widget.onOpenOverlayPicker != null)
+                        _GlassIconButton(
+                          key: const ValueKey('map-layers-button'),
+                          isDark: isDark,
+                          icon: Icons.layers_outlined,
+                          tooltip: l10n.mapLayers,
+                          onPressed: widget.onOpenOverlayPicker!,
+                        ),
+                      const Spacer(),
+                      _BrandCircleButton(
+                        key: const ValueKey('map-locate-button'),
+                        icon: Icons.my_location,
+                        tooltip: l10n.centerOnLocation,
+                        onPressed: widget.onCenterOnLocation,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ],
     );
@@ -241,6 +270,7 @@ class _GlassPane extends GlassPane {
 
 class _GlassIconButton extends StatelessWidget {
   const _GlassIconButton({
+    super.key,
     required this.isDark,
     required this.icon,
     required this.tooltip,
@@ -281,6 +311,7 @@ class _GlassIconButton extends StatelessWidget {
 
 class _BrandCircleButton extends StatelessWidget {
   const _BrandCircleButton({
+    super.key,
     required this.icon,
     required this.tooltip,
     required this.onPressed,

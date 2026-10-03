@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Modify this file to customize your launch splash screen -->
+<!-- Pre-Android-12 launch screen: brand red with the canonical Campus
+     Navigation tile, centred at 112dp - the same size and position the
+     Flutter startup screen uses, so the hand-off doesn't jump.
+     Generated icon: tool/branding/build_icon_assets.py -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <color android:color="#FFA6192E"/>
+    </item>
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/launch_icon" />
     </item>
 </layer-list>

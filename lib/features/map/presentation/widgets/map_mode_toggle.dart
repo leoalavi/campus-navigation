@@ -42,17 +42,29 @@ class MapModeToggle extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _PillSegment(
-                label: l10n.campusMap,
-                isSelected: value == MapRendererType.campus,
-                isDark: isDark,
-                onTap: () => onChanged(MapRendererType.campus),
+              // Flexible so the pill can shrink on narrow phones / large text
+              // instead of overflowing; labels scale down rather than clip.
+              Flexible(
+                // IntrinsicWidth keeps each pill content-sized on wide
+                // screens; Flexible still lets it shrink on narrow ones.
+                child: IntrinsicWidth(
+                  child: _PillSegment(
+                    label: l10n.campusMap,
+                    isSelected: value == MapRendererType.campus,
+                    isDark: isDark,
+                    onTap: () => onChanged(MapRendererType.campus),
+                  ),
+                ),
               ),
-              _PillSegment(
-                label: l10n.googleMaps,
-                isSelected: value == MapRendererType.google,
-                isDark: isDark,
-                onTap: () => onChanged(MapRendererType.google),
+              Flexible(
+                child: IntrinsicWidth(
+                  child: _PillSegment(
+                    label: l10n.googleMaps,
+                    isSelected: value == MapRendererType.google,
+                    isDark: isDark,
+                    onTap: () => onChanged(MapRendererType.google),
+                  ),
+                ),
               ),
             ],
           ),
@@ -95,16 +107,20 @@ class _PillSegment extends StatelessWidget {
             color: isSelected ? MqColors.red : Colors.transparent,
             borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
           ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: isSelected
-                  ? Colors.white
-                  : isDark
-                  ? Colors.white.withValues(alpha: 0.5)
-                  : MqColors.charcoal800.withValues(alpha: 0.5),
-              fontSize: 14,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              maxLines: 1,
+              style: TextStyle(
+                color: isSelected
+                    ? Colors.white
+                    : isDark
+                    ? Colors.white.withValues(alpha: 0.5)
+                    : MqColors.charcoal800.withValues(alpha: 0.5),
+                fontSize: 14,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              ),
             ),
           ),
         ),

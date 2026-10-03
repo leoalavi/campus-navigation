@@ -221,7 +221,8 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
       currentPreferences.copyWith(
         selectedBachelorId: bachelorId,
         clearSelectedBachelor: bachelorId == null,
-        // Picking a study interest (e.g. on the onboarding Open Day slide)
+        // Picking a study interest (Settings → Open Day, or the Open Day
+        // home card)
         // is an explicit opt-in to the Open Day experience.
         openDayEnabled: bachelorId != null ? true : null,
       ),

@@ -20,10 +20,10 @@ abstract final class ProductConfig {
 
   static String get developersLine => developers.join(' and ');
 
-  /// Team the copyright is held by. Distinct from [developers]: the two of
-  /// them are credited by name as the authors, while the rights sit with the
-  /// team identity that ships the app.
-  static const String copyrightHolder = 'Perky Coders';
+  /// Public copyright identity: the Syllabus Sync ecosystem Campus Navigation
+  /// belongs to. Distinct from [developers], who are credited by name as the
+  /// authors. Deliberately no legal-entity suffix (Pty Ltd, …) — none exists.
+  static const String copyrightHolder = 'Syllabus Sync';
 
   /// Year the product was first published. Used to build the copyright line.
   static const int copyrightYear = 2026;
@@ -40,9 +40,8 @@ abstract final class ProductConfig {
   /// Secondary ecosystem attribution shown only in Settings → About.
   static const String ecosystemTitle = 'Part of the Syllabus Sync ecosystem';
   static const String ecosystemDescription =
-      'Campus Navigation is part of the Syllabus Sync ecosystem.';
-  static const String ecosystemIntegrationDescription =
-      'Built to work seamlessly with Syllabus Sync through shared navigation and deep-linking.';
+      'Works seamlessly with Syllabus Sync through shared navigation and '
+      'deep-linking.';
 
   /// Where the About → ecosystem row opens when tapped. Campus Navigation
   /// itself has no web app; this points at Syllabus Sync's own site, not us.

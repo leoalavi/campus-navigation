@@ -673,12 +673,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         label: l10n.about_developedBy,
                         subtitle: ProductConfig.developersLine,
                       ),
+                      // Ecosystem attribution and copyright share one row.
                       const _EcosystemInfoRow(),
-                      _InfoRow(
-                        icon: Icons.copyright_outlined,
-                        label: l10n.about_copyrightLabel,
-                        subtitle: ProductConfig.copyright,
-                      ),
                       _InfoRow(
                         icon: Icons.info_outline,
                         label: l10n.about_independentNotice,
@@ -2043,7 +2039,7 @@ class _EcosystemInfoRow extends StatelessWidget {
       label:
           '${ProductConfig.ecosystemTitle}. '
           '${ProductConfig.ecosystemDescription} '
-          '${ProductConfig.ecosystemIntegrationDescription}',
+          '${ProductConfig.copyright}',
       child: MqTactileButton(
         onTap: _openSyllabusSync,
         child: Padding(
@@ -2083,13 +2079,15 @@ class _EcosystemInfoRow extends StatelessWidget {
                             : MqColors.slate500,
                       ),
                     ),
-                    const SizedBox(height: MqSpacing.space1),
+                    const SizedBox(height: MqSpacing.space2),
                     Text(
-                      ProductConfig.ecosystemIntegrationDescription,
-                      style: context.textTheme.bodySmall?.copyWith(
+                      ProductConfig.copyright,
+                      key: const ValueKey('about-copyright'),
+                      style: context.textTheme.labelSmall?.copyWith(
+                        letterSpacing: 0.2,
                         color: dark
                             ? Colors.white.withValues(alpha: 0.62)
-                            : MqColors.contentSecondary,
+                            : MqColors.contentTertiary,
                       ),
                     ),
                   ],
@@ -2292,25 +2290,14 @@ class _AboutAppRow extends StatelessWidget {
         padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
         child: Row(
           children: [
-            Container(
+            // The real app icon (canonical tile), not a placeholder glyph.
+            Image.asset(
+              'assets/images/app_icon_tile.png',
+              key: const ValueKey('about-app-icon'),
               width: MqSpacing.space10,
               height: MqSpacing.space10,
-              decoration: BoxDecoration(
-                color: MqColors.red,
-                borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
-                boxShadow: [
-                  BoxShadow(
-                    color: MqColors.red.withAlpha(51),
-                    blurRadius: 16,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.school_rounded,
-                color: Colors.white,
-                size: 24,
-              ),
+              filterQuality: FilterQuality.medium,
+              excludeFromSemantics: true,
             ),
             const SizedBox(width: MqSpacing.space4),
             Expanded(

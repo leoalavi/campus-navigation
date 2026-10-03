@@ -21,91 +21,114 @@ class OverlayPickerSheet extends ConsumerWidget {
         ref.watch(mapControllerProvider).value?.activeOverlayIds ?? const {};
     final controller = ref.read(mapControllerProvider.notifier);
 
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(
-          MqSpacing.space4,
-          MqSpacing.space2,
-          MqSpacing.space4,
-          MqSpacing.space4,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Drag handle
-            Center(
-              child: Container(
-                width: 36,
-                height: 4,
-                margin: const EdgeInsetsDirectional.only(
-                  bottom: MqSpacing.space3,
-                ),
-                decoration: BoxDecoration(
-                  color: isDark ? MqColors.charcoal600 : MqColors.sand300,
-                  borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
-                ),
-              ),
-            ),
+    // Content-sized, but never taller than ~85% of the space the sheet
+    // actually has; when text scaling or a short screen pushes past that, the
+    // toggle list scrolls instead of overflowing.
+    final maxHeight = MediaQuery.sizeOf(context).height * 0.85;
 
-            // Title row + clear-all action
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: MqSpacing.space1,
-                bottom: MqSpacing.space3,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      l10n.mapLayers,
-                      style: context.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+    return SafeArea(
+      top: false,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: maxHeight),
+        child: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(
+            MqSpacing.space4,
+            MqSpacing.space2,
+            MqSpacing.space4,
+            MqSpacing.space4,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Drag handle
+              Center(
+                child: Container(
+                  width: 36,
+                  height: 4,
+                  margin: const EdgeInsetsDirectional.only(
+                    bottom: MqSpacing.space3,
                   ),
-                  if (activeIds.isNotEmpty)
-                    TextButton.icon(
-                      onPressed: controller.clearOverlays,
-                      icon: const Icon(Icons.layers_clear_outlined, size: 18),
-                      label: Text(l10n.clearAll),
-                      style: TextButton.styleFrom(
-                        foregroundColor: MqColors.red,
-                        minimumSize: const Size(
-                          MqSpacing.minTapTarget,
-                          MqSpacing.minTapTarget,
+                  decoration: BoxDecoration(
+                    color: isDark ? MqColors.charcoal600 : MqColors.sand300,
+                    borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
+                  ),
+                ),
+              ),
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title row + clear-all action
+                      Padding(
+                        padding: const EdgeInsetsDirectional.only(
+                          start: MqSpacing.space1,
+                          bottom: MqSpacing.space3,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                l10n.mapLayers,
+                                style: context.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            if (activeIds.isNotEmpty)
+                              TextButton.icon(
+                                onPressed: controller.clearOverlays,
+                                icon: const Icon(
+                                  Icons.layers_clear_outlined,
+                                  size: 18,
+                                ),
+                                label: Text(l10n.clearAll),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: MqColors.red,
+                                  minimumSize: const Size(
+                                    MqSpacing.minTapTarget,
+                                    MqSpacing.minTapTarget,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-                    ),
-                ],
-              ),
-            ),
 
-            // Subtitle
-            Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: MqSpacing.space1,
-                bottom: MqSpacing.space4,
-              ),
-              child: Text(
-                l10n.mapLayersDesc,
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: isDark ? Colors.white : MqColors.contentSecondary,
+                      // Subtitle
+                      Padding(
+                        padding: const EdgeInsetsDirectional.only(
+                          start: MqSpacing.space1,
+                          bottom: MqSpacing.space4,
+                        ),
+                        child: Text(
+                          l10n.mapLayersDesc,
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: isDark
+                                ? Colors.white
+                                : MqColors.contentSecondary,
+                          ),
+                        ),
+                      ),
+
+                      // Overlay toggles
+                      ...OverlayRegistry.overlays.map(
+                        (overlay) => _OverlayToggleRow(
+                          overlay: overlay,
+                          label: _resolveLabel(l10n, overlay.id),
+                          description: _resolveDescription(l10n, overlay.id),
+                          isActive: activeIds.contains(overlay.id),
+                          onToggle: () => controller.toggleOverlay(overlay.id),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-
-            // Overlay toggles
-            ...OverlayRegistry.overlays.map(
-              (overlay) => _OverlayToggleRow(
-                overlay: overlay,
-                label: _resolveLabel(l10n, overlay.id),
-                description: _resolveDescription(l10n, overlay.id),
-                isActive: activeIds.contains(overlay.id),
-                onToggle: () => controller.toggleOverlay(overlay.id),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

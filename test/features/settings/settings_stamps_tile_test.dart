@@ -127,6 +127,26 @@ void main() {
     expect(find.text('stamps-page'), findsOneWidget);
   });
 
+  testWidgets('switching Open Day on in Settings reveals Study Interest', (
+    tester,
+  ) async {
+    await pumpSettings(tester, openDayEnabled: false);
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(SettingsPage)),
+    )!;
+
+    final toggle = find.text(l10n.openDay_enable);
+    await tester.scrollUntilVisible(
+      toggle,
+      200,
+      scrollable: find.byType(Scrollable),
+    );
+    expect(find.text(l10n.openDay_studyInterest), findsNothing);
+    await tester.tap(toggle);
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.openDay_studyInterest), findsOneWidget);
+  });
+
   testWidgets('Open Day options stay hidden until Open Day is switched on', (
     tester,
   ) async {

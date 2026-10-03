@@ -95,12 +95,16 @@ void main() {
         tester.element(find.byType(OnboardingPage)),
       )!;
 
-      // 4 slides total: map, transit, open day, privacy — tap Next 3 times to
-      // reach the last slide, then a 4th time to finish.
-      for (var i = 0; i < 3; i++) {
+      // 3 slides: map, transit, privacy. Open Day is optional and opted into
+      // later, so no slide may ask for a study interest.
+      for (var i = 0; i < 2; i++) {
+        expect(find.text(l10n.onboardingOpenDayTitle), findsNothing);
+        expect(find.text(l10n.openDay_selectStudyInterest), findsNothing);
         await tester.tap(find.text(l10n.onboardingNext));
         await tester.pumpAndSettle();
       }
+      expect(find.text(l10n.onboardingOpenDayTitle), findsNothing);
+      expect(find.text(l10n.openDay_selectStudyInterest), findsNothing);
 
       expect(find.text(l10n.onboardingPrivacyTitle), findsOneWidget);
       expect(find.text(l10n.onboardingStart), findsOneWidget);
@@ -110,6 +114,9 @@ void main() {
 
       expect(controller.completedCalled, isTrue);
       expect(find.text('home-page'), findsOneWidget);
+      // Finishing onboarding leaves Open Day off.
+      expect(controller._prefs.openDayEnabled, isFalse);
+      expect(controller._prefs.selectedBachelorId, isNull);
     },
   );
 }
