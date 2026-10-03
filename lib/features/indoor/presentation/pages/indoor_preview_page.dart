@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/features/indoor/presentation/widgets/indoor_tour_view.dart';
-import 'package:mq_navigation/features/indoor/providers/indoor_providers.dart';
-import 'package:mq_navigation/features/map/data/datasources/building_registry_source.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/features/indoor/presentation/widgets/indoor_tour_view.dart';
+import 'package:campus_navigation/features/indoor/providers/indoor_providers.dart';
+import 'package:campus_navigation/features/map/data/datasources/building_registry_source.dart';
 
 /// Full-screen 360° tour for a campus building.
 ///

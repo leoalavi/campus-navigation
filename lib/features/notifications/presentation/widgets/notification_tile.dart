@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/shared/widgets/mq_card.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/shared/widgets/mq_card.dart';
 
 class NotificationTile extends StatelessWidget {
   const NotificationTile({

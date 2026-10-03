@@ -4,7 +4,20 @@
       "id": "entrance",
       "image": "indoor/17WW_entrance.jpg",
       "description": "Entrance",
-      "neighbours": []
+      "neighbours": [
+        {
+          "targetId": "john-theatre-g02",
+          "heading": -44,
+          "label": "Johan van Vloten Theatre"
+        },
+        {
+          "targetId": "t2-theatre-g25",
+          "heading": -32,
+          "label": "Theatre 2"
+        }
+      ],
+      "previewHeading": -38,
+      "previewPitch": 0
     },
     {
       "id": "lobby",
@@ -15,14 +28,30 @@
     {
       "id": "john-theatre-g02",
       "image": "indoor/17WW_john-theatre-g02.jpg",
-      "description": "John Theatre G02",
-      "neighbours": []
+      "description": "Johan van Vloten Theatre (G02)",
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 83,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -9,
+      "previewPitch": 0
     },
     {
       "id": "t2-theatre-g25",
       "image": "indoor/17WW_t2-theatre-g25.jpg",
       "description": "T2 Theatre G25",
-      "neighbours": []
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 145,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": 15,
+      "previewPitch": 0
     }
   ]
 }

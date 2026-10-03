@@ -1,0 +1,57 @@
+name: Maestro E2E (iOS, Maestro Cloud)
+
+# Local iOS-simulator runs are blocked in some dev environments (the Runner
+# scheme can resolve no "iOS Simulator" destination), so device UI flows run on
+# Maestro Cloud, which the maestro-mobile-testing skill recommends for iOS CI.
+#
+# DISABLED on pull requests: Maestro Cloud is not configured for this repo yet
+# (no MAESTRO_API_KEY / MAESTRO_PROJECT_ID secrets), so the upload step can only
+# fail. Left as workflow_dispatch so it can be triggered manually once the
+# account is set up. To re-enable automatically, restore the `pull_request:`
+# trigger below AND add both secrets + a `project-id:` input to the upload step.
+# Least privilege: build + upload to Maestro Cloud only; no repo write scopes.
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+  # pull_request:
+  #   branches: [main]
+  #   paths:
+  #     - "lib/features/scan/**"
+  #     - "lib/features/map/**"
+  #     - "maestro/**"
+
+jobs:
+  maestro-cloud:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      # A recent dependency (connectivity_plus) uses the iOS 26 SDK symbol
+      # NWPath.isUltraConstrained, so the build needs a matching Xcode. The
+      # macos-14 image's default Xcode is too old — select the latest stable,
+      # matching the iOS build job in ci.yml.
+      - uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1
+        with:
+          xcode-version: latest-stable
+
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml
+
+      - name: Flutter deps
+        run: flutter pub get --enforce-lockfile
+
+      # Unsigned simulator/device build for Maestro Cloud upload.
+      - name: Build iOS app (no codesign)
+        run: flutter build ios --release --no-codesign
+
+      - name: Run Maestro Cloud flows
+        uses: mobile-dev-inc/action-maestro-cloud@34906065ba3e85fd57ed533b178187eefb042aed # v2
+        with:
+          api-key: ${{ secrets.MAESTRO_API_KEY }}
+          app-file: build/ios/iphoneos/Runner.app
+          workspace: maestro
+          include-tags: smoke

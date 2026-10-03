@@ -27,9 +27,12 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
-			<key>CFBundleURLSchemes</key>
+		<key>CFBundleURLSchemes</key>
 			<array>
-				<!-- Legacy scheme: Supabase auth callback + "meet here" links. -->
+				<!-- Printed Open Day QR codes (io.mqjourney://open-day/...),
+				     inherited from MQ Journey. -->
+				<string>io.mqjourney</string>
+				<!-- Legacy "meet here" links. -->
 				<string>io.mqnavigation</string>
 				<!-- Public navigation contract used by Syllabus Sync:
 				     mqnav://open?destination=<buildingId>
@@ -40,10 +43,12 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>GMSApiKey</key>
-	<string>$(GOOGLE_MAPS_API_KEY)</string>
+	<key>FlutterDeepLinkingEnabled</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Campus Navigation uses your camera to scan Open Day QR codes at campus locations.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Campus Navigation uses your location to show where you are on campus and guide you to your destination.</string>
 	<key>UIApplicationSceneManifest</key>

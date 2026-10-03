@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
 
 @immutable
 class NotificationPreference {

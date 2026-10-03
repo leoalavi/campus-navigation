@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
-import 'package:mq_navigation/features/map/presentation/widgets/building_actions_sheet.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
+import 'package:campus_navigation/features/map/presentation/widgets/building_actions_sheet.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
 
 class FavoritesPage extends ConsumerStatefulWidget {
   const FavoritesPage({super.key});

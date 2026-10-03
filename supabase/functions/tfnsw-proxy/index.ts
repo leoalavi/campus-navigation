@@ -33,8 +33,49 @@ function getEnvOrThrow(name: string): string {
 function toMinutes(iso: string): number {
   const date = new Date(iso);
   const diffMs = date.getTime() - Date.now();
-  const minutes = Math.floor(diffMs / 60000);
-  return minutes < 0 ? 0 : minutes;
+  // May be negative for a departure that already left; callers filter those
+  // out rather than showing a sticky "0 min".
+  return Math.floor(diffMs / 60000);
+}
+
+/// Direction is a *travel direction*, not a terminus. City-bound M1 metros
+/// frequently short-run and terminate at Chatswood, and NW-bound services can
+/// short-run too — a plain `destination.includes("sydenham")` drops those
+/// trains and makes the Sydenham direction look far emptier/later than it
+/// really is. Match any terminus that lies in the chosen direction of travel
+/// (M1 stations relative to the Macquarie University campus).
+const DIRECTION_DESTINATIONS: Record<string, string[]> = {
+  tallawong: [
+    "tallawong",
+    "rouse hill",
+    "hills showground",
+    "castle hill",
+    "cherrybrook",
+    "epping",
+  ],
+  sydenham: [
+    "sydenham",
+    "chatswood",
+    "crows nest",
+    "victoria cross",
+    "north sydney",
+    "barangaroo",
+    "martin place",
+    "gadigal",
+    "central",
+    "waterloo",
+    "city",
+  ],
+};
+
+function matchesDirection(destination: string, direction: string): boolean {
+  const dest = destination.toLowerCase();
+  const accepted = DIRECTION_DESTINATIONS[direction];
+  if (accepted) {
+    return accepted.some((name) => dest.includes(name));
+  }
+  // Unknown direction preference: fall back to plain substring matching.
+  return dest.includes(direction);
 }
 
 function modeToMotType(mode: string): string | null {
@@ -274,9 +315,13 @@ Deno.serve(async (req) => {
       Number.isFinite(latitude) && Number.isFinite(longitude)
         ? await resolveNearestStopId({ apiKey, latitude, longitude })
         : null;
+    // Default stop: Macquarie University Station (TfNSW id 211310). The old
+    // fallback "10101403" returns zero metro departures from departure_mon,
+    // so users with no preferred stop (and no usable geolocation — the common
+    // web case) always saw an empty feed.
     const stopId = preferredStopId.length > 0
       ? preferredStopId
-      : stopIdFromLocation ?? Deno.env.get("TFNSW_STOP_ID") ?? "10101403";
+      : stopIdFromLocation ?? Deno.env.get("TFNSW_STOP_ID") ?? "211310";
     const params = new URLSearchParams({
       coordOutputFormat: "EPSG:4326",
       departureMonitorMacro: "true",
@@ -392,6 +437,9 @@ Deno.serve(async (req) => {
         };
       })
       .filter((item) => item.destination.length > 0)
+      // Drop services that already departed instead of clamping them to a
+      // sticky "0 min" that lingers until the next poll.
+      .filter((item) => item.minutesUntilDeparture >= 0)
       .filter((item) =>
         commuteMode === "none" || item.mode === commuteMode ||
         item.mode === "unknown"
@@ -407,15 +455,20 @@ Deno.serve(async (req) => {
     const routeFilteredDepartures = departuresMatchingRoute.length > 0
       ? departuresMatchingRoute
       : departuresForMode;
-    const departuresMatchingDirection = favoriteDirection.length === 0
-      ? routeFilteredDepartures
-      : routeFilteredDepartures.filter((item) =>
-        item.destination.toLowerCase().includes(favoriteDirection)
-      );
+    // Unlike route (where several lines can legitimately serve the same
+    // direction, so falling back to "all departures for this mode" is a
+    // reasonable degrade), direction has exactly two mutually-exclusive
+    // values. Falling back to the unfiltered list here would silently show
+    // a departure heading the *opposite* way from what the user configured,
+    // labelled as if it matched — so when a direction preference is set and
+    // nothing matches it, we return no departures rather than a misleading
+    // one.
     const departures = (
-      departuresMatchingDirection.length > 0
-        ? departuresMatchingDirection
-        : routeFilteredDepartures
+      favoriteDirection.length === 0
+        ? routeFilteredDepartures
+        : routeFilteredDepartures.filter((item) =>
+          matchesDirection(item.destination, favoriteDirection)
+        )
     ).slice(0, 3);
 
     return new Response(JSON.stringify(departures), {

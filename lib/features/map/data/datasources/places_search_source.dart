@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:mq_navigation/core/config/env_config.dart';
+import 'package:campus_navigation/core/config/env_config.dart';
 
 class PlaceSuggestion {
   const PlaceSuggestion({required this.placeId, required this.description});

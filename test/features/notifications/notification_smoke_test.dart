@@ -1,17 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_navigation/features/notifications/data/repositories/notification_repository_impl.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
-import 'package:mq_navigation/features/notifications/domain/services/notification_scheduler.dart';
-import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/reminder_request.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
-import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
-import 'package:mq_navigation/core/network/connectivity_service.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/fcm_service.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:campus_navigation/features/notifications/data/repositories/notification_repository_impl.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:campus_navigation/features/notifications/domain/services/notification_scheduler.dart';
+import 'package:campus_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/reminder_request.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/features/settings/data/repositories/settings_repository.dart';
+import 'package:campus_navigation/core/network/connectivity_service.dart';
 
 class MockLocalNotificationsService extends Mock
     implements LocalNotificationsService {}

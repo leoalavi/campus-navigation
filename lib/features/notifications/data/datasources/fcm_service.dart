@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart'
     show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
 
 enum NotificationPermissionStatus {
   unknown,

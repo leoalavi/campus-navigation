@@ -1,49 +1,1380 @@
 {
-  "//": "Open Day dataset for Campus Navigation. Schema is intentionally simple so an updated schedule can replace this file without Dart changes. Event times retain the existing timetable and have been advanced to the Saturday 14 August 2027 Open Day.",
-  "openDayDate": "2027-08-14",
-  "lastUpdated": "2026-09-22",
+  "//": "Open Day dataset for Campus Navigation (inherited from MQ Journey). SOURCE OF TRUTH: official 'Macquarie University Open Day 2026 — Open Day info sessions' PDF. Sessions run 45 minutes. Faculties: FoA=arts, FMHHS=fmhhs, FSE=fse, MQBS=mbs. General/topic sessions have empty bachelorIds (open to everyone). NOTE: the PDF does not state the Open Day calendar date; openDayDate is carried from the previously confirmed 2026-08-15 (a Saturday) and should be reconfirmed against the official date when published.",
+  "openDayDate": "2026-08-15",
+  "lastUpdated": "2026-06-29",
   "studyAreas": [
-    { "id": "fse",   "name": "Science & Engineering",  "icon": "science" },
-    { "id": "fmhhs", "name": "Medicine, Health & Human Sciences", "icon": "medical_services" },
-    { "id": "arts",  "name": "Arts",                   "icon": "palette" },
-    { "id": "mbs",   "name": "Macquarie Business School", "icon": "business_center" }
+    {
+      "id": "fse",
+      "name": "Science & Engineering",
+      "icon": "science"
+    },
+    {
+      "id": "fmhhs",
+      "name": "Medicine, Health & Human Sciences",
+      "icon": "medical_services"
+    },
+    {
+      "id": "arts",
+      "name": "Arts",
+      "icon": "palette"
+    },
+    {
+      "id": "mbs",
+      "name": "Macquarie Business School",
+      "icon": "business_center"
+    }
   ],
   "bachelors": [
-    { "id": "computing",        "name": "Bachelor of Computing",                              "studyAreaId": "fse" },
-    { "id": "it",               "name": "Bachelor of Information Technology",                 "studyAreaId": "fse" },
-    { "id": "it-cyber",         "name": "Bachelor of Information Technology (Cyber Security)","studyAreaId": "fse" },
-    { "id": "engineering",      "name": "Bachelor of Engineering (Honours)",                  "studyAreaId": "fse" },
-    { "id": "engineering-tech", "name": "Bachelor of Engineering and Technology (Honours)",   "studyAreaId": "fse" },
-    { "id": "mechatronic",      "name": "Bachelor of Mechatronic Engineering (Honours)",      "studyAreaId": "fse" },
-    { "id": "science",          "name": "Bachelor of Science",                                "studyAreaId": "fse" },
-    { "id": "marine-science",   "name": "Bachelor of Marine Science",                         "studyAreaId": "fse" },
-    { "id": "medical-sciences", "name": "Bachelor of Medical Sciences",                       "studyAreaId": "fmhhs" },
-    { "id": "clinical-sciences","name": "Bachelor of Clinical Sciences",                      "studyAreaId": "fmhhs" },
-    { "id": "psychology",       "name": "Bachelor of Psychology (Honours)",                   "studyAreaId": "fmhhs" },
-    { "id": "speech-hearing",   "name": "Bachelor of Speech and Hearing Sciences",            "studyAreaId": "fmhhs" },
-    { "id": "cognitive-brain",  "name": "Bachelor of Cognitive and Brain Sciences",           "studyAreaId": "fmhhs" },
-    { "id": "music",            "name": "Bachelor of Music",                                  "studyAreaId": "arts" },
-    { "id": "business",         "name": "Bachelor of Commerce",                               "studyAreaId": "mbs" }
+    {
+      "id": "engineering",
+      "name": "Bachelor of Engineering (Honours)",
+      "studyAreaId": "fse"
+    },
+    {
+      "id": "science",
+      "name": "Bachelor of Science",
+      "studyAreaId": "fse"
+    },
+    {
+      "id": "cyber-security",
+      "name": "Bachelor of Cyber Security",
+      "studyAreaId": "fse"
+    },
+    {
+      "id": "it",
+      "name": "Bachelor of Information Technology",
+      "studyAreaId": "fse"
+    },
+    {
+      "id": "environment",
+      "name": "Bachelor of Environment",
+      "studyAreaId": "fse"
+    },
+    {
+      "id": "medical-sciences",
+      "name": "Bachelor of Medical Sciences",
+      "studyAreaId": "fse"
+    },
+    {
+      "id": "game-design",
+      "name": "Bachelor of Game Design and Development",
+      "studyAreaId": "fse"
+    },
+    {
+      "id": "biodiversity-conservation",
+      "name": "Bachelor of Biodiversity and Conservation",
+      "studyAreaId": "fse"
+    },
+    {
+      "id": "psychology",
+      "name": "Psychology",
+      "studyAreaId": "fmhhs"
+    },
+    {
+      "id": "clinical-science",
+      "name": "Bachelor of Clinical Science (incl. Doctor of Medicine pathways)",
+      "studyAreaId": "fmhhs"
+    },
+    {
+      "id": "exercise-sports-science",
+      "name": "Bachelor of Exercise and Sports Science",
+      "studyAreaId": "fmhhs"
+    },
+    {
+      "id": "speech-hearing",
+      "name": "Speech and Hearing Sciences",
+      "studyAreaId": "fmhhs"
+    },
+    {
+      "id": "health-sciences",
+      "name": "Bachelor of Health Sciences",
+      "studyAreaId": "fmhhs"
+    },
+    {
+      "id": "physiotherapy",
+      "name": "Doctor of Physiotherapy",
+      "studyAreaId": "fmhhs"
+    },
+    {
+      "id": "public-health",
+      "name": "Master of Public Health",
+      "studyAreaId": "fmhhs"
+    },
+    {
+      "id": "chiropractic",
+      "name": "Chiropractic Science",
+      "studyAreaId": "fmhhs"
+    },
+    {
+      "id": "media-comms",
+      "name": "Bachelor of Media and Communications",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "arts",
+      "name": "Bachelor of Arts",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "primary-teaching",
+      "name": "Primary Teaching",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "secondary-teaching",
+      "name": "Secondary Teaching",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "early-childhood-teaching",
+      "name": "Early Childhood Teaching",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "primary-early-childhood-teaching",
+      "name": "Primary and Early Childhood Teaching",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "indigenous-studies",
+      "name": "Critical Indigenous Studies",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "criminology",
+      "name": "Bachelor of Criminology",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "security-studies",
+      "name": "Bachelor of Security Studies",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "laws",
+      "name": "Bachelor of Laws",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "languages-cultures",
+      "name": "Languages and Cultures",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "social-sciences",
+      "name": "Bachelor of Social Sciences",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "history-archaeology",
+      "name": "History and Archaeology",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "planning",
+      "name": "Bachelor of Planning",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "international-studies",
+      "name": "Bachelor of International Studies",
+      "studyAreaId": "arts"
+    },
+    {
+      "id": "economics",
+      "name": "Bachelor of Economics",
+      "studyAreaId": "mbs"
+    },
+    {
+      "id": "professional-accounting",
+      "name": "Bachelor of Professional Accounting",
+      "studyAreaId": "mbs"
+    },
+    {
+      "id": "business",
+      "name": "Bachelor of Business",
+      "studyAreaId": "mbs"
+    },
+    {
+      "id": "business-analytics",
+      "name": "Bachelor of Business Analytics",
+      "studyAreaId": "mbs"
+    },
+    {
+      "id": "marketing-media",
+      "name": "Bachelor of Marketing and Media",
+      "studyAreaId": "mbs"
+    },
+    {
+      "id": "commerce",
+      "name": "Bachelor of Commerce",
+      "studyAreaId": "mbs"
+    },
+    {
+      "id": "actuarial",
+      "name": "Bachelor of Actuarial Studies (+ Co-op program)",
+      "studyAreaId": "mbs"
+    },
+    {
+      "id": "applied-finance",
+      "name": "Bachelor of Applied Finance",
+      "studyAreaId": "mbs"
+    }
   ],
   "events": [
-    { "id": "evt-eng-1000",   "title": "Engineering & Technology Info Session",       "startTime": "2027-08-14T10:00:00+10:00", "endTime": "2027-08-14T10:30:00+10:00", "venueName": "Macquarie Theatre",     "buildingCode": "MQTH",  "bachelorIds": ["engineering","engineering-tech","mechatronic"] },
-    { "id": "evt-it-1000",    "title": "Information Technology Info Session",         "startTime": "2027-08-14T10:00:00+10:00", "endTime": "2027-08-14T10:30:00+10:00", "venueName": "Lotus Theatre",         "buildingCode": "LOTUS", "bachelorIds": ["it","it-cyber"] },
-    { "id": "evt-comp-1030",  "title": "Computing Info Session",                      "startTime": "2027-08-14T10:30:00+10:00", "endTime": "2027-08-14T11:00:00+10:00", "venueName": "Price Theatre",         "buildingCode": "PRICE", "bachelorIds": ["computing"] },
-    { "id": "evt-sci-1100",   "title": "Bachelor of Science Info Session",            "startTime": "2027-08-14T11:00:00+10:00", "endTime": "2027-08-14T11:30:00+10:00", "venueName": "Macquarie Theatre",     "buildingCode": "MQTH",  "bachelorIds": ["science"] },
-    { "id": "evt-marine-1100","title": "Marine Science Info Session",                 "startTime": "2027-08-14T11:00:00+10:00", "endTime": "2027-08-14T11:30:00+10:00", "venueName": "Lotus Theatre",         "buildingCode": "LOTUS", "bachelorIds": ["marine-science","science"] },
-    { "id": "evt-psych-1130", "title": "Psychology & Cognitive Sciences Info Session","startTime": "2027-08-14T11:30:00+10:00", "endTime": "2027-08-14T12:00:00+10:00", "venueName": "Price Theatre",         "buildingCode": "PRICE", "bachelorIds": ["psychology","cognitive-brain"] },
-    { "id": "evt-speech-1130","title": "Speech & Hearing Sciences Info Session",      "startTime": "2027-08-14T11:30:00+10:00", "endTime": "2027-08-14T12:00:00+10:00", "venueName": "16 University Ave Theatre","buildingCode": "16UA",  "bachelorIds": ["speech-hearing"] },
-    { "id": "evt-eng-1200",   "title": "Engineering & Technology Info Session",       "startTime": "2027-08-14T12:00:00+10:00", "endTime": "2027-08-14T12:30:00+10:00", "venueName": "Macquarie Theatre",     "buildingCode": "MQTH",  "bachelorIds": ["engineering","engineering-tech","mechatronic"] },
-    { "id": "evt-med-1200",   "title": "Medical & Clinical Sciences Info Session",    "startTime": "2027-08-14T12:00:00+10:00", "endTime": "2027-08-14T12:30:00+10:00", "venueName": "Lotus Theatre",         "buildingCode": "LOTUS", "bachelorIds": ["medical-sciences","clinical-sciences"] },
-    { "id": "evt-comp-1230",  "title": "Computing Info Session",                      "startTime": "2027-08-14T12:30:00+10:00", "endTime": "2027-08-14T13:00:00+10:00", "venueName": "Price Theatre",         "buildingCode": "PRICE", "bachelorIds": ["computing","it","it-cyber"] },
-    { "id": "evt-sci-1300",   "title": "Bachelor of Science Info Session",            "startTime": "2027-08-14T13:00:00+10:00", "endTime": "2027-08-14T13:30:00+10:00", "venueName": "Macquarie Theatre",     "buildingCode": "MQTH",  "bachelorIds": ["science","marine-science"] },
-    { "id": "evt-music-1300", "title": "Bachelor of Music Info Session",              "startTime": "2027-08-14T13:00:00+10:00", "endTime": "2027-08-14T13:30:00+10:00", "venueName": "Lotus Theatre",         "buildingCode": "LOTUS", "bachelorIds": ["music"] },
-    { "id": "evt-cyber-1330", "title": "IT (Cyber Security) Info Session",            "startTime": "2027-08-14T13:30:00+10:00", "endTime": "2027-08-14T14:00:00+10:00", "venueName": "Price Theatre",         "buildingCode": "PRICE", "bachelorIds": ["it-cyber"] },
-    { "id": "evt-psych-1400", "title": "Psychology Info Session",                     "startTime": "2027-08-14T14:00:00+10:00", "endTime": "2027-08-14T14:30:00+10:00", "venueName": "16 University Ave Theatre","buildingCode": "16UA",  "bachelorIds": ["psychology"] },
-    { "id": "evt-eng-1400",   "title": "Engineering & Technology Info Session",       "startTime": "2027-08-14T14:00:00+10:00", "endTime": "2027-08-14T14:30:00+10:00", "venueName": "Macquarie Theatre",     "buildingCode": "MQTH",  "bachelorIds": ["engineering","engineering-tech","mechatronic"] },
-    { "id": "evt-business-1430","title": "Bachelor of Commerce Info Session",         "startTime": "2027-08-14T14:30:00+10:00", "endTime": "2027-08-14T15:00:00+10:00", "venueName": "4 Eastern Road Theatre","buildingCode": "4ER",   "bachelorIds": ["business"] },
-    { "id": "evt-it-1430",    "title": "Information Technology Info Session",         "startTime": "2027-08-14T14:30:00+10:00", "endTime": "2027-08-14T15:00:00+10:00", "venueName": "Lotus Theatre",         "buildingCode": "LOTUS", "bachelorIds": ["it","it-cyber"] },
-    { "id": "evt-cog-1500",   "title": "Cognitive & Brain Sciences Info Session",     "startTime": "2027-08-14T15:00:00+10:00", "endTime": "2027-08-14T15:30:00+10:00", "venueName": "Price Theatre",         "buildingCode": "PRICE", "bachelorIds": ["cognitive-brain","psychology"] },
-    { "id": "evt-sci-1500",   "title": "Bachelor of Science Info Session",            "startTime": "2027-08-14T15:00:00+10:00", "endTime": "2027-08-14T15:30:00+10:00", "venueName": "Macquarie Theatre",     "buildingCode": "MQTH",  "bachelorIds": ["science","marine-science","medical-sciences"] }
+    {
+      "id": "evt-10-v1",
+      "title": "Bachelor of Media and Communications",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 1, 10 Hadenfeld Avenue",
+      "buildingCode": "10HA",
+      "repeating": true,
+      "bachelorIds": [
+        "media-comms"
+      ]
+    },
+    {
+      "id": "evt-10-v2",
+      "title": "Primary teaching",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": false,
+      "bachelorIds": [
+        "primary-teaching"
+      ]
+    },
+    {
+      "id": "evt-10-v3",
+      "title": "Bachelor of Arts",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "arts"
+      ]
+    },
+    {
+      "id": "evt-10-v4",
+      "title": "Bachelor of Economics",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": false,
+      "bachelorIds": [
+        "economics"
+      ]
+    },
+    {
+      "id": "evt-10-v5",
+      "title": "Bachelor of Professional Accounting",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": [
+        "professional-accounting"
+      ]
+    },
+    {
+      "id": "evt-10-v6",
+      "title": "Women in business",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-10-v7",
+      "title": "Psychology",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "psychology"
+      ]
+    },
+    {
+      "id": "evt-10-v8",
+      "title": "Critical Indigenous Studies major",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Johan van Vloten Theatre (G02), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "indigenous-studies"
+      ]
+    },
+    {
+      "id": "evt-10-v9",
+      "title": "Bachelor of Criminology and Bachelor of Security Studies",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "criminology",
+        "security-studies"
+      ]
+    },
+    {
+      "id": "evt-10-v10",
+      "title": "Bachelor of Engineering (Honours)",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "engineering"
+      ]
+    },
+    {
+      "id": "evt-10-v11",
+      "title": "Bachelor of Science",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "science"
+      ]
+    },
+    {
+      "id": "evt-10-v12",
+      "title": "Bachelor of Cyber Security",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "cyber-security"
+      ]
+    },
+    {
+      "id": "evt-10-v13",
+      "title": "Bachelor of Clinical Science and postgraduate pathways, including Doctor of Medicine",
+      "startTime": "2026-08-15T10:00:00+10:00",
+      "endTime": "2026-08-15T10:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": true,
+      "bachelorIds": [
+        "clinical-science"
+      ]
+    },
+    {
+      "id": "evt-11-v2",
+      "title": "Macquarie Entry: Pathways for high school students",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-11-v3",
+      "title": "Bachelor of Business",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "business"
+      ]
+    },
+    {
+      "id": "evt-11-v4",
+      "title": "Bachelor of Exercise and Sports Science",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": true,
+      "bachelorIds": [
+        "exercise-sports-science"
+      ]
+    },
+    {
+      "id": "evt-11-v5",
+      "title": "Macquarie Entry: Pathways for non-school applicants",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-11-v6",
+      "title": "Bachelor of Business Analytics",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": [
+        "business-analytics"
+      ]
+    },
+    {
+      "id": "evt-11-v7",
+      "title": "Bachelor of Laws",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "laws"
+      ]
+    },
+    {
+      "id": "evt-11-v8",
+      "title": "Languages and cultures",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Johan van Vloten Theatre (G02), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": true,
+      "bachelorIds": [
+        "languages-cultures"
+      ]
+    },
+    {
+      "id": "evt-11-v9",
+      "title": "Bachelor of Social Sciences",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": true,
+      "bachelorIds": [
+        "social-sciences"
+      ]
+    },
+    {
+      "id": "evt-11-v10",
+      "title": "Bachelor of Information Technology",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "it"
+      ]
+    },
+    {
+      "id": "evt-11-v11",
+      "title": "Bachelor of Environment",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": false,
+      "bachelorIds": [
+        "environment"
+      ]
+    },
+    {
+      "id": "evt-11-v13",
+      "title": "Empowering women in STEMM",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-11-v16",
+      "title": "Early childhood teaching",
+      "startTime": "2026-08-15T11:00:00+10:00",
+      "endTime": "2026-08-15T11:45:00+10:00",
+      "venueName": "C122 Exhibition Space, 25 Wally's Walk",
+      "buildingCode": "25WW",
+      "repeating": false,
+      "bachelorIds": [
+        "early-childhood-teaching"
+      ]
+    },
+    {
+      "id": "evt-12-v2",
+      "title": "Early entry application workshop",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-12-v3",
+      "title": "Bachelor of Medical Sciences",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "medical-sciences"
+      ]
+    },
+    {
+      "id": "evt-12-v4",
+      "title": "Speech and hearing sciences",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": false,
+      "bachelorIds": [
+        "speech-hearing"
+      ]
+    },
+    {
+      "id": "evt-12-v5",
+      "title": "Pathways to a degree through Macquarie University College",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-12-v6",
+      "title": "Bachelor of Marketing and Media",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": [
+        "marketing-media"
+      ]
+    },
+    {
+      "id": "evt-12-v7",
+      "title": "Bachelor of Commerce",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "evt-12-v9",
+      "title": "History and archaeology",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": true,
+      "bachelorIds": [
+        "history-archaeology"
+      ]
+    },
+    {
+      "id": "evt-12-v10",
+      "title": "Bachelor of Science",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "science"
+      ]
+    },
+    {
+      "id": "evt-12-v11",
+      "title": "Bachelor of Health Sciences",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "health-sciences"
+      ]
+    },
+    {
+      "id": "evt-12-v12",
+      "title": "Bachelor of Game Design and Development",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": false,
+      "bachelorIds": [
+        "game-design"
+      ]
+    },
+    {
+      "id": "evt-12-v13",
+      "title": "Doctor of Physiotherapy",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": [
+        "physiotherapy"
+      ]
+    },
+    {
+      "id": "evt-12-v14",
+      "title": "Master of Public Health",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 102, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": [
+        "public-health"
+      ]
+    },
+    {
+      "id": "evt-12-v15",
+      "title": "Applying linguistics: Putting language science into practice",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "Theatre 202, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-12-v16",
+      "title": "Bachelor of International Studies",
+      "startTime": "2026-08-15T12:00:00+10:00",
+      "endTime": "2026-08-15T12:45:00+10:00",
+      "venueName": "C122 Exhibition Space, 25 Wally's Walk",
+      "buildingCode": "25WW",
+      "repeating": false,
+      "bachelorIds": [
+        "international-studies"
+      ]
+    },
+    {
+      "id": "evt-13-v1",
+      "title": "Bachelor of Media and Communications",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 1, 10 Hadenfeld Avenue",
+      "buildingCode": "10HA",
+      "repeating": true,
+      "bachelorIds": [
+        "media-comms"
+      ]
+    },
+    {
+      "id": "evt-13-v2",
+      "title": "Bachelor of Actuarial Studies + Co-op program",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": false,
+      "bachelorIds": [
+        "actuarial"
+      ]
+    },
+    {
+      "id": "evt-13-v3",
+      "title": "Bachelor of Laws",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "laws"
+      ]
+    },
+    {
+      "id": "evt-13-v4",
+      "title": "Maximise your marks: Pro tips from a senior HSC marker",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-13-v5",
+      "title": "From high school to higher ed: A parent's guide to uni",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-13-v6",
+      "title": "Get a career advantage with a Macquarie business degree",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-13-v7",
+      "title": "Psychology",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "psychology"
+      ]
+    },
+    {
+      "id": "evt-13-v8",
+      "title": "Bachelor of Planning",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Johan van Vloten Theatre (G02), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "planning"
+      ]
+    },
+    {
+      "id": "evt-13-v9",
+      "title": "Secondary teaching",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "secondary-teaching"
+      ]
+    },
+    {
+      "id": "evt-13-v10",
+      "title": "Bachelor of Engineering (Honours)",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "engineering"
+      ]
+    },
+    {
+      "id": "evt-13-v11",
+      "title": "Bachelor of Biodiversity and Conservation",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": false,
+      "bachelorIds": [
+        "biodiversity-conservation"
+      ]
+    },
+    {
+      "id": "evt-13-v12",
+      "title": "Bachelor of Cyber Security",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "cyber-security"
+      ]
+    },
+    {
+      "id": "evt-13-v13",
+      "title": "Bachelor of Clinical Science and postgraduate pathways, including Doctor of Medicine",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": true,
+      "bachelorIds": [
+        "clinical-science"
+      ]
+    },
+    {
+      "id": "evt-13-v16",
+      "title": "Marketing",
+      "startTime": "2026-08-15T13:00:00+10:00",
+      "endTime": "2026-08-15T13:45:00+10:00",
+      "venueName": "C122 Exhibition Space, 25 Wally's Walk",
+      "buildingCode": "25WW",
+      "repeating": false,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-14-v2",
+      "title": "Bachelor of Arts",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": true,
+      "bachelorIds": [
+        "arts"
+      ]
+    },
+    {
+      "id": "evt-14-v3",
+      "title": "Bachelor of Commerce",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": true,
+      "bachelorIds": [
+        "commerce"
+      ]
+    },
+    {
+      "id": "evt-14-v4",
+      "title": "Bachelor of Applied Finance",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": false,
+      "bachelorIds": [
+        "applied-finance"
+      ]
+    },
+    {
+      "id": "evt-14-v5",
+      "title": "Pathways to a degree through Macquarie University College",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 1, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-14-v6",
+      "title": "Bachelor of Social Sciences",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": [
+        "social-sciences"
+      ]
+    },
+    {
+      "id": "evt-14-v7",
+      "title": "Early entry application workshop",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-14-v8",
+      "title": "Languages and cultures",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Johan van Vloten Theatre (G02), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": true,
+      "bachelorIds": [
+        "languages-cultures"
+      ]
+    },
+    {
+      "id": "evt-14-v9",
+      "title": "Bachelor of Security Studies",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "security-studies"
+      ]
+    },
+    {
+      "id": "evt-14-v10",
+      "title": "Bachelor of Science",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "science"
+      ]
+    },
+    {
+      "id": "evt-14-v12",
+      "title": "Bachelor of Information Technology",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "it"
+      ]
+    },
+    {
+      "id": "evt-14-v13",
+      "title": "Bachelor of Exercise and Sports Science",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": true,
+      "bachelorIds": [
+        "exercise-sports-science"
+      ]
+    },
+    {
+      "id": "evt-14-v14",
+      "title": "Chiropractic science",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "Theatre 102, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": false,
+      "bachelorIds": [
+        "chiropractic"
+      ]
+    },
+    {
+      "id": "evt-14-v16",
+      "title": "History and archaeology",
+      "startTime": "2026-08-15T14:00:00+10:00",
+      "endTime": "2026-08-15T14:45:00+10:00",
+      "venueName": "C122 Exhibition Space, 25 Wally's Walk",
+      "buildingCode": "25WW",
+      "repeating": true,
+      "bachelorIds": [
+        "history-archaeology"
+      ]
+    },
+    {
+      "id": "evt-15-v1",
+      "title": "Bachelor of Media and Communications",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 1, 10 Hadenfeld Avenue",
+      "buildingCode": "10HA",
+      "repeating": true,
+      "bachelorIds": [
+        "media-comms"
+      ]
+    },
+    {
+      "id": "evt-15-v2",
+      "title": "Macquarie Entry: Pathways for high school students",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 1, 29 Wally's Walk",
+      "buildingCode": "29WW",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-15-v3",
+      "title": "Bachelor of Criminology",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Lotus Theatre, 27 Wally's Walk",
+      "buildingCode": "LOTUS",
+      "repeating": false,
+      "bachelorIds": [
+        "criminology"
+      ]
+    },
+    {
+      "id": "evt-15-v4",
+      "title": "Maximise your marks: Pro tips from a senior HSC marker",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Price Theatre, 23 Wally's Walk",
+      "buildingCode": "PRICE",
+      "repeating": true,
+      "bachelorIds": []
+    },
+    {
+      "id": "evt-15-v6",
+      "title": "Bachelor of Marketing and Media",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 2, 23 Wally's Walk",
+      "buildingCode": "23WW",
+      "repeating": true,
+      "bachelorIds": [
+        "marketing-media"
+      ]
+    },
+    {
+      "id": "evt-15-v7",
+      "title": "Bachelor of Business",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Macquarie Theatre, 21 Wally's Walk",
+      "buildingCode": "MQTH",
+      "repeating": true,
+      "bachelorIds": [
+        "business"
+      ]
+    },
+    {
+      "id": "evt-15-v9",
+      "title": "Primary and early childhood teaching",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 2 (G25), 17 Wally's Walk",
+      "buildingCode": "17WW",
+      "repeating": false,
+      "bachelorIds": [
+        "primary-early-childhood-teaching"
+      ]
+    },
+    {
+      "id": "evt-15-v10",
+      "title": "Bachelor of Medical Sciences",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Mason Theatre, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "medical-sciences"
+      ]
+    },
+    {
+      "id": "evt-15-v11",
+      "title": "Bachelor of Information Technology",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 3, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "it"
+      ]
+    },
+    {
+      "id": "evt-15-v12",
+      "title": "Bachelor of Engineering (Honours)",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre 4, 14 Sir Christopher Ondaatje Avenue",
+      "buildingCode": "14SCO",
+      "repeating": true,
+      "bachelorIds": [
+        "engineering"
+      ]
+    },
+    {
+      "id": "evt-15-v13",
+      "title": "Bachelor of Health Sciences",
+      "startTime": "2026-08-15T15:00:00+10:00",
+      "endTime": "2026-08-15T15:45:00+10:00",
+      "venueName": "Theatre G03, 1 Wally's Walk",
+      "buildingCode": "AINS",
+      "repeating": true,
+      "bachelorIds": [
+        "health-sciences"
+      ]
+    }
+  ],
+  "suggestedStops": [
+    {
+      "id": "stop-engineering",
+      "title": "School of Engineering",
+      "description": "Robotics, mechatronics and student engineering projects.",
+      "buildingCode": "9WW",
+      "icon": "engineering",
+      "studyAreaIds": [
+        "fse"
+      ],
+      "bachelorIds": [
+        "engineering"
+      ]
+    },
+    {
+      "id": "stop-mets",
+      "title": "Engineering Workshops (METS)",
+      "description": "Hands-on fabrication and prototyping facilities.",
+      "buildingCode": "METS",
+      "icon": "precision_manufacturing",
+      "studyAreaIds": [
+        "fse"
+      ],
+      "bachelorIds": [
+        "engineering"
+      ]
+    },
+    {
+      "id": "stop-computing",
+      "title": "School of Computing",
+      "description": "Computing labs for IT, cyber security and game development.",
+      "buildingCode": "4RPD",
+      "icon": "memory",
+      "studyAreaIds": [
+        "fse"
+      ],
+      "bachelorIds": [
+        "it",
+        "cyber-security",
+        "game-design"
+      ]
+    },
+    {
+      "id": "stop-science-labs",
+      "title": "Natural Sciences Labs",
+      "description": "Biology, chemistry and environmental science teaching labs.",
+      "buildingCode": "6WW",
+      "icon": "biotech",
+      "studyAreaIds": [
+        "fse"
+      ],
+      "bachelorIds": [
+        "science",
+        "environment",
+        "biodiversity-conservation",
+        "medical-sciences"
+      ]
+    },
+    {
+      "id": "stop-biodisc",
+      "title": "Biology Discovery Centre",
+      "description": "Interactive specimens and live exhibits.",
+      "buildingCode": "BIODISC",
+      "icon": "eco",
+      "studyAreaIds": [
+        "fse"
+      ],
+      "bachelorIds": [
+        "biodiversity-conservation",
+        "environment",
+        "science"
+      ]
+    },
+    {
+      "id": "stop-observatory",
+      "title": "Macquarie Observatory",
+      "description": "Physics and astronomy demonstrations.",
+      "buildingCode": "OBS",
+      "icon": "auto_awesome",
+      "studyAreaIds": [
+        "fse"
+      ],
+      "bachelorIds": [
+        "science"
+      ]
+    },
+    {
+      "id": "stop-maths-physics",
+      "title": "Maths & Physics",
+      "description": "Meet the maths and physics teams.",
+      "buildingCode": "12WW",
+      "icon": "calculate",
+      "studyAreaIds": [
+        "fse"
+      ],
+      "bachelorIds": [
+        "science"
+      ]
+    },
+    {
+      "id": "stop-health",
+      "title": "Health Sciences Precinct",
+      "description": "Clinical skills spaces for health, exercise and physiotherapy.",
+      "buildingCode": "75TAL",
+      "icon": "health_and_safety",
+      "studyAreaIds": [
+        "fmhhs"
+      ],
+      "bachelorIds": [
+        "health-sciences",
+        "exercise-sports-science",
+        "physiotherapy",
+        "public-health",
+        "chiropractic"
+      ]
+    },
+    {
+      "id": "stop-hospital",
+      "title": "MQ University Hospital",
+      "description": "Where clinical science and medicine students train.",
+      "buildingCode": "HOSP",
+      "icon": "local_hospital",
+      "studyAreaIds": [
+        "fmhhs"
+      ],
+      "bachelorIds": [
+        "clinical-science",
+        "physiotherapy"
+      ]
+    },
+    {
+      "id": "stop-psychology",
+      "title": "Psychology Building",
+      "description": "Psychology labs and cognitive science research.",
+      "buildingCode": "16UA",
+      "icon": "psychology",
+      "studyAreaIds": [
+        "fmhhs"
+      ],
+      "bachelorIds": [
+        "psychology"
+      ]
+    },
+    {
+      "id": "stop-nextsense",
+      "title": "NextSense Centre",
+      "description": "Speech, hearing and audiology facilities.",
+      "buildingCode": "NEXTSENSE",
+      "icon": "hearing",
+      "studyAreaIds": [
+        "fmhhs"
+      ],
+      "bachelorIds": [
+        "speech-hearing"
+      ]
+    },
+    {
+      "id": "stop-arts-faculty",
+      "title": "Faculty of Arts",
+      "description": "Media, languages, history, law and the social sciences.",
+      "buildingCode": "29WW",
+      "icon": "palette",
+      "studyAreaIds": [
+        "arts"
+      ],
+      "bachelorIds": [
+        "arts",
+        "media-comms",
+        "social-sciences"
+      ]
+    },
+    {
+      "id": "stop-law-media",
+      "title": "Law & Media",
+      "description": "Home of law, media and communications.",
+      "buildingCode": "17WW",
+      "icon": "image",
+      "studyAreaIds": [
+        "arts"
+      ],
+      "bachelorIds": [
+        "laws",
+        "media-comms"
+      ]
+    },
+    {
+      "id": "stop-history-museum",
+      "title": "History Museum",
+      "description": "Antiquities and artefacts for history and archaeology.",
+      "buildingCode": "GALEHIST",
+      "icon": "museum",
+      "studyAreaIds": [
+        "arts"
+      ],
+      "bachelorIds": [
+        "history-archaeology"
+      ]
+    },
+    {
+      "id": "stop-business",
+      "title": "Macquarie Business School",
+      "description": "Commerce, economics, accounting, finance and marketing.",
+      "buildingCode": "4ER",
+      "icon": "business_center",
+      "studyAreaIds": [
+        "mbs"
+      ],
+      "bachelorIds": [
+        "business",
+        "commerce",
+        "economics",
+        "professional-accounting",
+        "applied-finance",
+        "business-analytics",
+        "marketing-media",
+        "actuarial"
+      ]
+    },
+    {
+      "id": "stop-incubator",
+      "title": "MQ Incubator",
+      "description": "Startup and entrepreneurship hub.",
+      "buildingCode": "INCUB",
+      "icon": "rocket_launch",
+      "studyAreaIds": [
+        "mbs"
+      ],
+      "bachelorIds": [
+        "business"
+      ]
+    },
+    {
+      "id": "stop-library",
+      "title": "Waranara Library",
+      "description": "Modern study spaces at the heart of campus.",
+      "buildingCode": "LIB",
+      "icon": "local_library",
+      "studyAreaIds": [],
+      "bachelorIds": []
+    },
+    {
+      "id": "stop-hub",
+      "title": "The Hub — Student Life",
+      "description": "Clubs, student services and campus life.",
+      "buildingCode": "1CC",
+      "icon": "groups",
+      "studyAreaIds": [],
+      "bachelorIds": []
+    },
+    {
+      "id": "stop-ubar",
+      "title": "UBar & Central Courtyard",
+      "description": "Grab a bite and soak up the Open Day atmosphere.",
+      "buildingCode": "UBAR",
+      "icon": "restaurant",
+      "studyAreaIds": [],
+      "bachelorIds": []
+    }
   ]
 }

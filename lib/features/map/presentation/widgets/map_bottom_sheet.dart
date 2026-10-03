@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
 
 /// Google-Maps-style sheet docked to the bottom of the map.
 ///

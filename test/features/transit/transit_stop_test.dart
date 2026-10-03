@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
+import 'package:campus_navigation/features/transit/domain/entities/transit_stop.dart';
 
 void main() {
   group('TransitStop', () {

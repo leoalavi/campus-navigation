@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/indoor/data/repositories/indoor_repository.dart';
+import 'package:campus_navigation/features/indoor/data/repositories/indoor_repository.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

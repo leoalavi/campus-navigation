@@ -3,17 +3,78 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:mq_navigation/core/config/env_config.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/features/transit/domain/entities/metro_departure.dart';
-import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
+import 'package:campus_navigation/app/router/active_shell_branch_index_provider.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/core/config/env_config.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/map/data/datasources/location_source.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/features/transit/domain/entities/metro_departure.dart';
+import 'package:campus_navigation/features/transit/domain/entities/transit_stop.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+typedef TfnswDeparturesFetcher =
+    Future<List<MetroDeparture>> Function({
+      required String favoriteDirection,
+      required String favoriteRoute,
+      required String favoriteStopId,
+      required String mode,
+      required double? latitude,
+      required double? longitude,
+    });
+
+final tfnswHttpClientProvider = Provider<http.Client>((ref) {
+  final client = http.Client();
+  ref.onDispose(client.close);
+  return client;
+});
+
+final tfnswAuthHeadersProvider = Provider<Map<String, String>>(
+  (ref) => tfnswRequestHeaders(
+    accessToken: Supabase.instance.client.auth.currentSession?.accessToken,
+  ),
+);
+
+final tfnswRequestTimeoutProvider = Provider<Duration>(
+  (ref) => const Duration(seconds: 10),
+);
+
+final tfnswDeparturesFetcherProvider = Provider<TfnswDeparturesFetcher>((ref) {
+  final client = ref.watch(tfnswHttpClientProvider);
+  final headers = ref.watch(tfnswAuthHeadersProvider);
+  final requestTimeout = ref.watch(tfnswRequestTimeoutProvider);
+  return ({
+    required favoriteDirection,
+    required favoriteRoute,
+    required favoriteStopId,
+    required mode,
+    required latitude,
+    required longitude,
+  }) => _fetchDepartures(
+    client: client,
+    headers: headers,
+    requestTimeout: requestTimeout,
+    favoriteDirection: favoriteDirection,
+    favoriteRoute: favoriteRoute,
+    favoriteStopId: favoriteStopId,
+    mode: mode,
+    latitude: latitude,
+    longitude: longitude,
+  );
+});
+
+final tfnswPollIntervalProvider = Provider<Duration>(
+  (ref) => const Duration(seconds: 20),
+);
 
 final tfnswMetroProvider = StreamProvider.autoDispose<List<MetroDeparture>>((
   ref,
 ) async* {
+  if (ref.watch(activeShellBranchIndexProvider) != ShellBranchIndex.home) {
+    yield const [];
+    return;
+  }
+
   final preferences = await ref.watch(settingsControllerProvider.future);
   if (!ref.mounted) {
     return;
@@ -24,13 +85,15 @@ final tfnswMetroProvider = StreamProvider.autoDispose<List<MetroDeparture>>((
   }
 
   final locationSource = ref.read(locationSourceProvider);
+  final fetchDepartures = ref.read(tfnswDeparturesFetcherProvider);
+  final pollInterval = ref.read(tfnswPollIntervalProvider);
   while (true) {
     final location = await locationSource.getCurrentLocation();
     if (!ref.mounted) {
       return;
     }
 
-    final departures = await _fetchDepartures(
+    final departures = await fetchDepartures(
       favoriteDirection: preferences.favoriteDirection,
       favoriteRoute: preferences.favoriteRoute,
       favoriteStopId: preferences.favoriteStopId,
@@ -43,7 +106,7 @@ final tfnswMetroProvider = StreamProvider.autoDispose<List<MetroDeparture>>((
     }
 
     yield departures;
-    await Future<void>.delayed(const Duration(seconds: 20));
+    await Future<void>.delayed(pollInterval);
     if (!ref.mounted) {
       return;
     }
@@ -54,7 +117,13 @@ typedef TfnswStopSearchQuery = ({String mode, String query});
 
 final tfnswStopSearchProvider = FutureProvider.autoDispose
     .family<List<TransitStop>, TfnswStopSearchQuery>((ref, search) {
-      return _searchStops(mode: search.mode, query: search.query);
+      return _searchStops(
+        client: ref.watch(tfnswHttpClientProvider),
+        headers: ref.watch(tfnswAuthHeadersProvider),
+        requestTimeout: ref.watch(tfnswRequestTimeoutProvider),
+        mode: search.mode,
+        query: search.query,
+      );
     });
 
 /// Edge Functions with JWT verification enabled still require an
@@ -74,6 +143,9 @@ Map<String, String> tfnswRequestHeaders({String? accessToken}) {
 }
 
 Future<List<MetroDeparture>> _fetchDepartures({
+  required http.Client client,
+  required Map<String, String> headers,
+  required Duration requestTimeout,
   required String favoriteDirection,
   required String favoriteRoute,
   required String favoriteStopId,
@@ -82,7 +154,6 @@ Future<List<MetroDeparture>> _fetchDepartures({
   required double? longitude,
 }) async {
   try {
-    final token = Supabase.instance.client.auth.currentSession?.accessToken;
     final query = <String, String>{
       'mode': mode,
       if (favoriteDirection.trim().isNotEmpty)
@@ -92,12 +163,14 @@ Future<List<MetroDeparture>> _fetchDepartures({
       if (latitude != null) 'lat': latitude.toString(),
       if (longitude != null) 'lng': longitude.toString(),
     };
-    final response = await http.get(
-      Uri.parse(
-        '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
-      ).replace(queryParameters: query),
-      headers: tfnswRequestHeaders(accessToken: token),
-    );
+    final response = await client
+        .get(
+          Uri.parse(
+            '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
+          ).replace(queryParameters: query),
+          headers: headers,
+        )
+        .timeout(requestTimeout);
 
     if (response.statusCode != 200) {
       return const [];
@@ -116,6 +189,9 @@ Future<List<MetroDeparture>> _fetchDepartures({
 }
 
 Future<List<TransitStop>> _searchStops({
+  required http.Client client,
+  required Map<String, String> headers,
+  required Duration requestTimeout,
   required String mode,
   required String query,
 }) async {
@@ -125,13 +201,20 @@ Future<List<TransitStop>> _searchStops({
   }
 
   try {
-    final token = Supabase.instance.client.auth.currentSession?.accessToken;
-    final response = await http.get(
-      Uri.parse('${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy').replace(
-        queryParameters: {'action': 'stop-search', 'mode': mode, 'q': trimmed},
-      ),
-      headers: tfnswRequestHeaders(accessToken: token),
-    );
+    final response = await client
+        .get(
+          Uri.parse(
+            '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
+          ).replace(
+            queryParameters: {
+              'action': 'stop-search',
+              'mode': mode,
+              'q': trimmed,
+            },
+          ),
+          headers: headers,
+        )
+        .timeout(requestTimeout);
 
     if (response.statusCode != 200) {
       throw StateError('TfNSW stop search failed (${response.statusCode})');

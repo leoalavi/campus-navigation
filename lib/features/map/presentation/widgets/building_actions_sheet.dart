@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/router/route_names.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/indoor/providers/indoor_providers.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
-import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/indoor/providers/indoor_providers.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/shared/widgets/mq_bottom_sheet.dart';
 
 /// Generic building navigation action sheet — the same two-option
 /// "View in Campus Map / Navigate with Google Maps" pattern that

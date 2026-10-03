@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_navigation/app/router/app_shell.dart';
-import 'package:mq_navigation/app/router/route_names.dart';
-import 'package:mq_navigation/core/config/env_config.dart';
-import 'package:mq_navigation/features/deep_link/deep_link_contract.dart';
-import 'package:mq_navigation/features/home/presentation/pages/home_page.dart';
-import 'package:mq_navigation/features/home/presentation/pages/onboarding_page.dart';
-import 'package:mq_navigation/features/map/presentation/pages/map_page.dart';
-import 'package:mq_navigation/features/map/presentation/pages/favorites_page.dart';
-import 'package:mq_navigation/features/notifications/presentation/pages/notifications_page.dart';
-import 'package:mq_navigation/features/open_day/presentation/pages/open_day_page.dart';
-import 'package:mq_navigation/features/safety/presentation/pages/safety_toolkit_page.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/features/settings/presentation/pages/settings_page.dart';
-import 'package:mq_navigation/features/indoor/presentation/pages/indoor_preview_page.dart';
+import 'package:campus_navigation/app/router/app_shell.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/core/config/env_config.dart';
+import 'package:campus_navigation/features/deep_link/deep_link_contract.dart';
+import 'package:campus_navigation/features/home/presentation/pages/home_page.dart';
+import 'package:campus_navigation/features/home/presentation/pages/onboarding_page.dart';
+import 'package:campus_navigation/features/map/presentation/pages/map_page.dart';
+import 'package:campus_navigation/features/map/presentation/pages/favorites_page.dart';
+import 'package:campus_navigation/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:campus_navigation/features/open_day/presentation/pages/open_day_page.dart';
+import 'package:campus_navigation/features/open_day/presentation/pages/your_day_page.dart';
+import 'package:campus_navigation/features/safety/presentation/pages/safety_toolkit_page.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/features/settings/presentation/pages/settings_page.dart';
+import 'package:campus_navigation/features/indoor/presentation/pages/indoor_preview_page.dart';
+import 'package:campus_navigation/features/scan/presentation/pages/scan_page.dart';
+import 'package:campus_navigation/features/scan/presentation/pages/location_card_page.dart';
+import 'package:campus_navigation/features/scan/presentation/pages/location_ar_page.dart';
+import 'package:campus_navigation/features/scan/presentation/pages/stamps_passport_page.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -51,10 +56,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       }
       return null;
     },
-    // Re-run the redirect whenever the onboarding-completion bit flips.
-    // This is the only piece of settings state the redirect cares about,
-    // so we listen to *just* that bit. Other preference changes (theme,
-    // locale, bachelor, …) no longer trigger router rebuilds.
     refreshListenable: _OnboardingFlagListenable(ref),
     routes: [
       // Syllabus Sync integration entry point.
@@ -105,6 +106,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const OpenDayPage(),
       ),
       GoRoute(
+        path: '/your-day',
+        name: RouteNames.yourDay,
+        builder: (context, state) => const YourDayPage(),
+      ),
+      GoRoute(
         path: '/onboarding',
         name: RouteNames.onboarding,
         builder: (context, state) => const OnboardingPage(),
@@ -121,6 +127,30 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/favorites',
         name: RouteNames.favorites,
         builder: (context, state) => const FavoritesPage(),
+      ),
+      // Stamps passport — Open Day collectible progress screen.
+      GoRoute(
+        path: '/stamps',
+        name: RouteNames.stamps,
+        builder: (context, state) => const StampsPassportPage(),
+      ),
+      // Scanned-location card — full-page detail for a QR-resolved location.
+      GoRoute(
+        path: '/location/:locationId',
+        name: RouteNames.locationDetail,
+        builder: (context, state) => LocationCardPage(
+          locationId: state.pathParameters['locationId'] ?? '',
+        ),
+        routes: [
+          GoRoute(
+            path: 'ar',
+            name: RouteNames.locationAr,
+            builder: (context, state) => LocationArPage(
+              locationId: state.pathParameters['locationId'] ?? '',
+              stopId: state.uri.queryParameters['stop'],
+            ),
+          ),
+        ],
       ),
       // The shell route handles the bottom navigation bar and nested routing.
       StatefulShellRoute.indexedStack(
@@ -187,10 +217,25 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
           StatefulShellBranch(
             routes: [
+              // QR scanner — camera surface for scanning Open Day QR codes.
+              // Lives in the shell (not a standalone pushed route) so it's
+              // reachable as its own persistent bottom-nav tab next to
+              // Journey. Position here must match ShellBranchIndex.scan.
+              GoRoute(
+                path: '/scan',
+                name: RouteNames.scan,
+                builder: (context, state) => const ScanPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
               GoRoute(
                 path: '/settings',
                 name: RouteNames.settings,
-                builder: (context, state) => const SettingsPage(),
+                builder: (context, state) => SettingsPage(
+                  initialSection: state.uri.queryParameters['section'],
+                ),
               ),
             ],
           ),
@@ -202,17 +247,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
 /// [Listenable] adapter for `GoRouter.refreshListenable`.
 ///
-/// Fires whenever EITHER of these changes:
-///      the redirect immediately after a successful login or logout.
-///   2. The onboarding-completion flag in settings — so the router redirects
-///      away from /onboarding once the user finishes it.
-///
-/// Records use value-equality for the settings projection, so unrelated
-/// preference changes (theme, locale, bachelor, …) keep this listener
-/// silent and avoid spurious router rebuilds.
+/// Fires whenever the onboarding-completion flag in settings changes,
+/// so the router redirects away from /onboarding once the user finishes it.
 class _OnboardingFlagListenable extends ChangeNotifier {
   _OnboardingFlagListenable(Ref ref) {
-    // Listen to the onboarding flag (and its loading state).
     _settingsSub = ref.listen<({bool isLoading, bool hasCompleted})>(
       settingsControllerProvider.select(
         (s) => (

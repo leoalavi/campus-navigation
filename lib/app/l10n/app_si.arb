@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, one{දර්ශන 1 · 360° සංචාරය} other{දර්ශන {count} · 360° සංචාරය}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "ස්කෑන්",
+  "buildingsLoadError": "ගොඩනැගිලි පූරණය කළ නොහැක. නැවත උත්සාහ කරන්න.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "යෙදුම තුළ ඇතුළත්",
+  "offlineCampusMapsBundledDetail": "කැම්පස් සිතියම, ගොඩනැගිලි ලැයිස්තුව සහ ගෘහස්ථ සංචාර සම්බන්ධතාවයකින් තොරව ක්‍රියා කරයි. සජීවී මෙට්‍රෝ වේලාවන් සහ වෙනත් සබැඳි සේවා සඳහා සම්බන්ධතාවයක් අවශ්‍යයි.",
+  "hoursMinutesShort": "පැය {hours} මි {minutes}",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "පැය {hours}",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "QR කේතය ස්කෑන් කරන්න",
+  "stampCatalogUnavailable": "ඔබේ මුද්‍රා එකතුව පූරණය කළ නොහැකි විය. නැවත උත්සාහ කරන්න.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "කැම්පස් ස්ථාන පූරණය කළ නොහැකි විය. නැවත උත්සාහ කරන්න.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "වැඩසටහන් සහ උනන්දු සොයන්න",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "ගැළපෙන වැඩසටහනක් හෝ උනන්දුවක් හමු නොවුණි",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "වෙනත් වචනයක් උත්සාහ කරන්න",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "යෝජිත නැවතුම් පෙන්වන්න",
+  "openDay_showSuggestedStopsSemantic": "මුල් පිටුවේ යෝජිත නැවතුම් පෙන්වන්න",
+  "openDay_suggestedStopsForInterest": "{interest} සඳහා යෝජිත නැවතුම්",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "දැන් සජීවීව",
+  "openDay_comingUpNextTitle": "ඊළඟට",
+  "openDay_liveNowForInterest": "ඔබේ උනන්දුවට ගැළපේ",
+  "openDay_liveNowAcrossDay": "සියලු අමුත්තන්ට විවෘතයි",
+  "openDay_matchedToYourDegree": "ඔබේ උපාධියට ගැළපේ",
+  "openDay_generalOpenToAll": "සාමාන්‍ය · සැමට විවෘතයි",
+  "openDay_allSessionsLabel": "සියලු සැසි",
+  "openDay_yourDayTitle": "ඔබේ දිනය",
+  "openDay_yourDayEmpty": "ඔබ කැමති සැසි සුරැකීමෙන් ඔබේම විවෘත දින සැලැස්ම සාදන්න.",
+  "openDay_yourDayCount": "{count, plural, =1{සැසි 1ක් සුරැකිණි} other{සැසි {count}ක් සුරැකිණි}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "මගේ දිනයට එක් කරන්න",
+  "openDay_removeFromMyDay": "මගේ දිනයෙන් ඉවත් කරන්න",
+  "openDay_savedToMyDay": "ඔබේ දිනයට එක් කෙරිණි",
+  "openDay_removedFromMyDay": "ඔබේ දිනයෙන් ඉවත් කෙරිණි",
+  "openDay_clearMyDay": "මගේ දිනය හිස් කරන්න",
+  "openDay_clearMyDayConfirm": "ඔබේ දිනයෙන් සුරකින ලද සියලුම සැසි සහ නැවතුම් ඉවත් කරන්නද? මෙය අහෝසි කළ නොහැක.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "නැවතුම් {total}කින් {count}ක් බැලුවා",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} මාර්ගය සම්පූර්ණයි",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "පිවිසුම අවශ්‍ය නැහැ · ඔබේ උපාංගයේ පෞද්ගලිකයි",
+  "scanQrCta": "ස්කෑන් කරන්න",
+  "scanPermissionDenied": "කැමරා අවසරය ප්‍රතික්ෂේප විය",
+  "scanPermissionDeniedDesc": "QR කේත ස්කෑන් කිරීමට සැකසීම්වල කැමරා ප්‍රවේශය සක්‍රීය කරන්න",
+  "scanOpenSettings": "සැකසීම් විවෘත කරන්න",
+  "scanDecodeError": "QR කේතය කියවිය නොහැක",
+  "scanNotMqCode": "මෙය Campus Navigation විවෘත දින කේතයක් නොවේ",
+  "scanUnsupportedCode": "මෙම QR කේතය තවදුරටත් සහාය නොදක්වයි",
+  "scanUnverifiedCode": "මෙම QR කේතය සත්‍යාපනය කළ නොහැකි විය",
+  "scanAgain": "නැවත ස්කෑන් කරන්න",
+  "scanVisitSaveFailed": "පැමිණීම සුරැකිය නොහැකි විය. නැවත උත්සාහ කරන්න.",
+  "scanNotOnTrail": "මාවතේ කොටසක් නොවේ",
+  "scanNotOnTrailDesc": "මෙම QR කේතය Open Day මාවතේ කොටසක් නොවේ",
+  "arNoBuildingSelected": "ඇතුළත බැලීමට ගොඩනැගිල්ලක් තෝරන්න",
+  "arComingSoon": "අභ්‍යන්තර පෙරදසුන ඉක්මනින්",
+  "arExploreEyebrow": "360° කැම්පස් සංචාර",
+  "arExploreSubtitle": "පැමිණීමට පෙර කැම්පස් අවකාශ තුළට පිවිසෙන්න.",
+  "arTourComingSoon": "සංචාරය ළඟදීම",
+  "arSoonPill": "ළඟදීම",
+  "cardViewOnCampusMap": "කැම්පස් සිතියමේ බලන්න",
+  "cardViewArMap": "AR සිතියම බලන්න",
+  "cardAddToYourDayCta": "ඔබේ දිනයට එකතු කරන්න",
+  "cardAddToYourDay": "ඔබේ දිනයට එකතු කරන ලදී",
+  "cardFullSchedule": "සම්පූර්ණ කාලසටහන",
+  "cardArPreviewTitle": "AR පෙරදසුන",
+  "stopLiveNow": "දැන් සජීවීව: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "ඊළඟට: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "සුබ පැතුම්!",
+  "stampCelebrationCompleteTitle": "විදේශ ගමන් බලපත්‍රය සම්පූර්ණයි!",
+  "stampCelebrationSubtitle": "ඔබ {location} මුද්‍රාව රැස් කළා",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "ඔබේ Open Day විදේශ ගමන් බලපත්‍රය ආරම්භ විය",
+  "stampCelebrationKeepExploring": "ගවේෂණය දිගටම කරගෙන යන්න",
+  "stampCelebrationViewPassport": "මගේ විදේශ ගමන් බලපත්‍රය බලන්න",
+  "stampAlreadyCollected": "දැනටමත් රැස් කර ඇත — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "සුබ පැතුම්. ඔබ {location} මුද්‍රාව රැස් කළා. {total} න් {count}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "මගේ මුද්‍රා",
+  "stampsPassportLockedHint": "රැස් කිරීමට ස්කෑන් කරන්න",
+  "settingsMyStampsTile": "මගේ මුද්‍රා",
+  "settingsMyStampsSubtitle": "ඔබේ Open Day විදේශ ගමන් බලපත්‍රය බලන්න",
+  "arLoadError": "AR පූරණය කළ නොහැක: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "{total} න් {index} වන ඡායාරූපය",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "ලාංඡනය දිනා ගත්තා!",
+  "scanBadgeVisited": "බැලුවා"
 }

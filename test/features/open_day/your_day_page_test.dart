@@ -1,0 +1,223 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/map/data/datasources/building_registry_source.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:campus_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:campus_navigation/features/open_day/presentation/pages/your_day_page.dart';
+import 'package:campus_navigation/features/scan/domain/models/trail_manifest.dart';
+import 'package:campus_navigation/features/scan/providers/trail_providers.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
+
+class _FakeSettingsController extends SettingsController {
+  _FakeSettingsController(this._prefs);
+  final UserPreferences _prefs;
+
+  @override
+  Future<UserPreferences> build() async => _prefs;
+}
+
+const _building = Building(
+  id: 'wallys-29',
+  code: '29WW',
+  name: "29 Wally's Walk",
+);
+
+final _data = OpenDayData(
+  openDayDate: DateTime(2026, 8, 15),
+  lastUpdated: DateTime(2026, 8, 1),
+  studyAreas: const [],
+  bachelors: const [],
+  events: const [],
+  suggestedStops: const [
+    OpenDaySuggestedStop(
+      id: 'stop-library',
+      title: 'Waranara Library',
+      description: 'Study spaces at the heart of campus.',
+      buildingCode: '29WW',
+    ),
+  ],
+);
+
+const _trail = TrailManifest(
+  locations: [
+    TrailLocation(
+      locationId: 'wallys-29',
+      buildingId: 'wallys-29',
+      mapBuildingCode: '29WW',
+      title: "29 Wally's Walk",
+      description: 'Faculty of Arts building.',
+    ),
+  ],
+);
+
+Widget _app({Locale locale = const Locale('en')}) {
+  final router = GoRouter(
+    initialLocation: '/your-day',
+    routes: [
+      GoRoute(path: '/your-day', builder: (_, _) => const YourDayPage()),
+      GoRoute(
+        path: '/map',
+        name: 'map',
+        builder: (_, _) => const Scaffold(body: Text('map-page')),
+      ),
+    ],
+  );
+
+  return ProviderScope(
+    overrides: [
+      openDayDataProvider.overrideWith((ref) async => _data),
+      trailManifestProvider.overrideWith((ref) async => _trail),
+      buildingRegistryProvider.overrideWith((ref) async => const [_building]),
+      settingsControllerProvider.overrideWith(
+        () => _FakeSettingsController(
+          const UserPreferences(savedStopIds: ['stop-library']),
+        ),
+      ),
+    ],
+    child: MaterialApp.router(
+      locale: locale,
+      routerConfig: router,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+    ),
+  );
+}
+
+void main() {
+  testWidgets('the map and remove buttons are comfortably tappable on mobile', (
+    tester,
+  ) async {
+    // A typical phone width — the row must still give both trailing controls a
+    // full tap target rather than shrinking them to fit.
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    expect(find.text('Waranara Library'), findsOneWidget);
+
+    for (final icon in const [Icons.map_outlined, Icons.close_rounded]) {
+      final size = tester.getSize(
+        find.ancestor(of: find.byIcon(icon), matching: find.byType(InkWell)),
+      );
+      expect(
+        size.width,
+        greaterThanOrEqualTo(MqSpacing.minTapTarget),
+        reason: '$icon is too narrow to hit reliably on a phone',
+      );
+      expect(
+        size.height,
+        greaterThanOrEqualTo(MqSpacing.minTapTarget),
+        reason: '$icon is too short to hit reliably on a phone',
+      );
+    }
+  });
+
+  testWidgets('enlarging the buttons does not wrap the stop title', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    // The title ellipsises inside an Expanded, so bigger buttons must eat
+    // into the text's width rather than push the row onto a second line.
+    final title = tester.widget<Text>(find.text('Waranara Library'));
+    expect(title.maxLines, 1);
+    expect(title.overflow, TextOverflow.ellipsis);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('the leading marker fills its lane instead of floating in it', (
+    tester,
+  ) async {
+    // Regression: an 18px glyph sat alone in the 72px leading lane (which is
+    // shared with the session rows' time column), leaving the card looking
+    // half-finished on the left.
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final marker = find.byIcon(Icons.place_rounded);
+    expect(marker, findsOneWidget);
+
+    final glyph = tester.getSize(marker);
+    expect(
+      glyph.width,
+      greaterThanOrEqualTo(20),
+      reason: 'the marker glyph must read clearly on a phone',
+    );
+    expect(
+      glyph.width,
+      lessThanOrEqualTo(28),
+      reason: 'but must not balloon and unbalance the row',
+    );
+
+    // The tinted disc behind it is what actually occupies the lane.
+    final badge = tester.getSize(
+      find.ancestor(of: marker, matching: find.byType(Container)).first,
+    );
+    expect(badge.width, greaterThanOrEqualTo(36));
+    expect(badge.height, greaterThanOrEqualTo(36));
+  });
+
+  testWidgets('the marker is centred in the row, not top-aligned', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+
+    final markerCentre = tester.getCenter(find.byIcon(Icons.place_rounded));
+    final titleCentre = tester.getCenter(find.text('Waranara Library'));
+    final subtitleCentre = tester.getCenter(
+      find.text('Study spaces at the heart of campus.'),
+    );
+    final contentCentre = (titleCentre.dy + subtitleCentre.dy) / 2;
+
+    expect(
+      (markerCentre.dy - contentCentre).abs(),
+      lessThan(4.0),
+      reason: 'the badge should sit level with the card text',
+    );
+  });
+
+  testWidgets('the stop row mirrors correctly in RTL', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    // Arabic drives the whole app into RTL, which is what actually flips the
+    // Row — an outer Directionality would be overridden by MaterialApp.
+    await tester.pumpWidget(_app(locale: const Locale('ar')));
+    await tester.pumpAndSettle();
+
+    // In RTL the leading badge belongs on the RIGHT and the trailing actions
+    // on the LEFT — Row + EdgeInsetsDirectional should do this for free.
+    final marker = tester.getCenter(find.byIcon(Icons.place_rounded));
+    final remove = tester.getCenter(find.byIcon(Icons.close_rounded));
+    expect(
+      marker.dx,
+      greaterThan(remove.dx),
+      reason: 'leading marker must mirror to the right-hand side in RTL',
+    );
+    expect(tester.takeException(), isNull);
+  });
+}

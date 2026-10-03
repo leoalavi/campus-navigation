@@ -1,9 +1,9 @@
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/features/indoor/domain/models/indoor_manifest.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/features/indoor/domain/models/indoor_manifest.dart';
 
 /// Fixed chip width so scene scrolling is index-based (reaches chips a lazy
 /// list never built — GlobalKey/ensureVisible cannot).

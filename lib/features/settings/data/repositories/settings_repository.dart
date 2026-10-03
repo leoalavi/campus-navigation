@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/core/security/secure_storage_service.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/core/security/secure_storage_service.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 const _themeModeKey = 'settings.theme_mode';
 const _localeCodeKey = 'settings.locale_code';
@@ -24,20 +24,25 @@ const _favoriteDirectionKey = 'settings.favorite_direction';
 const _favoriteRouteKey = 'settings.favorite_route';
 const _favoriteStopIdKey = 'settings.favorite_stop_id';
 const _favoriteStopNameKey = 'settings.favorite_stop_name';
+const _openDayEnabledKey = 'settings.open_day.enabled';
 const _selectedBachelorIdKey = 'settings.open_day.bachelor_id';
 const _openDayRemindersEnabledKey = 'settings.open_day.reminders_enabled';
 const _openDayReminderMinutesKey = 'settings.open_day.reminder_minutes';
+const _showSuggestedStopsKey = 'settings.open_day.show_suggested_stops';
+const _savedOpenDayEventIdsKey = 'settings.open_day.saved_event_ids';
+const _savedStopIdsKey = 'settings.open_day.saved_stop_ids';
+const _visitedLocationCodesKey = 'settings.open_day.visited_codes';
 const _hasCompletedOnboardingKey = 'settings.has_completed_onboarding';
 
 /// Data source for persisting and retrieving user settings.
 ///
 /// **Architectural note — settings are device-local by design.**
 /// Every key in this repository is a per-device UX preference (theme,
-/// language, haptics, low-data, quiet hours, commute setup, etc.).
-/// None of them carry cross-device value, so they are persisted via
-/// `flutter_secure_storage` (Keychain on iOS, EncryptedSharedPreferences
-/// on Android) — *not* Supabase. Supabase coupling is reserved for
-/// features that genuinely require server-backed state.
+/// language, haptics, low-data, quiet hours, commute setup, Open Day
+/// progress, etc.). None of them carry cross-device value, so they are
+/// persisted via `flutter_secure_storage` (Keychain on iOS,
+/// EncryptedSharedPreferences on Android) — *not* Supabase. Campus
+/// Navigation has no accounts.
 ///
 /// Fails safely on read by returning defaults, but throws on write so
 /// the UI controller can show an error and revert any optimistic updates.
@@ -61,40 +66,36 @@ class LocalSettingsRepository implements SettingsRepository {
   @override
   Future<UserPreferences> loadPreferences() async {
     try {
-      final themeModeString = await _storage.read(_themeModeKey);
-      final localeCode = await _storage.read(_localeCodeKey);
-      final notificationsEnabled = await _storage.read(
-        _notificationsEnabledKey,
-      );
-      final defaultRendererString = await _storage.read(_defaultRendererKey);
-      final defaultTravelModeString = await _storage.read(
-        _defaultTravelModeKey,
-      );
-      final lowDataMode = await _storage.read(_lowDataModeKey);
-      final reducedMotion = await _storage.read(_reducedMotionKey);
-      final hapticsEnabled = await _storage.read(_hapticsEnabledKey);
-      final quietHoursEnabled = await _storage.read(_quietHoursEnabledKey);
-      final quietHoursStart = await _storage.read(_quietHoursStartKey);
-      final quietHoursEnd = await _storage.read(_quietHoursEndKey);
-      final highContrastMap = await _storage.read(_highContrastMapKey);
-      final offlineCampusMapsEnabled = await _storage.read(
-        _offlineCampusMapsEnabledKey,
-      );
-      final commuteMode = await _storage.read(_commuteModeKey);
-      final favoriteDirection = await _storage.read(_favoriteDirectionKey);
-      final favoriteRoute = await _storage.read(_favoriteRouteKey);
-      final favoriteStopId = await _storage.read(_favoriteStopIdKey);
-      final favoriteStopName = await _storage.read(_favoriteStopNameKey);
-      final selectedBachelorId = await _storage.read(_selectedBachelorIdKey);
-      final openDayRemindersEnabled = await _storage.read(
-        _openDayRemindersEnabledKey,
-      );
-      final openDayReminderMinutes = await _storage.read(
-        _openDayReminderMinutesKey,
-      );
-      final hasCompletedOnboarding = await _storage.read(
-        _hasCompletedOnboardingKey,
-      );
+      final values = await _storage.readAll();
+      final themeModeString = values[_themeModeKey];
+      final localeCode = values[_localeCodeKey];
+      final notificationsEnabled = values[_notificationsEnabledKey];
+      final defaultRendererString = values[_defaultRendererKey];
+      final defaultTravelModeString = values[_defaultTravelModeKey];
+      final lowDataMode = values[_lowDataModeKey];
+      final reducedMotion = values[_reducedMotionKey];
+      final hapticsEnabled = values[_hapticsEnabledKey];
+      final quietHoursEnabled = values[_quietHoursEnabledKey];
+      final quietHoursStart = values[_quietHoursStartKey];
+      final quietHoursEnd = values[_quietHoursEndKey];
+      final highContrastMap = values[_highContrastMapKey];
+      final offlineCampusMapsEnabled = values[_offlineCampusMapsEnabledKey];
+      final commuteMode = values[_commuteModeKey];
+      final favoriteDirection = values[_favoriteDirectionKey];
+      final favoriteRoute = values[_favoriteRouteKey];
+      final favoriteStopId = values[_favoriteStopIdKey];
+      final favoriteStopName = values[_favoriteStopNameKey];
+      final openDayEnabled = values[_openDayEnabledKey];
+      final selectedBachelorId = values[_selectedBachelorIdKey];
+      final hasBachelor =
+          selectedBachelorId != null && selectedBachelorId.trim().isNotEmpty;
+      final openDayRemindersEnabled = values[_openDayRemindersEnabledKey];
+      final openDayReminderMinutes = values[_openDayReminderMinutesKey];
+      final showSuggestedStops = values[_showSuggestedStopsKey];
+      final savedOpenDayEventIds = values[_savedOpenDayEventIdsKey];
+      final savedStopIds = values[_savedStopIdsKey];
+      final visitedLocationCodes = values[_visitedLocationCodesKey];
+      final hasCompletedOnboarding = values[_hasCompletedOnboardingKey];
 
       final localThemeMode = ThemeMode.values.firstWhere(
         (mode) => mode.name == themeModeString,
@@ -131,12 +132,19 @@ class LocalSettingsRepository implements SettingsRepository {
         favoriteRoute: favoriteRoute ?? '',
         favoriteStopId: favoriteStopId ?? '',
         favoriteStopName: favoriteStopName ?? '',
-        selectedBachelorId:
-            (selectedBachelorId != null && selectedBachelorId.trim().isNotEmpty)
-            ? selectedBachelorId
-            : null,
+        // Installs that predate the opt-in toggle have no stored flag; keep
+        // Open Day on for anyone who had already picked a study interest so
+        // the upgrade doesn't silently hide what they were using.
+        openDayEnabled: openDayEnabled == null
+            ? hasBachelor
+            : openDayEnabled == 'true',
+        selectedBachelorId: hasBachelor ? selectedBachelorId : null,
         openDayRemindersEnabled: openDayRemindersEnabled != 'false',
         openDayReminderMinutesBefore: _parseMinutes(openDayReminderMinutes),
+        showSuggestedStops: showSuggestedStops != 'false',
+        savedOpenDayEventIds: _parseSavedEventIds(savedOpenDayEventIds),
+        savedStopIds: _parseSavedEventIds(savedStopIds),
+        visitedLocationCodes: _parseSavedEventIds(visitedLocationCodes),
       );
     } catch (error, stackTrace) {
       AppLogger.error('Failed to load user preferences', error, stackTrace);
@@ -196,6 +204,10 @@ class LocalSettingsRepository implements SettingsRepository {
       await _storage.write(_favoriteRouteKey, preferences.favoriteRoute);
       await _storage.write(_favoriteStopIdKey, preferences.favoriteStopId);
       await _storage.write(_favoriteStopNameKey, preferences.favoriteStopName);
+      await _storage.write(
+        _openDayEnabledKey,
+        preferences.openDayEnabled.toString(),
+      );
       // Open Day study-interest preference. Treated as nullable: a missing
       // entry signals "not chosen" so the Home onboarding card surfaces.
       if (preferences.selectedBachelorId != null) {
@@ -213,6 +225,25 @@ class LocalSettingsRepository implements SettingsRepository {
       await _storage.write(
         _openDayReminderMinutesKey,
         preferences.openDayReminderMinutesBefore.toString(),
+      );
+      await _storage.write(
+        _showSuggestedStopsKey,
+        preferences.showSuggestedStops.toString(),
+      );
+      // Stored as a comma-joined string — event IDs never contain commas
+      // (they're slug-like, e.g. `evt-comp-1030`), so this is a safe,
+      // dependency-free encoding for a small ordered set.
+      await _storage.write(
+        _savedOpenDayEventIdsKey,
+        preferences.savedOpenDayEventIds.join(','),
+      );
+      await _storage.write(
+        _savedStopIdsKey,
+        preferences.savedStopIds.join(','),
+      );
+      await _storage.write(
+        _visitedLocationCodesKey,
+        preferences.visitedLocationCodes.join(','),
       );
       await _storage.write(
         _hasCompletedOnboardingKey,
@@ -237,12 +268,19 @@ class LocalSettingsRepository implements SettingsRepository {
   }
 }
 
-/// Clamps the persisted reminder lead time into the allowed range.
-/// Defaults to 15 minutes when the stored value is missing or malformed.
 int _parseMinutes(String? raw) {
   final parsed = int.tryParse(raw ?? '');
   if (parsed == null) return 15;
   return parsed.clamp(5, 60);
+}
+
+List<String> _parseSavedEventIds(String? raw) {
+  if (raw == null || raw.trim().isEmpty) return const <String>[];
+  return raw
+      .split(',')
+      .map((e) => e.trim())
+      .where((e) => e.isNotEmpty)
+      .toList(growable: false);
 }
 
 String _normalizeCommuteMode(String? mode) {

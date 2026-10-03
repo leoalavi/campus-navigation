@@ -47,11 +47,12 @@ rename now), **B** (must remain for compatibility) or **C** (support both).
 
 | Identifier | Value | Class | Reasoning |
 |---|---|---|---|
-| Dart package | `mq_navigation` | **B** | Internal only; never shown to a user. Renaming touches every import in 160+ files for zero user-visible benefit. |
+| Dart package | `campus_navigation` (was `mq_navigation`; MQ Journey used `mq_journey`) | **A — done** | Renamed when MQ Journey was merged in, so the codebase carries one name. Local-notification payloads still recognise the old `mq_navigation` / `mq_journey` tags so reminders from earlier installs are cleaned up. |
 | Android `applicationId` | `io.mqnavigation.mq_navigation` | **B** | Immutable once published. Changing it orphans every existing install and breaks Play upgrades. Never user-visible. |
 | iOS bundle ID | `com.pouya.mqnavigation` | **B** | Same constraint. Must be fixed *before* first submission if it is to change at all — see §5 below. |
 | Custom URL scheme | `mqnav://open` | **B** | The live Syllabus Sync handoff. Renaming breaks every link already emitted. |
 | Legacy URL scheme | `io.mqnavigation://` | **B** | Pre-existing auth/"meet here" links still in the wild. |
+| Open Day QR scheme | `io.mqjourney://open-day/…` | **B** | Inherited from MQ Journey. Signed codes are already printed on campus signage, so the scheme must stay registered. |
 | Universal/App Link domain | `mqnavigation.app` | **C** | Works today. A neutral product domain can be added as a *second* associated domain later, keeping both live during migration. |
 | Supabase auth link domain | `mqnavigation.io/auth` | **B** | Registered with the backend; unrelated to product identity. |
 | Theme class prefix | `MqColors`, `MqSpacing`, … | **B** | Internal Dart symbols. The doc comments no longer claim university brand ownership. |

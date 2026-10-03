@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart' as latlong;
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
-import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/map/data/services/offline_maps_service.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/domain/services/geo_utils.dart';
+import 'package:campus_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 
 /// Fallback map view for desktop platforms (macOS, Linux, Windows) where
 /// `google_maps_flutter` is not supported.

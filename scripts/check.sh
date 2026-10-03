@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# MQ Navigation comprehensive check script.
+# Campus Navigation comprehensive check script.
 #
 # Runs:
-#   pub get
+#   pub get (enforcing the committed application lockfile)
 #   format check / optional fix
 #   static analysis
-#   tests
+#   tests (with coverage)
+#   coverage gate (line coverage floor, excl. generated code)
 #   l10n generation
 #   privacy guard
 #   secret scan
@@ -102,15 +103,20 @@ run_step() {
       pass "$name"
     else
       fail "$name"
-      echo -e "${YELLOW}Last 40 log lines from $log_file:${NC}"
-      tail -40 "$log_file" || true
+      if grep -q "❌" "$log_file" 2>/dev/null; then
+        echo -e "${YELLOW}Failure details from $log_file:${NC}"
+        grep -n -A 20 "❌" "$log_file" | head -400
+      else
+        echo -e "${YELLOW}Last 40 log lines from $log_file:${NC}"
+        tail -40 "$log_file" || true
+      fi
     fi
   fi
 }
 
 # ── 1. Dependencies ──────────────────────────────────────
 step "Install dependencies"
-run_step "flutter pub get" "flutter pub get"
+run_step "flutter pub get" "flutter pub get --enforce-lockfile"
 
 # ── 2. Format ────────────────────────────────────────────
 step "Format"
@@ -135,13 +141,42 @@ run_step "flutter analyze" "flutter analyze --no-fatal-infos"
 
 # ── 4. Tests ─────────────────────────────────────────────
 step "Tests"
-run_step "flutter test" "flutter test"
+run_step "flutter test" "flutter test --coverage"
 
-# ── 5. Localisation generation ───────────────────────────
+# ── 5. Coverage gate ──────────────────────────────────────
+# Enforces a floor on line coverage so "add tests as we go" doesn't quietly
+# regress. Generated code (l10n locale files, .g.dart, .freezed.dart) is
+# excluded — the 35 generated l10n files alone are ~287k lines of mostly
+# one-line getters that only the 'en' locale's tests actually exercise,
+# which would make the raw lcov percentage meaningless.
+step "Coverage gate"
+COVERAGE_FILE="coverage/lcov.info"
+COVERAGE_THRESHOLD=50
+
+if [[ -f "$COVERAGE_FILE" ]]; then
+  COVERAGE_PCT="$(awk '
+    /^SF:/ { file=$0; sub("SF:","",file); skip = (file ~ /generated\// || file ~ /\.g\.dart$/ || file ~ /\.freezed\.dart$/) }
+    /^DA:/ && !skip { split($0, a, ":"); split(a[2], b, ","); total++; if (b[2]+0 > 0) hit++ }
+    END { if (total == 0) { print "0.00" } else { printf "%.2f", (hit/total)*100 } }
+  ' "$COVERAGE_FILE")"
+
+  echo -e "${CYAN}Line coverage (excl. generated code): ${COVERAGE_PCT}% (threshold: ${COVERAGE_THRESHOLD}%)${NC}"
+
+  if awk -v pct="$COVERAGE_PCT" -v threshold="$COVERAGE_THRESHOLD" 'BEGIN { exit !(pct < threshold) }'; then
+    echo -e "${RED}Coverage ${COVERAGE_PCT}% is below the ${COVERAGE_THRESHOLD}% floor.${NC}"
+    fail "coverage gate"
+  else
+    pass "coverage gate (${COVERAGE_PCT}%)"
+  fi
+else
+  echo -e "${YELLOW}No coverage report found at $COVERAGE_FILE. Skipping.${NC}"
+fi
+
+# ── 6. Localisation generation ───────────────────────────
 step "Localisation generation"
 run_step "flutter gen-l10n" "flutter gen-l10n"
 
-# ── 6. Localisation untranslated check ───────────────────
+# ── 7. Localisation untranslated check ───────────────────
 step "Localisation untranslated check"
 UNTRANSLATED_FILE=".dart_tool/untranslated.json"
 
@@ -159,7 +194,7 @@ else
   echo -e "${YELLOW}No untranslated file found at $UNTRANSLATED_FILE. Skipping.${NC}"
 fi
 
-# ── 7. Privacy guard ─────────────────────────────────────
+# ── 8. Privacy guard ─────────────────────────────────────
 step "Privacy guard"
 
 FORBIDDEN_PACKAGES=(
@@ -189,7 +224,7 @@ else
   pass "privacy guard"
 fi
 
-# ── 8. Secret scan ───────────────────────────────────────
+# ── 9. Secret scan ───────────────────────────────────────
 step "Secret scan"
 
 # Only scan source code and config (NOT supabase/ edge functions —
@@ -227,7 +262,50 @@ else
   pass "secret scan"
 fi
 
-# ── 9. Build ─────────────────────────────────────────────
+# ── 10. No-stale-name guard ─────────────────────────────
+step "No-stale-name guard"
+
+STALE_NAME_FAIL=false
+
+# Only scan source/script/config directories where the Dart package name
+# could leak back in.  Exclude native build files (android/, ios/, etc.)
+# because their applicationId / bundle ID intentionally keep the old
+# namespace under Option A (cosmetic rename).
+if grep -rnE 'package:(mq_navigation|mq_journey)/|^name: (mq_navigation|mq_journey)$' \
+  --include='*.dart' --include='*.yaml' \
+  lib test tool scripts pubspec.yaml 2>/dev/null \
+  > /tmp/stale_name_scan.txt; then
+  echo -e "${RED}Stale package name found (the package is campus_navigation):${NC}"
+  cat /tmp/stale_name_scan.txt
+  STALE_NAME_FAIL=true
+fi
+rm -f /tmp/stale_name_scan.txt
+
+if [[ "$STALE_NAME_FAIL" == true ]]; then
+  fail "no-stale-name guard"
+else
+  pass "no-stale-name guard"
+fi
+
+# ── 11. No-login-route guard ─────────────────────────────────
+step "No-login-route guard"
+
+NO_LOGIN_FAIL=false
+
+if grep -rn "/auth/login\|/auth/signup\|signInWithPassword" lib --include='*.dart' 2>/dev/null > /tmp/mq_no_login_scan.txt; then
+  echo -e "${RED}Login/signup flow reference reintroduced:${NC}"
+  cat /tmp/mq_no_login_scan.txt
+  NO_LOGIN_FAIL=true
+fi
+rm -f /tmp/mq_no_login_scan.txt
+
+if [[ "$NO_LOGIN_FAIL" == true ]]; then
+  fail "no-login-route guard"
+else
+  pass "no-login-route guard"
+fi
+
+# ── 12. Build ────────────────────────────────────────────
 if [[ "$QUICK" == false ]]; then
   step "Build check"
   run_step "flutter build apk debug" "flutter build apk --debug"

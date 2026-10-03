@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/router/route_names.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
-import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_navigation/features/open_day/domain/services/open_day_time.dart';
-import 'package:mq_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
-import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:campus_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:campus_navigation/features/open_day/domain/services/open_day_time.dart';
+import 'package:campus_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/shared/widgets/mq_tactile_button.dart';
 
 /// Compact Home-screen card that morphs based on selection state:
 ///
@@ -33,13 +33,22 @@ class OpenDayHomeCard extends ConsumerWidget {
 
     final data = dataAsync.value;
     final selected = ref.watch(selectedBachelorProvider);
-    final events = ref.watch(relevantOpenDayEventsProvider);
+    // Degree-specific sessions only, so the preview reflects the chosen degree
+    // rather than general/open sessions.
+    final events = ref.watch(degreeSessionsProvider);
+    // "Upcoming" must respect the clock on the day itself — at 2 PM the
+    // preview shouldn't still lead with finished 9 AM sessions. Prefer
+    // sessions that haven't ended yet; once the day is over, fall back to
+    // the first sessions so the card still previews the schedule.
+    final now = ref.watch(openDayNowProvider);
+    final notEnded = events.where((e) => e.endTime.isAfter(now)).toList();
+    final preview = (notEnded.isEmpty ? events : notEnded).take(2).toList();
 
     return selected == null
         ? _OnboardingCard(openDayDate: data.openDayDate)
         : _PreviewCard(
             selected: selected,
-            upcoming: events.take(2).toList(),
+            upcoming: preview,
             openDayDate: data.openDayDate,
           );
   }

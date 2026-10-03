@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/map/data/datasources/places_search_source.dart';
+import 'package:campus_navigation/features/map/data/datasources/places_search_source.dart';
 
 void main() {
   group('PlaceSuggestion', () {

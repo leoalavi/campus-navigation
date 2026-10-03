@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/router/shell_chrome_provider.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
-import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
-import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/shell_chrome_provider.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:campus_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/shared/widgets/mq_bottom_sheet.dart';
 
 /// Lightweight, non-blocking bachelor picker. Surfaces as a bottom sheet
 /// so it never feels like an account-setup wall — the user can dismiss
 /// and the app keeps working without a selection.
 ///
-/// Bachelors are grouped under their study area for fast scanning. Tapping
-/// a row immediately commits the choice (no "Save" button) — this is a
-/// preference, not a form submission.
+/// The list is sorted alphabetically by displayed title and filterable via
+/// a search field — at 39 degrees, faculty grouping no longer scanned well,
+/// so a flat, searchable list replaced it. Tapping a row immediately commits
+/// the choice (no "Save" button) — this is a preference, not a form
+/// submission.
 class BachelorPickerSheet extends ConsumerWidget {
   const BachelorPickerSheet({super.key});
 
@@ -147,106 +149,210 @@ class BachelorPickerSheet extends ConsumerWidget {
   }
 }
 
-class _BachelorList extends ConsumerWidget {
+class _BachelorList extends ConsumerStatefulWidget {
   const _BachelorList({required this.data, required this.selectedId});
 
   final OpenDayData data;
   final String? selectedId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Group bachelors by study area for fast visual scanning.
-    final byArea = <String, List<OpenDayBachelor>>{};
-    for (final b in data.bachelors) {
-      byArea.putIfAbsent(b.studyAreaId, () => <OpenDayBachelor>[]).add(b);
-    }
+  ConsumerState<_BachelorList> createState() => _BachelorListState();
+}
 
-    return ListView(
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
+class _BachelorListState extends ConsumerState<_BachelorList> {
+  late final List<OpenDayBachelor> _sorted = [...widget.data.bachelors]
+    ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+
+  final _searchController = TextEditingController();
+  String _query = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final dark = context.isDarkMode;
+    final query = _query.trim().toLowerCase();
+    final filtered = query.isEmpty
+        ? _sorted
+        : _sorted.where((b) => b.name.toLowerCase().contains(query)).toList();
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (final area in data.studyAreas)
-          if (byArea[area.id] != null)
-            _AreaSection(
-              area: area,
-              bachelors: byArea[area.id]!,
-              selectedId: selectedId,
-              onSelect: (b) async {
-                await ref
-                    .read(settingsControllerProvider.notifier)
-                    .updateSelectedBachelorId(b.id);
-                if (context.mounted) Navigator.pop(context);
-              },
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(
+            MqSpacing.space2,
+            0,
+            MqSpacing.space2,
+            MqSpacing.space3,
+          ),
+          child: TextField(
+            controller: _searchController,
+            onChanged: (v) => setState(() => _query = v),
+            style: context.textTheme.bodyMedium?.copyWith(
+              color: dark ? Colors.white : MqColors.contentPrimary,
             ),
+            decoration: InputDecoration(
+              hintText: l10n.openDay_searchBachelorHint,
+              hintStyle: context.textTheme.bodyMedium?.copyWith(
+                color: dark
+                    ? Colors.white.withValues(alpha: 0.55)
+                    : MqColors.contentSecondary,
+              ),
+              prefixIcon: Icon(
+                Icons.search_rounded,
+                color: dark
+                    ? Colors.white.withValues(alpha: 0.55)
+                    : MqColors.contentSecondary,
+              ),
+              suffixIcon: _query.isEmpty
+                  ? null
+                  : IconButton(
+                      icon: const Icon(Icons.close_rounded, size: 18),
+                      color: dark
+                          ? Colors.white.withValues(alpha: 0.65)
+                          : MqColors.contentSecondary,
+                      onPressed: () {
+                        _searchController.clear();
+                        setState(() => _query = '');
+                      },
+                    ),
+              filled: true,
+              fillColor: dark
+                  ? Colors.white.withValues(alpha: 0.06)
+                  : MqColors.charcoal800.withValues(alpha: 0.05),
+              contentPadding: const EdgeInsetsDirectional.symmetric(
+                vertical: MqSpacing.space3,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+        Flexible(
+          child: filtered.isEmpty
+              ? _NoMatchState(l10n: l10n, dark: dark)
+              : ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  children: [
+                    for (final b in filtered)
+                      _BachelorRow(
+                        bachelor: b,
+                        selectedId: widget.selectedId,
+                        onSelect: (selected) async {
+                          await ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateSelectedBachelorId(selected.id);
+                          if (context.mounted) Navigator.pop(context);
+                        },
+                      ),
+                  ],
+                ),
+        ),
       ],
     );
   }
 }
 
-class _AreaSection extends StatelessWidget {
-  const _AreaSection({
-    required this.area,
-    required this.bachelors,
+class _NoMatchState extends StatelessWidget {
+  const _NoMatchState({required this.l10n, required this.dark});
+
+  final AppLocalizations l10n;
+  final bool dark;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.symmetric(
+        vertical: MqSpacing.space6,
+        horizontal: MqSpacing.space4,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.search_off_rounded,
+            size: 28,
+            color: dark
+                ? Colors.white.withValues(alpha: 0.45)
+                : MqColors.contentSecondary,
+          ),
+          const SizedBox(height: MqSpacing.space2),
+          Text(
+            l10n.openDay_noBachelorMatch,
+            textAlign: TextAlign.center,
+            style: context.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: dark ? Colors.white : MqColors.contentPrimary,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            l10n.openDay_noBachelorMatchHint,
+            textAlign: TextAlign.center,
+            style: context.textTheme.bodySmall?.copyWith(
+              color: dark
+                  ? Colors.white.withValues(alpha: 0.65)
+                  : MqColors.contentSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BachelorRow extends StatelessWidget {
+  const _BachelorRow({
+    required this.bachelor,
     required this.selectedId,
     required this.onSelect,
   });
 
-  final OpenDayStudyArea area;
-  final List<OpenDayBachelor> bachelors;
+  final OpenDayBachelor bachelor;
   final String? selectedId;
   final void Function(OpenDayBachelor) onSelect;
 
   @override
   Widget build(BuildContext context) {
     final dark = context.isDarkMode;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(
-            MqSpacing.space2,
-            MqSpacing.space3,
-            MqSpacing.space2,
-            MqSpacing.space1,
-          ),
-          child: Text(
-            area.name.toUpperCase(),
-            style: context.textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              letterSpacing: 1.4,
-              color: dark ? MqColors.charcoal800 : MqColors.red,
+    final selected = bachelor.id == selectedId;
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: bachelor.name,
+      child: Material(
+        type: MaterialType.transparency,
+        child: ListTile(
+          dense: true,
+          title: Text(
+            bachelor.name,
+            style: context.textTheme.bodyLarge?.copyWith(
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+              color: selected
+                  ? (dark ? MqColors.charcoal800 : MqColors.red)
+                  : (dark ? Colors.white : MqColors.contentPrimary),
             ),
           ),
+          trailing: selected
+              ? Icon(
+                  Icons.check_rounded,
+                  color: dark ? MqColors.charcoal800 : MqColors.red,
+                  size: 20,
+                )
+              : null,
+          onTap: () => onSelect(bachelor),
         ),
-        for (final b in bachelors)
-          Semantics(
-            button: true,
-            selected: b.id == selectedId,
-            label: b.name,
-            child: ListTile(
-              dense: true,
-              title: Text(
-                b.name,
-                style: context.textTheme.bodyLarge?.copyWith(
-                  fontWeight: b.id == selectedId
-                      ? FontWeight.w700
-                      : FontWeight.w500,
-                  color: b.id == selectedId
-                      ? (dark ? MqColors.charcoal800 : MqColors.red)
-                      : (dark ? Colors.white : MqColors.contentPrimary),
-                ),
-              ),
-              trailing: b.id == selectedId
-                  ? Icon(
-                      Icons.check_rounded,
-                      color: dark ? MqColors.charcoal800 : MqColors.red,
-                      size: 20,
-                    )
-                  : null,
-              onTap: () => onSelect(b),
-            ),
-          ),
-      ],
+      ),
     );
   }
 }

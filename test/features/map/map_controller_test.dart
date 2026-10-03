@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
-import 'package:mq_navigation/features/map/data/repositories/map_repository_impl.dart';
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/entities/nav_instruction.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/features/map/data/datasources/location_source.dart';
+import 'package:campus_navigation/features/map/data/repositories/map_repository_impl.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/entities/nav_instruction.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 void main() {
   group('MapController', () {

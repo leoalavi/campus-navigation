@@ -3,19 +3,20 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/router/route_names.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
-import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
-import 'package:mq_navigation/features/open_day/presentation/widgets/open_day_home_card.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/features/transit/domain/entities/metro_departure.dart';
-import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
-import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
+import 'package:campus_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:campus_navigation/features/open_day/presentation/widgets/open_day_home_card.dart';
+import 'package:campus_navigation/features/open_day/presentation/widgets/open_day_home_sections.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/features/transit/domain/entities/metro_departure.dart';
+import 'package:campus_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/shared/widgets/mq_tactile_button.dart';
 
 /// Home screen for the Campus Navigation app.
 ///
@@ -124,10 +125,22 @@ class HomePage extends ConsumerWidget {
                           onTap: () => context.pushNamed(RouteNames.favorites),
                         ),
                         const SizedBox(height: MqSpacing.space4),
-                        // Open Day enhancement — hides itself when the
-                        // dataset isn't loaded, morphs between onboarding
-                        // and preview based on whether a bachelor is set.
-                        const OpenDayHomeCard(),
+                        // Optional Open Day block — only present once the
+                        // user has switched Open Day on (Settings, the
+                        // onboarding study-interest picker, or scanning an
+                        // Open Day QR code).
+                        if (preferences.openDayEnabled) ...[
+                          // Study interest: onboarding CTA before a choice,
+                          // compact preview after.
+                          const OpenDayHomeCard(),
+                          // Coming up next + suggested stops; self-hiding
+                          // until a study interest is chosen.
+                          const OpenDayPersonalisedSections(),
+                          const SizedBox(height: MqSpacing.space4),
+                          // Your Day — the saved sessions and stops.
+                          const OpenDayYourDayCard(),
+                          const SizedBox(height: MqSpacing.space4),
+                        ],
                         const SizedBox(height: MqSpacing.space8),
                         _QuickAccessSection(
                           hapticsEnabled: hapticsEnabled,

@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/router/route_names.dart';
-import 'package:mq_navigation/app/router/shell_chrome_provider.dart';
-import 'package:mq_navigation/features/map/data/repositories/map_repository_impl.dart';
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/map/presentation/pages/map_page.dart';
-import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
-import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/features/map/presentation/widgets/building_actions_sheet.dart';
-import 'package:mq_navigation/features/map/presentation/widgets/building_search_sheet.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/app/router/shell_chrome_provider.dart';
+import 'package:campus_navigation/features/map/data/repositories/map_repository_impl.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/presentation/pages/map_page.dart';
+import 'package:campus_navigation/features/map/data/datasources/location_source.dart';
+import 'package:campus_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/features/map/presentation/widgets/building_actions_sheet.dart';
+import 'package:campus_navigation/features/map/presentation/widgets/building_search_sheet.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 class _FakeSettingsController extends SettingsController {
   @override

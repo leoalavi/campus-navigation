@@ -12,6 +12,12 @@ abstract final class MqColors {
   static const Color magenta = Color(0xFFC6007E);
   static const Color purple = Color(0xFF80225F);
 
+  // Open Day surfaces alias the core brand so they inherit the Campus
+  // Navigation palette rather than introducing a second identity.
+  static const Color openDayMagenta = red;
+  static const Color openDayPink = brightRed;
+  static const Color openDayPlum = deepRed;
+
   // ── Alabaster (primary background family) ──────────────
   static const Color alabaster = Color(0xFFEDEADE);
   static const Color alabasterDark = Color(0xFFE5E2D4);

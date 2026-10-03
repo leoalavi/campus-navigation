@@ -175,7 +175,7 @@ else
   
   echo ""
   echo "╔══════════════════════════════════════════════════════════════════╗"
-  echo "║                    MQ Navigation — Run                         ║"
+  echo "║                 Campus Navigation — Run                      ║"
   echo "╚══════════════════════════════════════════════════════════════════╝"
   echo ""
   echo "Scanning for targets..."

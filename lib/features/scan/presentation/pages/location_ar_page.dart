@@ -1,0 +1,84 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/features/indoor/domain/models/indoor_manifest.dart';
+import 'package:campus_navigation/features/indoor/presentation/widgets/indoor_tour_view.dart';
+import 'package:campus_navigation/features/indoor/providers/indoor_providers.dart';
+import 'package:campus_navigation/features/scan/providers/scan_providers.dart';
+import 'package:campus_navigation/shared/widgets/glass_app_bar.dart';
+
+/// Pure scene resolution (spec refinement #3): a valid stop scene wins;
+/// otherwise fall back to the entrance scene; otherwise null (Pannellum uses
+/// nodes.first).
+String? resolveArFirstScene({
+  required IndoorManifest manifest,
+  required String? stopSceneId,
+  required String? entranceSceneId,
+}) {
+  bool has(String? id) => id != null && manifest.nodes.any((n) => n.id == id);
+  if (has(stopSceneId)) return stopSceneId;
+  if (has(entranceSceneId)) return entranceSceneId;
+  return null;
+}
+
+class LocationArPage extends ConsumerWidget {
+  const LocationArPage({super.key, required this.locationId, this.stopId});
+  final String locationId;
+  final String? stopId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final trailAsync = ref.watch(trailManifestProvider);
+    return Scaffold(
+      // The AR/360° preview runs behind the glass island title bar.
+      extendBodyBehindAppBar: true,
+      // The body is a platform-view panorama — frost, not shader (a shader
+      // BackdropFilter can't sample the webview).
+      appBar: GlassAppBar(
+        title: Text(l10n.cardArPreviewTitle),
+        allowShader: false,
+      ),
+      body: trailAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text(l10n.arLoadError(e.toString()))),
+        data: (trail) {
+          final loc = trail.byId(locationId);
+          // 360° tours are keyed by the campus building id (e.g. `23WW`),
+          // the same id the map and building sheet use.
+          final buildingId = loc?.mapBuildingCode ?? loc?.buildingId;
+          if (loc == null || buildingId == null) {
+            return Center(child: Text(l10n.cardNoArPreview));
+          }
+          final manifestAsync = ref.watch(indoorManifestProvider(buildingId));
+          return manifestAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (e, _) =>
+                Center(child: Text(l10n.arLoadError(e.toString()))),
+            data: (manifest) {
+              if (manifest == null || manifest.isEmpty) {
+                return Center(child: Text(l10n.cardNoArPreview));
+              }
+              String? stopScene;
+              for (final s in loc.stops) {
+                if (s.stopId == stopId) {
+                  stopScene = s.arSceneId;
+                  break;
+                }
+              }
+              final firstScene = resolveArFirstScene(
+                manifest: manifest,
+                stopSceneId: stopScene,
+                entranceSceneId: loc.arSceneId,
+              );
+              return IndoorTourView(
+                manifest: manifest,
+                firstSceneId: firstScene,
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

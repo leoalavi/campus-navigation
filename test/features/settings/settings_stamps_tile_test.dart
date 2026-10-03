@@ -1,0 +1,147 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/fcm_service.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:campus_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:campus_navigation/features/settings/data/repositories/settings_repository.dart';
+import 'package:campus_navigation/features/settings/presentation/pages/settings_page.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
+
+class MockSettingsRepository extends Mock implements SettingsRepository {}
+
+class _FakeNotificationsController extends NotificationsController {
+  @override
+  Future<NotificationsState> build() async => const NotificationsState(
+    permissionStatus: NotificationPermissionStatus.granted,
+    preferences: [],
+  );
+
+  @override
+  Future<void> updatePreference(NotificationType type, bool enabled) async {}
+}
+
+void main() {
+  setUpAll(() {
+    registerFallbackValue(const UserPreferences());
+  });
+
+  // A tall physical size, matching the pattern in settings_page_test.dart:
+  // the default 800x600 test surface is too short for scrollUntilVisible to
+  // bring the "My Stamps" tile to a genuinely tappable (on-screen) offset,
+  // since Settings now has more sections than the tiny default viewport can
+  // show at once.
+  void setupLargeViewport(WidgetTester tester) {
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(() {
+      tester.view.resetPhysicalSize();
+      tester.view.resetDevicePixelRatio();
+    });
+  }
+
+  Future<void> pumpSettings(
+    WidgetTester tester, {
+    required bool openDayEnabled,
+  }) async {
+    setupLargeViewport(tester);
+    final mockSettingsRepository = MockSettingsRepository();
+    when(
+      () => mockSettingsRepository.loadPreferences(),
+    ).thenAnswer((_) async => UserPreferences(openDayEnabled: openDayEnabled));
+    when(() => mockSettingsRepository.savePreferences(any())).thenAnswer(
+      (invocation) async =>
+          invocation.positionalArguments[0] as UserPreferences,
+    );
+
+    final router = GoRouter(
+      initialLocation: '/settings',
+      routes: [
+        GoRoute(
+          path: '/settings',
+          name: RouteNames.settings,
+          builder: (_, _) => const SettingsPage(),
+        ),
+        GoRoute(
+          path: '/stamps',
+          name: RouteNames.stamps,
+          builder: (_, _) => const Scaffold(body: Text('stamps-page')),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(mockSettingsRepository),
+          notificationsControllerProvider.overrideWith(
+            () => _FakeNotificationsController(),
+          ),
+          selectedBachelorProvider.overrideWithValue(null),
+          openDayDataProvider.overrideWith(
+            (ref) async => OpenDayData(
+              openDayDate: DateTime(2026, 8, 22),
+              lastUpdated: DateTime.now(),
+              studyAreas: const [],
+              bachelors: const [],
+              events: const [],
+            ),
+          ),
+        ],
+        child: MaterialApp.router(
+          routerConfig: router,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('My Stamps tile navigates to /stamps', (tester) async {
+    await pumpSettings(tester, openDayEnabled: true);
+
+    final BuildContext context = tester.element(find.byType(SettingsPage));
+    final l10n = AppLocalizations.of(context)!;
+
+    await tester.scrollUntilVisible(
+      find.text(l10n.settingsMyStampsTile),
+      200,
+      scrollable: find.byType(Scrollable),
+    );
+    await tester.tap(find.text(l10n.settingsMyStampsTile));
+    await tester.pumpAndSettle();
+
+    expect(find.text('stamps-page'), findsOneWidget);
+  });
+
+  testWidgets('Open Day options stay hidden until Open Day is switched on', (
+    tester,
+  ) async {
+    await pumpSettings(tester, openDayEnabled: false);
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(SettingsPage)),
+    )!;
+
+    await tester.scrollUntilVisible(
+      find.text(l10n.openDay_enable),
+      200,
+      scrollable: find.byType(Scrollable),
+    );
+    expect(find.text(l10n.openDay_enable), findsOneWidget);
+    expect(find.text(l10n.settingsMyStampsTile), findsNothing);
+    expect(find.text(l10n.openDay_studyInterest), findsNothing);
+  });
+}

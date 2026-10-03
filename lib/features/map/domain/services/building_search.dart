@@ -1,4 +1,4 @@
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
 
 typedef RankedBuilding = ({Building building, int score});
 

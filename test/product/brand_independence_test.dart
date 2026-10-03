@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/core/config/product_config.dart';
+import 'package:campus_navigation/core/config/product_config.dart';
 
 /// Guards Campus Navigation's independence from the university it maps.
 ///
 /// These assert the *public* surface only. Real-world place names (Macquarie
 /// Theatre, Macquarie University Station) and legacy technical identifiers
-/// (`mq_navigation`, `io.mqnavigation`, `mqnavigation.app`) are explicitly
+/// (`io.mqnavigation`, `mqnavigation.app`, the `mqnav` scheme) are explicitly
 /// allowed — see docs/BRANDING.md for why each exception exists.
 void main() {
   final repo = Directory.current;
@@ -231,7 +231,9 @@ void main() {
 
       // Splash / launch screen also stays on Campus Navigation's own asset.
       expect(
-        File('${repo.path}/lib/app/mq_navigation_app.dart').readAsStringSync(),
+        File(
+          '${repo.path}/lib/app/campus_navigation_app.dart',
+        ).readAsStringSync(),
         isNot(contains('syllabus_sync_logo')),
       );
     },

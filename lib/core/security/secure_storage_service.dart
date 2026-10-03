@@ -3,8 +3,8 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mq_navigation/core/error/app_exception.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/core/error/app_exception.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Encrypted key-value storage backed by Keychain (iOS) / Keystore (Android).
@@ -60,6 +60,27 @@ class SecureStorageService {
     } catch (e, s) {
       AppLogger.error('SecureStorage read failed', e, s);
       throw StorageException('Failed to read key "$key"', e);
+    }
+  }
+
+  /// Reads the service's string entries in one platform operation.
+  ///
+  /// Startup preferences use many independent keys. Fetching the complete
+  /// small key-value set avoids one native method-channel round trip per key
+  /// while preserving the platform's encrypted storage boundary.
+  Future<Map<String, String>> readAll() async {
+    try {
+      if (_useFallback) {
+        final prefs = await _getPrefs();
+        return {
+          for (final key in prefs.getKeys())
+            if (prefs.get(key) case final String value) key: value,
+        };
+      }
+      return await _secure.readAll();
+    } catch (e, s) {
+      AppLogger.error('SecureStorage readAll failed', e, s);
+      throw StorageException('Failed to read all keys', e);
     }
   }
 

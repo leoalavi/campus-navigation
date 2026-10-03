@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, one{סצנה אחת · סיור 360°} other{{count} סצנות · סיור 360°}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "סרוק",
+  "buildingsLoadError": "לא ניתן לטעון את המבנים. נסה שוב.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "כלול באפליקציה",
+  "offlineCampusMapsBundledDetail": "מפת הקמפוס, רשימת המבנים והסיורים הפנימיים פועלים ללא חיבור. זמני רכבת בזמן אמת, מסלולי הליכה ושירותים מקוונים אחרים דורשים חיבור.",
+  "hoursMinutesShort": "{hours} ש {minutes} ד",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ש",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "סריקת קוד QR",
+  "stampCatalogUnavailable": "לא ניתן היה לטעון את אוסף החותמות שלך. נסו שוב.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "לא ניתן היה לטעון את מיקומי הקמפוס. נסו שוב.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "חפש תוכניות ותחומי עניין",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "לא נמצאה תוכנית או תחום עניין תואם",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "נסה מילת מפתח אחרת",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "הצג תחנות מומלצות",
+  "openDay_showSuggestedStopsSemantic": "הצג תחנות מומלצות בדף הבית",
+  "openDay_suggestedStopsForInterest": "תחנות מומלצות עבור {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "משודר עכשיו",
+  "openDay_comingUpNextTitle": "הבא בתור",
+  "openDay_liveNowForInterest": "מותאם לתחום העניין שלך",
+  "openDay_liveNowAcrossDay": "פתוח לכל המבקרים",
+  "openDay_matchedToYourDegree": "מתאים לתואר שלך",
+  "openDay_generalOpenToAll": "כללי · פתוח לכולם",
+  "openDay_allSessionsLabel": "כל המפגשים",
+  "openDay_yourDayTitle": "היום שלך",
+  "openDay_yourDayEmpty": "שמור את המפגשים שאהבת כדי לבנות תוכנית יום פתוח אישית.",
+  "openDay_yourDayCount": "{count, plural, =1{מפגש אחד נשמר} other{{count} מפגשים נשמרו}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "הוסף ליום שלי",
+  "openDay_removeFromMyDay": "הסר מהיום שלי",
+  "openDay_savedToMyDay": "נוסף ליום שלך",
+  "openDay_removedFromMyDay": "הוסר מהיום שלך",
+  "openDay_clearMyDay": "נקה את היום שלי",
+  "openDay_clearMyDayConfirm": "להסיר את כל המפגשים והתחנות השמורים מהיום שלך? לא ניתן לבטל פעולה זו.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "ביקרת ב-{count} מתוך {total} תחנות",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "מסלול {trail} הושלם",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "אין צורך בהתחברות · פרטי במכשיר שלך",
+  "scanQrCta": "סרוק",
+  "scanPermissionDenied": "הגישה למצלמה נדחתה",
+  "scanPermissionDeniedDesc": "אפשר גישה למצלמה בהגדרות כדי לסרוק קודי QR",
+  "scanOpenSettings": "פתח הגדרות",
+  "scanDecodeError": "לא ניתן לקרוא את קוד ה-QR",
+  "scanNotMqCode": "זה אינו קוד Campus Navigation ליום הפתוח",
+  "scanUnsupportedCode": "קוד QR זה אינו נתמך עוד",
+  "scanUnverifiedCode": "לא ניתן היה לאמת קוד QR זה",
+  "scanAgain": "סרוק שוב",
+  "scanVisitSaveFailed": "לא ניתן היה לשמור את הביקור. נסה שוב.",
+  "scanNotOnTrail": "לא חלק מהמסלול",
+  "scanNotOnTrailDesc": "קוד QR זה אינו חלק ממסלול ה-Open Day",
+  "arNoBuildingSelected": "בחר בניין כדי לצפות בפנים",
+  "arComingSoon": "תצוגה מקדימה פנימית תגיע בקרוב",
+  "arExploreEyebrow": "סיורי קמפוס ב-360°",
+  "arExploreSubtitle": "היכנס למרחבי הקמפוס עוד לפני שתגיע.",
+  "arTourComingSoon": "הסיור בקרוב",
+  "arSoonPill": "בקרוב",
+  "cardViewOnCampusMap": "הצג במפת הקמפוס",
+  "cardViewArMap": "הצג מפת AR",
+  "cardAddToYourDayCta": "הוסף ליום שלך",
+  "cardAddToYourDay": "נוסף ליום שלך",
+  "cardFullSchedule": "לוח הזמנים המלא",
+  "cardArPreviewTitle": "תצוגה מקדימה של AR",
+  "stopLiveNow": "בשידור חי כעת: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "הבא בתור: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "ברכותינו!",
+  "stampCelebrationCompleteTitle": "הדרכון הושלם!",
+  "stampCelebrationSubtitle": "אספת את החותמת {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "דרכון ה-Open Day שלך התחיל",
+  "stampCelebrationKeepExploring": "המשך לחקור",
+  "stampCelebrationViewPassport": "הצג את הדרכון שלי",
+  "stampAlreadyCollected": "כבר נאסף — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "ברכותינו. אספת את החותמת {location}. {count} מתוך {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "החותמות שלי",
+  "stampsPassportLockedHint": "סרוק כדי לאסוף",
+  "settingsMyStampsTile": "החותמות שלי",
+  "settingsMyStampsSubtitle": "צפה בדרכון ה-Open Day שלך",
+  "arLoadError": "לא ניתן לטעון AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "תמונה {index} מתוך {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "זכית בתג!",
+  "scanBadgeVisited": "ביקרת"
 }

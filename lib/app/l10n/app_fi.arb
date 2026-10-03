@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, =1{1 näkymä · 360°-kierros} other{{count} näkymää · 360°-kierros}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Skannaa",
+  "buildingsLoadError": "Rakennuksia ei voitu ladata. Yritä uudelleen.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Sisältyy sovellukseen",
+  "offlineCampusMapsBundledDetail": "Kampuskartta, rakennusluettelo ja sisätilakierrokset toimivat ilman yhteyttä. Metron reaaliaikaiset ajat, kävelyreitit ja muut verkkopalvelut tarvitsevat yhteyden.",
+  "hoursMinutesShort": "{hours} t {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} t",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "Skannaa QR-koodi",
+  "stampCatalogUnavailable": "Leimakokoelmaasi ei voitu ladata. Yritä uudelleen.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Kampuksen sijainteja ei voitu ladata. Yritä uudelleen.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Hae ohjelmia ja kiinnostuksen kohteita",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Vastaavaa ohjelmaa tai kiinnostuksen kohdetta ei löytynyt",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Kokeile toista hakusanaa",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Näytä ehdotetut pysähdykset",
+  "openDay_showSuggestedStopsSemantic": "Näytä ehdotetut pysähdykset etusivulla",
+  "openDay_suggestedStopsForInterest": "Ehdotetut pysähdykset: {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Käynnissä nyt",
+  "openDay_comingUpNextTitle": "Seuraavaksi",
+  "openDay_liveNowForInterest": "Vastaa kiinnostuksenkohdettasi",
+  "openDay_liveNowAcrossDay": "Avoin kaikille kävijöille",
+  "openDay_matchedToYourDegree": "Tutkintoosi sopivat",
+  "openDay_generalOpenToAll": "Yleiset · Avoin kaikille",
+  "openDay_allSessionsLabel": "Kaikki sessiot",
+  "openDay_yourDayTitle": "Sinun päiväsi",
+  "openDay_yourDayEmpty": "Tallenna pitämäsi sessiot ja kokoa oma Avointen ovien päivän suunnitelmasi.",
+  "openDay_yourDayCount": "{count, plural, =1{1 sessio tallennettu} other{{count} sessiota tallennettu}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Lisää päivääni",
+  "openDay_removeFromMyDay": "Poista päivästäni",
+  "openDay_savedToMyDay": "Lisätty päivääsi",
+  "openDay_removedFromMyDay": "Poistettu päivästäsi",
+  "openDay_clearMyDay": "Tyhjennä päiväni",
+  "openDay_clearMyDayConfirm": "Poistetaanko kaikki tallennetut tapahtumat ja pysähdykset päivästäsi? Tätä ei voi kumota.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Käyty {count}/{total} pysähdyksellä",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail}-reitti suoritettu",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Ei kirjautumista · Yksityinen laitteellasi",
+  "scanQrCta": "Skannaa",
+  "scanPermissionDenied": "Kameran käyttöoikeus evätty",
+  "scanPermissionDeniedDesc": "Ota kameran käyttöoikeus käyttöön asetuksista QR-koodien skannaamiseksi",
+  "scanOpenSettings": "Avaa asetukset",
+  "scanDecodeError": "QR-koodia ei voitu lukea",
+  "scanNotMqCode": "Tämä ei ole Campus Navigation Open Day -koodi",
+  "scanUnsupportedCode": "Tätä QR-koodia ei enää tueta",
+  "scanUnverifiedCode": "QR-koodia ei voitu vahvistaa",
+  "scanAgain": "Skannaa uudelleen",
+  "scanVisitSaveFailed": "Käyntiä ei voitu tallentaa. Yritä uudelleen.",
+  "scanNotOnTrail": "Ei osa reittiä",
+  "scanNotOnTrailDesc": "Tämä QR-koodi ei kuulu Open Day -reittiin",
+  "arNoBuildingSelected": "Valitse rakennus nähdäksesi sisätilat",
+  "arComingSoon": "Sisätilan esikatselu tulossa pian",
+  "arExploreEyebrow": "360°-kampuskierrokset",
+  "arExploreSubtitle": "Astu kampuksen tiloihin jo ennen saapumista.",
+  "arTourComingSoon": "Kierros tulossa pian",
+  "arSoonPill": "Pian",
+  "cardViewOnCampusMap": "Näytä kampuskartalla",
+  "cardViewArMap": "Näytä AR-kartta",
+  "cardAddToYourDayCta": "Lisää päivääsi",
+  "cardAddToYourDay": "Lisätty päivääsi",
+  "cardFullSchedule": "Koko aikataulu",
+  "cardArPreviewTitle": "AR-esikatselu",
+  "stopLiveNow": "Live nyt: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Seuraavaksi: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Onnittelut!",
+  "stampCelebrationCompleteTitle": "Passi valmis!",
+  "stampCelebrationSubtitle": "Keräsit leiman {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Open Day -passisi on alkanut",
+  "stampCelebrationKeepExploring": "Jatka tutkimista",
+  "stampCelebrationViewPassport": "Näytä passini",
+  "stampAlreadyCollected": "Jo kerätty — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Onnittelut. Keräsit leiman {location}. {count}/{total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Omat leimani",
+  "stampsPassportLockedHint": "Skannaa kerätäksesi",
+  "settingsMyStampsTile": "Omat leimani",
+  "settingsMyStampsSubtitle": "Näytä Open Day -passisi",
+  "arLoadError": "AR:ää ei voitu ladata: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Kuva {index}/{total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Ansaitsit merkin!",
+  "scanBadgeVisited": "Vierailtu"
 }

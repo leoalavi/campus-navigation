@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/reminder_request.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/reminder_request.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 /// Handles scheduling and unscheduling of local push notifications.
 ///

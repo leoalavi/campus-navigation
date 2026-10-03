@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/features/indoor/domain/models/indoor_manifest.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/features/indoor/domain/models/indoor_manifest.dart';
 
 /// Serves the Flutter `assets/` directory over localhost so the Pannellum
 /// viewer HTML can reference its sibling JS/CSS and the panorama images via

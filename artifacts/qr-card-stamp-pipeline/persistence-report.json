@@ -1,0 +1,15 @@
+{
+  "schema": "mqjourney.qr-persistence-report.v1",
+  "localSimulation": {
+    "status": "pass",
+    "offlineFirstVisit": "one local visit and one queued row",
+    "repeatOfflineVisit": "no second queued row or award",
+    "reconnect": "one remote row after repeated flush",
+    "remoteHydration": "repeat recognized without award"
+  },
+  "isolatedSupabase": {
+    "status": "pending",
+    "reason": "No explicitly isolated local or staging Supabase project was supplied; production was not touched."
+  },
+  "identityScope": "A genuinely new anonymous user ID starts a fresh passport by design."
+}

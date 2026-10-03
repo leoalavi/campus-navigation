@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/router/route_names.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
-import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_navigation/features/open_day/domain/services/open_day_time.dart';
-import 'package:mq_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
-import 'package:mq_navigation/features/open_day/presentation/widgets/event_actions_sheet.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
-import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:campus_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:campus_navigation/features/open_day/domain/services/open_day_time.dart';
+import 'package:campus_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
+import 'package:campus_navigation/features/open_day/presentation/actions/open_event_venue.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/shared/widgets/mq_tactile_button.dart';
 
 /// Dedicated Open Day screen. Lists events relevant to the user's
 /// selected bachelor, grouped by time. If no bachelor has been picked,
@@ -26,7 +27,8 @@ class OpenDayPage extends ConsumerWidget {
     final dark = context.isDarkMode;
     final dataAsync = ref.watch(openDayDataProvider);
     final selected = ref.watch(selectedBachelorProvider);
-    final events = ref.watch(relevantOpenDayEventsProvider);
+    final degreeSessions = ref.watch(degreeSessionsProvider);
+    final generalSessions = ref.watch(generalSessionsProvider);
 
     return Scaffold(
       backgroundColor: dark ? MqColors.charcoal800 : MqColors.alabaster,
@@ -69,8 +71,12 @@ class OpenDayPage extends ConsumerWidget {
             ),
           ),
         ),
-        data: (data) =>
-            _OpenDayBody(data: data, selected: selected, events: events),
+        data: (data) => _OpenDayBody(
+          data: data,
+          selected: selected,
+          degreeSessions: degreeSessions,
+          generalSessions: generalSessions,
+        ),
       ),
     );
   }
@@ -80,15 +86,21 @@ class _OpenDayBody extends StatelessWidget {
   const _OpenDayBody({
     required this.data,
     required this.selected,
-    required this.events,
+    required this.degreeSessions,
+    required this.generalSessions,
   });
 
   final OpenDayData data;
   final OpenDayBachelor? selected;
-  final List<OpenDayEvent> events;
+  final List<OpenDayEvent> degreeSessions;
+  final List<OpenDayEvent> generalSessions;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final hasSelection = selected != null;
+    final nothingToShow = degreeSessions.isEmpty && generalSessions.isEmpty;
+
     return ListView(
       padding: const EdgeInsetsDirectional.fromSTEB(
         MqSpacing.space5,
@@ -99,10 +111,36 @@ class _OpenDayBody extends StatelessWidget {
       children: [
         _StudyInterestHeader(selected: selected, openDayDate: data.openDayDate),
         const SizedBox(height: MqSpacing.space5),
-        if (events.isEmpty)
-          _EmptyEventsState(hasSelection: selected != null)
-        else
-          ..._groupedByHour(events),
+
+        if (nothingToShow) _EmptyEventsState(hasSelection: hasSelection),
+
+        // 1. Degree-first section — ONLY sessions for the exact selected
+        //    degree. Primary (red) header so it reads as the main content.
+        if (hasSelection && degreeSessions.isNotEmpty) ...[
+          _SessionSectionHeader(
+            label: l10n.openDay_matchedToYourDegree,
+            icon: Icons.school_rounded,
+            primary: true,
+          ),
+          const SizedBox(height: MqSpacing.space3),
+          ..._groupedByHour(degreeSessions),
+          // Strong visual break before the secondary group.
+          const SizedBox(height: MqSpacing.space6),
+        ],
+
+        // 2. General / open-to-all section — neutral header, clearly secondary
+        //    and separated, so it never masquerades as degree-specific.
+        if (generalSessions.isNotEmpty) ...[
+          _SessionSectionHeader(
+            label: hasSelection
+                ? l10n.openDay_generalOpenToAll
+                : l10n.openDay_allSessionsLabel,
+            icon: Icons.groups_rounded,
+            primary: true,
+          ),
+          const SizedBox(height: MqSpacing.space3),
+          ..._groupedByHour(generalSessions),
+        ],
       ],
     );
   }
@@ -151,14 +189,18 @@ class _StudyInterestHeader extends ConsumerWidget {
     return Container(
       padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
       decoration: BoxDecoration(
+        // Plain content-card surface — only the date label and the
+        // "Change" action below keep the red/pink accent; the card
+        // itself no longer carries a red tint or border.
         color: dark
-            ? MqColors.charcoal800.withAlpha(20)
-            : MqColors.red.withAlpha(14),
+            ? Color.alphaBlend(
+                Colors.white.withValues(alpha: 0.06),
+                MqColors.charcoal800,
+              )
+            : Colors.white,
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
-          color: dark
-              ? MqColors.charcoal800.withAlpha(70)
-              : MqColors.red.withAlpha(40),
+          color: dark ? Colors.white.withAlpha(20) : MqColors.sand200,
         ),
       ),
       child: Column(
@@ -217,6 +259,82 @@ class _StudyInterestHeader extends ConsumerWidget {
   }
 }
 
+/// Prominent, tinted section header band that separates the "Matched to your
+/// degree" feed from the "Open to all visitors" feed.
+///
+/// [primary] gives the band the Macquarie-red identity (the highlighted
+/// degree section); the non-primary variant uses a quiet neutral tint so it
+/// reads as clearly secondary. An icon chip on the leading edge reinforces
+/// the meaning of each group at a glance.
+class _SessionSectionHeader extends StatelessWidget {
+  const _SessionSectionHeader({
+    required this.label,
+    required this.icon,
+    this.primary = false,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool primary;
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = context.isDarkMode;
+
+    final background = primary
+        ? (dark ? MqColors.red.withAlpha(48) : MqColors.red.withAlpha(20))
+        : (dark
+              ? Colors.white.withValues(alpha: 0.06)
+              : MqColors.charcoal800.withValues(alpha: 0.05));
+    final borderColor = primary
+        ? MqColors.red.withValues(alpha: dark ? 0.55 : 0.30)
+        : (dark
+              ? Colors.white.withValues(alpha: 0.10)
+              : MqColors.charcoal800.withValues(alpha: 0.10));
+    final labelColor = primary
+        ? (dark ? Colors.white : MqColors.red)
+        : (dark
+              ? Colors.white.withValues(alpha: 0.82)
+              : MqColors.contentSecondary);
+    final iconBg = primary
+        ? MqColors.red
+        : (dark ? Colors.white.withValues(alpha: 0.18) : MqColors.charcoal600);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsetsDirectional.all(MqSpacing.space3),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+        border: Border.all(color: borderColor, width: primary ? 1.0 : 0.6),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
+            child: Icon(icon, size: 16, color: Colors.white),
+          ),
+          const SizedBox(width: MqSpacing.space3),
+          Expanded(
+            child: Text(
+              label.toUpperCase(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: context.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.8,
+                color: labelColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _TimeBlockHeader extends StatelessWidget {
   const _TimeBlockHeader({required this.label});
 
@@ -243,25 +361,39 @@ class _TimeBlockHeader extends StatelessWidget {
   }
 }
 
-class _EventTile extends StatelessWidget {
+class _EventTile extends ConsumerWidget {
   const _EventTile({required this.event});
 
   final OpenDayEvent event;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
     final timeRange = OpenDayTime.formatTimeRange(
       event.startTime,
       event.endTime,
     );
+    final isSaved =
+        ref
+            .watch(settingsControllerProvider)
+            .value
+            ?.isOpenDayEventSaved(event.id) ??
+        false;
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: dark ? MqColors.charcoal800 : Colors.white,
+        // Lift the tile slightly off the charcoal800 scaffold in dark mode —
+        // an identical fill left card boundaries defined only by a 5% border.
+        color: dark
+            ? Color.alphaBlend(
+                Colors.white.withValues(alpha: 0.06),
+                MqColors.charcoal800,
+              )
+            : Colors.white,
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
-          color: dark ? Colors.white.withAlpha(13) : MqColors.sand200,
+          color: dark ? Colors.white.withAlpha(20) : MqColors.sand200,
         ),
       ),
       child: Row(
@@ -301,16 +433,48 @@ class _EventTile extends StatelessWidget {
               ),
             ),
           ),
-          // Direction action: opens an action sheet rather than going
-          // straight to a single destination, since we want the user to
-          // consciously choose between in-app context and external nav.
+          // Save-to-"Your Day" toggle. Lightweight bookmark — the entire
+          // itinerary feature is just this set of saved IDs.
           Semantics(
             button: true,
-            label: AppLocalizations.of(
-              context,
-            )!.openDay_directionsTo(event.venueName),
+            label: isSaved
+                ? l10n.openDay_removeFromMyDay
+                : l10n.openDay_addToMyDay,
             child: MqTactileButton(
-              onTap: () => EventActionsSheet.show(context, event),
+              onTap: () async {
+                await ref
+                    .read(settingsControllerProvider.notifier)
+                    .toggleSavedOpenDayEvent(event.id);
+                if (context.mounted) {
+                  context.showSnackBar(
+                    isSaved
+                        ? l10n.openDay_removedFromMyDay
+                        : l10n.openDay_savedToMyDay,
+                  );
+                }
+              },
+              borderRadius: MqSpacing.radiusXl,
+              child: Padding(
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: MqSpacing.space2,
+                  vertical: MqSpacing.space3,
+                ),
+                child: Icon(
+                  isSaved
+                      ? Icons.bookmark_rounded
+                      : Icons.bookmark_border_rounded,
+                  size: 24,
+                  color: dark ? MqColors.brightRed : MqColors.red,
+                ),
+              ),
+            ),
+          ),
+          // Venue action: jumps straight to this venue on the Campus Map.
+          Semantics(
+            button: true,
+            label: l10n.openDay_directionsTo(event.venueName),
+            child: MqTactileButton(
+              onTap: () => openEventVenueOnMap(context, event),
               borderRadius: MqSpacing.radiusXl,
               child: Padding(
                 padding: const EdgeInsetsDirectional.symmetric(

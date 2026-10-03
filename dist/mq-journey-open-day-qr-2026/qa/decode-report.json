@@ -1,0 +1,99 @@
+{
+  "schema": "mqjourney.open-day.qr-decode-report.v1",
+  "expectedCount": 9,
+  "posterRenderDpi": 300,
+  "contactSheetCellMode": "independent-crop",
+  "results": [
+    {
+      "locationId": "hadenfeld-10",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "hadenfeld-10",
+      "signature": "valid",
+      "allowlist": "present"
+    },
+    {
+      "locationId": "wallys-29",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "wallys-29",
+      "signature": "valid",
+      "allowlist": "present"
+    },
+    {
+      "locationId": "wallys-27",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "wallys-27",
+      "signature": "valid",
+      "allowlist": "present"
+    },
+    {
+      "locationId": "wallys-23",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "wallys-23",
+      "signature": "valid",
+      "allowlist": "present"
+    },
+    {
+      "locationId": "wallys-21",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "wallys-21",
+      "signature": "valid",
+      "allowlist": "present"
+    },
+    {
+      "locationId": "wallys-17",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "wallys-17",
+      "signature": "valid",
+      "allowlist": "present"
+    },
+    {
+      "locationId": "ondaatje-14",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "ondaatje-14",
+      "signature": "valid",
+      "allowlist": "present"
+    },
+    {
+      "locationId": "wallys-1",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "wallys-1",
+      "signature": "valid",
+      "allowlist": "present"
+    },
+    {
+      "locationId": "wallys-25",
+      "svg": "accepted",
+      "png": "accepted",
+      "poster": "accepted",
+      "contactSheet": "accepted",
+      "decodedLocationId": "wallys-25",
+      "signature": "valid",
+      "allowlist": "present"
+    }
+  ],
+  "allPassed": true
+}

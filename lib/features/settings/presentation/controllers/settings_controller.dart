@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
-import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
+import 'package:campus_navigation/features/settings/data/repositories/settings_repository.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 final settingsControllerProvider =
     AsyncNotifierProvider<SettingsController, UserPreferences>(
@@ -47,7 +47,6 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     final result = await _save(
       currentPreferences.copyWith(notificationsEnabled: enabled),
     );
-    // Sync the master toggle to all notification preferences.
     try {
       final notifier = ref.read(notificationsControllerProvider.notifier);
       for (final type in NotificationType.values) {
@@ -71,6 +70,13 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
   Future<String?> updateDefaultTravelMode(TravelMode mode) async {
     final currentPreferences = state.value ?? const UserPreferences();
     return _save(currentPreferences.copyWith(defaultTravelMode: mode));
+  }
+
+  Future<String?> updateOfflineCampusMapsEnabled(bool enabled) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(
+      currentPreferences.copyWith(offlineCampusMapsEnabled: enabled),
+    );
   }
 
   Future<String?> updateLowDataMode(bool enabled) async {
@@ -108,13 +114,6 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     return _save(currentPreferences.copyWith(highContrastMap: enabled));
   }
 
-  Future<String?> updateOfflineCampusMapsEnabled(bool enabled) async {
-    final currentPreferences = state.value ?? const UserPreferences();
-    return _save(
-      currentPreferences.copyWith(offlineCampusMapsEnabled: enabled),
-    );
-  }
-
   Future<String?> updateCommutePreferences({
     String? commuteMode,
     String? favoriteDirection,
@@ -136,16 +135,20 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     );
   }
 
-  /// Toggle local Open Day reminders on or off. When disabled, any
-  /// previously scheduled Open Day reminders are cleared by the listener
-  /// in `OpenDayReminderScheduler` — this method itself only persists.
+  /// Switch the optional Open Day experience on or off. Turning it off hides
+  /// the Home cards and Scan tab and stops reminders (the scheduler listens
+  /// for this), but keeps the study interest, Your Day and stamps so
+  /// re-enabling restores them.
+  Future<String?> updateOpenDayEnabled(bool enabled) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(currentPreferences.copyWith(openDayEnabled: enabled));
+  }
+
   Future<String?> updateOpenDayRemindersEnabled(bool enabled) async {
     final currentPreferences = state.value ?? const UserPreferences();
     return _save(currentPreferences.copyWith(openDayRemindersEnabled: enabled));
   }
 
-  /// Update reminder lead time (minutes before each event). Clamped to
-  /// the same 5–60 minute window used at the persistence layer.
   Future<String?> updateOpenDayReminderMinutesBefore(int minutes) async {
     final clamped = minutes.clamp(5, 60);
     final currentPreferences = state.value ?? const UserPreferences();
@@ -154,16 +157,73 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     );
   }
 
-  /// Updates the user's Open Day study-interest preference.
-  ///
-  /// Pass `null` to clear the selection (re-triggers the Home onboarding
-  /// card). The selection is per-device and never leaves secure storage.
+  Future<String?> updateShowSuggestedStops(bool enabled) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(currentPreferences.copyWith(showSuggestedStops: enabled));
+  }
+
+  /// Adds or removes an event from the user's saved "Your Day" itinerary.
+  /// Toggle semantics keep the call site (a single bookmark button) trivial.
+  Future<String?> toggleSavedOpenDayEvent(String eventId) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    final current = currentPreferences.savedOpenDayEventIds;
+    final updated = current.contains(eventId)
+        ? (current.where((id) => id != eventId).toList(growable: false))
+        : ([...current, eventId]);
+    return _save(currentPreferences.copyWith(savedOpenDayEventIds: updated));
+  }
+
+  Future<String?> clearSavedOpenDayEvents() async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(
+      currentPreferences.copyWith(
+        savedOpenDayEventIds: const <String>[],
+        savedStopIds: const <String>[],
+      ),
+    );
+  }
+
+  /// Adds or removes a suggested stop from "Your Day".
+  Future<String?> toggleSavedStop(String stopId) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    final current = currentPreferences.savedStopIds;
+    final updated = current.contains(stopId)
+        ? (current.where((id) => id != stopId).toList(growable: false))
+        : ([...current, stopId]);
+    return _save(currentPreferences.copyWith(savedStopIds: updated));
+  }
+
+  /// Records a visit to a location (e.g. from a QR scan). Idempotent: a
+  /// repeat visit to the same building is a no-op, so the gamification layer
+  /// never awards duplicate XP. Returns `true` when this was a *new* visit
+  /// (so the caller can show a first-visit reward), `false` otherwise.
+  Future<bool> recordLocationVisit(String buildingCode) async {
+    final code = buildingCode.trim().toUpperCase();
+    if (code.isEmpty) return false;
+    final currentPreferences = state.value ?? const UserPreferences();
+    if (currentPreferences.visitedLocationCodes.contains(code)) {
+      return false;
+    }
+    await _save(
+      currentPreferences.copyWith(
+        visitedLocationCodes: [
+          ...currentPreferences.visitedLocationCodes,
+          code,
+        ],
+      ),
+    );
+    return true;
+  }
+
   Future<String?> updateSelectedBachelorId(String? bachelorId) async {
     final currentPreferences = state.value ?? const UserPreferences();
     return _save(
       currentPreferences.copyWith(
         selectedBachelorId: bachelorId,
         clearSelectedBachelor: bachelorId == null,
+        // Picking a study interest (e.g. on the onboarding Open Day slide)
+        // is an explicit opt-in to the Open Day experience.
+        openDayEnabled: bachelorId != null ? true : null,
       ),
     );
   }
@@ -173,13 +233,9 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     return _save(currentPreferences.copyWith(hasCompletedOnboarding: true));
   }
 
-  /// Wipes all local data and resets the controller to its initial state.
-  ///
-  /// This will reset theme, locale, and all other preferences to defaults.
   Future<String?> wipeAllLocalData() async {
     try {
       await ref.read(settingsRepositoryProvider).wipeAllLocalData();
-      // Reload the state to ensure everything is reset to defaults.
       state = AsyncData(await build());
       return null;
     } catch (error, stackTrace) {
@@ -191,7 +247,6 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
   Future<String?> _save(UserPreferences preferences) async {
     final previous = state.value;
     try {
-      // Optimistic update — show new value immediately, no loading spinner.
       state = AsyncData(preferences);
       final saved = await ref
           .read(settingsRepositoryProvider)
@@ -200,7 +255,6 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
       return null;
     } catch (error, stackTrace) {
       AppLogger.error('Failed to persist settings', error, stackTrace);
-      // Revert to previous state so the UI stays usable.
       if (previous != null) {
         state = AsyncData(previous);
       }

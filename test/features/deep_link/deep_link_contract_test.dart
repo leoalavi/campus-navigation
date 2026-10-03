@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/deep_link/deep_link_contract.dart';
+import 'package:campus_navigation/features/deep_link/deep_link_contract.dart';
 
 void main() {
   group('MqNavDeepLink.isOpenLink', () {

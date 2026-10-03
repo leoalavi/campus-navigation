@@ -4,7 +4,20 @@
       "id": "entrance",
       "image": "indoor/14SCO_entrance.jpg",
       "description": "Entrance",
-      "neighbours": []
+      "neighbours": [
+        {
+          "targetId": "mason-theatre-foyer",
+          "heading": 38,
+          "label": "Mason Theatre"
+        },
+        {
+          "targetId": "theatres-3-4",
+          "heading": 48,
+          "label": "Theatres 3 & 4"
+        }
+      ],
+      "previewHeading": 48,
+      "previewPitch": 0
     },
     {
       "id": "lobby",
@@ -34,13 +47,29 @@
       "id": "theatres-3-4",
       "image": "indoor/14SCO_theatres-3-4.jpg",
       "description": "Theatres 3 and 4",
-      "neighbours": []
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": -150,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -20,
+      "previewPitch": 0
     },
     {
       "id": "mason-theatre-foyer",
       "image": "indoor/14SCO_mason-theatre-foyer.jpg",
       "description": "Foyer outside Mason Theatre",
-      "neighbours": []
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 85,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -13,
+      "previewPitch": 0
     }
   ]
 }

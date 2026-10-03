@@ -1,10 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/features/settings/data/repositories/settings_repository.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 class MockSettingsRepository extends Mock implements SettingsRepository {}
 
@@ -13,7 +12,6 @@ void main() {
 
   setUp(() {
     repository = MockSettingsRepository();
-    // Default mock behavior
     when(
       () => repository.loadPreferences(),
     ).thenAnswer((_) async => const UserPreferences());
@@ -34,27 +32,6 @@ void main() {
   }
 
   group('SettingsController wiring tests', () {
-    test('updateDefaultRenderer updates state and repository', () async {
-      final container = createContainer();
-      final controller = container.read(settingsControllerProvider.notifier);
-
-      await controller.updateDefaultRenderer(MapRendererType.google);
-
-      final state = container.read(settingsControllerProvider).value;
-      expect(state?.defaultRenderer, MapRendererType.google);
-      verify(
-        () => repository.savePreferences(
-          any(
-            that: isA<UserPreferences>().having(
-              (p) => p.defaultRenderer,
-              'defaultRenderer',
-              MapRendererType.google,
-            ),
-          ),
-        ),
-      ).called(1);
-    });
-
     test('updateHapticsEnabled updates state and repository', () async {
       final container = createContainer();
       final controller = container.read(settingsControllerProvider.notifier);
@@ -174,7 +151,6 @@ void main() {
       expect(state?.quietHoursStart, '22:00');
       expect(state?.quietHoursEnd, '07:00');
 
-      // verify 3 separate calls for the 3 updates
       verify(() => repository.savePreferences(any())).called(3);
     });
 
@@ -182,14 +158,12 @@ void main() {
       final container = createContainer();
       final controller = container.read(settingsControllerProvider.notifier);
 
-      // Change a value first
       await controller.updateLowDataMode(true);
       expect(
         container.read(settingsControllerProvider).value?.lowDataMode,
         isTrue,
       );
 
-      // Setup repository to return defaults on next load
       when(
         () => repository.loadPreferences(),
       ).thenAnswer((_) async => const UserPreferences());
@@ -198,7 +172,99 @@ void main() {
 
       verify(() => repository.wipeAllLocalData()).called(1);
       final state = container.read(settingsControllerProvider).value;
-      expect(state?.lowDataMode, isFalse); // Reset to default
+      expect(state?.lowDataMode, isFalse);
+    });
+
+    test('updateShowSuggestedStops updates state', () async {
+      final container = createContainer();
+      final controller = container.read(settingsControllerProvider.notifier);
+
+      await controller.updateShowSuggestedStops(false);
+
+      expect(
+        container.read(settingsControllerProvider).value?.showSuggestedStops,
+        isFalse,
+      );
+    });
+
+    test('toggleSavedOpenDayEvent adds then removes an event', () async {
+      final container = createContainer();
+      final controller = container.read(settingsControllerProvider.notifier);
+
+      await controller.toggleSavedOpenDayEvent('evt-comp-1030');
+      expect(
+        container.read(settingsControllerProvider).value?.savedOpenDayEventIds,
+        ['evt-comp-1030'],
+      );
+
+      await controller.toggleSavedOpenDayEvent('evt-comp-1030');
+      expect(
+        container.read(settingsControllerProvider).value?.savedOpenDayEventIds,
+        isEmpty,
+      );
+    });
+
+    test('toggleSavedStop adds then removes a stop', () async {
+      final container = createContainer();
+      final controller = container.read(settingsControllerProvider.notifier);
+
+      await controller.toggleSavedStop('stop-computing');
+      expect(container.read(settingsControllerProvider).value?.savedStopIds, [
+        'stop-computing',
+      ]);
+
+      await controller.toggleSavedStop('stop-computing');
+      expect(
+        container.read(settingsControllerProvider).value?.savedStopIds,
+        isEmpty,
+      );
+    });
+
+    test('recordLocationVisit awards once and dedupes repeat scans', () async {
+      final container = createContainer();
+      final controller = container.read(settingsControllerProvider.notifier);
+
+      final first = await controller.recordLocationVisit('4rpd');
+      expect(first, isTrue, reason: 'first visit is new');
+      expect(
+        container.read(settingsControllerProvider).value?.visitedLocationCodes,
+        ['4RPD'],
+        reason: 'stored upper-cased',
+      );
+
+      final second = await controller.recordLocationVisit('4RPD');
+      expect(second, isFalse, reason: 'repeat scan is not new');
+      expect(
+        container
+            .read(settingsControllerProvider)
+            .value
+            ?.visitedLocationCodes
+            .length,
+        1,
+        reason: 'no duplicate visit recorded',
+      );
+    });
+
+    test('clearSavedOpenDayEvents empties the itinerary', () async {
+      final container = createContainer();
+      final controller = container.read(settingsControllerProvider.notifier);
+
+      await controller.toggleSavedOpenDayEvent('evt-a');
+      await controller.toggleSavedOpenDayEvent('evt-b');
+      expect(
+        container
+            .read(settingsControllerProvider)
+            .value
+            ?.savedOpenDayEventIds
+            .length,
+        2,
+      );
+
+      await controller.clearSavedOpenDayEvents();
+      expect(
+        container.read(settingsControllerProvider).value?.savedOpenDayEventIds,
+        isEmpty,
+      );
     });
   });
 }

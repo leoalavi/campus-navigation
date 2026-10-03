@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/features/indoor/data/repositories/indoor_repository.dart';
-import 'package:mq_navigation/features/indoor/domain/models/indoor_manifest.dart';
+import 'package:campus_navigation/features/indoor/data/repositories/indoor_repository.dart';
+import 'package:campus_navigation/features/indoor/domain/models/indoor_manifest.dart';
 
 final indoorRepositoryProvider = Provider<IndoorRepository>(
   (ref) => IndoorRepository(),

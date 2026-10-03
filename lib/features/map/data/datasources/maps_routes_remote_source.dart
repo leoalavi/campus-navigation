@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:mq_navigation/core/config/env_config.dart';
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/core/config/env_config.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Calls the `maps-routes` Supabase Edge Function to compute a route.

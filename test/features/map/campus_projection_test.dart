@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/map/data/mappers/campus_projection_impl.dart';
-import 'package:mq_navigation/features/map/domain/entities/campus_overlay_meta.dart';
-import 'package:mq_navigation/features/map/domain/entities/campus_point.dart';
+import 'package:campus_navigation/features/map/data/mappers/campus_projection_impl.dart';
+import 'package:campus_navigation/features/map/domain/entities/campus_overlay_meta.dart';
+import 'package:campus_navigation/features/map/domain/entities/campus_point.dart';
 
 void main() {
   const meta = CampusOverlayMeta(

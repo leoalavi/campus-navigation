@@ -5,10 +5,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:mq_navigation/core/config/env_config.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
+import 'package:campus_navigation/core/config/env_config.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/map/data/services/offline_maps_service.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/fcm_service.dart';
 
 /// Provider that performs asynchronous startup tasks in the background.
 ///

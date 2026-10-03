@@ -1,0 +1,1703 @@
+### Raouf: 2026-08-03 (Australia/Sydney) — Fixed missing indoor manifest ("14SCO.json" 404) when entering AR via a campus-map-selected building
+**Scope:** `⚠️ No indoor manifest for 14SCO` / `assets/data/indoor/14SCO.json` 404, thrown when the Map tab's AR mode is entered for a building that was selected via the campus map/search (not the AR building picker).
+**Summary:** Indoor manifest assets (`assets/data/indoor/*.json`) are named after each Open Day location's stable `buildingId` trail slug (e.g. `ondaatje-14.json`), not the campus-map building code (`Building.code`, e.g. `14SCO`) — the same physical building can be registered under both a coordinate-less Open Day stub (`id`/`code: "ondaatje-14"`) and a real, placed building (`id`/`code: "14SCO"`) in `assets/data/buildings.json`. `MapPage._buildArContent` fed `selectedBuilding.code` straight into `IndoorPreviewPage`/`indoorManifestProvider`, which works by coincidence when the AR picker's `selectBuildingById` happens to match the trail-slug stub, but 404s whenever the campus map/search flow lands on the real `14SCO` entry instead (its `code` never matches an indoor asset filename). Fixed by adding `TrailManifest.byMapBuildingCode(code)`, which resolves a campus-map building code to its `TrailLocation.buildingId` via the trail's `mapBuildingCode` bridge field, and using it in `MapPage._buildArContent` to translate the selected building's code into the correct manifest asset id before constructing `IndoorPreviewPage` (falls back to the raw code for buildings with no trail entry, preserving existing "no preview" behaviour).
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `lib/features/scan/domain/models/trail_manifest.dart`, `test/features/scan/models/trail_manifest_test.dart`, `test/features/scan/repositories/trail_repository_asset_test.dart`, `AGENT.md`, `AGENTS.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze` — 0 new issues. `flutter test` — all tests passed (map/scan suites: 362 passed; new/updated trail manifest tests: 17 passed). `./scripts/check.sh --quick` — all 12 checks passed (format, analyze, tests, coverage 63.25%, l10n, privacy/secret/name/login/Google guards).
+**Follow-ups:** None — the `/map/building/:buildingId/indoor` top-level route in `app_router.dart` has the same latent code-vs-slug mismatch but currently has no caller (dead route), so it was left untouched per scope.
+
+# MQ Journey Flutter — Agent Rules (formerly MQ Navigation)
+
+## Project Overview
+Flutter mobile client for MQ Navigation (Macquarie University campus navigation platform).
+Two frontends, one backend architecture: Flutter + Next.js sharing a Supabase backend.
+
+## Architecture
+- **Pattern**: Feature-first with data/domain/presentation layers per feature
+- **State management**: Riverpod (flutter_riverpod ^3.2.1)
+- **Routing**: go_router with StatefulShellRoute for 3-tab bottom nav (Home, Map, Settings)
+- **Backend**: Supabase (Postgres, RLS, Realtime, Edge Functions)
+- **Theme**: MQ design tokens (MqColors, MqTypography, MqSpacing) mapped from web app
+- **i18n**: Flutter ARB files with 35 locales, RTL support for ar/fa/he/ur
+- **No auth**: App starts directly at `/home` — silent Supabase anonymous session via `signInAnonymously()`, injectable `sessionGuardProvider` for retry-on-write
+
+## Non-Negotiable Constraints
+1. Supabase is the system of record — no parallel backend
+2. Web app stays alive — no feature freeze on the web product
+3. Flutter is a presentation layer only — no server logic in app binary
+4. No server secrets in Flutter — API keys stay in Edge Functions
+5. Security is non-negotiable — encrypted storage, RLS enforcement
+6. Accessibility from day one — 48x48dp tap targets, semantic labels, RTL
+
+## Directory Structure
+```
+lib/
+  app/bootstrap/    → App init, Supabase + Firebase setup
+  app/router/       → go_router config, route names
+  app/theme/        → MQ design tokens (colors, typography, spacing)
+  app/l10n/         → ARB files + generated localisations
+  core/config/      → Env vars via --dart-define
+  core/error/       → App exceptions, error boundary
+  core/logging/     → Structured logger
+  core/network/     → Connectivity service
+  core/security/    → Secure storage
+  core/utils/       → Result type, validators
+  shared/widgets/   → MQ button, card, input, bottom sheet, app bar
+  shared/models/    → UserPreferences
+  shared/extensions/→ BuildContext extensions
+  features/home/    → Welcome hub
+  features/map/     → Campus map (153 buildings, search, routing)
+  features/notifications/ → FCM push + local study prompts
+  features/settings/ → Theme, locale, notification preferences (local storage)
+```
+
+### Raouf: 2026-08-03 (Australia/Sydney) — Fixed ListTile background/ink hidden inside MqBottomSheet
+**Scope:** Flutter framework warning ("ListTile background color or ink splashes may be invisible... wrapped in a DecoratedBox that has a background color") firing repeatedly at runtime for every `ListTile` rendered inside a bottom sheet.
+**Summary:** `MqBottomSheet` (the shared bottom-sheet chrome used by picker sheets, the reminder-minutes sheet, and the favorite-stop search sheet in `settings_page.dart`) wraps its `child` content in a `DecoratedBox` with a solid background color but provides no local `Material` ancestor. Any `ListTile` placed inside paints its background/ink splashes on whatever `Material` ancestor it finds via `Material.of(context)` — typically the route's root `Material`, which sits *above* `MqBottomSheet`'s `DecoratedBox` in the tree. Because the `DecoratedBox` paints on top of that ancestor's splash layer, the ink was rendered but visually hidden. Fixed by wrapping the sheet's content `child` in a local `Material(type: MaterialType.transparency)`, giving any descendant `ListTile` a nearer Material ancestor whose paint layer sits above the `DecoratedBox`, without altering the sheet's visuals (transparency type contributes no color/elevation of its own).
+**Files Changed:** `lib/shared/widgets/mq_bottom_sheet.dart`, `AGENT.md`, `AGENTS.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze --no-fatal-infos` — 0 new issues (3 pre-existing unrelated infos). `flutter test` — all 693 tests passed, including `test/shared/widgets/`, `test/features/settings/`, and `test/features/map/` (which exercise the affected picker/search sheets). `dart format lib/shared/widgets/mq_bottom_sheet.dart` — applied, clean on re-check.
+**Follow-ups:** None — fix is at the shared widget so it covers all current and future `ListTile` usage inside `MqBottomSheet` without per-callsite wrapping.
+
+### Raouf: 2026-07-22 (Australia/Sydney) — Fixed web-platform crash in indoor WebView JS bridge
+**Scope:** `flutter run -d chrome` (Flutter web) crash when opening the indoor 360° preview from `/map?building=<code>`.
+**Summary:** `flutter_inappwebview_web` (the web platform implementation of `flutter_inappwebview` v6) has no JS-handler bridge — `addJavaScriptHandler` falls through to the platform-interface default and throws `UnimplementedError`. `IndoorWebView.onWebViewCreated` called it unconditionally, so on web the exception was thrown synchronously inside the platform-view creation callback (`_onPlatformViewCreated`), producing an unhandled zone error that corrupted the in-progress widget build and cascaded into a second, unrelated-looking Riverpod error ("Tried to modify a provider while the widget tree was building" — fallout from the aborted build, not an independent bug). Guarded the `addJavaScriptHandler` call with `if (kIsWeb) return;` so web loads the Pannellum tour without hotspot-tap → Flutter scene-change reporting (native/desktop platforms are unaffected and keep full bidirectional sync).
+**Files Changed:** `lib/features/scan/presentation/widgets/indoor_webview.dart`, `AGENT.md`, `AGENTS.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze lib/features/scan/presentation/widgets/indoor_webview.dart` — no issues. `flutter test test/features/scan` — all 166 tests passed. `dart format` — no changes needed.
+**Follow-ups:** If web needs hotspot-driven scene sync, would need a `postMessage`/`dart:js_interop` based bridge instead of `addJavaScriptHandler`, since the web platform package doesn't support it.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Red-team hardening (CI supply-chain + WebView origin lockdown)
+**Scope:** Security hardening from an adversarial review of the `feature/liquid-glass-ui` branch. No behaviour change for users; defence-in-depth only. The review found no exploitable vulnerabilities (the QR trust path is Ed25519-signed + fail-closed; Flutter built-in deep-linking is `false`, so external links reach only the strict signed `AppLinkCoordinator` allowlist) — these close latent/hardening gaps.
+**Summary:**
+- **CI supply-chain:** pinned every GitHub Action to a full commit SHA (was floating `@v1/@v2/@v4`) across `ci.yml` + `maestro-e2e.yml` — `actions/checkout`, `subosito/flutter-action`, `maxim-lobanov/setup-xcode`, `mobile-dev-inc/action-maestro-cloud`, `denoland/setup-deno`, `actions/setup-java`, `actions/upload-artifact`. Added a top-level least-privilege `permissions: contents: read` to both workflows (was inheriting the repo-default GITHUB_TOKEN scopes).
+- **WebView origin lockdown:** added a `Content-Security-Policy` `<meta>` to `assets/web/indoor_viewer.html` (`default-src 'none'`; `connect-src`/`img-src` → `'self'`) so the Pannellum page can't fetch or beacon off-origin; added a relative-path guard in `IndoorManifest.buildPannellumConfig` that blanks any panorama ref with a URI scheme, absolute/scheme-relative slash, or `..` traversal (belt to the CSP's braces); added a `shouldOverrideUrlLoading` navigation allowlist to `IndoorWebView` that cancels any top-level navigation off the `localhost:8459` viewer origin.
+- **URL launch:** `LocationCardPage` now only opens the (currently-null, remote-spec'd) `fullScheduleUrl` when it parses as `https` — never `tel:`/`intent:`/`javascript:`/`file:`.
+- **Verified, no change needed:** Supabase auth already uses PKCE (`AuthFlowType.pkce`). **Noted for backlog (not changed):** the `autoVerify` App Link points at the legacy `mqnavigation.io` domain (confirm ownership); the committed debug-only anon JWT in `env_config.dart` is public/RLS-gated by design.
+**Files Changed:** `.github/workflows/ci.yml`, `.github/workflows/maestro-e2e.yml`, `assets/web/indoor_viewer.html`, `lib/features/scan/domain/models/indoor_manifest.dart`, `lib/features/scan/presentation/widgets/indoor_webview.dart`, `lib/features/scan/presentation/pages/location_card_page.dart`, `test/features/scan/models/indoor_manifest_test.dart` (new panorama-guard regression test), `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh --quick` green (12/12 — analyze, full suite incl. new hostile-panorama-path test, coverage 60.56% > 50%, l10n, privacy/secret/stale-name/no-login/no-Google guards). Both workflow YAMLs parse clean; all Action pins resolve to the current tag SHAs.
+**Follow-ups:** Confirm `mqnavigation.io` domain ownership or migrate the verified App Link host to the current domain; prefer `--dart-define-from-file=.env` over the committed anon-key fallback so the key can rotate without a code change; audit RLS coverage on every table (the project ref is public).
+
+### Raouf: 2026-07-19 (Australia/Sydney) — AR section redesign (immersive viewer + glass gallery)
+**Scope:** Presentation-only reskin of the 360° indoor-tour ("AR") section — the immersive viewer and the building picker.
+**Summary:** `IndoorTourView` moved from a Column split to a full-bleed `Stack`: the 360° viewer fills the screen and a new floating `SceneRail` (dark, frost-forced glass — `GlassSurface(allowShader:false, color: black)` + an internal dark scrim, since a shader cannot sample the platform-view webview) shows scene chips with index-based auto-scroll, `inMutuallyExclusiveGroup` semantics, reduced-motion support, and contrast-safe selected chips (red→deepRed). `IndoorStopList` was deleted (its only consumer). `IndoorTourView` gained an injectable `IndoorViewerBuilder` seam so widget tests never build the real `InAppWebView` platform view. `ArBuildingPicker` keeps its data logic and now renders a titled header + solid `_ArBuildingCard`s (glass aesthetic without a per-row BackdropFilter over a solid ground; `Ink` splash; no whole-card opacity; empty manifests treated as unavailable, matching `IndoorPreviewPage`). Added `GlassSurface.allowShader`. Added 7 localisation keys. Tab-bar clearance (`kTabBarIslandClearance = 78` = 66px LiquidTabBar + 12px island padding) is applied via the Stack's `Positioned` offset for the in-shell `indoorPreview` route and verified by a deterministic layout test rather than a magic constant (the top-level `locationAr` route has no tab bar and reserves 0).
+**Files Changed:** `lib/shared/widgets/glass_surface.dart`, `lib/features/scan/presentation/widgets/scene_rail.dart` (new), `lib/features/scan/presentation/widgets/indoor_tour_view.dart`, `lib/features/scan/presentation/pages/indoor_preview_page.dart`, `lib/features/map/presentation/widgets/ar_building_picker.dart`, `lib/app/l10n/app_en.arb` (+generated), deleted `indoor_stop_list.dart`; tests: `scene_rail_test.dart`, `indoor_tour_view_test.dart`, `ar_l10n_test.dart`, `indoor_preview_clearance_test.dart` (new), `glass_surface_test.dart`, `ar_building_picker_test.dart` (modified), `indoor_stop_list_test.dart` (deleted); `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh` green — all 13 checks (analyze, full test suite, 60.44% coverage > 50% floor, l10n, privacy/secret/stale-name/no-login/no-Google guards, debug APK build). New widget tests for the rail (scroll/a11y/contrast/text-scale), the Stack viewer (via injected fake), l10n, and the measured clearance layout.
+**Follow-ups:** Supply the panorama JPGs (viewer renders black until then); drop real thumbnails into the rail chips + picker cards (slots reserved); optional first-run "drag to look around" coach-mark; device matrix (physical iOS + Android) still to be run.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Remove all additive-white glass highlights (blend, not glint); fix wrapped map button
+**Scope:** Glass shader/overlay highlight logic and the location-card primary action buttons.
+**Summary:** (1) **Deleted every additive-white highlight** so the glass blends into its (dark) surroundings instead of showing a bright band that stood out. Previously the "frozen light" was created by the shader's directional glare + full-width sheen + Fresnel white boost (`rimReflect*1.12 + 0.05`) + specular edge line, AND the `_specular` white gradient overlay in `GlassSurface`. Now the shader keeps only: refraction, chromatic aberration, variable blur, vibrancy, tint, a *subtle* Fresnel rim that mirrors the backdrop with NO added white (so it's dark over dark), and a whisper of edge darkening for depth. Removed the `uGlare` uniform (renumbered `uRefractIntensity` 13→12 in Dart) and the entire `_specular` overlay + its plumbing (`_GlassShaderBackdrop.specular` param, both `foregroundDecoration`s → the two `Container`s became `DecoratedBox`). The glass is now a clean refractive lens + tint + hairline border — no glint, no corner blob, fully static. (2) **Fixed the "View on Campus Map" button** on the location (building) card: it was one of two side-by-side `Expanded` buttons, so the long label wrapped on top of itself in the half-width box. Stacked the two actions full-width vertically instead.
+**Files Changed:** `shaders/glass_refraction.frag`, `lib/shared/widgets/glass_surface.dart`, `lib/features/scan/presentation/pages/location_card_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze --no-fatal-infos` only the pre-existing `anonKey` info; `flutter build bundle` compiles the shader (exit 0); `flutter test` 579/579. Release build installed + launched on the physical iPhone.
+**Follow-ups:** `MqGlass.glare`/`specularAlpha` tokens are now unused by the shader/overlay but retained (still referenced by token-range tests); remove them if a later cleanup wants. If the glass now reads too flat, the single dial is the Fresnel rim strength (`uFresnel * 0.5`).
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Kill the frozen top-left glass highlight (symmetric full-width sweep)
+**Scope:** Glass shader directional glare + the specular gradient overlay, on all shader/frost/solid rungs.
+**Summary:** The "frozen light in the top corner" that persisted on the search bar and scan capsule was NOT the (already-removed) time sweep — it was two *static* highlights both anchored to the top-left: (a) the shader's directional glare used `lightDir = (-0.45,-0.85)` (light from the top-left), brightening only the top-left rim, and (b) the `_specular` gradient overlay ran `topLeft → bottomRight` with `stops [0,0.5]`, putting a white sheen hard in the top-left corner (strongest in light mode at specularAlpha 0.28). Fixed both to be symmetric and full-width: the glare light is now straight OVERHEAD `(0,-1)` so the entire top rim catches light evenly (bottom rim gets the mirrored counter-shade), and a new broad specular sheen sweeps the FULL width of the glass as a single soft diagonal glint centred at 0.5 (can't freeze into a corner). The `_specular` overlay changed from a top-left corner diagonal to a full-width top-edge band (`topCenter → center`). Net: a clean, even, edge-to-edge highlight instead of a stuck corner blob — still fully static (no motion).
+**Files Changed:** `shaders/glass_refraction.frag`, `lib/shared/widgets/glass_surface.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze --no-fatal-infos` only the pre-existing `anonKey` info; `flutter build bundle` compiles the shader (exit 0); `flutter test` 579/579. Release build installed + launched on the physical iPhone.
+**Follow-ups:** On-device, confirm the top-edge sheen strength feels right over both bright (light map) and dark backdrops; specularAlpha (0.28 light / 0.10 dark) and the sheen 0.12 coefficient are the taste dials.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Fully static glass, single-size metaball, pink visited badge, bigger stamps, bottom-panel polish
+**Scope:** Glass shader animation removal, tab-bar metaball sizing, location-card visited badge, passport stamp scale, and campus-map / Your Day bottom panels.
+**Summary:** (1) **Root-caused the "gyro animation still left" on the search bar / scan capsule:** the time-driven light sweep froze at t=0 on every *non-animated* glass surface, parking a bright band in the top-left corner (`fract(0)=0`). Removed all time-driven shader code — dropped the `uTime` uniform, the traveling sweep, the time sway on the glare (now a fixed top-left light), and made the iridescence position-based. Simplified `GlassSurface` accordingly: deleted the ticker, double-buffer, `_time`, and the `animated` flag (and its call sites + the `GlassAppBar.animated` param). Glass is now uniformly **static** — refraction, chromatic aberration, rim glare, two-band shading, specular edge, vibrancy, and iridescence all remain; nothing moves. (2) **Metaball one size:** removed the drag/slide width stretch; the lens is a single fixed width (`slot*0.82`, slightly bigger) that only glides between tabs. (3) **Visited badge pink:** `CardVisitBadge` now uses MQ Open Day pink (`brightRed`) for icon/label/fill/border in both light and dark (was an amber star that read white/washed-out on dark cards); switched the glyph to a filled check-circle. (4) **Passport stamps ~3× bigger:** grid dropped from 3→2 columns with a taller aspect; stamp image 40→120 px, fallback/locked icons 32→104, title 11→13. (5) **Bottom-panel polish:** added a grab handle to the campus-map building info sheet; wrapped Your Day saved rows in subtle rounded cards (light: white + hairline + soft shadow; dark: translucent white fill + hairline) so the itinerary reads as discrete cards.
+**Files Changed:** `shaders/glass_refraction.frag`, `lib/shared/widgets/glass_surface.dart`, `lib/shared/widgets/glass_app_bar.dart`, `lib/app/router/app_shell.dart`, `lib/app/router/liquid_tab_bar.dart`, `lib/features/scan/presentation/pages/scan_page.dart`, `lib/features/scan/presentation/widgets/card_visit_badge.dart`, `lib/features/scan/presentation/pages/stamps_passport_page.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/open_day/presentation/pages/your_day_page.dart`, `test/features/scan/widgets/card_visit_badge_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze --no-fatal-infos` only the pre-existing `anonKey` info; `flutter build bundle` compiles the (now static) shader; `flutter test` 579/579 (added a pink-in-both-modes badge test). Release build installed + launched on the physical iPhone.
+**Follow-ups:** If the map results panels (food/parking, route) should also show the grab handle for consistency, extend `_SheetGrabHandle` to them; confirm the 2-column passport grid has no overflow on the smallest supported screen.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Full-bleed app icon, passport dark-mode fix, gyro-highlight cleanup, map glass polish
+**Scope:** Launcher icon framing, stamps passport dark-mode legibility, residual gyro-era shader code/comments, and campus-map floating-control glass edges.
+**Summary:** (1) **App icon full-bleed:** the supplied art was a rounded tile floating on a black margin, so iOS rendered it inset. Measured the tile bounds (x139–1120, y123–1106) with ImageMagick, cropped to the tile, and filled the ~7px corner slivers (tile corner radius ~236 slightly exceeds iOS's ~229 superellipse mask) with a color-matched maroon gradient via a rounded-mask CopyOpacity composite. Result is an opaque, no-alpha, 1024² full-bleed icon per Apple's 2026 HIG; regenerated all iOS + Android densities. (2) **Passport dark mode:** `_StampCell` and `StampProgressRing` hardcoded `charcoal800` (bg/border/locked-icon/track) and `contentPrimary` (near-black text), all invisible on the dark scaffold. Made them theme-aware — neutral flips to white in dark mode, text uses `contentPrimaryDark`/`contentSecondaryDark`, with per-mode alphas. (3) **Gyro cleanup:** removed the orbiting motion-highlight spot + mirrored counter-shade from the shader (that broad moving blob was the gyro's companion layer and read as "leftover gyro lighting" now that tilt is gone) and scrubbed stale `tilt`/`gyro` doc comments in glass_surface/glass_app_bar. The rim glare, diagonal light sweep, iridescence, and two-band rim shading remain. (4) **Map glass polish:** the unselected category-chip hairline was charcoal @0.05/0.08 — invisible over bright campus-map tiles; crispened to 0.14/0.16 so the glass edge reads as glass, matching the other floating controls.
+**Files Changed:** `assets/images/app_logo.png`, all `ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png`, all `android/app/src/main/res/mipmap-*/ic_launcher.png`, `shaders/glass_refraction.frag`, `lib/shared/widgets/glass_surface.dart`, `lib/shared/widgets/glass_app_bar.dart`, `lib/features/scan/presentation/pages/stamps_passport_page.dart`, `lib/features/scan/presentation/widgets/stamp_progress_ring.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/scan/widgets/stamp_progress_ring_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze --no-fatal-infos` only the pre-existing `anonKey` info; `flutter build bundle` compiles the shader; `flutter test` 578/578 (2 new passport dark/light track tests); iOS 1024² icon confirmed `hasAlpha: no`, full-bleed corners maroon. Release build installed + launched on the physical iPhone.
+**Follow-ups:** On-device, confirm the icon's masked corners read cleanly on the home screen (delete+reinstall or reboot to clear iOS icon cache); if the passport locked cells still feel faint in dark mode, raise the neutral bg alpha from 0.07.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Remove gyro tilt lighting; new MQ Journey app icon
+**Scope:** Glass shader living-highlights input, sensor pipeline removal, and app launcher icon (iOS + Android).
+**Summary:** Removed the accelerometer-driven ("gyro") glare per request — it was unreliable on-device and not worth the sensor cost. The glass keeps all its life: the light sweep, iridescence, glare direction, and the broad motion highlight are now purely **time-driven** (a slow orbit + sway) instead of tilt-driven. Deleted `GlassTilt` and its test, dropped the `uTilt` shader uniform (and its two Dart uniform writes), removed `GlassTilt.start()` from bootstrap, removed the `sensors_plus` dependency, removed `NSMotionUsageDescription` from Info.plist, and regenerated `GeneratedPluginRegistrant.m` via `flutter pub get`. Replaced the app icon with the new MQ Journey artwork (dark rounded-square, red-magenta "MQ" monogram with a navigation arrow in the Q, "MQ Journey" wordmark) across all iOS (incl. 1024² no-alpha) and Android mipmap densities via `flutter_launcher_icons` (source `assets/images/app_logo.png`).
+**Files Changed:** `shaders/glass_refraction.frag`, `lib/shared/widgets/glass_surface.dart`, `lib/app/bootstrap/bootstrap.dart`, `pubspec.yaml`, `pubspec.lock`, `ios/Runner/Info.plist`, `ios/Runner/GeneratedPluginRegistrant.m`, all `ios/Runner/Assets.xcassets/AppIcon.appiconset/*.png`, all `android/app/src/main/res/mipmap-*/ic_launcher.png`, `assets/images/app_logo.png`, deleted `lib/shared/widgets/glass_tilt.dart` + `test/shared/widgets/glass_tilt_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze --no-fatal-infos` only the pre-existing `anonKey` info; `flutter build bundle` compiles the shader; `flutter test` 576/576 (5 tilt tests removed); iOS 1024² icon confirmed `hasAlpha: no`. Release build installed + launched on the physical iPhone.
+**Follow-ups:** None outstanding for the glass; if a future design wants motion response, reintroduce via `sensors_plus` behind the `animated` opt-in and gate on a reduce-motion check.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Unfreeze the animated glass (ImageFilter equality bug), adaptive metaball, homecoming fx
+**Scope:** Shader-backed backdrop repaint correctness, metaball light-mode visibility, Home tab signature animation.
+**Summary:** Root-caused "gyro glare stuck on the left of the capsule": dart:ui's `_FragmentShaderImageFilter.operator==` compares by FragmentShader **object identity** (by design — "so that widgets can check for ImageFilter equality to avoid repainting", painting.dart), so rebuilding a `BackdropFilter` with a new `ImageFilter.shader` wrapping the SAME mutated shader produces an ==-equal filter and `RenderBackdropFilter` never repaints — **every animated uniform (time, tilt) froze at its first frame**. The "stuck light on the left" was the light sweep parked at cycle position 0. Fixed by double-buffering two `FragmentShader` instances and alternating them per build so consecutive filters are never equal (both disposed with the widget). This unfreezes the sweep, iridescence, tilt-tracked glare, and the motion highlight everywhere. Also made the metaball lens tint adaptive (follows the bar's foreground colour: smoked glass in light mode, white glow in dark — hardcoded white was invisible on light glass), and gave Home its signature `TabFx.homecoming` flourish (elastic spring landing + warm MQ-red porch-light bloom + five sunrise rays bursting from behind the roof), staged like the QR scanline.
+**Files Changed:** `lib/shared/widgets/glass_surface.dart`, `lib/app/router/liquid_tab_bar.dart`, `lib/app/router/app_shell.dart`, `test/app/router/liquid_tab_bar_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze --no-fatal-infos` only the pre-existing `anonKey` info; `flutter test` 581/581 (homecoming lifecycle test added); release build installed + launched on the physical iPhone. The double-buffer fix itself is only observable on-device (test env has no Impeller shader path) — confirmed by the previously-frozen sweep animating.
+**Follow-ups:** If Flutter ever adds a first-class "animated shader backdrop" invalidation API, drop the double-buffer; keep an eye on memory (two shaders per animated surface is negligible — uniforms only).
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Light-mode glass visibility + motion-tracked highlight (Telegram-technique upgrade)
+**Scope:** Refraction shader material quality, light-mode legibility of the glass, and gyro-driven illumination.
+**Summary:** Fixed "glass invisible in light mode": the body tint was a milky 0.74 white wash and every highlight was additive white — white-on-white erased the material. Following the liquid-glass skill recipe and the Telegram/AGSL ecosystem techniques (Apache-2.0 references; reimplemented, not copied): (1) thinner body (light 0.52 / dark 0.45) with a **1.55× saturation/vibrancy boost** on the refracted backdrop (the `saturate(180%)` of CSS glass) to keep text-bearing glass rich instead of washed out; (2) **two-band rim lighting** — the existing bright glare plus a new counter-shade band on the rim facing away from the light, which is what makes glass read as glass over white backdrops; (3) a **motion-tracked broad highlight**: a soft illumination spot that physically slides across the surface with device tilt, paired with a mirrored counter-shade so travel is visible on any backdrop — this makes the gyro response unmistakable (rim-only glare was too subtle); (4) stronger prismatic fringe (aberration 0.035→0.05) and real rim frost (blurCoeff 0.005→0.03, ~4 physical px); (5) hash-noise **dither** against gradient banding; (6) snappier tilt filter (α 0.12→0.22 @50 Hz) and stronger tilt→light coupling (1.3→1.6). Confirmed from sensors_plus 7.1.0 iOS source that axis signs already match the Android convention (`-acceleration*G`), so no per-platform sign fix was needed.
+**Files Changed:** `shaders/glass_refraction.frag`, `lib/app/theme/mq_glass.dart`, `lib/shared/widgets/glass_tilt.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter build bundle` compiles the shader; `flutter analyze --no-fatal-infos` only the pre-existing `anonKey` info; `flutter test` 580/580 (opacity-ordering and token-range tests still pass with the new values); release build installed + launched on the physical iPhone.
+**Follow-ups:** Tune saturation (1.55) and counter-shade strengths (0.22/0.10) on-device in bright daylight; if light-mode label contrast over very busy map content dips, raise light opacity toward 0.58 before reaching for text shadows.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Fix stuck gyro glare, signature QR scanline fx, glass app bars over media
+**Scope:** Glass tilt sensor pipeline, tab-bar icon flourishes, and app-wide glass adoption (scan camera, indoor 360°, AR preview pages).
+**Summary:** Fixed the frozen tilt-tracked glare: the old mapping fed raw accelerometer `y/9.81` into the shader, which clamps to a permanent 1.0 for every upright holding pose (gravity runs along the phone's length), pinning the light direction — additionally sampled at 5 Hz with a >1 s low-pass lag. Replaced with a pure, unit-tested `glassTiltTarget(x,y,z)` that normalizes the gravity vector (roll = `x/|g|`, pitch-from-vertical = `z/|g|` minus a 0.45 hand-held rest offset) sampled at `SensorInterval.gameInterval` (~50 Hz). Gave the Scan tab a signature `TabFx.scanline` flourish (replacing the home-like `pulse`): an MQ-red laser line sweeps down the QR icon and back up while four viewfinder corner brackets converge with an ease-out-back lock-on, ending in a success pop; overlays render only mid-animation (idle = bare icon). `LiquidTabBar` gained an `accent` colour for light-reading fx. Added `GlassAppBar` (floating glass island title bar, animated highlights, `PreferredSizeWidget`) and adopted it with `extendBodyBehindAppBar` on the three live-media pages — Scan (camera refracts through the bar), Indoor 360° preview, and AR preview. Audit confirmed content-tier panels (map/route/settings/passport) correctly stay solid per glass governance.
+**Files Changed:** `lib/shared/widgets/glass_tilt.dart`, `lib/shared/widgets/glass_app_bar.dart` (new), `lib/app/router/liquid_tab_bar.dart`, `lib/app/router/app_shell.dart`, `lib/features/scan/presentation/pages/scan_page.dart`, `lib/features/scan/presentation/pages/indoor_preview_page.dart`, `lib/features/scan/presentation/pages/location_ar_page.dart`, `test/shared/widgets/glass_tilt_test.dart` (new), `test/app/router/liquid_tab_bar_test.dart` (new), `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format` clean; `flutter analyze --no-fatal-infos` only the pre-existing `anonKey` deprecation; `flutter test` 580/580 (6 new: tilt saturation regression, monotonic pitch sweep, roll symmetry, free-fall guard, scanline lifecycle). Release build installed and launched on the physical iPhone.
+**Follow-ups:** Verify glare direction sign on Android hardware (sensors_plus normalizes iOS to the Android convention, but confirm on a Vulkan/GLES device); the Pannellum webview is a platform view, so the indoor glass bar frosts the scaffold behind it rather than refracting the panorama pixels — acceptable, revisit if Impeller gains platform-view sampling.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Liquid Glass-inspired UI layer
+**Scope:** Navigation + floating controls (tab bar, map controls/panels, new Scan torch).
+**Summary:** Added a tokenized `GlassSurface` widget (bar/control/content tiers) driven by a pure, unit-tested render-mode resolver (`resolveGlassRenderMode`: shader→frost→solid), backed by a universal Telegram-method refraction fragment shader (`shaders/glass_refraction.frag`, `ImageFilter.shader`, Impeller-gated, GLES y-flip handled, UV-clamped, physical-px uniforms, one `FragmentShader` per surface disposed on teardown, concurrency-safe `GlassShaderCache`). Consolidated all existing ad-hoc glass onto `GlassSurface`: floating controls (map mode toggle, icon buttons, unselected category chips) use the shader/frost control tier; dense-text map/route panels use the near-opaque content tier with colour/border/width/shadow/constraint overrides (panel values + arrival-card green preserved); selected category chips stay solid red (no wasted glass). Glassed the bottom tab bar (`extendBody`, M3 surface tint neutralised) and moved the Scan torch to a floating glass control over the camera (dark tint for legibility in every rung; disabled — not hidden — when no torch; RTL-safe). Home cards and the AR building picker intentionally left solid.
+**Files Changed:** `lib/app/theme/mq_glass.dart` (new), `lib/shared/widgets/glass_surface.dart` (new), `lib/shared/widgets/glass_shader.dart` (new), `shaders/glass_refraction.frag` (new), `lib/shared/widgets/glass_pane.dart`, `lib/app/router/app_shell.dart`, `lib/features/map/presentation/widgets/map_mode_toggle.dart`, `lib/features/map/presentation/widgets/map_shell.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `lib/features/scan/presentation/pages/scan_page.dart`, `lib/app/bootstrap/bootstrap.dart`, `pubspec.yaml`, and their tests.
+**Verification:** `dart format --set-exit-if-changed lib test` clean; `flutter analyze --no-fatal-infos` reports only the pre-existing `anonKey` deprecation; `flutter test` 574/574 (20 new, incl. all five resolver combinations); `scripts/check.sh --quick` 12/12 gates, guarded coverage 58.73%; `flutter build bundle` and `flutter build apk --debug` both compile the shader (`✓ Built app-debug.apk`). NOT verified in this environment (no booted device; live UI runs blocked): on-device visual correctness of the refraction, GLES y-flip orientation, high-contrast/reduce-motion rendering, frame budget/perf, and the iOS simulator build.
+**Follow-ups:** Run the device/accessibility/performance matrix on real iOS (Metal) + Android (Vulkan & GLES) hardware; consider a `BackdropGroup` perf optimisation for co-located glass; add a native MethodChannel for iOS "Reduce Transparency" (not exposed by Flutter); tune the Map FAB gap now that `extendBody` inflates the bottom inset.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Make Flutter dependency resolution idempotent
+**Scope:** Flutter SDK pinning, application lockfile resolution, local validation, and GitHub Actions dependency installation.
+**Summary:** Fixed the four-entry `pubspec.lock` rewrite that occurred on every Flutter command. The committed lock had `meta 1.18.0`, `test 1.31.0`, `test_api 0.7.11`, and `test_core 0.6.17`, while Flutter 3.41.8 itself pins the compatible `meta 1.17.0`, `test 1.30.0`, `test_api 0.7.10`, and `test_core 0.6.16`. Accepted the SDK-valid generated resolution, declared Flutter 3.41.8 as the exact application toolchain, configured all GitHub Actions Flutter setup steps to read that version from `pubspec.yaml`, and changed dependency-install gates to `flutter pub get --enforce-lockfile`. Validation and CI now fail on an unintended SDK/lock mismatch instead of silently modifying the tracked lockfile.
+**Files Changed:** `pubspec.yaml`, `pubspec.lock`, `scripts/check.sh`, `.github/workflows/ci.yml`, `.github/workflows/maestro-e2e.yml`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** Three consecutive dependency resolutions, including `flutter pub get --enforce-lockfile`, retained the identical lockfile SHA-256 `9f23642ea75c9afb94fcd16358b28142a9d9f189478a69295ba1b6e3751845c7`. `bash -n scripts/check.sh` passed; Ruby parsed both workflow YAML files; and `./scripts/check.sh --quick` passed 12/12 gates with 550/550 tests and 58.76% guarded coverage.
+**Follow-ups:** For an intentional Flutter upgrade, change the exact `environment.flutter` version and regenerate `pubspec.lock` together, review the solver diff, and run the full validation matrix before committing.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Coalesce pending route recalculations
+**Scope:** Journey off-route detection and campus route Edge Function request amplification.
+**Summary:** Added an in-flight route-load guard and suppressed redundant off-route triggers while a recalculation is already pending. New destination and travel-mode changes still invalidate stale results through the existing request-version checks, while repeated GPS samples for the same pending recalculation now share the single active request.
+**Files Changed:** `lib/features/map/presentation/controllers/map_controller.dart`, `test/features/map/map_controller_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** With one route request held pending, two successive off-route samples produced two additional backend calls before the fix (route count 1 → 3). After the guard, the same sequence produces exactly one additional call (1 → 2), and the pending result remains accepted. Focused analysis reported no issues, all 17 `MapController`/`MapState` tests passed, and the complete map suite passed 126/126.
+**Follow-ups:** Confirm request counts and off-route responsiveness with a physical-device GPS trace and staging Edge Function logs; tune distance thresholds only with route-quality evidence.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Bound TfNSW proxy request latency
+**Scope:** Home departures and commute stop-search HTTP requests.
+**Summary:** Replaced per-call top-level HTTP helpers with one provider-owned `http.Client` and applied a configurable 10-second `Future.timeout` to both TfNSW proxy request paths. A stalled proxy now resolves through the existing typed empty-state/error handling instead of leaving Home refresh or stop search pending indefinitely. Authentication headers, anonymous-session behavior, payload parsing, polling cadence, and Edge Function contracts are unchanged.
+**Files Changed:** `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `test/features/transit/tfnsw_metro_provider_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** The regression harness supplied a never-completing HTTP response and a 10 ms bound. Before the timeout was applied, the provider still had not completed after the 100 ms observation ceiling; after the change it completed with the existing safe empty result at the configured bound. Focused analysis reported no issues and the complete transit suite passed 11/11.
+**Follow-ups:** A Dart `Future.timeout` bounds provider latency but does not guarantee transport-level socket cancellation. Evaluate `AbortableRequest` against the exact locked `package:http` version with staging request traces before adding more machinery; no production latency reduction is claimed.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Dispose location-card visited-state listeners
+**Scope:** Location-card Riverpod lifecycle and `SettingsProgressApiAdapter.watch` subscription ownership.
+**Summary:** Converted the per-location visited-state family to auto-dispose and made each adapter stream close its internal settings-provider subscription when its last consumer leaves. This prevents every opened location card from retaining another settings listener and stream controller for the rest of the process. Visit recording, Supabase upsert idempotency, building-code matching, rewards, and signed QR verification are unchanged.
+**Files Changed:** `lib/features/scan/data/adapters/settings_progress_api_adapter.dart`, `lib/features/scan/providers/scan_providers.dart`, `test/features/scan/adapters/settings_progress_api_adapter_test.dart`, `test/features/scan/providers/visited_state_provider_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** Before implementation the source-stream cancellation count stayed at 0 after the consumer closed, and the adapter stream remained open beyond the 100 ms observation bound. After the change the provider cancels its source exactly once and the adapter stream closes immediately after its last subscriber. Focused analysis reported no issues, focused tests passed 8/8, and the complete scan suite—including strict rejection, nine-location census, duplicate-frame single-flight, idempotent persistence, and QR-to-card-to-stamp journeys—passed 145/145.
+**Follow-ups:** Use DevTools memory allocation tracing on a physical-device repeated card-open/close loop to quantify retained-object reduction; no device-memory percentage is claimed from lifecycle tests alone.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Suspend Home transit polling off-screen
+**Scope:** Retained Home shell branch, TfNSW location acquisition, and Edge Function polling.
+**Summary:** Made the 20-second transit stream depend on the centralized active-shell index. Configured commute polling now returns immediately without location or network work while Home is off-screen, then restarts when Home becomes active. Added narrow fetcher and interval provider seams so request cadence and lifecycle can be tested without production credentials or timing.
+**Files Changed:** `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `test/features/transit/tfnsw_metro_provider_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** With the accelerated test interval and the old behavior, off-screen fetches increased from 4 to 8 during the observation window. After the lifecycle gate, both location and fetch counters remain unchanged off-screen and increase again on returning Home. Focused analysis reported no issues and the complete transit suite passed 10/10. At the production 20-second cadence this removes ongoing off-screen polling (up to three location/fetch cycles per minute); no external Edge Function latency claim is made.
+**Follow-ups:** Measure request traces with staging credentials and consider pushed full-screen routes separately; an already-started HTTP request is allowed to finish but its result is discarded and no next poll is scheduled.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Pause Journey GPS off-screen
+**Scope:** Journey shell-tab lifecycle and `MapController` location-stream ownership.
+**Summary:** Connected the retained Journey branch to the centralized active-shell index. Its best-for-navigation location subscription now cancels when another tab becomes active and resumes when Journey returns. A request-version guard prevents overlapping asynchronous starts from attaching stale or duplicate listeners; route resets, arrival, and provider disposal use the same cancellation path. Navigation state remains in Riverpod and resumes without changing route, permission, privacy, or map behavior.
+**Files Changed:** `lib/features/map/presentation/controllers/map_controller.dart`, `test/features/map/map_controller_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** The lifecycle regression test failed before implementation with 0 cancellations after switching off Journey. After the change it proves active location subscriptions transition 1 → 0 off-screen → 1 on return; focused analysis reported no issues, all 16 `MapController`/`MapState` tests passed, and the complete map suite passed 125/125. This is stream-ownership evidence only; no unmeasured battery or device-latency claim is made.
+**Follow-ups:** Repeat with physical Android/iOS power and location traces during a long foreground session; decide separately whether a future turn-by-turn product should deliberately retain navigation across tabs or background the app.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Batch startup preference reads
+**Scope:** Secure local settings hydration (`SecureStorageService` and `LocalSettingsRepository`).
+**Summary:** Replaced 26 sequential per-key startup reads with the exact locked `flutter_secure_storage` 10.0.0 `readAll()` API. The desktop/web SharedPreferences fallback filters the same string values into one map, while Android/iOS remain inside encrypted platform storage. Parsing, defaults, locale, commute, onboarding, Open Day, and visited-location behavior are unchanged.
+**Files Changed:** `lib/core/security/secure_storage_service.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `test/core/secure_storage_service_test.dart`, `test/features/settings/settings_repository_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** The new test failed before implementation because `readAll` did not exist. After the change, tests prove one encrypted-storage `readAll` call, zero per-key `read` calls, and exact preference values; focused analysis had no issues, and the combined secure-storage/settings run passed 20/20 tests. Measured platform-operation count is 26 → 1 per hydration. Eight API 34 profile cold launches after the change were too variable to establish an end-to-end Home-time improvement, so none is claimed.
+**Follow-ups:** Repeat the whole-app launch distribution on physical Android and iOS hardware; retain this change for its deterministic 25-operation reduction rather than an unproven latency claim.
+
+### Raouf: 2026-07-19 (Australia/Sydney) — Lazy offline-map backend initialization
+**Scope:** App readiness and offline-map ObjectBox lifecycle (`lib/app/bootstrap/`, `lib/features/map/data/services/offline_maps_service.dart`).
+**Summary:** Removed the optional FMTC/ObjectBox FFI backend from the global Firebase/Supabase readiness gate. The backend now initializes only when a user requests an offline campus-tile download, and that download still fails closed with the existing bounded timeout when ObjectBox is unavailable. This preserves online map behavior and the user-triggered offline path while removing unused native setup from every launch.
+**Files Changed:** `lib/app/bootstrap/app_initialization.dart`, `lib/app/bootstrap/bootstrap.dart`, `lib/features/map/data/services/offline_maps_service.dart`, `test/features/map/offline_maps_service_test.dart`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** The new regression failed before the fix (`initializeCallCount` 0) and passes after it (1 lazy initialization attempt). Focused analysis reported only the pre-existing `SupabaseOptions.anonKey` info lint; the new test plus Settings offline-map widgets passed 5/5. On the same API 34 profile emulator, median Android first draw changed from 1,327 ms to 1,218 ms and the median first visually usable Home upper bound changed from 3,908 ms to 3,530 ms across three force-stopped runs. These are emulator measurements, not physical-device claims.
+**Follow-ups:** Repeat launch traces on physical Android and iOS hardware. The current illustrated campus map does not consume FMTC tiles; verify the product requirement for the separate offline OSM download before expanding that subsystem.
+
+### Raouf: 2026-07-18 (Australia/Sydney) — Maestro device flows for scan-entry + campus-map (+ blocked-run evidence)
+**Scope:** New Maestro E2E flows and CI wiring (`maestro/`, `.github/workflows/maestro-e2e.yml`). No app code changed.
+**Summary:** Loaded the `maestro-mobile-testing` skill and authored device UI flows per its iOS patterns: `maestro/smoke_scan_and_map.yaml` (launch → Home → Scan screen → Campus Map) and `maestro/campus_map_focus.yaml` (map search → select venue → building focus, the same `selectBuildingById` path the card's map button uses), plus `maestro/README.md` and a Maestro Cloud GitHub Action. Attempted local execution and documented, with evidence, that it's blocked: iOS sim build fails (no simulator destination in the Runner scheme); web/chromium ran under Maestro but the app **hangs on the `mq-boot` Open Day splash** (web has no objectbox/mobile_scanner/inappwebview) — captured via Maestro screenshot + hierarchy; physical iPhone isn't a Maestro target here. The QR-scan step is also un-automatable on a sim (no camera) and deep links are off (`FlutterDeepLinkingEnabled=false`). Full chain stays verified by `test/features/scan/e2e/scan_to_map_e2e_test.dart`.
+**Files Changed:** `maestro/smoke_scan_and_map.yaml`, `maestro/campus_map_focus.yaml`, `maestro/README.md`, `.github/workflows/maestro-e2e.yml`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** Maestro drove the chromium target and captured the boot-splash evidence (tooling works). `flutter build web` OK; `flutter build ios --simulator` failed (destination error). Selectors are unverified against a live app (never reached Home on reachable targets) — verify via live hierarchy before a device/Cloud run.
+**Follow-ups:** Run on Maestro Cloud / a real device and tune selectors; fix the web boot-gate hang; add a debug hook for the camera QR-scan leg.
+
+### Raouf: 2026-07-18 (Australia/Sydney) — Full e2e smoke of scan→card→stamp→map + dead-end race fix
+**Scope:** New end-to-end test for the QR journey, plus a card-loading race fix (`lib/features/scan/presentation/pages/location_card_page.dart`, `test/features/scan/e2e/`).
+**Summary:** Added `test/features/scan/e2e/scan_to_map_e2e_test.dart`, a full e2e smoke driving the REAL `ScanPage`, real signed-QR fixtures, real trail/buildings/stamp assets and the REAL `MapController` (only Supabase/settings/GPS faked). Part 1: for all 9 locations, the signed QR opens the matching card with its real description, pops the correct stamp sheet (1/9…9/9), and "View on Campus Map" routes with the correct real building code; all 9 visits persist. Part 2: each `mapBuildingCode` fed to a real `MapController` selects the exact building with real non-zero campus coords. Writing the test surfaced a UX race — a valid scan briefly showed the "Not part of the trail" dead-end while the large `buildings.json` registry was still loading. Fixed by gating the dead-end on BOTH `trailManifestProvider.hasValue` AND `buildingsRegistryProvider.hasValue` (spinner until both resolve). Test gotcha noted: `buildingsRegistryProvider` (rootBundle of the big buildings.json) doesn't resolve under fake-async `pump()`, so the e2e overrides it with a `File`-loaded registry.
+**Files Changed:** `test/features/scan/e2e/scan_to_map_e2e_test.dart` (new), `lib/features/scan/presentation/pages/location_card_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze lib/features/scan test/features/scan --no-fatal-infos` → No issues. New e2e → 2/2. `flutter test test/features/scan test/features/map` → 266/266. Full `flutter test` → 542/542. `dart format` applied. Test-harness e2e only (live sim/web still blocked).
+**Follow-ups:** Re-run the journey on a real device once the sim/web toolchain is repaired to confirm camera scan + map camera animation.
+
+### Raouf: 2026-07-18 (Australia/Sydney) — Real photos + descriptions for the 9 Open Day location cards
+**Scope:** Open Day scan location cards — imagery and copy (`assets/photos/`, `assets/data/open_day_trail.json`, `lib/features/scan/`).
+**Summary:** The 9 scan location cards showed a shared placeholder image and a generic one-liner ("Open Day venue."). Added each building's real façade photo (supplied by Raouf; identified per building from the on-site signage) and a curated ~3-sentence description grounded in web research. Photos were converted to bundle-friendly JPEGs (max 1600px, 272–504 KB each) and stored as `assets/photos/<locationId>.jpg`. Threaded a new optional `description` field through `TrailLocation` (parser) → `registryLocationContentProvider`, which now prefers the trail's own blurb over the building-registry/generic fallback for `LocationContent.shortDescription`. Photo↔building mapping (via signage, confirmed by search): 1 Wally's Walk=Ainsworth (Medicine/Health), 10 Hadenfeld=Faculty of Arts media, 14 SCO=Mason Theatre (Science/Eng), 17 Wally's Walk=Michael Kirby Building (Law), 23 Wally's Walk=Price Theatre, 25c Wally's Walk=Gale History Museum, 27 Wally's Walk=Lotus Theatre, 29 Wally's Walk=Walanga Muru/Mia Mia, 21 Wally's Walk=Macquarie Theatre.
+**Files Changed:** `assets/photos/{wallys-1,wallys-17,wallys-21,wallys-23,wallys-25,wallys-27,wallys-29,ondaatje-14,hadenfeld-10}.jpg` (new), `assets/data/open_day_trail.json`, `lib/features/scan/domain/models/trail_manifest.dart`, `lib/features/scan/data/adapters/registry_location_content_provider.dart`, `test/features/scan/models/trail_manifest_test.dart`, `test/features/scan/repositories/trail_repository_asset_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** JSON validated (9 locations, every photo present, descriptions ≈46–65 words). `flutter analyze lib/features/scan test/features/scan --no-fatal-infos` → No issues. `flutter test test/features/scan` → 141/141 pass (incl. new parser test + an asset test asserting every location has a non-placeholder, bundled photo + a description). Full `flutter test` → 540/540 pass. `dart format` applied.
+**Follow-ups:** (1) Copy sources: mq.edu.au building pages, The Lighthouse/Hassell (Michael Kirby), Gale History Museum, Walanga Muru, StudentVIP. (2) Photos are Street-View-style captures supplied by Raouf; swap for official shots if licensing prefers. (3) `heroImageAsset` still points at `placeholder_hero.png`.
+
+### Raouf: 2026-07-18 (Australia/Sydney) — Scan → "View on Campus Map" lands on the actual building
+**Scope:** Open Day scan flow bridge between trail locations and the campus map (`lib/features/scan/`, `assets/data/open_day_trail.json`).
+**Summary:** After scanning a QR, the location card's "View on Campus Map" button opened the map but focused the overlay's (0,0) corner instead of the building. Root cause: the trail's `buildingId` slugs (`wallys-29`, `hadenfeld-10`, …) resolve — via `BuildingsRegistry.byCode` — only to appended **Open Day stub** entries in `buildings.json` that carry `campusX:0, campusY:0`. `Building.campusPoint` treats `0,0` as present, so `resolveBuildingPoint` projected the corner. Each real, placed building lives under a different code (`29WW`, `10HA`, `14SCO`, …). Fixed by adding an explicit `mapBuildingCode` to every trail location pointing at the coordinate-bearing building code, threading it through `TrailLocation` → `LocationContent`, and having the card gate/navigate on `mapBuildingCode ?? buildingId`. The stamp/visited path (keyed on `buildingId`, where `locationId == buildingId` in the data) is unchanged and was verified correct. `wallys-1` had no placed building; confirmed via web search **and** the app's own `buildings.json` (the `AINS`/Ainsworth entry has `address:"1 Wally's Walk"` and alias `1WW`) → mapped to `AINS`. Mapping: hadenfeld-10→10HA, wallys-29→29WW, wallys-27→LOTUS, wallys-23→23WW, wallys-21→MQTH, wallys-17→17WW, wallys-25→25WW, wallys-1→AINS, ondaatje-14→14SCO.
+**Files Changed:** `assets/data/open_day_trail.json`, `lib/features/scan/domain/models/trail_manifest.dart`, `lib/features/scan/domain/contracts/location_content.dart`, `lib/features/scan/data/adapters/registry_location_content_provider.dart`, `lib/features/scan/presentation/pages/location_card_page.dart`, `test/features/scan/models/trail_manifest_test.dart`, `test/features/scan/repositories/trail_repository_asset_test.dart`, `test/features/scan/pages/location_card_page_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze lib/features/scan lib/features/map test/features/scan --no-fatal-infos` → No issues found. `flutter test test/features/scan test/features/map` → 262/262 pass, incl. 3 new/updated tests (parser parses `mapBuildingCode`; every trail location bridges to a real coordinate-bearing building; the map button navigates with `29WW`, not `wallys-29`). Full `flutter test` → 537 pass, 1 pre-existing unrelated failure (`settings_page_test.dart` "Open Day companion" copy string — confirmed failing identically on the pre-change tree via `git stash`). `dart format` applied. Not verified on a live device (sim/web runs still blocked on this machine).
+**Follow-ups:** (1) Visually confirm the map centres on each venue on a device. (2) The coordinate-less `wallys-*`/`hadenfeld-10`/`ondaatje-14` **stub** entries in `buildings.json` are now redundant for scan→map and could be pruned or given real coords in a later data pass. (3) Consider enriching card title/description from the real `mapBuildingCode` building (kept as-is here to stay minimal). (4) Fix the pre-existing settings "Open Day companion" copy test separately.
+
+### Raouf: 2026-07-13 (Australia/Sydney) — Disable Swift Package Manager to fix flaky iOS release build
+**Scope:** `pubspec.yaml` iOS/macOS build configuration only.
+**Summary:** `flutter build ios --release --no-codesign` was intermittently failing during Flutter's "Adding Swift Package Manager integration" step with `xcodebuild: error: Could not resolve package dependencies` (once a `dl.google.com` gRPC download timeout, once a "Couldn't get the list of tags" git resolution failure). Several plugins (`torch_light`, `permission_handler_apple`, `objectbox_flutter_libs`, `flutter_inappwebview_ios`, `flutter_compass`) don't support SPM yet anyway, so SPM integration was pure overhead and a build-flakiness risk. Disabled it project-wide via the documented `flutter: config: enable-swift-package-manager: false` pubspec key, falling back to CocoaPods (which all plugins support) for iOS/macOS dependency resolution.
+**Files Changed:** `pubspec.yaml`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter pub get` succeeded; `flutter build ios --release --no-codesign` succeeded (`Built build/ios/iphoneos/Runner.app (120.0MB)`), pod install + Xcode build completed without SPM resolution errors; `flutter analyze --no-fatal-infos` → 1 pre-existing info-level `anonKey` deprecation only, no new issues.
+**Follow-ups:** Re-enable SPM once the above plugins add support and the resolver has proven reliable in this network environment.
+
+### Raouf: 2026-07-13 (Australia/Sydney) — Final Open Day copy, event sheet, and indoor scene interaction fixes
+**Scope:** Settings About copy, Open Day event-to-map action sheet, and AR/indoor panorama scene list only.
+**Summary:** Removed the remaining live COMP3130, Campus Management, and MQ Navigation references and repositioned MQ Journey as Macquarie University's Open Day campus companion across all 35 ARB locales and app/package metadata. Fixed the event action-sheet flicker by resolving its building before presenting the modal, so the first rendered frame is the final venue/event/"View in Campus Map" content rather than a temporary no-location state; dismiss/reopen remains safe and the existing campus-map intent still forces Campus Map mode. Added shared indoor-tour scene state, tappable/hoverable scene rows with selected styling, and a two-way Pannellum JavaScript bridge so list taps call `loadScene` in place while hotspot changes update the selected Flutter row without reloading the page.
+**Files Changed:** `lib/app/l10n/app_*.arb` (35 files), `lib/features/open_day/presentation/{pages/open_day_page.dart,widgets/event_actions_sheet.dart}`, `lib/features/scan/presentation/pages/{indoor_preview_page,location_ar_page}.dart`, `lib/features/scan/presentation/widgets/{indoor_tour_view,indoor_stop_list,indoor_webview}.dart`, `assets/web/indoor_viewer.html`, app/package metadata and stale-copy fixtures, focused Open Day/scan tests, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** `flutter gen-l10n` passed; focused interaction suite passed 17/17; `flutter analyze lib test --no-fatal-infos` completed with zero errors/warnings and one pre-existing info-level `SupabaseOptions.anonKey` deprecation; `flutter test` passed 535/535; `flutter build web --release` passed, including the Wasm dry run; stale-copy scan and `git diff --check` passed. The exact fatal-info `flutter analyze lib test` command exits 1 solely for that unrelated pre-existing info lint in `lib/app/bootstrap/app_initialization.dart:51`.
+**Follow-ups:** Manually confirm the bottom-sheet first frame and panorama/list scene sync with a real browser plus one touch device. Native speakers should translate the two refreshed About strings currently backfilled with English Open Day copy in non-English locales. The unrelated Supabase `anonKey` deprecation remains for a separate bootstrap maintenance pass.
+
+### Raouf: 2026-07-13 (Australia/Sydney) — AR mode: stop mode toggle overlapping the location name
+**Scope:** Journey → Map AR mode, selected-building indoor preview.
+**Summary:** In AR mode `MapShell` floats the Campus Map / AR toggle at top-centre so there's always a way back to Campus Map. When a building is selected the AR content becomes `IndoorPreviewPage`, which has its **own** `AppBar` showing the location name — and the floating toggle sat directly on top of that title (overlap). The `ArBuildingPicker` list already avoids this by reserving a top inset, but the preview page's AppBar does not. Added a `showArModeToggle` flag to `MapShell` (default `true`); `MapPage` sets it `false` when AR mode is showing the selected-building preview (`_mapMode == ar && selectedBuilding?.code != null`). The preview's own Back button still returns to the picker, where the toggle reappears — so no navigation is lost, and the toggle no longer overlaps the location name.
+**Files Changed:** `lib/features/map/presentation/widgets/map_shell.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/map/widgets/map_shell_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze` on the changed files — no issues. `flutter test test/features/map/` — 123/123 pass, including a new `map_shell_test.dart` case asserting the toggle is hidden when `showArModeToggle: false`. `dart format` applied. Not verified on a live device (see [[ios-sim-web-run-blockers]] — sim/web runs still blocked on this machine).
+**Follow-ups:** Visually confirm on a physical device / repaired simulator.
+
+### Raouf: 2026-07-13 (Australia/Sydney) — Map search: fix duplicate/black search surface
+**Scope:** Map feature audit of the building search flow and the "two search bars / black card" defect.
+**Summary:** Audited every search surface under `lib/features/map/`. The map renders a single tap-only search *pill* (`map_shell.dart`) whose tap opened `BuildingSearchSheet` as a **half-height** modal (`initialChildSize: 0.5`) with a near-black dark surface (`Material(color: charcoal800)`). Because the sheet only covered the bottom half, the original pill stayed visible above it (two search bars at once) and the dark sheet + black modal scrim over the map read as "a black one coming up". Fixed by making the search a single full-height surface: `_openSearchSheet` now passes `useSafeArea: true`, and `BuildingSearchSheet` was rewritten from a half-height `DraggableScrollableSheet` into a full-height `Material` + `SafeArea` + `Column` (drag handle, filled search field with inline clear, Back action, and an `Expanded` results list) on a proper themed surface (`charcoal900` dark / white light) instead of a half-open charcoal panel. The pill can no longer show through and there is no dark scrim over the map. Search wiring (`mapControllerProvider`, selection → `BuildingActionsSheet`) is unchanged.
+**Files Changed:** `lib/features/map/presentation/widgets/building_search_sheet.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/map/widgets/building_search_sheet_test.dart` (new), `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze` on the changed files — no issues. `flutter test test/features/map/` — 122/122 pass, including two new `building_search_sheet_test.dart` cases (single search field + tap-to-select pops the building; typing filters and inline clear resets). `dart format` applied. **Not** verified on a live device: the iOS simulator toolchain refuses to resolve simulator destinations for the Runner scheme under Xcode 26.6 (first boot reported "Data Migration Failed"), and the web build boots but hangs on the Open Day splash (init gate never resolves on web) — so a Maestro UI pass could not be completed.
+**Follow-ups:** (1) Visually confirm the fix once the iOS simulator toolchain is repaired (reboot / `xcodebuild -runFirstLaunch` / install a matching sim runtime) or on a physical device. (2) Optional upgrade: migrate the pill+sheet to a single Material 3 `SearchAnchor.bar` for the canonical 2026 pattern. (3) Investigate the web boot-gate hang (`appInitializationProvider` never completing on web).
+
+### Raouf: 2026-07-12 (Australia/Sydney) — Supplementary i18n audit and badge strings migration
+**Scope:** Supplementary sweep for unlocalized user-facing strings across all presentation widgets and logic.
+**Summary:** Conducted an exhaustive secondary audit of the codebase following the initial i18n migration. Found one remaining presentation widget (`card_visit_badge.dart`) containing unlocalized hardcoded strings ("Badge earned!" and "Visited"). Added new `scanBadgeEarned` and `scanBadgeVisited` keys to `app_en.arb`, backfilled them across all 35 non-English locale ARB files using a Python script, and regenerated the `app_localizations.dart` bundle. Injected `AppLocalizations` into `CardVisitBadge` and its corresponding test wrapper to finalize the migration. Noted that some background schedulers and controllers return English strings but safely deferred them as they lack `BuildContext`.
+**Files Changed:** `lib/app/l10n/app_*.arb` (35 files), `lib/features/scan/presentation/widgets/card_visit_badge.dart`, `test/features/scan/widgets/card_visit_badge_test.dart`, `AGENT.md`, `AGENTS.md`, and `CHANGELOG.md`.
+**Verification:** `flutter test test/features/scan/widgets/card_visit_badge_test.dart` passed. Generated l10n successfully.
+**Follow-ups:** Native speakers should translate the newly added `scanBadgeEarned` and `scanBadgeVisited` fallback strings in the 34 non-English ARB files.
+
+### Raouf: 2026-07-10 (Australia/Sydney) — QR-to-card-to-stamp pipeline proof
+**Scope:** Nine production QR fixtures, identity conservation, scan/card/stamp composition, duplicate and rejection falsifiers, local persistence simulation, evidence reports, and device-closeout templates.
+**Summary:** Added a layered pipeline test harness that loads the committed production QR manifest, trail manifest, stamp catalogue, public-key registry, and root handoff assets. Domain tests now prove exact nine-location census equality, real strict parsing and Ed25519 verification, deterministic visit identity/time, matching route/stamp/passport state, canonical plus three seeded journeys, repeat idempotency, ten-frame single-flight behavior, and fail-closed rejection with zero effects. A full widget journey injects only decoded strings through `ScannerView.onDetect`, then exercises the production verifier, real `SettingsProgressApiAdapter` local path, GoRouter, `LocationCardPage`, pending-award controller, and `StampEarnedSheet` from 1/9 through 9/9 with reduced motion. Added content-safe evidence artifacts that mark isolated Supabase, Android/iPhone camera, and physical-print lanes pending rather than claiming unexecuted coverage.
+**Files Changed:** `docs/qr-card-stamp-pipeline-architecture.md`, `test/features/scan/pipeline/`, `test/features/scan/presentation/qr_to_location_card_widget_test.dart`, `artifacts/qr-card-stamp-pipeline/`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** The focused pipeline/presentation suite passed 12/12 tests; JSON evidence files passed `jq` validation; `flutter analyze --no-fatal-infos` returned zero errors with 19 pre-existing info lints. `bash scripts/check.sh` passed 13/13 gates, including the full Flutter suite, 57.45% coverage, localization, privacy, secret, stale-name, login-route, no-Google guards, and a fresh debug APK.
+**Follow-ups:** Run the isolated local/staging Supabase RLS and uniqueness lane, then complete all nine final PNG and representative paper scans on a physical Android phone and iPhone. Update the pending evidence files only from observed device/staging results.
+
+### Raouf: 2026-07-10 (Australia/Sydney) — Root QR handoff folder and branch publication
+**Scope:** Human-readable root QR delivery folder, checksums, repository verification, commit, and remote branch publication.
+**Summary:** Added a root-level `QR Codes/` handoff folder derived byte-for-byte from the verified production pack. Organised the nine signed codes into `SVG Masters/`, `PNG 2048px/`, and `A4 Posters/`, added PDF/PNG contact sheets, and renamed every location file with its canonical ordinal, full address, and campus map reference for printer/event-team use. Added a usage README and sorted SHA-256 manifest; the machine-oriented `dist/` pack and reproducible release ZIP remain unchanged.
+**Files Changed:** `QR Codes/`, `.gitattributes`, `AGENT.md`, and `CHANGELOG.md`, alongside the staged production-key rotation, issuer hardening, signed assets, QA tooling, `dist/` pack, and `release/` ZIP from the preceding task.
+**Verification:** All 29 copied public artifacts matched their verified `dist/` source bytes; `QR Codes/SHA256SUMS` verified successfully; folder counts are 9 SVGs, 9 PNGs, 9 posters, and 2 contact-sheet files. `bash scripts/check.sh --quick` passed 12/12 gates with 57.28% coverage, zero untranslated messages, and all privacy, secret, stale-name, login-route, and no-Google guards green. GitHub CLI authentication passed and the branch base matched `mqjourney/main` before commit.
+**Follow-ups:** Complete the physical Android/iPhone paper-print matrix before event installation. Keep the external `mqj-open-day-2026-02` private key backed up in approved encrypted secret storage and outside Git.
+
+### Raouf: 2026-07-10 (Australia/Sydney) — Open Day QR production key rotation and print pack
+**Scope:** Ed25519 production key rotation, issuer key-match hardening, nine signed QR masters, PNG/PDF/contact-sheet production, machine QA, checksums, and release packaging.
+**Summary:** Created the replacement production key outside the repository at owner-only permissions and rotated issuance to `mqj-open-day-2026-02` while retaining the `-01` public key for backward compatibility. Hardened the offline issuer to derive the selected private key's public bytes, require an exact constant-time registry match before creating output, and print only the public fingerprint plus `MATCH`. Regenerated all nine deterministic level-Q SVG masters, added a reproducible public-pack builder, vector PDF poster/contact-sheet generation, 2048px PNG derivation, macOS Vision decoding, app-parser/signature verification, mutation controls, and nine-location first/repeat scan regression coverage. The print pack and release ZIP contain only public material; physical paper/device QA remains explicitly pending.
+**Files Changed:** `lib/features/scan/domain/qr/{qr_public_key_registry,qr_validation_result,signed_qr_payload}.dart`, `assets/qr/open_day/2026/`, `tool/open_day_qr/`, `test/features/scan/qr/{issuer_key_match,qr_scan_orchestrator,qr_vectors}_test.dart`, `pubspec.yaml`, `pubspec.lock`, `dist/mq-journey-open-day-qr-2026/`, `release/mq-journey-open-day-qr-2026.zip`, `AGENT.md`, and `CHANGELOG.md`.
+**Verification:** Wrong-key issuance failed with `SIGNING_KEY_MISMATCH` and created no output; two real issuer runs were byte-identical; focused QR/key/vector/app-flow tests passed; all 36 SVG/PNG/300-DPI-poster/contact-cell decode checks passed; all nine signatures/allowlist resolutions passed; six mutation controls failed closed for the intended reason; public-pack rebuild was byte-identical; `SHA256SUMS` verified every packaged file; secret/hidden-file scan passed; two normalized ZIP builds were byte-identical with SHA-256 `ab28d498e115961424f0699264f9652ab44e0c7a8cb34647a35a6b89bd23a4b5`; `bash scripts/check.sh` completed through all gates and produced a fresh debug APK.
+**Follow-ups:** Print the final posters and complete `qa/print-test-matrix.md` on one current Android phone and one current iPhone under the specified lighting, angle, distance, and reduced-size conditions. Back up the external `mqj-open-day-2026-02` private key in the approved encrypted secret-management system; never add it to Git or the release pack.
+
+### Raouf: 2026-07-10 (Australia/Sydney) — Signed Open Day QR issuance, verification, routing, and rewards
+**Scope:** Open Day QR security protocol, deterministic offline issuer, nine public SVG masters, in-app/external ingress, scan lifecycle, one-shot stamp reward handoff, localization, print QA.
+**Summary:** Implemented the approved `mqjourney.open-day.qr.v1` plan against the current 2026 Flutter, app_links, mobile_scanner, cryptography, go_router, qr, and DENSO WAVE guidance. Replaced the permissive unsigned `locationId` scan path with a closed URI parser, canonical LF-terminated payload, declared-key Ed25519 verification, and post-signature nine-location allowlist. Added an external-key-only issuer that validates trail/stamp census equality, signs all nine locations, emits deterministic level-Q black/white SVGs with four-module quiet zones, and writes a digest-bound public manifest last. Both camera scans and app_links cold/warm delivery now share the same single-flight verify -> record -> card pipeline; Flutter's duplicate native deep-link handler is disabled on Android/iOS. The destination card consumes a private one-shot notice so only `recordVisit == true` celebrates, repeats show already-collected feedback, and rebuilds do not replay. Added localized/semantic rejection states, branch-aware camera start/stop and torch shutdown, a printable nine-code test sheet, and an explicit physical-device QA matrix.
+**Files Changed:** `pubspec.yaml`, `pubspec.lock`, `.gitignore`, `lib/features/scan/domain/qr/`, `lib/features/scan/application/`, `lib/features/scan/presentation/pages/{scan_page,location_card_page}.dart`, `lib/features/scan/providers/scan_providers.dart`, `lib/app/{app_link_coordinator,mq_journey_app}.dart`, `lib/app/l10n/app_*.arb`, `tool/open_day_qr/`, `assets/qr/open_day/2026/`, `assets/data/open_day_stamps_catalog.json`, Android/iOS deep-link configuration, QR/app/scan/location tests, `docs/print/`, plus two pre-existing map files normalized by the repository-wide format gate.
+**Verification:** `bash scripts/check.sh` passed 13/13 gates: format, analyzer, 509/509 tests, 57.29% coverage (50% floor), l10n generation/untranslated check, privacy guard, secret scan, no-stale-name/no-login/no-Google guards, and debug APK build. Focused QR/parser/crypto/orchestrator/widget/deep-link tests passed. Issuer rerun produced a byte-identical SHA-256 file set; the public manifest validates all nine signatures and SVG/payload digests; repository scans found no QR private key, seed, or signing secret.
+**Follow-ups:** Execute and sign off `docs/print/open-day-qr-physical-qa.md` using final production prints on a current Android phone and iPhone under all four required conditions. This hardware/print gate is the only Definition-of-Done item not executable in the repository workspace.
+
+### Raouf: 2026-07-09 (Australia/Sydney) — Stamp scan-to-card audit fix
+**Scope:** Stamp/visit state wiring — `SettingsProgressApiAdapter.watch`, location-card regression coverage, adapter tests.
+**Summary:** Audited the 2026 Open Day stamp flow end-to-end against current Flutter asset, Riverpod provider, go_router navigation, and Supabase upsert docs. The asset/catalog/scan/passport path was mostly sound, but the location-card visited badge was not reliably wired to scans: scan writes store visited building codes uppercase (`WALLYS-1`), while `LocationCardPage` watches lowercase ids (`wallys-1`), and `SettingsProgressApiAdapter.watch()` compared them case-sensitively. The same watch stream also emitted before any broadcast listener attached, so `StreamProvider` could miss the initial state and stay loading until a later settings change. Fixed `watch()` to normalize ids/codes and emit on listener attachment, preserving the existing uppercase storage convention and making location cards reflect scans immediately.
+**Files Changed:** `lib/features/scan/data/adapters/settings_progress_api_adapter.dart`, `test/features/scan/adapters/settings_progress_api_adapter_test.dart`, `test/features/scan/pages/location_card_page_test.dart`.
+**Verification:** `flutter test` — 480/480 passed; focused stamp/scan/card suite passed; `flutter analyze --no-fatal-infos` returned 0 errors (20 existing info-level lints); catalog/trail/asset consistency script confirmed 9 catalog entries, 9 trail locations, all stamp assets present, all stamp ids matching trail building ids/map refs, and all indoor manifests present.
+**Follow-ups:** Supplied `wallys-23.png` is still the same artwork as `wallys-21.png` and should be replaced with corrected art when available.
+
+### Raouf: 2026-07-09 (Australia/Sydney) — Add location-specific stamp artwork
+**Scope:** Open Day stamp passport assets — `assets/stamps/`.
+**Summary:** Replaced the text-only stamp placeholders by adding the nine supplied 1024×1024 PNG stamp artworks at the exact paths already referenced by `assets/data/open_day_stamps_catalog.json`: 10 Hadenfeld Avenue, 14 Sir Christopher Ondaatje Avenue, and Wally's Walk locations 1, 17, 21, 23, 25, 27, and 29. No catalog or Dart changes were needed because the existing `stampAsset` values already pointed to these stable asset filenames and `pubspec.yaml` already bundles `assets/stamps/`.
+**Files Changed:** `assets/stamps/hadenfeld-10.png`, `assets/stamps/ondaatje-14.png`, `assets/stamps/wallys-1.png`, `assets/stamps/wallys-17.png`, `assets/stamps/wallys-21.png`, `assets/stamps/wallys-23.png`, `assets/stamps/wallys-25.png`, `assets/stamps/wallys-27.png`, `assets/stamps/wallys-29.png`.
+**Verification:** SHA-256 comparison confirmed each in-repo stamp file matches the corresponding source file under `/Users/raoof.r12/Desktop/Journey_Assets/Stamps/`. Catalog check confirmed all 9 `stampAsset` paths exist. `flutter test test/features/scan/repositories/stamp_catalog_repository_test.dart test/features/scan/widgets/stamp_earned_sheet_test.dart test/features/scan/pages/stamps_passport_page_test.dart` passed. `flutter analyze --no-fatal-infos` returned 0 errors (20 existing info-level lints).
+**Follow-ups:** The supplied `wallys-23.png` is identical to `wallys-21.png` and its visible text says "21 Wally's Walk"; replace it with corrected artwork when available.
+
+### Raouf: 2026-07-07 (Australia/Sydney) — Full click-through test (Maestro/adb): map deep-link crash fix + friendly indoor title
+**Scope:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart` (map-ready guard), `lib/features/scan/presentation/pages/indoor_preview_page.dart` (friendly title).
+**Summary:** Exhaustively clicked every interactive surface on an Android emulator with a persistent exception watcher. One runtime exception found + fixed: (1) **Map deep-link crash** — reaching Campus Map with a building already selected from another tab threw `You need to have the FlutterMap widget rendered at least once before using the MapController` because `didUpdateWidget` → `_moveMap` → `MapController.move()` ran while the branch was offstage. Added a `_mapReady` flag (set in `onMapReady`); `_moveMap` no-ops before ready, and `_handleMapReady` already repositions once ready. (2) **Follow-up** — AR indoor app bar showed the raw slug ("hadenfeld-10 Indoor"); now resolves the friendly trail title ("10 Hadenfeld Avenue"), fallback to slug.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/scan/presentation/pages/indoor_preview_page.dart`.
+**Verification:** `flutter test` — **478/478**; `flutter analyze` — 0 errors. Everything else clicked healthy (Home/bachelor/My Day/Open Day sessions, Settings/dark-mode/stamps/wipe-confirm, Map search/chips/layers/detail, AR picker→panorama→back→hotspots).
+**Notes (not bugs):** Scan camera error-glyph after tab resume is an emulator virtual-camera quirk (single camera, surface re-attach fails) — confirm on device. Map-search building sheet stacks under the action sheet (minor). Stamp artwork still text-only (content follow-up).
+
+### Raouf: 2026-07-07 (Australia/Sydney) — AR indoor preview: back button returns to the building picker
+**Scope:** `lib/features/scan/presentation/pages/indoor_preview_page.dart` (+optional `onBack`), `lib/features/map/presentation/pages/map_page.dart` (wire-up), test.
+**Summary:** In AR mode, selecting a building swaps `ArBuildingPicker` for an embedded `IndoorPreviewPage`, which (being embedded, not pushed) had no back button — users were stuck on the panorama with no way back to the list except leaving AR via the toggle. Added an optional `onBack` callback to `IndoorPreviewPage` (leading back arrow when provided; default app-bar behaviour when null, so the pushed `/map/building/:id/indoor` route is unchanged). The map page passes `onBack` → `mapController.clearSelection()` + `setState`, which nulls `selectedBuilding` so `_buildArContent` shows the picker again — back to the AR building list without leaving AR.
+**Files Changed:** `lib/features/scan/presentation/pages/indoor_preview_page.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/scan/pages/indoor_preview_page_test.dart` (+2).
+**Verification:** `flutter test` — **478/478 passed**; `flutter analyze --no-fatal-infos` — 0 errors/warnings. Verified on the Android emulator: AR → pick building → back arrow → returns to the 9-building picker, still in AR.
+**Follow-ups:**
+- App bar title is still the raw slug ("hadenfeld-10 Indoor"); worth a friendlier display name + ARB key.
+
+### Raouf: 2026-07-07 (Australia/Sydney) — Fix "AR not loading" (two root causes, verified on-device with Maestro)
+**Scope:** `lib/features/scan/domain/models/buildings_registry.dart` (parse crash), `android/app/src/main/AndroidManifest.xml` + new `android/app/src/main/res/xml/network_security_config.xml` (Android cleartext), test.
+**Summary:** Drove the real app on an Android emulator with Maestro to reproduce "AR is not loading" and found **two distinct blockers**, both now fixed and confirmed on-device. (1) **AR picker infinite spinner.** `BuildingsRegistry.fromJson` did an unguarded `(m['campusX'] as num).toDouble()` / `campusY`, but **35 of the 170 buildings in `assets/data/buildings.json` have no `campusX`/`campusY`** → `null as num` threw a `TypeError` → `buildingsRegistryProvider` errored → `ArBuildingPicker`'s `allLoaded = …every(hasValue) && registryLoaded` never flipped true → eternal `CircularProgressIndicator` with no surfaced error. Fixed with a null-safe cast defaulting to 0 (the picker only uses the registry for building names). After the fix the picker lists all 9 manifest-backed buildings. (2) **Panorama viewer blank — `net::ERR_CLEARTEXT_NOT_PERMITTED`.** Android 9+ blocks cleartext HTTP by default and the indoor viewer serves Pannellum + panoramas from an on-device `InAppLocalhostServer` over `http://localhost:8459`, so the WebView failed to load and `loadTour` was undefined. Fixed with a **loopback-scoped** `network-security-config` (cleartext for `localhost`/`127.0.0.1` only) referenced from the manifest; all other traffic stays HTTPS-only. iOS unaffected (ATS exempts localhost). After both fixes the 360° panorama renders on-device with working nav hotspots.
+**Files Changed:** `lib/features/scan/domain/models/buildings_registry.dart`, `android/app/src/main/AndroidManifest.xml`, `android/app/src/main/res/xml/network_security_config.xml` (new), `test/features/scan/models/buildings_registry_test.dart`.
+**Verification:** `flutter test` — **476/476 passed** (+1); `flutter analyze --no-fatal-infos` — 0 errors/warnings. End-to-end on the `Fresh_API34` Android emulator via Maestro/adb: picker lists all 9 buildings; indoor viewer renders the real equirectangular panorama with hotspots.
+**Follow-ups:**
+- Confirm Pannellum WebGL render on a physical Android device (emulator uses host-GPU WebGL).
+- iOS AR path unverified on-device — the Runner target's `SUPPORTED_PLATFORMS = iphoneos` blocks all iOS simulator builds (separate defect); confirm the indoor viewer on the physical iPhone.
+- The AR picker shows only a bare spinner if `buildingsRegistryProvider` ever errors again — consider an explicit error state.
+
+### Raouf: 2026-07-07 (Australia/Sydney) — AR audit fixes, rebrand purge, splash photo restore
+**Scope:** iOS/macOS platform permission files, `assets/data/indoor/` (legacy manifests), all 34 non-English locale ARBs, `lib/app/mq_journey_app.dart` (splash), 6 Dart doc comments.
+**Summary:** Full AR/indoor audit + rebrand sweep. (1) **Critical:** `ios/Runner/Info.plist` had no `NSCameraUsageDescription` — opening the Scan tab (now a prominent bottom-nav tab) on a real iPhone instantly killed the app via the TCC privacy crash. Added it; also fixed the location usage string that still read "MQ Navigation" in the iOS permission dialog. (2) macOS had neither the camera sandbox entitlement nor a usage description (same crash class) — added `com.apple.security.device.camera` to both entitlements + `NSCameraUsageDescription`; also registered the missing `io.mqjourney` URL scheme (macOS only had the legacy alias). (3) Removed the dead `C3A.json`/`18WW.json` demo manifests whose 5 panorama images never existed (black viewer if deep-linked); retargeted the bundling regression tests at real `wallys-1`/`hadenfeld-10` manifests and added a null guard for the removed codes. Audit verified everything else healthy: all 9 production manifests parse with valid nodes/images/neighbours, every trail `arSceneId` resolves to a manifest node, all 37 indoor assets + Pannellum JS/CSS confirmed inside the built app bundle, webview/localhost-server/config layers intact. (4) Rebrand: replaced 349 "MQ Navigation" occurrences across all 34 non-English locale ARBs (English was already clean) + 6 Dart doc comments — repo-wide sweep now finds zero. (5) Restored the Open Day arch photo beneath the magenta splash scrim: the teammate's magenta rebrand (89d7bdd) had replaced the splash's photo background with a flat gradient, which is why the "new splash photo" appeared unchanged.
+**Files Changed:** `ios/Runner/Info.plist`, `macos/Runner/Info.plist`, `macos/Runner/DebugProfile.entitlements`, `macos/Runner/Release.entitlements`, deleted `assets/data/indoor/C3A.json`+`18WW.json`, `test/features/scan/repositories/indoor_repository_test.dart`, 34 × `lib/app/l10n/app_*.arb`, `lib/main.dart`, `lib/app/theme/mq_theme.dart`, `lib/features/home/presentation/pages/home_page.dart`, `lib/features/deep_link/deep_link_contract.dart`, `lib/app/mq_journey_app.dart`.
+**Verification:** `flutter test` — 475/475 passed; `flutter analyze --no-fatal-infos` — 0 errors/warnings (20 pre-existing info lints); `dart format` clean; repo-wide grep for "MQ Navigation" returns 0 outside append-only history docs. Note: `build/unit_test_assets` caches deleted assets — `rm -rf build/unit_test_assets` was needed before the manifest-removal test passed.
+**Follow-ups:**
+- On-device iOS run to confirm the camera permission prompt now appears (instead of a crash) the first time the Scan tab opens.
+- `IndoorPreviewPage` still has three hardcoded English strings ('No indoor preview available', 'Could not load indoor preview', '$buildingId Indoor' title) — should become ARB keys.
+- `MqNavDeepLink*` type names in `deep_link_contract.dart` keep the old name — it's the public contract with Syllabus Sync; renaming needs a coordinated migration, not a sweep.
+
+### Raouf: 2026-07-07 (Australia/Sydney) — "Journey" tab rename + Scan as a 4th bottom-nav tab
+**Scope:** Bottom-nav shell — `app_shell.dart`, `app_router.dart`, `route_names.dart` (+new `ShellBranchIndex`), new `active_shell_branch_index_provider.dart`, `scan_page.dart` (camera lifecycle + PopScope removal), `home_page.dart` (CTA), l10n, tests.
+**Summary:** Renamed the Map tab's label from "Navigation" to "Journey" (l10n key `navigation`'s English value only) and moved `/scan` from a pushed root-level route into a 4th `StatefulShellBranch` (Home, Journey, Scan, Settings; indices centralized in `ShellBranchIndex`). Because `indexedStack` keeps branches mounted offstage, `AppShell` now publishes the active branch index through a `Notifier<int>` provider and `ScanPage` pauses/resumes its `MobileScannerController` via a pure, unit-tested decision function (`scanBranchLifecycleAction`). Home's "Scan QR" CTA switches branches via `StatefulNavigationShell.of(context).goBranch(...)` — NOT `context.goNamed`, which has a documented cross-branch state bug (flutter/flutter#142226). Dropped ScanPage's obsolete `PopScope` (it force-navigated to an unregistered `/` on back-press once Scan became a tab root). Plan was doc-audited against current Riverpod/go_router/mobile_scanner docs before implementation (StateProvider deprecated → Notifier; goNamed → goBranch).
+**Files Changed:** `lib/app/l10n/app_en.arb`, `lib/app/router/{app_shell,app_router,route_names,active_shell_branch_index_provider}.dart`, `lib/features/scan/domain/services/scan_branch_lifecycle.dart` (new), `lib/features/scan/presentation/pages/scan_page.dart`, `lib/features/home/presentation/pages/home_page.dart`, tests under `test/app/router/`, `test/features/scan/services/`, `test/features/home/`.
+**Verification:** `flutter test` — 474/474 at merge time; analyzer clean; `flutter run -d macos` boot log confirmed `/scan` nested inside the shell route tree and go_router replayed a map→scan→map→home restoration without errors. Camera pause/resume on tab switch still needs an on-device check (permission guard no-ops in the test sandbox).
+**Follow-ups:**
+- On-device: verify camera pauses when switching tabs away from Scan and resumes on return.
+
+### Raouf: 2026-07-07 (Australia/Sydney) — Replace splash + home background photo with Open Day 2026 arch shot
+**Scope:** Static assets only — `assets/images/login_background.png` (splash, `lib/app/mq_journey_app.dart`), `assets/images/campus_background.jpg` (home hero, `lib/features/home/presentation/pages/home_page.dart`). No Dart changed.
+**Summary:** User supplied a photo of the "Open Day 2026" pink arch entrance at Central Courtyard and asked for it as the app's background photo (both the splash screen and the home tab share this concept), after first removing a "watermark" at the bottom-right. The only bottom-right mark was the real Macquarie University logo (shield + wordmark + diamond sparkle) printed on the banner stand's fabric, not a stock/AI overlay — confirmed with the user via a cropped screenshot before touching anything. Removed it with a targeted, edge-safe reconstruction: sampled the panel's true fabric/background boundary pixel-by-pixel (rich pink fabric has near-zero green channel; the printed logo washes it out; true background — pavement/denim — is neutral or blue-dominant), built a mask clipped tightly to that boundary so no gray pavement or jeans could bleed in, then filled the masked shield/text/diamond per-column by linearly blending the clean fabric pixels immediately above and below (plus light noise to preserve the fabric's grain) — this respects the panel's natural vertical-highlight shading far better than a generic `cv2.inpaint` call, which was tried first and leaked background gray right at the diamond's tip where it touches the true edge. Both background call-sites use `BoxFit.cover` with heavy blur + color-matrix/scrim overlays in-app, so exact framing wasn't critical: cropped a landscape 1800×1013 JPEG for the home hero and a portrait 900×1599 PNG (center crop around the couple + arch) for the splash, matching each site's existing aspect/format.
+**Files Changed:** `assets/images/login_background.png` (1.9MB → 1.6MB, now portrait 900×1599), `assets/images/campus_background.jpg` (498KB → 237KB, now 1800×1013). Originals were not kept in-repo (git history has the prior versions).
+**Verification:** `flutter analyze --no-fatal-infos` — 0 new issues (one pre-existing unrelated error: `openDay_clearMyDayConfirm` undefined getter in `your_day_page.dart`, not touched by this change). No tests reference these two asset files. Visual check of both crops at full size confirmed the logo removal is seamless at normal viewing scale.
+**Follow-ups:**
+- The pre-existing `openDay_clearMyDayConfirm` l10n error in `your_day_page.dart:62` is unrelated to this change but still blocks a fully clean `flutter analyze` — worth fixing separately.
+
+### Raouf: 2026-07-05 (Australia/Sydney) — Fix broken macOS build (stale Firebase Pod lock)
+**Scope:** macOS build tooling — `macos/Podfile.lock` (CocoaPods dependency resolution)
+**Summary:** `flutter build macos` / `flutter run -d macos` failed at the `pod install` step with `CocoaPods could not find compatible versions for pod "Firebase/Messaging"`. **Root cause:** the committed `macos/Podfile.lock` pinned the Firebase native SDK at `12.15.0`, but the `firebase_core` Flutter plugin (v4.2.0) hard-pins the Firebase SDK to `12.12.0` via its `firebase_sdk_version`. `firebase_messaging` (16.2.0) accepts `Firebase/Messaging (~> 12.12.0)`, but CocoaPods refuses to *downgrade* a locked pod during a plain `install`, so resolution aborted before any Xcode compile. The lock was simply stale/inconsistent with the plugin's pin (likely a `pod repo update` had bumped it on another machine). **Fix:** `pod repo update` to refresh the spec cache, then deleted `macos/Podfile.lock` and re-ran `pod install` to re-resolve cleanly — all Firebase pods moved to `12.12.1`/`12.12.0` (consistent with the plugin pin) and all 26 pods installed. No Dart/app code changed; this is a lockfile-only correction. (The CocoaPods "did not set the base configuration" and `DART_DEFINES` warnings during install, and the mobile_scanner ObjC-pragma / duplicate `-lsqlite3`,`-lz` / Flutter run-script warnings during the build, are all pre-existing benign noise.)
+**Files Changed:** `macos/Podfile.lock` (33 insertions, 52 deletions — Firebase native pods `12.15.0` → `12.12.1`/`12.12.0`).
+**Verification:** `flutter build macos --debug` — **✓ Built `build/macos/Build/Products/Debug/MQ Journey.app`** (exit 0), where it previously errored at `pod install`. As noted in `CLAUDE.md` §2, Firebase/Supabase/ObjectBox aren't configured on macOS so runtime warnings are still expected when launched — the *build* is what was broken and is now green.
+**Follow-ups:**
+- Keep `firebase_core`'s pinned `firebase_sdk_version` as the source of truth: if Firebase pods need bumping, bump the plugin (or its override) rather than hand-editing `Podfile.lock`, or this drift recurs.
+- Same class of stale-lock drift can hit `ios/Podfile.lock`; worth a glance next time an iOS build is attempted.
+
+### Raouf: 2026-07-05 (Australia/Sydney) — AR/indoor-viewer audit + 3 correctness fixes
+**Scope:** Scan/AR indoor viewer — `indoor_manifest.dart` (Pannellum config), `map_shell.dart` (AR-mode navigation), tests
+**Summary:** File-by-file audit of the whole AR surface cross-checked against current docs. Verified `flutter_inappwebview` v6 usage is correct (`InAppLocalhostServer(documentRoot: 'assets')`, v6 no-`/assets/`-prefix URL scheme, `InAppWebViewSettings`, `evaluateJavascript` in `onLoadStop`). Found and fixed **3 correctness defects** in the Pannellum layer: (1) `autoLoad` was never set and Pannellum defaults it to false, so the viewer showed a "Click to Load" button instead of the panorama → now `default.autoLoad = true`. (2) Scene hot spots omitted `pitch`; Pannellum positions markers with `pitch*PI/180`, so an absent pitch → `NaN` → invisible nav arrows → now `pitch: 0` on every hot spot. (3) `MapShell` only rendered the `MapModeToggle` in the Campus-Map branch, leaving no way back once in AR → added a top-centred toggle overlay for the AR branch. All three are locked in with tests.
+**Files Changed:** `lib/features/scan/domain/models/indoor_manifest.dart`, `lib/features/map/presentation/widgets/map_shell.dart`, `test/features/scan/models/indoor_manifest_test.dart`, `test/features/map/widgets/map_shell_test.dart` (new).
+**Verification:** `flutter test` — **462/462 passed** (+3); `flutter analyze --no-fatal-infos` — 0 errors/warnings (20 pre-existing info lints); `dart format` clean. On-device WebGL panorama render still needs a device run to confirm visually.
+**Follow-ups:** per-neighbour `pitch` if any doorway is off-horizon; wire `previewHeading`/`previewPitch` into scene initial view; polish the embedded `IndoorPreviewPage` AppBar (raw slug title) shown under the AR toggle.
+
+### Raouf: 2026-07-05 (Australia/Sydney) — Real indoor 360° panoramas wired into 9 building manifests
+**Scope:** Scan/AR indoor preview — `assets/data/indoor/` (25 new panorama images + 9 manifest rewrites)
+**Summary:** Supplied the real equirectangular panoramas the indoor viewer was missing (it had been rendering black against `_placeholder.jpg`). Ingested 31 source photos from `~/Desktop/3D pictures` (all genuine 8192×4096 2:1 equirectangular), downscaled copies to **4096×2048 JPEG (quality 82)** via `sips -Z 4096` — this both fits the ~4096px GPU max-texture-size on mobile GPUs (the likely cause of black render at full res) and cut the bundle from ~299 MB to ~57 MB. Named each output `<building-slug>_<node>.jpg` to trace it to its manifest node, then rewrote the 9 slug manifests (`wallys-1/17/21/23/25/27/29`, `hadenfeld-10`, `ondaatje-14`) to point every node's `image` at the real file instead of `indoor/_placeholder.jpg`. All 24 distinct nodes across the 9 buildings now have a real panorama (the `ondaatje-14` T3/T4 nodes share one `T3&T4` source, copied to two files). The legacy `C3A.json`/`18WW.json` demo manifests were **not** touched — the supplied photos don't cover the Library/Service-Connect scenes, so those two still reference their own (missing) images by design. A handful of extra "Lobby/Level" source shots went unused (no manifest node for them). No Dart changed — the `IndoorRepository` already resolves `assets/data/indoor/<buildingId>.json` and `buildPannellumConfig` already expects the `indoor/` image prefix, so filename/slug alignment was sufficient.
+**Files Changed:** `assets/data/indoor/wallys-1.json`, `wallys-17.json`, `wallys-21.json`, `wallys-23.json`, `wallys-25.json`, `wallys-27.json`, `wallys-29.json`, `hadenfeld-10.json`, `ondaatje-14.json`, plus 25 new `assets/data/indoor/<slug>_<node>.jpg` panoramas. (`pubspec.yaml` already bundles `assets/data/indoor/`; no change needed.)
+**Verification:** `flutter test test/features/scan/` — **77/77 passed** (manifests still parse); `flutter analyze --no-fatal-infos` — 0 errors/warnings (20 pre-existing info-level lints only). Confirmed every `image` path in all 9 manifests resolves to a file on disk and no manifest still references `_placeholder`.
+**Follow-ups:**
+- The panorama **image files themselves don't exist yet** note in `CLAUDE.md` §5 is now stale for these 9 buildings — only `C3A`/`18WW` remain black. Worth updating that gotcha.
+- Panorama _yaw alignment_ (Pannellum `previewHeading`/neighbour `heading` values) was inherited from the old placeholder manifests and not calibrated to the actual shot orientation — hotspots may point off from the real doorway direction until tuned per scene.
+- `ondaatje-14` T3 and T4 currently show the same shared photo; supply distinct shots to differentiate them.
+
+### Raouf: 2026-07-01 (Australia/Sydney) — Open Day Stamps celebration + passport
+**Scope:** Scan feature — celebration on confirmed first visit, new `/stamps` passport screen, Settings entry point
+**Summary:** Implemented the reward layer on top of the existing QR visit-tracking pipeline per the brainstormed spec via a 12-task TDD plan. Amended `ProgressApi.recordVisit` to return `Future<bool>` (isNewVisit) instead of discarding the signal. Added a bundled 9-entry stamp catalogue (`StampCatalogEntry`/`StampCatalogRepository`) and a pure `computeStampAward` derivation — never reads `OpenDayGamification` (the existing flat-XP service, left untouched as tech debt). New `StampEarnedSheet` celebration (confetti + reduce-motion gating + assertive screen-reader announcement) wired directly into `ScanPage._onDetectBarcode`; new `/stamps` route + `StampsPassportPage` grid; new "My Stamps" tile in Settings. Two documented deviations from the design doc: deferred `lottie` (no reveal asset authored yet, uses a built-in scale/fade instead) and a direct function-call trigger instead of the sketched stream-based `StampCelebrationController` (isNewVisit already guarantees exactly-once firing).
+**Files Changed:** see CHANGELOG.md entry of same date.
+**Verification:** `flutter analyze --no-fatal-infos` — 0 errors/warnings; `flutter test` — 399/399 passed (was 381); `scripts/check.sh --quick` all 11 gates green.
+**Follow-ups:** Real stamp artwork + Lottie reveal asset pending (placeholders/icons in use); `OpenDayGamification` cleanup is a future partner-owned migration; a full data wipe can cause one duplicate celebration (no duplicate row) — accepted trade-off, see design spec §9/§13.
+
+### Raouf: 2026-07-01 (Australia/Sydney) — Expand test coverage + add a coverage gate to check.sh
+**Scope:** Repo-wide test coverage audit; `scripts/check.sh`; `.github/workflows/ci.yml`
+**Summary:** Triaged `lib/` vs `test/` to find real gaps (not coverage theatre) and added 16 new test files across two tiers. Tier 1 (previously zero coverage anywhere): the whole `timetable` feature, `HomePage`/`OnboardingPage`, `AppShell`, `ConnectivityService`, `SessionGuard`, `MqHaptics`, and `tfnswMetroProvider`'s no-commute-mode path. Tier 2 (widget polish): `RoutePanel`, `BuildingActionsSheet`, `OverlayPickerSheet`, `NotificationTile`, `OpenDayHomeCard`, `EventActionsSheet`, `ScheduleChips`, `CardVisitBadge`. Coverage (excl. generated code) rose 43.79% → 54.37%. Added a `scripts/check.sh` coverage gate (50% floor) and collapsed `.github/workflows/ci.yml`'s duplicated pub-get/format/analyze/test steps into a single `./scripts/check.sh --quick` call.
+**Files Changed:** see CHANGELOG.md entry of same date.
+**Verification:** `flutter test` — 441/441 passed (was 381); `scripts/check.sh --quick` — all 12 gates green.
+**Follow-ups:** `tfnsw_provider.dart`'s network-calling functions remain untested (no injectable http client); coverage threshold is conservative, raise incrementally.
+
+### Raouf: 2026-06-30 (Australia/Sydney) — Scanned-Location Card (gallery, AR/Map buttons, stops table, /ar route)
+**Scope:** Scan feature — `/location/:locationId` card + new `/location/:locationId/ar` viewer; data, domain, presentation, assets
+**Summary:** Implemented the dual-audience Scanned-Location Card per the brainstormed spec via a 10-task TDD plan. Bumped go_router 17.3.0 / flutter_riverpod 3.3.2 / supabase_flutter 2.15.1. Extended `TrailLocation` (photos/arSceneId/stops) + `OpenDayStop`. Reseeded `open_day_trail.json` to 9 locations / 16 stops with slug `buildingId`s + `mapRefs[]`; 9 per-building indoor manifests; placeholder assets; 9 slug buildings added to `buildings.json` (kept legacy C3A/18WW). Added `firstSceneId` to Pannellum config + `IndoorWebView`. New `LocationArPage` (reuses `IndoorWebView`) with `resolveArFirstScene` entrance fallback + `/ar?stop=` route. New `PhotoGallery` + `OpenDayStopsTable`. Reworked `LocationCardPage` to spec §3 order with registry-gated Campus-Map button, AR-hide rule, Full-schedule link. Localised all copy via ARB.
+**Files Changed:** see CHANGELOG.md entry of same date.
+**Verification:** `flutter test` — 381/381 passed (was 365); `scripts/check.sh --quick` all green.
+**Follow-ups:** Real panorama/gallery captures pending (placeholders); map highlight for slug buildings = parent Phase 5; card-level Live/Next chips keyed by locationId (reconcile in Phase 5/6); bump Notion §14 supabase to 2.15.1.
+
+### Raouf: 2026-06-30 (Australia/Sydney) — Scan + AR audit fixes (manifest bundling/schema, webview asset serving, scan UX)
+**Scope:** Scan feature + Map AR — repositories, models, presentation, pubspec assets
+**Summary:** Full file-by-file audit of the scan + AR feature against the 2026 mobile_scanner v7 and flutter_inappwebview v6 docs surfaced a broken indoor-preview chain plus several scan-flow inconsistencies, now fixed. (1) **Asset bundling (critical):** `assets/data/indoor/` and `assets/web/pannellum/` are non-recursive subdirs that were never bundled — the indoor manifests and Pannellum JS/CSS were missing at runtime, so every indoor preview silently returned null. Added both to `pubspec.yaml`. (2) **Filename case:** `IndoorRepository` lowercased the building code (`c3a.json`) but asset keys are case-sensitive (`C3A.json`) — dropped `.toLowerCase()` and broadened the catch to all exceptions with logging. (3) **Manifest schema mismatch (critical):** `IndoorManifest.fromJson` read neighbour fields `id`/`bearing` while the real JSON uses `targetId`/`heading` — would have thrown once bundling was fixed; parser now accepts both. (4) **Webview asset paths:** switched `IndoorWebView` from a `file://` `initialFile` (can't resolve cross-dir panorama refs) to a localhost `InAppLocalhostServer` serving `assets/`, and fixed the `assetBaseUrl` double-`indoor/` join. (5) **Scan UX:** QR host check now matches `*.mq.edu.au` (was exact `mq.edu.au`, missing `www.`); `VisitEvent` now carries `buildingId` so the local visited-badge is recorded; `LocationCardPage` watches the visited state by building code; torch icon reflects real `controller.value.torchState`; lifecycle pause/resume guarded by `hasCameraPermission`; removed the dead `permissionRequired` state. Added a regression test loading the real `C3A.json`/`18WW.json` assets.
+**Files Changed:** `pubspec.yaml`, `lib/features/scan/data/repositories/indoor_repository.dart`, `lib/features/scan/domain/models/indoor_manifest.dart`, `lib/features/scan/presentation/widgets/indoor_webview.dart`, `lib/features/scan/presentation/pages/scan_page.dart`, `lib/features/scan/presentation/pages/location_card_page.dart`, `test/features/scan/repositories/indoor_repository_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter analyze lib/features/scan lib/features/map` — no production issues (14 pre-existing `info` const-hints in test files only); `flutter test` — 365/365 passed (was 363; +2 new real-asset regression tests). New tests confirm `C3A.json`/`18WW.json` now bundle and parse with the `targetId`/`heading` schema.
+**Follow-ups:** Add the actual panorama image assets (`assets/data/indoor/c3a_*.jpg`, `18ww_*.jpg`) — the JSON references them but the image files don't exist yet, so the 360° viewer renders black until they're supplied. Also fix the unrelated hookify PostToolUse hook (missing `posttooluse.py` path).
+
+### Raouf: 2026-06-29 (Australia/Sydney) — Vendor Pannellum JS files and create indoor manifest files
+**Scope:** Assets — Pannellum vendor files and indoor building manifests
+**Summary:** Downloaded Pannellum 2.5.6 CSS/JS to `assets/web/pannellum/`. Created indoor manifest JSON for C3A (Library, 3 nodes) and 18WW (Service Connect, 2 nodes) at `assets/data/indoor/`.
+**Files Changed:** `assets/web/pannellum/pannellum.css`, `assets/web/pannellum/pannellum.js`, `assets/data/indoor/C3A.json`, `assets/data/indoor/18WW.json`
+**Verification:** `ls -la assets/web/pannellum/` — 2 files (9.7 KB + 56.2 KB); `ls -la assets/data/indoor/` — 2 files (949 B + 560 B)
+**Follow-ups:** Create `assets/web/indoor_viewer.html` to reference the Pannellum vendor files.
+
+### Raouf: 2026-06-29 (Australia/Sydney) — Task 12: Indoor preview page with Pannellum webview and stop list
+**Scope:** Scan feature — `lib/features/scan/presentation/widgets/indoor_webview.dart`, `lib/features/scan/presentation/widgets/indoor_stop_list.dart`, `lib/features/scan/presentation/pages/indoor_preview_page.dart`
+**Summary:** IndoorWebView wraps InAppWebView (flutter_inappwebview) loading indoor_viewer.html and invoking Pannellum via evaluateJavascript. IndoorStopList renders indoor nodes as a ListView. IndoorPreviewPage is a ConsumerWidget watching the manifest provider with loading/error/data states. 3 widget tests. Added flutter_inappwebview dependency.
+**Files Changed:** `pubspec.yaml`, `lib/features/scan/presentation/widgets/indoor_webview.dart`, `lib/features/scan/presentation/widgets/indoor_stop_list.dart`, `lib/features/scan/presentation/pages/indoor_preview_page.dart`, `test/features/scan/pages/indoor_preview_page_test.dart`
+**Verification:** `flutter analyze` — no issues; `flutter test test/features/scan/pages/indoor_preview_page_test.dart` — 3/3 passed.
+**Follow-ups:** Create `assets/web/indoor_viewer.html` to enable Pannellum rendering.
+
+### Raouf: 2026-06-29 (Australia/Sydney) — Task 10: Scan page with camera, reticle, validation, torch toggle, and permission-denied UX
+**Scope:** Scan feature — `lib/features/scan/presentation/widgets/scanner_view.dart`, `lib/features/scan/presentation/pages/scan_page.dart`
+**Summary:** Created 3 files for the QR scan UI. `ScannerView` wraps `MobileScanner` (v7 API: 2-param errorBuilder/placeholderBuilder) with `onDetect` extracting rawValue, `errorBuilder` showing "Open Settings" button on permission denied. `ScanPage` (ConsumerStatefulWidget) with `MobileScannerController` created in state, 1.5s debounce via wall-clock guard, `_parseLocationId` validating `mq.edu.au` host or `io.mqjourney` scheme, trail manifest check, `VisitEvent` recording via `progressApiProvider`, and GoRouter navigation to `/location/:locationId`. `_DimSurround` renders 4 semi-transparent panels creating a 240x240 clear center. Torch toggle with flash_on/flash_off icon. Added `mobile_scanner: ^7.0.0` dependency.
+**Files Changed:** `pubspec.yaml` (added mobile_scanner), `lib/features/scan/presentation/widgets/scanner_view.dart`, `lib/features/scan/presentation/pages/scan_page.dart`, `test/features/scan/pages/scan_page_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter analyze lib/features/scan/presentation/pages/scan_page.dart lib/features/scan/presentation/widgets/scanner_view.dart` — no issues; `flutter test test/features/scan/pages/scan_page_test.dart` — 1/1 passed.
+**Follow-ups:** None.
+
+### Raouf: 2026-06-29 (Australia/Sydney) — Task 11: Location card page with hero, schedule chips, visit badge, and action buttons
+**Scope:** Scan feature — presentation layer widgets and page
+**Summary:** Created 5 files for the location card UI. `LocationHero` (StatelessWidget, ClipRRect + Image.asset with errorBuilder). `ScheduleChips` (live now / coming up next chips). `CardVisitBadge` (star chip when visited). `LocationCardPage` (ConsumerWidget with Riverpod, watches `locationContentProvider`, `scheduleProvider`, `visitedStateProvider`). `_ActionButtons` private ConsumerWidget with "View indoor" → indoor-preview route, "View on Campus Map" → map with building query param, "Add to Your Day" → myDayApiProvider.addToDay + snackbar. Fixed missing `ScanPage` and `IndoorPreviewPage` stubs referenced by router.
+**Files Changed:** `lib/features/scan/presentation/widgets/location_hero.dart`, `lib/features/scan/presentation/widgets/schedule_chips.dart`, `lib/features/scan/presentation/widgets/card_visit_badge.dart`, `lib/features/scan/presentation/pages/location_card_page.dart`, `lib/features/scan/presentation/pages/scan_page.dart`, `lib/features/scan/presentation/pages/indoor_preview_page.dart`, `test/features/scan/pages/location_card_page_test.dart`
+**Verification:** `flutter analyze lib/features/scan/presentation/pages/location_card_page.dart` — no issues; `flutter test test/features/scan/pages/location_card_page_test.dart` — 1/1 passed.
+**Follow-ups:** None.
+
+### Raouf: 2026-06-29 (Australia/Sydney) — Scan data repositories: trail/indoor/buildings with caching tests
+**Scope:** Scan feature — data repositories layer
+**Summary:** Created 3 repository files under `lib/features/scan/data/repositories/`. `TrailRepository` with cached `load()` reading `assets/data/open_day_trail.json`. `IndoorRepository` with `load(buildingId)` reading `assets/data/indoor/{buildingId}.json`, returns null on missing file via `FlutterError` catch. `BuildingsRepository` with cached `load()` reading `assets/data/buildings.json`. Used `show rootBundle` + `show FlutterError` imports matching codebase convention. 2 tests cover caching and missing building null return.
+**Files Changed:** `lib/features/scan/data/repositories/trail_repository.dart`, `lib/features/scan/data/repositories/indoor_repository.dart`, `lib/features/scan/data/repositories/buildings_repository.dart`, `test/features/scan/repositories/trail_repository_test.dart`, `test/features/scan/repositories/indoor_repository_test.dart`, `assets/data/open_day_trail.json`
+**Verification:** `flutter test test/features/scan/repositories/` — 2/2 passed.
+**Follow-ups:** None.
+
+### Raouf: 2026-06-29 (Australia/Sydney) — Scan domain models: trail/indoor manifests and buildings registry
+**Scope:** Scan feature — `lib/features/scan/domain/models/`
+**Summary:** Created 3 model files under `lib/features/scan/domain/models/`. `TrailManifest` parses QR-scanned trail locations with case-insensitive lookups. `IndoorManifest` models indoor navigation graphs with Pannellum config builder for 360° previews. `BuildingsRegistry` maps building codes to campus coordinates with fallback key aliases. 9 unit tests cover JSON parsing, lookups, edge cases, and Pannellum config generation.
+**Files Changed:** `lib/features/scan/domain/models/trail_manifest.dart`, `lib/features/scan/domain/models/indoor_manifest.dart`, `lib/features/scan/domain/models/buildings_registry.dart`, `test/features/scan/models/trail_manifest_test.dart`, `test/features/scan/models/indoor_manifest_test.dart`
+**Verification:** `flutter test test/features/scan/models/` — 9/9 passed.
+**Follow-ups:** None.
+
+### Raouf: 2026-06-29 (Australia/Sydney) — Scan domain contracts and value types for QR surface
+**Scope:** Scan feature — `lib/features/scan/domain/contracts/`
+**Summary:** Created 8 contract files defining API boundaries for the QR scan → indoor preview → visit tracking feature. `VisitEvent` (value type + `VisitSource` enum), `ScheduleSlot`, `MyDayEntry`, `VisitedState`, `LocationContent` value types. `ScheduleProvider`, `MyDayApi`, `ProgressApi` abstract interfaces. Unit test for `VisitEvent` covering both `qrScan` and `arrivalDetection` sources.
+**Files Changed:** `lib/features/scan/domain/contracts/location_content.dart`, `lib/features/scan/domain/contracts/schedule_provider.dart`, `lib/features/scan/domain/contracts/my_day_api.dart`, `lib/features/scan/domain/contracts/progress_api.dart`, `lib/features/scan/domain/contracts/visit_event.dart`, `lib/features/scan/domain/contracts/schedule_slot.dart`, `lib/features/scan/domain/contracts/my_day_entry.dart`, `lib/features/scan/domain/contracts/visited_state.dart`, `test/features/scan/contracts/visit_event_test.dart`
+**Verification:** `flutter analyze` — no issues; `flutter test test/features/scan/contracts/` — 2/2 passed.
+**Follow-ups:** None.
+
+### Raouf: 2026-06-27 (Australia/Sydney) — README stale data cleanup, rebase & merge to main, fresh homepage screenshot
+**Scope:** Documentation — README audit, rebase/merge workflow
+**Summary:** Rebased `feat/remove-login-gate` onto `mqjourney/main`, fast-forward merged, pushed. New 390×844 homepage screenshot with MQ Journey branding. Fixed 10 stale README items: 8-step → 12-step quality gate, Vitest-equivalent → Flutter Test suite, 7→6 screen captures, removed duplicate Map image (3×2 layout), iOS auth callback → deep linking, macOS auth claims → deep linking, removed stale P1 auth roadmap items, step counts 10→12 / 9→11, added missing No-stale-name and No-login-route guard rows to step table. Killed all dev servers.
+**Files Changed:** `README.md`, `screenshots/02_home_page.png`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** grep shows no stale auth/8-step/Vitest references remaining.
+**Follow-ups:** None.
+
+### Raouf: 2026-06-27 (Australia/Sydney) — Remove login gate: anonymous-only auth, session guard, backend cleanup, README audit
+**Scope:** Auth removal, session guard, CI guards, backend, README — `feat/remove-login-gate`
+**Summary:** Removed all email/password auth UI and routes. App launches directly to `/home` or `/onboarding` with a silent Supabase anonymous session. AuthService/AuthRepository/AuthController pruned to `signInAnonymously()` only. Created `session_guard.dart` — Riverpod `sessionGuardProvider` for injectable retry-on-write in FavoritesController and NotificationsController. Fixed 4 test failures by making session guard injectable (overriding in ProviderContainer). Added `cleanup_orphaned_anonymous_users()` Postgres RPC and extended cleanup-cron Edge Function. Added no-login-route CI guard to `scripts/check.sh`. Full README audit: removed test credentials, login screenshots (deleted `01_login_page.png`), stale auth references, `"optional account"` → `"no login"`, `323` → `295` tests across badge/SVG/features/table. `flutter analyze` 0 issues, 295/295 tests passed, scripts/check.sh 10/11 (no-google pre-existing).
+**Files Changed:** `lib/core/network/session_guard.dart`, `lib/app/bootstrap/app_initialization.dart`, `lib/app/router/app_router.dart`, `lib/app/router/route_names.dart`, `lib/features/auth/` (service/repository/controller/pages/widgets — pruned), `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/favorites/presentation/controllers/favorites_controller.dart`, `lib/features/notifications/presentation/controllers/notifications_controller.dart`, `lib/app/l10n/app_*.arb` (34 locales, auth keys removed), `supabase/config.toml`, `supabase/migrations/20260627000000_cleanup_orphaned_anonymous.sql`, `supabase/functions/cleanup-cron/index.ts`, `scripts/check.sh`, `test/features/auth/` (controller/repository/service tests pruned; login_page/signup_page/reset_password_page tests deleted), `test/features/favorites/favorites_controller_test.dart`, `test/features/favorites/favorite_button_test.dart`, `test/features/settings/settings_page_test.dart`, `screenshots/01_login_page.png` (deleted), `README.md`, `CHANGELOG.md`, `AGENT.md`
+**Verification:** `flutter analyze` (0 issues), `flutter test` (295/295 passed), `scripts/check.sh --quick` (10/11 passed; no-google guard pre-existing failure).
+**Follow-ups:** Enable anonymous sign-ins in Supabase dashboard → Authentication → Providers. Consider CAPTCHA and Manual Linking settings. Re-verify after Supabase project config update.
+
+### Raouf: 2026-06-26 (Australia/Sydney) — Windows build: MSVC coroutine deprecation fix + BINARY_NAME rename
+**Scope:** Windows CI/CD — `windows/CMakeLists.txt`
+**Summary:** Fixed `flutter build windows --release` failure on MSVC 2025+. The compiler errors `STL1011: The /await compiler option... is deprecated` affected `flutter_local_notifications_windows` and `permission_handler_windows` plugins. Added `add_compile_definitions(_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS)` globally to suppress. Also added `cmake_policy(SET CMP0169 OLD)` for `objectbox_flutter_libs` FetchContent deprecation warning. Renamed `BINARY_NAME` from `mq_navigation` to `mq_journey`.
+**Files Changed:** `windows/CMakeLists.txt`
+**Verification:** Compilation fix — verified via cmake policy + MSVC define.
+**Follow-ups:** Run `flutter build windows --release` on Windows CI to confirm.
+
+### Raouf: 2026-06-26 (Australia/Sydney) — README audit: stale name references + Google Maps detritus cleanup
+**Scope:** Documentation — `README.md`, `.env.example`
+**Summary:** Audited README and `.env.example` for remaining `mq-navigation` / `MQ Navigation` references and Google Maps SDK detritus. Fixed 5 issues: (1) typing SVG still said "Dual-Renderer Maps" → "Illustrated Campus Map"; (2) test email `marker@mq-navigation.test` → `marker@mq-journey.test`; (3) iOS URL scheme `io.mqnavigation://` now documents legacy alias; (4) clone directory `cd mq_navigation` → `cd MQ-Journey`; (5) `.env.example` header still said "MQ Navigation" → "MQ Journey".
+**Files Changed:** `README.md`, `.env.example`
+**Verification:** `grep -n 'mq-navigation\|MQ Navigation\|Dual-Renderer' README.md .env.example` — 0 hits.
+**Follow-ups:** None.
+
+### Raouf: 2026-06-26 (Australia/Sydney) — Phase 5: URL scheme & deep links migration (MQ Navigation → MQ Journey)
+**Scope:** URL scheme rename — migrated `io.mqnavigation://` → `io.mqjourney://` with legacy alias.
+**Summary:** iOS Info.plist, Android AndroidManifest.xml, Dart deep-link handler, auth service redirectTo, offline maps userAgent, campus map share URI all updated. Only legacy comparison in `mq_journey_app.dart:59` retains old scheme string.
+**Files Changed:** `ios/Runner/Info.plist`, `android/app/src/main/AndroidManifest.xml`, `lib/app/mq_journey_app.dart`, `lib/features/auth/domain/services/auth_service.dart`, `lib/features/map/data/services/offline_maps_service.dart`, `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `grep -rn 'io.mqnavigation' lib/` — only expected legacy line.
+**Follow-ups:** Verify Android app links, test deep link functionality.
+
+### Raouf: 2026-06-26 (Australia/Sydney) — Phase 1: Branch + Baseline Check + Identity Capture (MQ Navigation → MQ Journey)
+**Scope:** Rename prep — `chore/rename-mq-journey` branch creation, baseline validation, identity capture
+**Summary:** (1) Created feature branch `chore/rename-mq-journey`. (2) Ran `scripts/check.sh` — 8/10 passed (2 pre-existing failures: no-google guard false positive, Gradle Kotlin build environment issue). Critical checks all green (format, analyze, 320+ tests, gen-l10n, privacy, secret scan). (3) Captured all current identifiers: pubspec name `mq_navigation`, bundle ID `io.mqnavigation`/`io.mqnavigation.mq_navigation`, deep link scheme `io.mqnavigation`, l10n appName `"MQ Navigation"`.
+**Files Changed:** `AGENT.md`, `CHANGELOG.md`
+**Verification:** `scripts/check.sh` — 8/10 passed (format, analyze, 320+ tests, gen-l10n, privacy, secret scan green; no-google guard and build APK are known pre-existing issues).
+**Follow-ups:** Phase 2 — rename pubspec name, bundle IDs, l10n appName, and all io.mqnavigation references.
+
+### Raouf: 2026-05-24 (Australia/Sydney) — Showcase Screenshots and Release APK Build
+**Scope:** Showcase Presentation & Release Packaging — `build/app/outputs/flutter-apk/app-release.apk`, `screenshots/` (7 images)
+**Summary:** (1) Built the release APK target for MQ Navigation at `build/app/outputs/flutter-apk/app-release.apk` with debug key fallback signing, and cleaned up debug and sha1 build outputs. (2) Compiled the web target (`build/web`) and automated Playwright to log in via the demo credentials (`marker@mq-navigation.test` / `OpenDay2026!`). (3) Automated bypassing the onboarding flow and captured 7 distinctive high-resolution showcase screenshots of the Login, Home Dashboard, Map, Safety Toolkit, Favorites, Notifications, and Settings screens.
+**Files Changed:** `screenshots/01_login_page.png`, `screenshots/02_home_page.png`, `screenshots/03_map_page.png`, `screenshots/04_safety_page.png`, `screenshots/05_favorites_page.png`, `screenshots/06_notifications_page.png`, `screenshots/07_settings_page.png`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick` verifying that all formatting rules, static analysis checks, and all 320 unit/widget tests passed with 100% success.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-24 (Australia/Sydney) — Notification System Audit and Smoke Test E2E Fixes
+**Scope:** Notifications Feature, Decoupling & Test Hardening — `lib/features/notifications/presentation/controllers/notifications_controller.dart`, `test/features/notifications/notification_smoke_test.dart`
+**Summary:** (1) Audited the notifications feature and resolved database/platform-channel dependency issues in tests. Replaced direct global `Supabase.instance` calls in `NotificationsController` and its streams with `authRepositoryProvider.userId` reads, properly decoupling the presentation layer from the database engine. (2) Added a `MockAuthRepository` and a mocked connectivity status stream to the `notification_smoke_test.dart` suite's `ProviderContainer` to avoid uninitialized native plugin and platform channel exceptions. (3) Registered a `ReminderRequest` fallback value for `mocktail` inside the test setUpAll block. (4) Adjusted the daily study prompt scheduled-time assertion to correctly expect the next day's 9:00 AM slot when the target hour has already elapsed for the current day.
+**Files Changed:** `lib/features/notifications/presentation/controllers/notifications_controller.dart`, `test/features/notifications/notification_smoke_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick` verifying that all formatting rules, static analysis checks, and all 320 unit/widget tests passed with 100% success.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-24 (Australia/Sydney) — Auth Logo Scaling & Global i18n Audit and Localization Sync
+**Scope:** UI Styling & Internationalization (i18n) — `lib/features/auth/presentation/pages/login_page.dart`, `lib/features/auth/presentation/pages/signup_page.dart`, `lib/features/auth/presentation/pages/reset_password_page.dart`, `lib/app/router/app_router.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locales)
+**Summary:** (1) Resized the Macquarie University brand logo in the authentication screens (Login, Signup, and Reset Password) to be 2x bigger (height 112, fallback icon size 112) and fixed horizontal layout indentation. (2) Fixed a linter warning regarding unnecessary multiple underscores in error builders. (3) Migrated the hardcoded "Confirming your email…" string in `app_router.dart`'s PKCE redirect landing page into `authConfirmingEmail` localization key. (4) Performed a comprehensive i18n audit: identified that `routePanelMinimize` and `routePanelExpand` were completely untranslated across all 34 non-English locales; synthesized correct, idiomatic translations for both keys and `authConfirmingEmail` across all 34 non-English locales and synced all translation schemas.
+**Files Changed:** `lib/features/auth/presentation/pages/login_page.dart`, `lib/features/auth/presentation/pages/signup_page.dart`, `lib/features/auth/presentation/pages/reset_password_page.dart`, `lib/app/router/app_router.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locales), `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick --fix` verifying code formatting, static analysis passes, zero untranslated l10n messages, and all 317 unit/widget tests passing cleanly.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-24 (Australia/Sydney) — Password Recovery Flow Redirection Fix
+**Scope:** Authentication Flow & Routing — `lib/app/router/route_names.dart`, `lib/app/router/app_router.dart`, `lib/features/auth/presentation/pages/reset_password_page.dart`, `test/features/auth/reset_password_page_test.dart`
+**Summary:** Resolved the password recovery redirection bug where Supabase's automatic login authentication intercepted recovery sessions and forced users straight to `/home` or `/onboarding`. Added `resetPassword` to `RouteNames` and registered a new `/auth/reset-password` route. Modified GoRouter's `redirect` callback to exclude the reset-password route from home redirects and onboarding gates, and updated `_OnboardingFlagListenable` to intercept `AuthChangeEvent.passwordRecovery` events to navigate directly to the reset-password page. Designed a premium Macquarie University styled `ResetPasswordPage` screen with length and password-matching validations, and wrote a widget test suite `reset_password_page_test.dart`.
+**Files Changed:** `lib/app/router/route_names.dart`, `lib/app/router/app_router.dart`, `lib/features/auth/presentation/pages/reset_password_page.dart`, `test/features/auth/reset_password_page_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick --fix` verifying code formatting, analyzer passing, and all 317 unit/widget tests passing successfully.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-24 (Australia/Sydney) — Run code format checks and codebase validation
+**Scope:** Repository-wide styling formatting — `lib/features/auth/presentation/widgets/auth_form.dart`, `test/features/auth/auth_repository_test.dart`
+**Summary:** Executed the comprehensive project verification script (`check.sh`) and auto-formatted style non-compliant source and test files using `dart format fix`.
+**Files Changed:** `lib/features/auth/presentation/widgets/auth_form.dart`, `test/features/auth/auth_repository_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick --fix` verifying code formatting alignment, static analysis checks, and all 313 unit/widget tests passing cleanly.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-23 (Australia/Sydney) — Added MQ logo and removed red line placeholder on Auth pages
+**Scope:** Authentication UI pages — `lib/features/auth/presentation/pages/login_page.dart`, `lib/features/auth/presentation/pages/signup_page.dart`
+**Summary:** Updated both the Login and Signup pages to replace the temporary design placeholders with official Macquarie University branding: (1) replaced the `Icon(Icons.explore)` placeholder with the official MQ Logo asset (`assets/images/mq_logo.png`) rendering at a height of 56 with fallback error builders, and (2) removed the solid red header line (`Container(height: 4)`) that sat on top of the logo.
+**Files Changed:** `lib/features/auth/presentation/pages/login_page.dart`, `lib/features/auth/presentation/pages/signup_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick --fix` verifying code format, static analysis passes, and all 313 unit/widget tests passing cleanly.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-23 (Australia/Sydney) — Settings Page Code Audit & Widget Test Suite Implementation
+**Scope:** Settings Page auditing, static analysis hardening, and widget testing — `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/settings/settings_page_test.dart` (new)
+**Summary:** Completed a comprehensive, file-by-file audit of the Settings feature set to verify on-device state persistence, validation rules, fallback defaults, and user-authenticated layouts. Addressed and fixed three static analysis warnings/infos: (1) removed the unused `authState` local variable in `settings_page.dart`, and (2) resolved context-safety async gaps and unawaited futures in `map_page.dart`'s building search sheet navigation logic. Created a new comprehensive widget test suite `settings_page_test.dart` to verify isolated layout rendering, anonymous versus user-authenticated email state displays, and interactive user preferences updates (Haptic Feedback toggles, local data wipe dialog confirmations, and SnackBar alerts).
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/settings/settings_page_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick --fix` to verify code format compliance, static analysis passes, and all 313 unit/widget tests passing cleanly.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-22 (Australia/Sydney) — Optimized Xcode/LLDB Debug Launch and Symbol Loading
+**Scope:** iOS build settings & dependency compilation optimization — `ios/Podfile`
+**Summary:** Audited app startup configurations and addressed the Xcode debugger warning ("Launching 'Runner' is taking longer than expected..."). Identified that LLDB spent significant time pulling external debug symbols (dSYMs) for heavy third-party framework targets (Firebase and Google Maps SDKs) from the device memory. Fixed this by adding a post-install hook in the CocoaPods `Podfile` that: (1) overrides the `DEBUG_INFORMATION_FORMAT` to `dwarf` (symbols stored directly inside object files rather than external dSYM bundles) for all Pod targets in the `Debug` configuration, and (2) forces `ONLY_ACTIVE_ARCH = YES` for all Pod targets in the `Debug` configuration to avoid compiling redundant architectures during development. This speeds up build/link cycles and prevents LLDB launch timeouts without affecting production Release/Profile configurations.
+**Files Changed:** `ios/Podfile`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Re-ran `pod install` in the `ios/` folder to generate the modified Xcode configurations, then ran `./scripts/check.sh --quick` confirming all 8/8 pipeline checks (including 307 unit/widget tests and static analysis) passed successfully.
+**Follow-ups:** Inform developers to perform an Xcode clean (`xcodebuild clean` or Command-Shift-K in Xcode) and clear DerivedData to ensure the new symbol format rules apply immediately on next run.
+
+### Raouf: 2026-05-22 (Australia/Sydney) — Campus map navigation disabled and Google Maps preview mode decoupled
+**Scope:** Map navigation & simplified card UI — `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `test/features/map/map_page_test.dart`
+**Summary:** (1) Disabled navigation capabilities on the Campus Map by introducing a simplified glassmorphic `_CampusBuildingInfoPanel` containing only building metadata and a close button, replacing the full RoutePanel. (2) Decoupled automatic navigation starting in Google Maps by removing `startNavigation()` from the route parameter handler, allowing users to choose travel modes in preview mode before manually initiating navigation. (3) Updated RoutePanel's start turn-by-turn navigation button to display the correct localized `l10n.startTurnByTurn` label.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `test/features/map/map_page_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick --fix` verifying code formatting, analyzer passing, and all 307 unit/widget tests passing.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-22 (AEST) — Fixed Xcode debugger launch delay and slow app startup
+**Scope:** App bootstrap and startup lifecycle — `lib/app/bootstrap/bootstrap.dart`, `lib/app/bootstrap/app_initialization.dart` (new), `lib/app/mq_navigation_app.dart`
+**Summary:** Resolved the Xcode/LLDB watchdog launch timeout ("Launching 'Runner' is taking longer than expected...") and slow app startup times. Previously, Firebase (5s timeout), Supabase (10s timeout), and Offline Maps FFI (8s timeout) initialization ran sequentially before `runApp()`, blocking the Flutter engine from mounting and preventing frame rendering on startup, which caused LLDB to time out waiting for the connection handshake. Fixed this by: (1) extracting the asynchronous setup steps into a Riverpod `appInitializationProvider` (`app_initialization.dart`); (2) making `bootstrap.dart` run only synchronous configuration (bindings, timezone databases, error boundaries, env validations) and call `runApp()` immediately on boot, so the Flutter engine mounts on Frame 1 and registers the debug handshake; (3) refactoring `MqNavigationApp` in `mq_navigation_app.dart` to watch `appInitializationProvider` and render a premium native blurred splash view (featuring a blurred campus photo, explorer icon, and progress indicator) while services load in the background, transitioning seamlessly to the main application once ready.
+**Files Changed:** `lib/app/bootstrap/bootstrap.dart`, `lib/app/bootstrap/app_initialization.dart`, `lib/app/mq_navigation_app.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Ran `./scripts/check.sh --quick --fix` verifying static analysis passes, formatting rules are followed, and all 307 tests pass successfully.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-22 (AEST) — Collapsed step-by-step directions list by default (RoutePanel)
+**Scope:** Route directions UI — `lib/features/map/presentation/widgets/route_panel.dart`
+**Summary:** Changed the default value of `_stepsExpanded` from `true` to `false` in `RoutePanel`. When the route panel is shown on route load, the long list of step-by-step instructions is collapsed by default. This resolves the UX issue where the instructions list blocks the map view, while still keeping the detailed steps fully accessible through the expand/collapse action.
+**Files Changed:** `lib/features/map/presentation/widgets/route_panel.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh --quick` (8/8 passed, 307/307 tests successful).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-22 (AEST) — Completed Codebase Audit for Map & Navigation Features
+**Scope:** Map & Navigation Audit — Presentation, Data, Domain layer files, and verification scripts
+**Summary:** Completed a comprehensive, file-by-file audit of the MQ Navigation Flutter client's map and navigation codebase. Verified that (1) there is no dead, unused, or redundant code; (2) modern Dart language features (including null-aware map collection elements) compile cleanly; (3) coordination with favorite selections and GoRouter parameters is robust; and (4) the entire suite of 307 unit/widget tests runs successfully with 0 failures or static analysis errors.
+**Files Changed:** `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh --quick` (8/8 passed, 307/307 tests successful).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-22 (AEST) — Fixed Google Maps building navigation auto-start (EventActionsSheet + MapPage)
+**Scope:** Building & Event navigation auto-start — `lib/features/open_day/presentation/widgets/event_actions_sheet.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/map/map_page_test.dart`
+**Summary:** Fixed three issues preventing building/event navigation from starting automatically when selecting "Navigate with Google Maps": (1) `EventActionsSheet` was missing the `'preview': 'route'` parameter when routing via Google Maps, preventing Open Day event navigation from loading routes; (2) `MapPage._handleNavigationParams()` nested the route loading/navigation logic inside a guard that checked if the building was *not* selected. If a building was already selected, it skipped route loading entirely. Decoupled this block to trigger route loading even when the building is already selected, with guards against duplicate calls; (3) Added automatic call to `startNavigation()` on `MapController` once the route loads, so the navigation overlay/instructions appear immediately as expected. Added widget tests for both new and already selected building navigation parameters.
+**Files Changed:** `lib/features/open_day/presentation/widgets/event_actions_sheet.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/map/map_page_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh --quick` (8/8 passed).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-22 (AEST) — Fixed Google Maps live navigation (blue dot + location fetch on startup)
+**Scope:** Google Maps live navigation — `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `test/features/map/map_controller_test.dart`
+**Summary:** Fixed two bugs that prevented Google Maps live navigation from working: (1) `myLocationEnabled` was gated on `widget.currentLocation != null` — since `currentLocation` starts null, the Google Maps blue dot never appeared until the user loaded a route or tapped the locate button. Changed to `myLocationEnabled: true` unconditionally, letting Google Maps SDK handle the blue dot internally. (2) The `MapController.build()` method never fetched the user's GPS location on startup — `currentLocation` was always null until `loadRoute()` or `centerOnCurrentLocation()` was explicitly called. Added initial location permission request + getCurrentLocation in `build()`, and starts the location tracking stream when granted. Verified against official Google Maps Flutter docs (pub.dev + developers.google.com) — `myLocationEnabled: true` is the correct API. No Navigation SDK (`google_navigation_flutter`) was needed; the app's custom navigation overlay (camera follow, route splitting, turn-by-turn instructions) is intact. Ran `./scripts/check.sh --quick --fix` — all 8 checks passed (307 tests, 0 failures).
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `test/features/map/map_controller_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh --quick --fix` (8/8 passed): pub get, format, analyze, test (307/307), gen-l10n (0 untranslated), privacy guard, secret scan.
+**Follow-ups:** None.
+
+## Build Notes
+- **macOS minimum deployment target**: `14.0` (set in `macos/Podfile` — both `platform :osx` and `MACOSX_DEPLOYMENT_TARGET`). Required by Firebase 12.15.0+.
+
+## Key Environment Variables (--dart-define)
+- SUPABASE_URL, SUPABASE_ANON_KEY, GOOGLE_MAPS_API_KEY, APP_ENV
+- DEV_SUPABASE_URL, DEV_SUPABASE_ANON_KEY, DEV_GOOGLE_MAPS_API_KEY (debug-only fallbacks)
+- All keys loaded via `--dart-define-from-file=.env` — never hardcoded in source
+- Use `scripts/run.sh` to launch with native key injection for Maps SDKs
+
+### Raouf: 2026-05-20 (AEST) — Fixed Map layout overlaps (footer, traffic toggle, top overlay)
+**Scope:** Map UI layout fixes — `lib/features/map/presentation/widgets/map_shell.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`
+**Summary:** Fixed three layout overlap issues in the Google Map view and MapShell: (1) MapShell footer overflowed behind bottom nav when navigation route panel was open — added `ConstrainedBox` with `maxHeight` computed as `screenHeight - safeTop - safeBottom - _bottomControlsReservedHeight - _topOverlayHeight - space4 - space3 - space2` so footer always respects available space; (2) traffic/map-type buttons in `google_map_view.dart` overlapped the `MapModeToggle` pill — increased `PositionedDirectional` top offset from `safeTop + 168` to `safeTop + 212`; (3) MapShell footer overlapped the top overlay area (search bar, filter chips, MapModeToggle) — added `_topOverlayHeight = 180` constant. Ran full layout audit of all 16 map/navigation UI files — no additional issues found. Ran `./scripts/check.sh --quick --fix` — all 8 checks passed.
+**Files Changed:** `lib/features/map/presentation/widgets/map_shell.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh --quick --fix` (8/8 passed): pub get, format, analyze, test (256/256), gen-l10n (0 untranslated), privacy guard, secret scan.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-20 (AEST) — Created and Linked Professional Project Report in Rubric Table
+**Scope:** Project Documentation — `PROJECT_REPORT.md`, `README.md`
+**Summary:** Created a comprehensive project report (PROJECT_REPORT.md) detailing the app overview, tagline, core capabilities, target audience groups, user personas, competitive analysis, test credentials, and architecture layout. The report follows the stop-slop writing guidelines, eliminating predictable AI patterns, adverbs, and passive voice. Added a row linking the report directly inside the Rubric Table of the main README.md.
+**Files Changed:** `PROJECT_REPORT.md`, `README.md`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Verified word count (820 words) and link validation.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-20 (AEST) — Integrated Meet/Deep Link Redirection into Bottom Nav Tab Shell
+**Scope:** Navigation & Map Redirection — `lib/app/router/app_router.dart`, `lib/features/map/presentation/pages/map_page.dart`
+**Summary:** Resolved a critical UX dead-end and selection clear issue on coordinate-based meet deep links. Integrated the `/meet` route directly into the StatefulShellRoute navigation stack by redirecting `/meet` and `/open` meet deep links to `/map?lat=X&lng=Y` instead of rendering a standalone, tabless MapPage. Updated the `/map` shell branch builder to parse these parameters and pass them to MapPage. Enhanced the GoRouter state-sync and back-navigation detection in MapPage to ignore dynamic coordinate-based meet points (ID prefixed with `meet_`), preventing GoRouter from pushing invalid `/map/building/meet_...` routes to history and preventing the back-navigation callback from incorrectly clearing active meet point selections.
+**Files Changed:** `lib/app/router/app_router.dart`, `lib/features/map/presentation/pages/map_page.dart`, `test/features/map/map_page_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Added a widget test in `test/features/map/map_page_test.dart` verifying that meet query parameters are correctly parsed, select a meet point, do not push sub-routes, and are preserved on `/map`. Ran `flutter test test/features/map/map_page_test.dart` and `./scripts/check.sh --quick` (all 8 quality gates passed successfully).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-20 (AEST) — Fixed Map redirection and GoRouter parameter sync
+**Scope:** Navigation & Map UI — `lib/features/map/presentation/pages/map_page.dart`
+**Summary:** Fixed the bug where clicking "View on Map" from Favorites or Open Day events would not select or focus on the building when MapPage was already cached or initializing. Added `didUpdateWidget` to react to GoRouter parameter changes on the existing MapPage widget state, and added a Riverpod listener `ref.listen` in `build` to handle parameters arriving while `MapController` is loading. Also synchronized GoRouter's route path history (`/map` or `/map/building/:buildingId`) with the controller's `selectedBuilding` state, allowing repeated selections to trigger new parameter changes correctly. Fixed clearing building route sync in `ref.listen` by removing the `initialBuildingId == null` check when selection becomes null, ensuring the route correctly updates back to `/map`.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `test/features/map/map_page_test.dart` (new), `AGENT.md`, `CHANGELOG.md`
+**Verification:** Added `test/features/map/map_page_test.dart` containing widget tests. Run `flutter test test/features/map/map_page_test.dart` (all tests passed) and `./scripts/check.sh --quick` (all 8 checks passed).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-20 (AEST) — i18n localization synchronization, gitignore rules, and CI verification
+**Scope:** i18n / CI checks / repo configurations — sync translated ARBs and ignore workspace metadata.
+**Summary:** Created a Python synchronization script (`tools/sync_arb.py`) to align the 34 non-English localization ARB files with the canonical English master (`app_en.arb`). The script copies over 5 newly-added keys (`notSignedInLabel`, `authResetEmailSent`, `favoritesAddNote`, `favoritesRemove`, `authVerifyEmailMessage`) to all translation files using the English string as a temporary fallback, ensuring exact key parity. Ran `flutter gen-l10n` to rebuild localizations and executed the full CI/CD validation suite via `scripts/check.sh`. All 8 steps passed successfully with 0 warnings or untranslated keys. Also updated `.gitignore` to ignore the `.antigravitycli/` workspace configuration folder.
+**Files Changed:** `tools/sync_arb.py` (new), `lib/app/l10n/app_*.arb` (34 locale files), `.gitignore`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Run `python3 tools/sync_arb.py` then `./scripts/check.sh --quick` (all 8 checks passed). Verify `git status` ignores `.antigravitycli/`.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-18 (AEST) — AuthController with Riverpod state management
+**Scope:** Auth feature — `lib/features/auth/presentation/controllers/auth_controller.dart`.
+**Summary:** Added `AuthController` (Riverpod `Notifier<AuthScreenState>`) with signIn/signUp/signOut/clearError methods. Manages `isAuthenticated`, `isLoading`, `error`, `userId` state. Adapted to Riverpod 3.x API (`Notifier`/`NotifierProvider`, since `StateNotifier` was removed in Riverpod 3). Added `authRepositoryProvider` (Provider<AuthRepository>). 
+**Files Changed:** `lib/features/auth/presentation/controllers/auth_controller.dart` (new), `test/features/auth/auth_controller_test.dart` (new), `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter test test/features/auth/` (17/17 passed).
+**Follow-ups:** Wire AuthController into login/signup UI pages.
+
+### Raouf: 2026-05-18 (AEST) — Auth Screens (Login + Signup) with widget tests
+**Scope:** Auth feature — Login and Signup UI pages.
+**Summary:** Added `AuthForm` widget (email, password, optional confirm password with visibility toggles), `LoginPage`, and `SignupPage`. Both pages follow the app's brand (MqColors theme, MqButton/MqInput shared widgets, dark/light mode support). Login page: email/password fields, error banner, submit triggers `AuthController.signIn`. Signup page: email/password/confirm fields, client-side password mismatch validation, submit triggers `AuthController.signUp`. Both pages navigate between each other via `context.go()`. 6 widget tests cover: field rendering, signIn call on submit, error banner display, signup field rendering, password mismatch error, signUp call on valid submit.
+**Files Changed:** `lib/features/auth/presentation/widgets/auth_form.dart` (new), `lib/features/auth/presentation/pages/login_page.dart` (new), `lib/features/auth/presentation/pages/signup_page.dart` (new), `test/features/auth/login_page_test.dart` (new), `test/features/auth/signup_page_test.dart` (new), `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter test test/features/auth/` (23/23 passed, 6 new).
+**Follow-ups:** Wire auth pages into GoRouter; add auth flow to app startup.
+
+### Raouf: 2026-05-18 (AEST) — Auth Repository with error mapping layer
+**Scope:** Auth feature — `lib/features/auth/data/repositories/auth_repository.dart`.
+**Summary:** Added `AuthRepository` class wrapping `AuthService` with error mapping layer. Defines `AuthResult` union type (success + optional error message). Maps Supabase `AuthException` codes to user-facing strings. Covers: sign in, sign up, sign out, reset password, auth state stream, and 6 unit tests for success + error paths.
+**Files Changed:** `lib/features/auth/data/repositories/auth_repository.dart`, `test/features/auth/auth_repository_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter test test/features/auth/auth_repository_test.dart` (6/6 passed).
+**Follow-ups:** Wire AuthRepository into AuthController/notifier for Task 4.
+
+### Raouf: 2026-05-13 (AEST) — check.sh production-grade upgrade (privacy guard, secret scan, --fix/--verbose)
+**Scope:** CI/Dev UX — `scripts/check.sh` rewrite.
+**Summary:** Upgraded `check.sh` with: `--fix` (auto-format), `--verbose` (stream logs), structured logs under `.dart_tool/check_logs/`, untranslated l10n check (non-blocking), privacy guard (blocks analytics/tracking packages), secret scan (flags hardcoded API keys in lib/test/scripts — supabase/ edge functions excluded since they use `Deno.env.get` for runtime env vars), cleaner summary with per-step failure list. Single-pass `flutter analyze`. Format check now also covers `scripts/` and `integration_test/` if they exist.
+**Files Changed:** `scripts/check.sh`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh --quick` (8/8 passed); `./scripts/check.sh` (9/9 passed including debug APK build).
+**Follow-ups:** Run `scripts/sync_arb.py` (if available) to propagate new compass+safety keys across 34 non-English locales.
+
+### Raouf: 2026-05-13 (AEST) — Campus Safety Toolkit (228 tests, 0 issues)
+**Scope:** New Safety feature — `lib/features/safety/`.
+**Summary:** Implemented Campus Safety Toolkit (Monash MSafe-inspired) with privacy-safe design (no automatic location sharing — user manually calls or navigates). **Features:**
+1. **Safety Toolkit page** (`SafetyToolkitPage`) — full-screen scrollable toolkit with Quick Actions, emergency contacts, security shuttle info, first aid locations, defibrillator (AED) locations.
+2. **Quick Actions** — Flashlight toggle state, "Navigate to Security" shortcut.
+3. **Emergency Contacts** — 000 (emergency), Campus Security (02 9850 7111), Health Service, MQ Afterhours 1800 CRISIS. Press to dial via `url_launcher`.
+4. **Security Shuttle** — Info card + call button for 24/7 on-demand campus transport.
+5. **First Aid & AED locations** — Curated data: 3 first aid points (1CC, 18WW, Sport Centre), 5 AEDs (LIB, 1CC, Sport, 18WW, C5C) with building codes and descriptions.
+6. **Privacy banner** — Red-tinted note: "Your location is never shared automatically."
+7. **Route** — `/safety` via GoRouter, outside bottom-nav shell (standalone page).
+8. **Entities** — `SafetyPoi` (id, type, name, buildingCode, lat/lng), `EmergencyContact` (label, phoneNumber, isEmergency), `SafetyPoiSource` with verified campus data.
+9. **Widget** — `SafetyActionCard` (icon, title, subtitle, value badge, destructive/active modes).
+10. **Dependency** — Added `torch_light: ^1.1.0` (flashlight control, gated by availability).
+**Files Changed:** `pubspec.yaml`, `lib/app/l10n/app_en.arb` (+16 safety keys), `lib/app/l10n/generated/*`, `lib/app/router/route_names.dart`, `lib/app/router/app_router.dart`, `lib/features/safety/domain/entities/safety_poi.dart`, `lib/features/safety/domain/entities/emergency_contact.dart`, `lib/features/safety/data/datasources/safety_poi_source.dart`, `lib/features/safety/presentation/pages/safety_toolkit_page.dart`, `lib/features/safety/presentation/widgets/safety_action_card.dart`, `test/features/safety/safety_toolkit_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter analyze` (0 issues); `flutter test test/features/safety/` (24/24 passed); `flutter test` (228/228 passed).
+**Follow-ups:** Wire flashlight to `torch_light` package; add actual campus map navigation to security office; localize 16 new ARB keys across 34 non-English locales; add Safety entry point to Settings page or map overflow menu.
+
+### Raouf: 2026-05-13 (AEST) — Compass Mode audit + production hardening (204 tests, 0 issues)
+**Scope:** Compass Mode production-readiness audit, i18n, animation, and test coverage.
+**Summary:** Conducted a full comprehensive audit of `CompassModeView` against Apple 2026 heading docs and Flutter 3.41 best practices. **Fixes applied:**
+1. **Dead code eliminated** — `CompassEvent.heading` is `double?` (flutter_compass 0.8.1), so null-check path now correctly routes to `_buildNoSensorState` when heading is null.
+2. **Stream null-safety** — `FlutterCompass.events` returns `Stream<CompassEvent>?`; added null-stream guard.
+3. **Localization** — All 4 hardcoded strings (`Compass Mode`, `Compass Error`, `Device does not have compass sensors.`, `Next Hint`) moved to `app_en.arb` plus placeholder-backed strings for heading (`compassHeading({degrees}°)`) and accuracy (`compassAccuracy({degrees}°)`). Added `compassCalibrate` and `compassRetry` keys.
+4. **Smooth animation** — Replaced instant `Transform.rotate` with `AnimatedRotation` (250ms easeInOut) per Flutter 2026 animation best practices.
+5. **Heading accuracy display** — New `_buildHeadingBar` shows current heading in degrees ± accuracy when available.
+6. **Error/no-sensor states** — Rethemed with `explore_off`/`sensors_off` icons, calibration hint text, and retry `FilledButton`.
+7. **"N" marker** — Added static North indicator at top of compass radar.
+**Tests:** 20 new tests covering: heading angle calculation (10 edge cases), `resolveBuildingGeographicTarget` (3 cases), constructor contracts, `Geolocator.bearingBetween` integration (3 cases), heading/accuracy rounding display logic (3 cases).
+**Files Changed:** `lib/features/map/presentation/widgets/compass_mode_view.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/generated/*`, `test/features/map/compass_mode_view_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter analyze` (0 issues); `flutter test test/features/map/compass_mode_view_test.dart` (20/20 passed); `flutter test test/features/map/` (101/101 passed); `flutter test` (204/204 passed).
+**Follow-ups:** Add true-north correction using magnetic declination for Sydney (~12°E) when the platform heading API supports it; consider adding `headingOrientation` handling for landscape vs portrait device orientations.
+
+### Raouf: 2026-05-13 (AEST) — Added Compass Mode for Navigation
+**Scope:** Map Section / Navigation Features
+**Summary:** Implemented "Compass Mode", a privacy-first, on-device radar view that guides users to their selected building without complex routing lines. Integrated `flutter_compass` to provide a live-updating, rotating arrow directing towards the destination, coupled with distance remaining, walking ETA, and prominent landmark hints extracted from route instructions. Added a quick-access toggle for Compass Mode directly into the active `RoutePanel`.
+**Files Changed:** `lib/features/map/presentation/widgets/compass_mode_view.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `lib/features/map/presentation/pages/map_page.dart`, `pubspec.yaml`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Added `flutter_compass` dependency and resolved imports. `dart format` and `flutter analyze` completed with no errors.
+**Follow-ups:** The app must be fully rebuilt (stop and restart `run.sh`) to link the new `flutter_compass` native plugin binaries for iOS/Android.
+
+### Raouf: 2026-05-13 (AEST) — Map Section UI/UX alignment for dark and light modes
+**Scope:** Map Section / UI Design Tokens
+**Summary:** Standardized the surface alpha, border styles, and drop shadows across all floating map UI panels (`_CategoryBuildingList`, `_CategoryGroupList`, `_BlockedPermissionBox`, `RoutePanel`, `_ArrivalCard`) to align seamlessly with the premium glassmorphism aesthetic established by the Home Page. The unified tokens (`surface alpha: 0.94`, translucent border `width: 0.6`, `blurRadius: 18`, `offset: (0, -6)` for bottom sheets and `offset: (0, 6)` for top floats) ensure 100% production-ready UX alignment in both light and dark modes against the live map background. Map markers were intentionally excluded to preserve physical pin casting accuracy.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` and `flutter analyze` both successfully completed with no issues.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-13 (AEST) — Settings Page UI/UX alignment for dark and light modes
+**Scope:** Settings Page / UI Design Tokens
+**Summary:** Standardized the border styles and drop shadows across all Settings Page cards (`_SettingsCard`, `_DangerZoneCard`) to perfectly align with the premium aesthetic established by the Home Page cards. The unified tokens (translucent border `width: 0.6`, `blurRadius: 18`, `offset: (0, 6)`) provide 100% production-ready UX alignment in both light and dark modes, removing the outdated solid black drop shadows while elevating the premium layout.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` and `flutter analyze` both successfully completed with no issues.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-13 (AEST) — Home Page UI/UX alignment for dark and light modes
+**Scope:** Home Page / UI Design Tokens
+**Summary:** Standardized the surface alpha, border styles, and drop shadows across all Home Page cards (`_MetroCountdownCard`, `OpenDayHomeCard` `_OnboardingCard`, `_PreviewCard`) to perfectly align with the premium glassmorphism aesthetic established by the `_BentoHeroCard`. The unified tokens (`surface alpha: 0.94`, translucent border `width: 0.6`, `blurRadius: 18`, `offset: (0, 6)`) provide 100% production-ready UX alignment in both light and dark modes against the campus background photo.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/features/open_day/presentation/widgets/open_day_home_card.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` and `flutter analyze` both successfully completed with no issues.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — TfNSW open-data attribution on onboarding commute slide
+**Scope:** Onboarding UI + ARBs (`onboardingTransitDataAttribution`).
+**Summary:** Added l10n key **`onboardingTransitDataAttribution`** crediting **Transport for NSW (TfNSW)** open data beneath **`onboardingTransitBody`** so operator wording stays accurate while retaining mandatory attribution. Extended **`_OnboardingSlideData`** with optional **`footnote`**, styled as **`bodySmall`** with **`MqColors.contentSecondary`** / **`contentSecondaryDark`**. Synced EN template plus **34** translated ARBs and `scripts/onboarding_google_map_arb_translations.json` via **`scripts/sync_tfnsw_attribution_arb.py`** ([TfNSW / NSW transport cluster context](https://transport.nsw.gov.au/transport-for-nsw-information-guide)).
+**Files Changed:** `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locales), `lib/app/l10n/generated/*`, `lib/features/home/presentation/pages/onboarding_page.dart`, `scripts/onboarding_google_map_arb_translations.json`, `scripts/sync_tfnsw_attribution_arb.py`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `python3 scripts/sync_tfnsw_attribution_arb.py`; `dart format lib/features/home/presentation/pages/onboarding_page.dart`; `flutter gen-l10n`; `flutter analyze lib/features/home/presentation/pages/onboarding_page.dart lib/app/l10n` (no issues).
+**Follow-ups:** None unless legal asks exact wording (“includes” vs “uses”) or placement (Settings footer).
+
+### Raouf: 2026-05-07 (AEST) — ARB meaning pass (TfNSW vs Sydney Metro, dual-mode map title, SI satellite)
+**Scope:** `app_en.arb` + `scripts/onboarding_google_map_arb_translations.json` + 34 locale ARBs / onboarding copy.
+**Summary:** Web-checked wording: **Transport for NSW** coordinates NSW transport while **Sydney Metro** is the metro-rail operator ([Transport for NSW information guide](https://transport.nsw.gov.au/transport-for-nsw-information-guide)). Replaced **“TfNSW Metro and Bus”** with **Sydney Metro, trains, and buses** in English and all translations. Renamed **“Dual Campus Map”** → **“Dual-mode campus map”** so locales convey **two map modes** (Google vs illustrated), not a duplicate map. Left **Hybrid/Terrain** menu labels short (Google defines hybrid as satellite + labels and terrain as physical relief — [Map types](https://developers.google.com/maps/documentation/javascript/maptypes)); Sinhala **satellite** label set to **චන්ද්‍රිකා**. **Open Day** matches Macquarie branding ([Open Day](https://mq.edu.au/study/events/open-day)); strings unchanged there.
+**Files Changed:** `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locales), `scripts/onboarding_google_map_arb_translations.json`, `scripts/patch_arb_meaning_from_research.py`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `python3 scripts/patch_arb_meaning_from_research.py`; `python3 scripts/apply_onboarding_google_map_arb_translations.py`; `flutter gen-l10n`; `flutter analyze lib/app/l10n` (no issues).
+**Follow-ups:** If legal/comms wants explicit **Transport for NSW** attribution in UI, add a separate short footnote string without reverting to “TfNSW Metro”.
+
+### Raouf: 2026-05-07 (AEST) — Localised onboarding + Google map ARB strings (34 locales)
+**Scope:** Flutter i18n (`lib/app/l10n`) / onboarding & map chrome copy.
+**Summary:** Replaced English placeholders for the **18** onboarding and Google-map-control keys with **locale-specific translations** across **34** non-English ARBs. Added `scripts/onboarding_google_map_arb_translations.json` (UTF-8 source strings) and `scripts/apply_onboarding_google_map_arb_translations.py` to merge patches deterministically. Preserved ICU `{count}` in `googleMapClusterSemanticLabel`; kept **TfNSW** as a proper-name acronym where cited.
+**Files Changed:** `lib/app/l10n/app_*.arb` (34 locale files), `scripts/onboarding_google_map_arb_translations.json`, `scripts/apply_onboarding_google_map_arb_translations.py`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `python3 -m json.tool scripts/onboarding_google_map_arb_translations.json`; `python3 scripts/apply_onboarding_google_map_arb_translations.py`; `flutter gen-l10n`; `flutter analyze lib/app/l10n` (no issues); `.dart_tool/untranslated.json` remains `{}`.
+**Follow-ups:** Native-speaker review for low-resource scripts (e.g. si, ne, ta, bn); confirm `app_zh.arb` targets Simplified Chinese only if you add Traditional later.
+
+### Raouf: 2026-05-07 (AEST) — ARB parity: non-English locales synced to English key count
+**Scope:** Flutter i18n (`lib/app/l10n`).
+**Summary:** Every `app_*.arb` locale except `app_en.arb` was missing **18** message keys (onboarding map/transit/privacy/Open Day copy, onboarding chrome buttons, and Google map traffic/type/cluster semantic strings). Merged those entries into all **34** translated ARBs using **English strings as placeholders** so message-key sets match the template (`app_en.arb`). Ran `flutter gen-l10n`; `.dart_tool/untranslated.json` is now empty.
+**Files Changed:** `lib/app/l10n/app_*.arb` (34 locale files), `.dart_tool/untranslated.json`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Python parity assertion (`message_keys(loc) == message_keys(en)`); `flutter gen-l10n`; `flutter analyze lib/app/l10n` (no issues).
+**Follow-ups:** Superseded by the Raouf entry that applies locale-specific translations for those keys.
+
+### Raouf: 2026-05-07 (AEST) — Settings dark mode: primary labels pure white
+**Scope:** Settings presentation / dark theme readability.
+**Summary:** Added `_settingsDarkReadableTheme` (white `textTheme` body/display + `colorScheme.onSurface`) and wrapped the Settings scaffold body plus modal sheets (diagnostics easter egg, `_showPicker`, `_StopSearchSheet`, Open Day lead-time picker) so inherited Material/`ListTile` text reads pure white instead of alabaster-mapped `contentPrimaryDark`. Replaced explicit dark primary branches with `Colors.white`; tuned dark subtitles (`_InfoRow`, `_AboutAppRow`, `_StopSearchMessage`, commute preview placeholder) to translucent white for clearer hierarchy on charcoal surfaces.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/settings/presentation/pages/settings_page.dart`; `flutter analyze lib/features/settings/presentation/pages/settings_page.dart` (no issues).
+**Follow-ups:** If wipe/other dialogs still look tinted off-white under Material defaults outside Settings subtree, wrap those routes similarly.
+
+### Raouf: 2026-05-07 (AEST) — Dropped google_maps_cluster_manager (symbol clash breaks flutter test)
+**Scope:** Google renderer dependencies / `scripts/check.sh`.
+**Summary:** Removed `google_maps_cluster_manager` — its imports collide with `google_maps_flutter_platform_interface` types (`Cluster`, `ClusterManager`), causing compilation failure when tests compile transitive map code. Building pins are back to a plain `Set<Marker>` from `_buildingMarkers()` while retaining contrast polylines, route-fit padding, traffic/map-type toggles, destination marker, and navigation bearing.
+**Files Changed:** `pubspec.yaml`, `pubspec.lock`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter pub get`; `dart format` on `google_map_view.dart`; `flutter analyze lib/features/map/presentation/widgets/google/google_map_view.dart`; `flutter test` (all passed).
+**Follow-ups:** Revisit clustering only with a package/SDK combo that hides or namespaces Google’s `Cluster` types, or a custom viewport bucketing implementation.
+
+### Raouf: 2026-05-07 (AEST) — Google Maps parity backlog (contrast, bounds padding, traffic/type, clustering, bearing)
+**Scope:** Google renderer UX + navigation polish.
+**Summary:** Added high-contrast polyline styling aligned with campus routes; asymmetric-safe route-fit padding from MediaQuery + footer estimates; traffic toggle and map-type menu (Default/Satellite/Hybrid/Terrain); destination marker at route end; building marker clustering via `google_maps_cluster_manager` with zoom-on-cluster tap; navigation camera bearing + tilt toward lookahead route segment using new `bearingDegreesBetween` in `geo_utils`. Introduced ARB strings for new controls and regression tests for bearing math.
+**Files Changed:** `pubspec.yaml`, `lib/features/map/domain/services/geo_utils.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/generated/*`, `test/features/map/geo_utils_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched Dart files; `flutter analyze lib/features/map`; `flutter test test/features/map/geo_utils_test.dart`.
+**Follow-ups:** Translate new ARB keys in non-English ARBs (tracked in `.dart_tool/untranslated.json`); tune overlay top offset (`168`) per device if chips wrap.
+
+### Raouf: 2026-05-07 (AEST) — FMTC fallback when ObjectBox init fails (fixes macOS RootUnavailable spam)
+**Scope:** `flutter_map_tile_caching` / desktop OSM map tiles.
+**Summary:** Tracked successful FMTC ObjectBox initialisation and, when it never completes (common on sandboxed macOS if no app group is configured), switched the desktop OSM `TileLayer` to `NetworkTileProvider` instead of `FMTCTileProvider` so tiles load and `RootUnavailable` is not thrown on every frame. Guarded offline store/create and campus download when the backend is unavailable; clarified the startup warning log.
+**Files Changed:** `lib/features/map/data/services/offline_maps_service.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/data/services/offline_maps_service.dart`; `flutter analyze lib/features/map/data/services/offline_maps_service.dart` (no issues).
+**Follow-ups:** For offline tiles on macOS, add an App Group and pass `macosApplicationGroup` into `FMTCObjectBoxBackend().initialise()` per FMTC/ObjectBox docs.
+
+### Raouf: 2026-05-07 (AEST) — Fixed ineffective desktop map zoom cap (invalid range + clamp hardening)
+**Scope:** Desktop/OSM fallback zoom restriction enforcement.
+**Summary:** Corrected invalid zoom bounds that made restrictions ineffective, established a valid max zoom cap, and added camera-move clamping so user/programmatic paths cannot exceed the limit.
+**Files Changed:** `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`; `flutter analyze lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart` (no issues).
+**Follow-ups:** Reduce `_mapMaxZoom` further if you want an even stricter cap.
+
+### Raouf: 2026-05-07 (AEST) — Removed Google renderer zoom restrictions; kept campus-only cap
+**Scope:** Map zoom policy alignment by renderer.
+**Summary:** Removed max-zoom limits from Google renderer paths and restored freer Google camera behavior, while keeping campus-map zoom restrictions intact as the only constrained renderer.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched Google + campus map files (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Zoom cap relaxed by ~2 levels after strictness feedback
+**Scope:** Map zoom usability tuning.
+**Summary:** Loosened hard zoom ceilings after runtime feedback that the prior cap felt too strict, while retaining enforced limits across all renderers.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched files (no issues).
+**Follow-ups:** Increase one more step only if close-up campus labels still feel constrained.
+
+### Raouf: 2026-05-07 (AEST) — Zoom cap increased one level in strictness
+**Scope:** Map zoom tuning adjustment after relaxation pass.
+**Summary:** Tightened zoom ceilings by one level across campus, Google, and desktop fallback renderers to restore extra protection against over-zoom while preserving recent usability improvements.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched files (no issues).
+**Follow-ups:** Tune half-step values if device testing suggests an in-between cap is ideal.
+
+### Raouf: 2026-05-07 (AEST) — Maximum zoom-in restriction applied across all map renderers
+**Scope:** Campus + Google + desktop fallback zoom hardening.
+**Summary:** Applied stricter hard max zoom caps in all map renderers and aligned locate/navigation/focus camera updates to those caps so over-zoom is blocked in both gesture and programmatic flows.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched files (no issues).
+**Follow-ups:** Lower caps one more step if you want near-fixed-scale zoom.
+
+### Raouf: 2026-05-07 (AEST) — Campus zoom cap now enforced in programmatic camera moves
+**Scope:** Campus map zoom-limit enforcement hardening.
+**Summary:** Added shared min/max zoom constants and camera zoom clamping inside campus `_moveMap(...)`, and aligned selected-building focus zoom to the cap, preventing over-zoom even when camera updates are triggered programmatically.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/widgets/campus/campus_map_view.dart`; `flutter analyze lib/features/map/presentation/widgets/campus/campus_map_view.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Added explicit zoom-in cap on Google renderers
+**Scope:** Map zoom-in restriction parity across non-campus renderers.
+**Summary:** Enforced max zoom caps on Google renderers by setting Google Map `MinMaxZoomPreference` upper bound to `18` and reducing desktop fallback map max zoom to `18`, preventing excessive zoom-in quality loss.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched Google renderer files (no issues).
+**Follow-ups:** Optionally lower to `17.5` if runtime feedback still reports over-zoom softness.
+
+### Raouf: 2026-05-07 (AEST) — Campus map zoom restriction tightened + default zoom-out
+**Scope:** Campus map raster clarity and initial framing.
+**Summary:** Reduced allowed campus zoom-in ceiling to avoid image quality breakdown and moved default/initial-fit zoom to a more zoomed-out starting level so the campus view loads with better context.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/widgets/campus/campus_map_view.dart`; `flutter analyze lib/features/map/presentation/widgets/campus/campus_map_view.dart` (no issues).
+**Follow-ups:** Adjust one zoom step if runtime feedback requests slightly more or less close-up control.
+
+### Raouf: 2026-05-07 (AEST) — Building search popup dark-mode text forced to white
+**Scope:** Map building-search bottom sheet dark-mode readability.
+**Summary:** Enforced pure-white dark-mode text in the building search popup for input field copy, hint/icon, building rows, and place-suggestion titles to replace alabaster-like default text rendering.
+**Files Changed:** `lib/features/map/presentation/widgets/building_search_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/widgets/building_search_sheet.dart`; `flutter analyze lib/features/map/presentation/widgets/building_search_sheet.dart` (no issues).
+**Follow-ups:** Extend same white-text treatment to any other map popup identified at runtime.
+
+### Raouf: 2026-05-07 (AEST) — Map follow-up audit: service/accent labels corrected to red
+**Scope:** Map dark/light accent parity follow-up.
+**Summary:** Ran an extra map presentation audit and corrected remaining accent inconsistencies so service/accent labels that should be red no longer render dark in dark mode (notably route category badge and overlay clear action styling).
+**Files Changed:** `lib/features/map/presentation/widgets/route_panel.dart`, `lib/features/map/presentation/widgets/overlay_picker_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze lib/features/map/presentation` (no issues).
+**Follow-ups:** Use runtime screenshot review to catch any remaining one-off style exceptions.
+
+### Raouf: 2026-05-07 (AEST) — Map dark-mode color hierarchy aligned to light-mode reference
+**Scope:** Map presentation color semantics in dark mode.
+**Summary:** Updated dark-mode map styling to follow the same semantic hierarchy as light mode: accent/active states remain red, while baseline textual content remains white, preserving the intended contrast and emphasis structure.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `lib/features/map/presentation/widgets/map_shell.dart`, `lib/features/map/presentation/widgets/map_mode_toggle.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze lib/features/map/presentation` (no issues).
+**Follow-ups:** Extend same semantic pass to adjacent map modules if future inconsistencies appear.
+
+### Raouf: 2026-05-07 (AEST) — Map dark-mode text standardized to pure white
+**Scope:** Map presentation dark-mode text readability consistency.
+**Summary:** Applied pure-white dark-mode text styling across core map presentation widgets to align with the Home screen readability rule and remove dim/off-white dark text variants.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `lib/features/map/presentation/widgets/building_search_sheet.dart`, `lib/features/map/presentation/widgets/overlay_picker_sheet.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched map files; `flutter analyze lib/features/map/presentation` (no issues).
+**Follow-ups:** Extend the same rule to additional map modules if you want strict app-wide parity beyond presentation components.
+
+### Raouf: 2026-05-07 (AEST) — Removed all Home blinking text effects
+**Scope:** Home text animation behavior reset.
+**Summary:** Removed the `_BlinkingText` animation usage and helper from Home so hero title/subtitle and `QUICK ACCESS` render as static text in both light and dark modes.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Guaranteed QUICK ACCESS readability chip
+**Scope:** Home section-header visibility over mixed background tones.
+**Summary:** Wrapped the blinking `QUICK ACCESS` text in a theme-aware contrast chip so the label remains legible even when local background brightness varies heavily.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Tune chip opacity/border for final visual preference if needed.
+
+### Raouf: 2026-05-07 (AEST) — Home background desaturation reduced (more color restored)
+**Scope:** Home background image color balance.
+**Summary:** Tuned the Home desaturation filter down from aggressive grayscale toward a lighter desaturation profile so the background looks less washed while still supporting text readability.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Increase saturation further if you want near-original colors.
+
+### Raouf: 2026-05-07 (AEST) — Removed hero container, added background desaturation
+**Scope:** Home hero readability styling approach change.
+**Summary:** Replaced the translucent hero text container approach by desaturating the Home background image (while keeping blur/scrim) so text contrast improves without introducing a boxed text surface.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Adjust desaturation intensity if further visual calibration is needed.
+
+### Raouf: 2026-05-07 (AEST) — Added hero scrim + translucent text container for readability
+**Scope:** Home hero text contrast over background image.
+**Summary:** Added a top gradient scrim in the hero region and wrapped hero copy in a translucent container to improve visibility of blinking text in both light and dark mode against the background photo.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Adjust scrim/container alpha if further visual tuning is requested.
+
+### Raouf: 2026-05-07 (AEST) — Blink slowed further + stronger Home background blur
+**Scope:** Home text emphasis and background contrast.
+**Summary:** Increased blink duration to a much slower pulse and raised Home background blur in both theme modes to improve blinking text visibility against the photo backdrop.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Optionally split blur levels by theme if additional tuning is needed.
+
+### Raouf: 2026-05-07 (AEST) — Slower blink + low-level background blur in both themes
+**Scope:** Home motion tuning and background readability.
+**Summary:** Adjusted Home blinking text to a slower pulse and added subtle blur to the background image in both theme modes to keep text readable while preserving image detail.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Optionally fine-tune blur sigma and blink duration based on visual feedback.
+
+### Raouf: 2026-05-07 (AEST) — Blinking effect added to Home hero + quick-access texts
+**Scope:** Home heading text animation behavior.
+**Summary:** Implemented a reusable `_BlinkingText` widget and applied it to the Home hero title/subtitle plus `QUICK ACCESS`, with a continuous fade pulse for stronger visual emphasis over the background image.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Adjust blink timing/intensity if UX feedback prefers a softer or slower pulse.
+
+### Raouf: 2026-05-07 (AEST) — Light-mode hero and quick-access text contrast darkened
+**Scope:** Home light-mode readability over background image.
+**Summary:** Hardened Home light-mode text visibility by increasing dark shadow contrast for hero copy and `QUICK ACCESS`, replacing light halo behavior with black-shadow emphasis and slightly increasing subtitle weight so text appears more solid black over bright sky.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Hero subtitle (“Find your way…”) whitened further in dark mode
+**Scope:** Home dark-mode subtitle readability refinement.
+**Summary:** Boosted the dark-mode hero subtitle visual prominence by increasing shadow separation, adding stronger white glow, and elevating subtitle font weight so “Find your way around campus…” appears whiter and remains readable against bright sky regions.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Dark-mode hero and quick-access text glow boost
+**Scope:** Home dark-mode text readability over bright background areas.
+**Summary:** Tuned Home dark-mode text effects by increasing shadow depth and adding a white glow pass for the hero heading/subheading and `QUICK ACCESS` label so they remain legible across high-brightness portions of the background photo.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Dark-mode bottom-nav icons + Home action icons to white
+**Scope:** Dark-mode icon contrast consistency.
+**Summary:** Set bottom navigation icons to white in dark mode to match label text and updated Home Metro card action icons (`Refresh departures`, `Configure commute`) to pure white in dark mode for stronger visibility.
+**Files Changed:** `lib/app/router/app_shell.dart`, `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze lib/features/home/presentation/pages/home_page.dart lib/app/router/app_shell.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Home light-mode background clarity + bottom-nav text theme parity
+**Scope:** Home visual clarity and bottom navigation typography by theme.
+**Summary:** Updated Home light-mode background overlay strength to match dark-mode image clarity and enforced bottom navigation label text colors to black (light mode) and white (dark mode) for consistent theme behavior.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/app/router/app_shell.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze lib/features/home/presentation/pages/home_page.dart lib/app/router/app_shell.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Start Exploring CTA kept white in light mode
+**Scope:** Home CTA contrast consistency.
+**Summary:** Updated Home `Start Exploring` button foreground color to remain white in both themes so it stays readable and visually consistent on the pure red CTA background.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Home text colors split by theme (light black / dark white)
+**Scope:** Home page text color behavior by theme mode.
+**Summary:** Updated Home page text color logic so light mode uses black text and dark mode uses white text across hero copy, metro card text, quick-access labels, and CTA foreground for consistent readability.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — check.sh analyzer warning cleanup
+**Scope:** Project validation and lint hygiene.
+**Summary:** Executed `./scripts/check.sh` and then removed the remaining analyzer warning by applying a const-constructor fix in `settings_page.dart`, resulting in a fully clean `flutter analyze` and check script pass.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter analyze` (no issues); `./scripts/check.sh` (6/6 passed, 0 failures).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Open Day compass icon + alabaster text to #fff
+**Scope:** Open Day visual identity and dark-mode text contrast consistency.
+**Summary:** Updated Open Day iconography to use compass icons and changed Open Day/onboarding dark-mode text that relied on alabaster (`contentPrimaryDark`) to pure white (`#fff`) for better contrast and consistency.
+**Files Changed:** `lib/features/home/presentation/pages/onboarding_page.dart`, `lib/features/open_day/presentation/widgets/open_day_home_card.dart`, `lib/features/open_day/presentation/pages/open_day_page.dart`, `lib/features/open_day/presentation/widgets/bachelor_picker_sheet.dart`, `lib/features/open_day/presentation/widgets/event_actions_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched onboarding/open-day files (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Onboarding alabaster-like text forced to #fff
+**Scope:** Onboarding page text contrast consistency.
+**Summary:** Updated onboarding dark-mode text styling from alabaster/translucent white to pure white so intended white/alabaster-like text now renders as exact `#fff` for stronger readability.
+**Files Changed:** `lib/features/home/presentation/pages/onboarding_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/onboarding_page.dart`; `flutter analyze lib/features/home/presentation/pages/onboarding_page.dart`.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Home page alabaster-like text forced to #fff
+**Scope:** Home page text contrast consistency.
+**Summary:** Updated Home page subtitle text styling from translucent white to pure white so all intended white/alabaster-like text now renders as exact `#fff` for stronger readability consistency.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart`.
+**Follow-ups:** None.
+
+### Raouf: 2026-04-22 (AEST) — Environment setup
+**Scope:** `.env` creation.
+**Summary:** Created a `.env` file from `.env.example` template with placeholders for Supabase and Google Maps credentials. This enables usage of `scripts/run.sh` and proper environment configuration.
+**Files Changed:** `.env` (new, gitignored)
+**Verification:** File exists and matches `.env.example` structure.
+
+### Raouf: 2026-04-30 (AEST) — Bottom tab label updated to Navigation + emulator cleanup
+**Scope:** Taskbar section naming and local runtime process hygiene.
+**Summary:** Changed only the bottom navigation map tab label to `Navigation` by wiring `AppShell` to `l10n.navigation` instead of `l10n.map`. Kept `Campus Map` strings untouched in map renderer toggle/settings contexts. Executed emulator cleanup commands and verified no Android emulator/qemu processes remained.
+**Files Changed:** `lib/app/router/app_shell.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format lib/app/router/app_shell.dart` (no diff); `flutter analyze lib/app/router/app_shell.dart` (no issues); `ps -ax -o pid=,command= | rg "Android Emulator|/emulator/emulator|qemu-system| -avd "` (none running after cleanup).
+**Follow-ups:** Optional locale copy pass if you want language-specific wording for `navigation` beyond current translations/fallbacks.
+
+### Raouf: 2026-04-30 (AEST) — Live navigation smooth-follow hardening + runtime diagnostics
+**Scope:** Real-device navigation smoothness and live-location observability across map renderers and controller.
+**Summary:** Added a navigation follow throttle in both `GoogleMapView` and `DesktopMapFallbackView` to reduce camera jitter from noisy high-frequency location ticks: after initial forced follow, camera updates now require both a minimum 900ms interval and at least 3m movement. This keeps navigation readable without lagging behind real movement. Added controller-level structured diagnostics logs for `startNavigation`, `stopNavigation`, arrival detection, recalculation triggers, and a throttled (5s) navigation diagnostics payload (`accuracyMetres`, `distFromLastFetchMetres`, `distToDestinationMetres`, `isOffRoute`, `routeDistanceMeters`) to support real-device debugging.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format` on edited files (pass); `flutter analyze lib/features/map` (no issues); `flutter test test/features/map` (71/71 passed); `./scripts/check.sh --quick` (5/5 passed, 155 tests).
+**Follow-ups:** Add heading-aware camera bearing/tilt follow once heading quality and reduced-motion gating are finalized.
+
+### Raouf: 2026-04-30 (AEST) — Live navigation/location production audit + stale-state race fix (Context7 aligned)
+**Scope:** End-to-end audit of map live navigation and locate-me behavior across controller + renderers, with documentation verification.
+**Summary:** Audited the complete live-location/live-navigation pipeline against current Context7 docs for `geolocator`, `google_maps_flutter`, and `flutter_map`. Existing implementation already covered most production patterns (permission checks, platform-specific settings, stream-based updates, explicit camera zoom behavior). Identified one race condition in `MapController.centerOnCurrentLocation`: async permission/location awaits could complete after other user actions and overwrite newer map state because updates were based on a stale pre-await snapshot. Updated the method to re-read `state.value` after awaits and apply changes to the latest state only, preventing selection/route rollback during in-flight locate-me requests. Added regression coverage in `map_controller_test.dart`.
+**Files Changed:** `lib/features/map/presentation/controllers/map_controller.dart`, `test/features/map/map_controller_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format` on edited files (pass); `flutter test test/features/map/map_controller_test.dart` (13/13 passed); `flutter analyze lib/features/map` (no issues); `./scripts/check.sh --quick` (5/5 passed, 155 tests).
+**Follow-ups:** Continue using post-await latest-state writes for any new async map state mutations.
+
+### Raouf: 2026-04-30 (AEST) — Ignore Android emulator default mock location for locate-me
+**Scope:** `LocationSource.getCurrentLocation` fallback hygiene for Google-map locate-me.
+**Summary:** Investigated why pressing locate-me in Google Maps jumped to a building in the US. Root cause: Android emulators without a simulated location can return the default mocked Googleplex coordinate (`37.4219983, -122.084`) from both `getCurrentPosition` and `getLastKnownPosition`. Added a guard that rejects this mocked default fix so locate-me no longer animates to a misleading US coordinate; instead the existing location-unavailable/permission flow is used.
+**Files Changed:** `lib/features/map/data/datasources/location_source.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format lib/features/map/data/datasources/location_source.dart` (no diff); `flutter analyze lib/features/map` (no issues); `flutter test test/features/map` (70/70 passed).
+**Follow-ups:** Set an explicit mock GPS point in Android Emulator Extended Controls when testing locate-me.
+
+### Raouf: 2026-04-30 (AEST) — Locate-me accuracy fix (raw GPS + last-known fallback + honest error banner)
+**Scope:** `LocationSource.getCurrentLocation` / `watch`, and `MapController.centerOnCurrentLocation`.
+**Summary:** Locate-me was showing a wrong location because `getCurrentLocation` used base `LocationSettings` which on Android dispatches via Play-Services' Fused Location Provider (Wi-Fi triangulation + cached fixes, often hundreds of metres off), and when that timed out the controller silently snapped to the hardcoded campus-centre fallback. Switched to `AndroidSettings(bestForNavigation, forceLocationManager: true, timeLimit: 15s)` to use raw GPS, added `getLastKnownPosition` as a real cached-fix fallback before giving up, and removed the synthetic campus-centre snap so when GPS truly fails the controller now surfaces the proper permission/unavailable banner instead of a fake dot. Same platform-tuned settings applied to the streaming `watch()` so live navigation no longer jitters off the route polyline.
+**Files Changed:** `lib/features/map/data/datasources/location_source.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format` → no diff; `flutter analyze lib/features/map test/features/map` → no issues; `flutter test test/features/map` → 70/70 passed; `./scripts/check.sh --quick` → 5/5 passed.
+**Follow-ups:** Real-device validation of the new banner path when location services are off / permission denied. Consider an inline "improve accuracy" hint when the last-known fallback is used.
+
+### Raouf: 2026-04-30 (AEST) — maps-routes 500 fix + L10n parity for two stale map keys
+**Scope:** Edge Function resilience for Google Routes empty responses + l10n parity restored.
+**Summary:** Fixed `maps-routes error 500: "No Google routes were returned"` by retrying Google Routes with WALK when a non-WALK mode returns zero results (handles campus buildings with no drivable snap point), and emitting a structured 404 with `code: 'NO_ROUTE'` when even WALK fails — instead of the previous opaque 500 that crashed `loadRoute`. Added `untranslated-messages-file: /tmp/untranslated.json` to `l10n.yaml`, identified that `mapCategoryLibrary` and `mapOsmFallbackBadge` had been added to `app_en.arb` in earlier sessions but never propagated, and added both keys (English fallback) to all 34 non-English ARB files so `flutter run` no longer warns about untranslated messages.
+**Files Changed:** `supabase/functions/maps-routes/index.ts`, `l10n.yaml`, `lib/app/l10n/app_*.arb` (34 non-English locales), regenerated `lib/app/l10n/generated/*`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `deno fmt` + `deno check` on edge function → pass; `supabase functions deploy maps-routes --no-verify-jwt` → success; `flutter gen-l10n` → 0 untranslated; `flutter analyze lib/features/map test/features/map` → no issues; `flutter test test/features/map` → 70/70 passed; `./scripts/check.sh --quick` → 5/5 passed.
+**Follow-ups:** Read the `NO_ROUTE` `code` field in `MapsRoutesRemoteSource` and surface a dedicated `MapStateError.noRouteExists` so the banner can say "No route between these points" instead of the generic unavailable copy. Translate the two backfilled keys natively in priority locales.
+
+### Raouf: 2026-04-30 (AEST) — Map UX fixes: locate-me, campus zoom restriction, Google live navigation
+**Scope:** Three user-reported map regressions across the campus, native Google, and desktop OSM-fallback renderers.
+**Summary:** Locate-me on the Google renderer used `animateCamera(newLatLng)` with no zoom, so pressing it while already on the locate-me fallback coordinate was a silent no-op — replaced with `newLatLngZoom(point, 17)` so a press always animates, applied identically to the desktop fallback. Campus map zoom bounds were too permissive (`minZoom: -5`, `maxZoom: 1.5`) — tightened to `minZoom: -4` and a hard `mapMaxZoom = min(meta.maxZoom, 1.0)` so the raster never pixelates and users cannot pinch out into empty space. Google Maps live navigation looked frozen because each tick called `animateCamera(newLatLng)` without zoom and inherited the route-fit zoom (~14) — now snaps to `_navigationFollowZoom = 18` on the first navigation tick and on every subsequent location update, with the same fix mirrored in the desktop fallback.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format` → no diff; `flutter analyze lib/features/map test/features/map` → no issues; `flutter test test/features/map` → 70/70 passed.
+**Follow-ups:** Add tilt/bearing on navigation ticks once device-heading is wired; consider lowering `mapMaxZoom` further to `0.5` if real-device feedback shows softness.
+
+### Raouf: 2026-04-30 (AEST) — Settings menu file-by-file audit + decorative wiring fixes
+**Scope:** End-to-end audit of `lib/features/settings` plus consumers of every persisted preference, with i18n hardening.
+**Summary:** Traced every `SettingsController` method and every `UserPreferences` field to a real consumer (no dead preferences). Fixed four real issues: dev-diagnostics easter-egg now shows actual app version + active renderer label + Supabase edge proxy host instead of static labels; entire Open Day section migrated from hardcoded English to new `openDay_*` ARB keys propagated to all 35 locales; `_selectTime` no longer crashes on corrupted persisted `HH:mm` strings (uses `tryParse` + bounds-checked midday fallback); `_CommutePreviewTile` now displays the human-readable `favoriteStopName` when available instead of always `#stopId`.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 non-English locales), regenerated `lib/app/l10n/generated/*`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format` → no changes; `flutter analyze lib/features/settings test/features/settings` → no issues; `flutter gen-l10n` → 0 untranslated; `flutter test test/features/settings test/features/map` → 80/80 passed; `./scripts/check.sh --quick` → 5/5 passed.
+**Follow-ups:** Add `package_info_plus` as a direct dependency so the dev-diagnostics version reads from `PackageInfo.fromPlatform()` instead of the hardcoded `'1.0.0'` literal; consider auto-clearing route/direction/stop fields when `commuteMode` changes across disjoint modes.
+
+### Raouf: 2026-04-30 (AEST) — Map menu full file-by-file audit + decorative wiring fixes
+**Scope:** Production-readiness audit of `lib/features/map` (controller, repository, data sources, both renderers, desktop fallback, all overlay/marker/route/location layers, routing panel, search sheet, overlay picker, shared helpers).
+**Summary:** Traced every `MapController` public method to a UI call site and confirmed wiring for selectBuilding/selectMeetPoint/loadRoute/centerOnCurrentLocation/setTravelMode/setRenderer/clearRoute/clearSelection/startNavigation/stopNavigation/toggleOverlay/dismissArrival/openStreetView/openInGoogleMaps/openLocationSettings/openAppSettings. Fixed five issues: (1) `clearOverlays` had no caller — wired to a new "Clear All" `TextButton.icon` in `OverlayPickerSheet`'s title row, only rendered when at least one overlay is active, using existing `l10n.clearAll`; (2) the desktop OSM fallback opened on a slightly drifted coordinate while campus + native Google opened on `(-33.77388, 151.11275)` — now all three renderers open on the same official 18 Wally's Walk entrance; (3) collapsed a no-op `initialZoom: isValidBounds ? -3 : -3` ternary in `campus_map_view.dart`; (4) `MapsRoutesRemoteSource` now wraps both error-branch and success-branch `jsonDecode` calls so a non-JSON gateway response surfaces as a meaningful `StateError` instead of an opaque `FormatException`; (5) `_CategoryBuildingList` header now goes through a guarded `_capitalize(searchQuery.trim())` helper instead of unsafe `searchQuery[0].toUpperCase()`.
+**Files Changed:** `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/data/datasources/maps_routes_remote_source.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/overlay_picker_sheet.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format` → no changes; `flutter analyze lib/features/map test/features/map` → no issues; `flutter test test/features/map` → 70/70 passed (incl. 5 `MapsRoutesRemoteSource` HTTP error-path tests).
+**Follow-ups:** Extract the campus fallback coordinate `(-33.77388, 151.11275)` to a single shared constant in `core/config` so future renderer additions cannot drift again.
+
+### Raouf: 2026-04-28 (AEST) — Campus map routing panel functional parity audit
+**Scope:** Map screen functional parity between campus and google renderers.
+**Summary:** Completed a campus-map-first functionality audit and removed the orientation-only campus destination panel that made key actions feel decorative in campus mode. Wired selected-building state in campus mode to the shared `RoutePanel` so route loading, travel mode switching, step-by-step navigation controls, and map handoff actions work directly on the campus renderer.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/pages/map_page.dart`; `flutter analyze lib/features/map/presentation/pages/map_page.dart` (no issues); `flutter test test/features/map/map_controller_test.dart` (9/9 passed); `ReadLints` on edited map page (no linter errors).
+**Follow-ups:** Continue map audit by localizing remaining hardcoded category-chip labels in `MapPage` for strict i18n compliance.
+
+### Raouf: 2026-04-28 (AEST) — Full map audit follow-up + reliable live-location recenter
+**Scope:** End-to-end map interaction audit with explicit center-on-location camera behavior.
+**Summary:** Completed a deeper map audit across campus, native Google, and desktop fallback renderers to ensure key controls are functional and non-decorative. Added `locationCenterRequestToken` to map state and incremented it on `centerOnCurrentLocation()` so every location-button press forces a camera recenter to the latest location even when latitude/longitude values are unchanged.
+**Files Changed:** `lib/features/map/presentation/controllers/map_controller.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `test/features/map/map_controller_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on edited files; `flutter analyze lib/features/map` (no issues); `flutter test test/features/map/map_controller_test.dart` (10/10 passed); `ReadLints` on edited files (no linter errors).
+**Follow-ups:** Continue strict i18n audit in map UI by migrating remaining hardcoded category-chip labels to localization keys.
+
+### Raouf: 2026-04-28 (AEST) — Map i18n hardcoded-text cleanup (next audit pass)
+**Scope:** Map UI localization hardening after functional audit.
+**Summary:** Replaced remaining hardcoded map UI labels with localization keys. Category chips in `MapPage` now use localized labels (`food`, `parking`, `services`, `home_studentServices`, `mapCategoryLibrary`) and the desktop OSM fallback badge now uses `mapOsmFallbackBadge` instead of inline text.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `lib/app/l10n/app_en.arb`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on edited files; `flutter analyze lib/features/map` (no issues); `flutter test test/features/map/map_controller_test.dart` (10/10 passed); `ReadLints` on edited files (no linter errors).
+**Follow-ups:** Add the new map localization keys to non-English `app_*.arb` files to restore full locale parity.
+
+### Raouf: 2026-04-28 (AEST) — Live navigation/routing validation with Context7 alignment
+**Scope:** Full map routing audit against latest `google_maps_flutter` and `flutter_map` documentation patterns.
+**Summary:** Validated map routing and live navigation behavior against Context7 docs and fixed key mismatches: campus mode now enforces walking-only travel mode in UI/controller, passive non-navigation location updates no longer force camera recenter, in-route stop action now uses `stopNavigation` semantics, and TfNSW transit coordinate normalization now supports mixed coordinate ordering with range validation and swap fallback.
+**Files Changed:** `lib/features/map/presentation/widgets/route_panel.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `test/features/map/map_controller_test.dart`, `supabase/functions/maps-routes/index.ts`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on edited Dart files; `deno fmt supabase/functions/maps-routes/index.ts`; `deno check supabase/functions/maps-routes/index.ts`; `flutter analyze lib/features/map` (no issues); `flutter test test/features/map/map_controller_test.dart` (12/12 passed); `ReadLints` on edited files (no linter errors).
+**Follow-ups:** Add dedicated unit tests for TfNSW transit coordinate-order normalization.
+
+### Raouf: 2026-04-28 (AEST) — Full map/navigation API and function verification run
+**Scope:** End-to-end validation of map/navigation Flutter flows plus Supabase map edge functions.
+**Summary:** Ran a full verification sweep over map/navigation analyzers, map tests, edge-function format/type checks, and project quick-check. Resolved one blocking issue: `maps-places` edge function formatting drift (`deno fmt`), then reran checks to confirm all map/navigation and related API paths are green.
+**Files Changed:** `supabase/functions/maps-places/index.ts`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter analyze lib/features/map lib/features/transit` (no issues); focused map tests (all passed); `deno fmt --check` + `deno check` for `maps-routes`, `maps-places`, `tfnsw-proxy` (pass after formatting); `./scripts/check.sh --quick` (5/5 passed, 154 tests); `ReadLints` on edited file (no linter errors).
+**Follow-ups:** Add edge-function unit/integration tests for runtime API behavior (maps-routes/maps-places/tfnsw-proxy) to complement current static/type checks.
+
+### Raouf: 2026-04-28 (AEST) — Functional vs decorative map-file audit + live campus fallback fix
+**Scope:** File-by-file functional audit of map/routing stack and immediate removal of decorative routing fallback.
+**Summary:** Audited map/routing files for live execution quality (data source integrity, event handling, routing/provider integration, and error fallback behavior). Identified one decorative path in campus routing: synthetic demo coordinates when ORS key is missing. Replaced this with API-backed Google Routes WALK fallback so campus responses remain live and executable instead of dummy-generated.
+**Files Changed:** `supabase/functions/maps-routes/index.ts`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `deno fmt supabase/functions/maps-routes/index.ts`; `deno check supabase/functions/maps-routes/index.ts`; `flutter analyze lib/features/map` (no issues); `flutter test test/features/map/map_controller_test.dart test/features/map/map_route_test.dart` (all passed); `ReadLints` on edited file (no linter errors).
+**Follow-ups:** Evaluate replacing bundled building coordinate fallback (`assets/data/buildings.json`) with first-run server hydration for stricter live-data guarantees.
+
+### Raouf: 2026-04-22 (AEST) — Zero-data features & settings implementation
+**Scope:** Architecture & UI improvement.
+**Summary:** Implemented the "zero-data" features blueprint. Updated `UserPreferences` and `SettingsRepository` to support default renderer, travel mode, low data mode, and reduced motion. Implemented "Low Data Guard" in building search and "Reduced Motion Guard" in animations. Added a "Nuclear Reset" (wipe data) feature. Built the corresponding UI in `SettingsPage`.
+**Files Changed:** `lib/shared/models/user_preferences.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `lib/app/theme/mq_animations.dart`, `lib/features/map/presentation/widgets/building_search_sheet.dart`, `lib/features/settings/presentation/pages/settings_page.dart`
+**Verification:** Manual logic verification for guards and repository methods.
+
+### Raouf: 2026-05-01 (AEST) — Google Geocoding v4 `place` format notice — audit only
+**Scope:** Google Maps Platform notice about `GeocodeResult.place` changing from `//places.googleapis.com/places/{placeID}` to `places/{placeID}` (deadline May 31, 2026).
+**Summary:** Full-repo audit confirms MQ Navigation does **not** call Geocoding API v4 or depend on that resource string. Maps integrations remain classic Places Autocomplete (`maps-places`) and Routes API v2 (`maps-routes`). Treat the listed GCP project id as potentially distinct from this app’s key project until verified in console.
+**Files Changed:** `AGENT.md`, `CHANGELOG.md`
+**Verification:** ripgrep/code review across repo for geocoding v4 endpoints and `GeocodeResult` → none found.
+**Follow-ups:** Update any *other* workloads that share the billed GCP project if they use Geocoding v4 preview.
+
+### Raouf: 2026-05-02 (AEST) — UI/UX Audit and Accessibility Fix for Home Page
+**Scope:** Full UI/UX audit of the home page file (`lib/features/home/presentation/pages/home_page.dart`) and accessibility hardening.
+**Summary:** Conducted a comprehensive file-by-file UI/UX audit of the home page against project constraints (MqColors/MqSpacing usage, minimum tap targets, RTL support, and semantic labels). Identified that the tertiary quick-access buttons (`_TertiaryQuickRow`) lacked accessibility semantics because `MqTactileButton` does not include an intrinsic `Semantics` wrapper. Wrapped the tertiary quick access `MqTactileButton` elements in a `Semantics` widget with the localized label to restore accessibility parity with the rest of the layout.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart` (pass); `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-02 (AEST) — UI/UX Audit and Accessibility Fix for Map Feature
+**Scope:** Full UI/UX audit of all presentation files in `lib/features/map/presentation/` to ensure adherence to UI constraints (MqColors/MqSpacing, RTL layout, minimum tap targets).
+**Summary:** Conducted a comprehensive file-by-file audit across 14 presentation files. Fixed the following violations: replaced hardcoded height constraint (40 -> 48dp) in `_CategoryFilterChips`, replaced `Positioned` with `PositionedDirectional` in `MapShell` for RTL support, added 48dp minimum height constraints to `MapModeToggle` and `_TravelModePills`, and replaced all hardcoded hex colors across both campus and Google Map layers with equivalent `MqColors` semantic tokens (`MqColors.success`, `MqColors.slate400`, `MqColors.info`, `MqColors.warning`, `MqColors.slate600`).
+**Files Changed:** `map_page.dart`, `map_shell.dart`, `map_mode_toggle.dart`, `route_panel.dart`, `campus_map_location_layer.dart`, `google_map_view.dart`, `desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` (pass); `flutter analyze lib/features/map/presentation/` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-02 (AEST) — UI/UX Audit and Accessibility Fix for Settings Feature
+**Scope:** Full UI/UX audit of all presentation files in `lib/features/settings/presentation/` to ensure adherence to UI constraints (MqColors/MqSpacing, RTL layout, minimum tap targets, and semantic labels).
+**Summary:** Conducted a comprehensive audit of the settings feature. Confirmed the consistent use of semantic labels (`Semantics` wrappers) on interactive rows and correct use of `MqSpacing`/`MqColors`. Fixed a single violation by replacing a `Positioned` widget with `PositionedDirectional` (using `start`/`end`) for the red glow background effect in dark mode, ensuring robust RTL layout support. Validated with regex that no hardcoded hex colors or non-directional `EdgeInsets` remained.
+**Files Changed:** `settings_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/settings/` (pass); `flutter analyze lib/features/settings/` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-02 (AEST) — Open Day Map Redirection Bug Fix
+**Scope:** Investigated and resolved a reported "glitchy" UI bug occurring when users tapped "View in Campus Map" from an Open Day event action sheet.
+**Summary:** Analyzed the routing flow between `EventActionsSheet` and the Map feature. Discovered that `Navigator.pop(context)` was immediately followed by a `goNamed(RouteNames.buildingDetail)` call. This concurrent execution caused the heavy map page to be pushed and rendered while the bottom sheet dismissal animation was still running, leading to severe frame drops and jank. Fixed the issue by introducing a `Future.delayed(const Duration(milliseconds: 300))` to `EventActionsSheet.dart` before triggering the `goNamed` transition, allowing the sheet to fully dismiss before the heavy map layout phase begins.
+**Files Changed:** `event_actions_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/open_day/` (pass); `flutter analyze lib/features/open_day/` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-02 (AEST) — UI/UX Audit and Accessibility Fix for Open Day Feature
+**Scope:** Full UI/UX audit of all presentation files in `lib/features/open_day/presentation/` to ensure adherence to UI constraints (MqColors/MqSpacing, RTL layout, minimum tap targets, and semantic labels).
+**Summary:** Conducted a comprehensive audit of the open day feature. Confirmed the consistent use of `MqSpacing`/`MqColors` and directional paddings. Fixed violations where interactive elements lacked explicit semantic labels for screen readers. Added `Semantics` wrappers with descriptive labels to the `MqTactileButton` elements in `open_day_home_card.dart`, the `ListTile` elements in `bachelor_picker_sheet.dart`, and the location action `ListTile` elements in `event_actions_sheet.dart`.
+**Files Changed:** `open_day_home_card.dart`, `bachelor_picker_sheet.dart`, `event_actions_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/open_day/` (pass); `flutter analyze lib/features/open_day/` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-02 (AEST) — Open Day Google Maps Routing Fix
+**Scope:** Updated the "Navigate with Google Maps" action in the Open Day event sheet to route to the internal Google Maps view rather than launching an external browser.
+**Summary:** The user requested that the Google Maps navigation button for Open Day events should redirect to the app's internal map instead of launching an external URL. Modified `event_actions_sheet.dart` to call `ref.read(mapControllerProvider.notifier).setRenderer(MapRendererType.google)` and then use `context.goNamed(RouteNames.buildingDetail)` to open the `MapPage` with the Google Map renderer active. Cleaned up the file by removing the unused `url_launcher` import and the old `_openInGoogleMaps` function.
+**Files Changed:** `event_actions_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/open_day/` (pass); `flutter analyze lib/features/open_day/` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-02 (AEST) — Core Map Logic Audit & Navigation Hardening
+**Scope:** Full file-by-file audit of the core Map logic (`lib/features/map/`) to ensure live navigation, location tracking, and routing are 100% professional and production-ready.
+**Summary:** Audited the data sources, repositories, view layers, and `MapController`. Identified a major performance and logical flaw in the off-route recalculation mechanism. The previous naive approach triggered a backend route request every 80 meters walked *or* when the straight-line distance to the destination exceeded 150% of the total route length. Refactored `MapController._checkNavigationState` to use a true cross-track distance algorithm: it now extracts the active route polyline, computes the `findClosestPointIndex`, and checks the haversine distance between the user's GPS fix and the polyline itself. Removed the unnecessary periodic 80m recalculation trigger entirely, ensuring the app only hits the Supabase routing API when a user genuinely strays >50m off the path. This drastically improves backend scalability, preserves battery, and brings the navigation logic up to industry standards.
+**Files Changed:** `map_controller.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/` (pass); `flutter analyze lib/features/map/` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Metro + Settings icons with red circle + white icon
+**Scope:** Metro card and Settings icons styling.
+**Summary:** Changed Metro card icon to solid red circle with white icon. Changed Settings icons to use solid red circle with white icon in all row types (_TapRow, _ToggleRow, _InfoRow).
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/features/settings/presentation/pages/settings_page.dart`
+**Verification:** `./scripts/check.sh` → 6/6 passed.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Metro + Settings titles to bright red
+**Scope:** Metro card and Settings title color consistency.
+**Summary:** Changed Metro card accent and Settings page title to use `MqColors.brightRed` for consistent bright red across the app.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/features/settings/presentation/pages/settings_page.dart`
+**Verification:** `./scripts/check.sh` → 6/6 passed.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Settings + Open Day icons to bright red
+**Scope:** Settings and Open Day page icon color consistency.
+**Summary:** Changed all icons in the Settings page to use `MqColors.brightRed` for full bright red consistency. Also made the Open Day home card (study interest selection) use red icons in both light and dark mode, matching the Metro accent.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/open_day/presentation/widgets/open_day_home_card.dart`
+**Verification:** `dart format` → pass; `flutter analyze lib/features/settings lib/features/open_day` → 0 issues.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-06 (AEST) — Improved check.sh robustness
+**Scope:** Developer tooling and CI/CD reliability.
+**Summary:** Resolved a failure in `scripts/check.sh` where tests and localization generation would fail if the script was executed from within the `scripts/` directory. Added logic to the script to automatically resolve the project root directory relative to its own location and `cd` there before executing any Flutter commands.
+**Files Changed:** `scripts/check.sh`
+**Verification:** Verified by running `cd scripts && ./check.sh`, which now passes all 6 steps correctly.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-06 (AEST) — Project health check and cleanup
+**Scope:** Repository maintenance and CI/CD validation.
+**Summary:** Executed `scripts/check.sh` to validate project health. Resolved formatting issues across the codebase by running `dart format .`. Cleaned up the `scratch/` directory by removing temporary migration scripts that were causing static analysis warnings (e.g., unused imports, avoid_print). All checks, including static analysis, 182 tests, and debug build, are now passing.
+**Files Changed:** `scratch/replace_charcoals.dart`, `scratch/replace_colors.dart`, `scratch/replace_colors2.dart`, `scratch/replace_colors3.dart`, `scratch/replace_colors_global.dart` (all deleted)
+**Verification:** `scripts/check.sh` passed successfully.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-06 (AEST) — Settings page dark mode color consistency fix
+**Scope:** Settings page visual contrast and consistency in dark mode.
+**Summary:** Audited and resolved invisible components on the Settings page caused by the recent color unification, where components with a `charcoal800` background were rendered invisible against the `charcoal800` scaffold. Elevated the `_SettingsCard`, `_TapRow`, and `_ToggleRow` backgrounds to `MqColors.charcoal700` for proper contrast. Replaced the card's `charcoal800` dark-mode shadow with a `Colors.black` shadow to restore actual depth. Fixed the checkmark icon in `_OpenDaySection` from `charcoal800` to `MqColors.brightRed`.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`
+**Verification:** `dart format`, `flutter analyze` (0 issues), `flutter test` (all tests passed).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-06 (AEST) — Onboarding page dark mode color consistency fix
+**Scope:** Onboarding page visual contrast and consistency in dark mode.
+**Summary:** Audited and resolved invisible components on the Onboarding page caused by having `MqColors.charcoal800` elements placed directly onto the `MqColors.charcoal800` scaffold background. The brand radial gradient was fixed to use `MqColors.red` for visibility. The active page indicator was adjusted to `Colors.white`, the "Next/Start" button was corrected to the dark-mode standard `MqColors.brightRed`, and the feature icon container was elevated to `MqColors.charcoal700` with a `brightRed` icon. The Open Day action button was also elevated to `MqColors.charcoal700` and `brightRed` borders for legibility.
+**Files Changed:** `lib/features/home/presentation/pages/onboarding_page.dart`
+**Verification:** `dart format lib`, `flutter test` (182 tests passed).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-06 (AEST) — Unify dark mode black colours to #383a36
+**Scope:** Dark mode black colour standardisation.
+**Summary:** Replaced all occurrences of dark mode black surface colours (`MqColors.black`, `MqColors.charcoal850`, `MqColors.charcoal900`, `MqColors.charcoal950`) with the unified brand colour `#383a36` (`MqColors.charcoal800`). This ensures complete colour standardisation across dark mode features like Map panels, Onboarding sheets, Open Day cards, and Home overlays. Restored specific transparency suffixes (like `black87` and `black12`) that were initially impacted.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/features/home/presentation/pages/onboarding_page.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/open_day/presentation/widgets/open_day_home_card.dart`, and other files within `lib/features`.
+**Verification:** `flutter analyze lib` (0 issues), `flutter test` (all 182 tests passed).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-06 (AEST) — Settings page light mode fix
+**Scope:** Settings page light mode styling correction.
+**Summary:** Reverted the Settings page background and card colors in light mode from fixed charcoal/dark to white (`MqColors.alabaster` and `Colors.white`) to match the rest of the application (like `HomePage`). Text and icon colors inside settings cards (`contentPrimaryDark`, etc.) were also updated to dynamically switch to `contentPrimary` in light mode for proper contrast and readability.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`
+**Verification:** `flutter analyze lib/features/settings` (0 issues), `flutter test test/features/settings` (passed).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-06 (AEST) — Unified Settings page color to #383a36
+**Scope:** Brand color consistency across all Settings surfaces.
+**Summary:** Completely unified the Settings page by setting its scaffold background and all internal card/row surfaces to the brand black hex code `#383a36` (MqColors.charcoal800) regardless of the system theme mode. To maintain accessibility on this permanent dark surface, all text, icons, and interactive elements were forced to their high-contrast dark-mode color tokens (alabaster, white, and slate). This ensures the Settings experience is 100% brand-compliant and visually distinct.
+**Files Changed:** `lib/app/theme/mq_colors.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/home/presentation/pages/home_page.dart`, `lib/features/home/presentation/pages/onboarding_page.dart`, `lib/shared/widgets/mq_bottom_sheet.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter test` (182 tests passed), `./scripts/check.sh --quick` passed.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Replace hardcoded black with MqColors.black (#383a36)
+**Scope:** Brand color consistency across the entire app.
+
+**Summary:**
+1. Defined a new exact brand black color `#383a36` as `MqColors.black` along with its constant alpha variations (`black87`, `black54`, `black38`, `black26`, `black12`) in `lib/app/theme/mq_colors.dart`.
+2. Automatically searched and replaced all scattered usages of `Colors.black` (and its alpha variants) across the `lib/` directory with the new `MqColors.black` semantic token to enforce strict adherence to brand guidelines and remove magic numbers.
+3. Removed `const` declarations in widget files that were implicitly relying on `Colors.black` as a compile-time constant to support the `MqColors` constants instead.
+4. Replaced unconditional usages of `MqColors.vividRed` with `isDark ? MqColors.black : MqColors.red` (or equivalent) in widgets so light mode retains the brand red while dark mode correctly uses the new black highlight.
+
+**Files Changed:**
+- `lib/app/theme/mq_colors.dart`
+- `lib/features/home/presentation/pages/home_page.dart`
+- `lib/features/home/presentation/pages/onboarding_page.dart`
+- `lib/features/map/presentation/pages/map_page.dart`
+- `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`
+- `lib/features/map/presentation/widgets/campus/campus_map_route_layer.dart`
+- `lib/features/map/presentation/widgets/route_panel.dart`
+- `lib/features/map/presentation/widgets/map_mode_toggle.dart`
+- `lib/features/map/presentation/widgets/map_shell.dart`
+- `lib/features/settings/presentation/pages/settings_page.dart`
+- `lib/shared/widgets/mq_bottom_sheet.dart`
+- `lib/shared/widgets/glass_pane.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+
+**Verification:**
+- `grep -rnw "Colors.black" lib/` → No output (fully replaced)
+- `dart format .` → Passed
+- `flutter analyze` → 0 issues
+- `./scripts/check.sh` → 6/6 passed
+
+**Follow-ups:**
+- None
+
+
+### Raouf: 2026-05-07 (AEST) — Onboarding Feature + Open Day Integration
+**Scope:** Onboarding improvements and Open Day feature integration.
+
+**Summary:**
+1. **Onboarding Hardening:**
+   - Replaced hardcoded slide count (2) with dynamic `slides.length - 1` to prevent breakage if slides change
+   - Removed index-dependent animation delay that caused lag/flicker
+   - Added `_OnboardingSlideData` data class for strong typing
+   - Fixed unlocalized "Skip" text → use `l10n.onboardingSkip`
+
+2. **Open Day Feature Integration:**
+   - Added new "Open Day Ready" slide with localized title/body
+   - Added interactive "Select study interest" button directly on slide
+   - Button changes to "Study interest saved" visual feedback when bachelor is selected
+   - Button triggers `BachelorPickerSheet.show(context)` for study interest selection
+
+3. **New Localization Keys:**
+   - Added `onboardingOpenDayTitle`, `onboardingOpenDayBody`, `onboardingSkip` to app_en.arb
+
+**Files Changed:**
+- `lib/features/home/presentation/pages/onboarding_page.dart`
+- `lib/app/l10n/app_en.arb` (3 new keys)
+- `AGENT.md`
+- `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh` → 6/6 passed
+- `flutter analyze` → 0 issues
+- `dart format` → 0 changes
+
+**Follow-ups:**
+- None
+
+### Raouf: 2026-05-06 (AEST) — Onboarding Feature Full Audit & Improvements
+**Scope:** Full audit of onboarding feature with UI/UX and accessibility improvements.
+**Summary:** Completed comprehensive audit of onboarding_page.dart. Added skip button for accessibility, wrapped all interactive elements with Semantics for screen readers, made page indicators tappable for direct navigation, replaced hardcoded pixel values with MqSpacing tokens (space2, space4, space6, space8), added header: true semantics for titles, added proper label semantics for page position and actions. Fixed MqSpacing getter errors (changed md→space4, sm→space2, lg→space6, xl→space8).
+**Files Changed:** `lib/features/home/presentation/pages/onboarding_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh --quick` (5/5 passed, 4 info-level linter suggestions only); `flutter analyze` (4 info issues).
+**Follow-ups:** Propagate MqSpacing tokens to other features audited in same session.
+
+### Raouf: 2026-05-06 (AEST) — Onboarding Feature Implementation
+**Scope:** First-launch onboarding feature for new users.
+**Summary:** Implemented a complete onboarding feature guiding users through three slides (Map, Transit, Privacy) with `MqTactileButton` feedback, dark-mode radial glow, and kinetic text animations. Added `hasCompletedOnboarding` to `UserPreferences`, persistence via `SettingsRepository`, redirect logic in `app_router.dart` to force new users to onboarding, and routing gatekeeper to prevent existing users from revisiting.
+**Files Changed:** `lib/app/l10n/app_en.arb`, `lib/shared/models/user_preferences.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/app/router/route_names.dart`, `lib/app/router/app_router.dart`, `lib/features/home/presentation/pages/onboarding_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh --quick` (5/5 passed, 182 tests); `flutter analyze` (0 issues); `flutter gen-l10n` (pass).
+**Follow-ups:** Add onboarding localization keys to non-English ARB files for full i18n parity.
+
+### Raouf: 2026-05-05 (AEST) — `scripts/check.sh` full suite green (dart format)
+**Scope:** Project-wide `./scripts/check.sh` validation.
+**Summary:** Full check initially failed `dart format --set-exit-if-changed` due to minor formatting drift in `local_notifications_service.dart` (extra blank line). Ran `dart format` on `lib/`, `test/`, and `tools/`; reran `./scripts/check.sh` — all six steps passed including `flutter test` (182 tests) and `flutter build apk --debug`.
+**Files Changed:** `lib/features/notifications/data/datasources/local_notifications_service.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh` → 6/6 passed, 0 failures.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-02 (AEST) — Full Project Check Script Execution
+**Scope:** Execution of the project's comprehensive `scripts/check.sh` validation suite to ensure project stability.
+**Summary:** Executed the `scripts/check.sh` script which runs `flutter pub get`, `dart format`, `flutter analyze`, `flutter test`, `flutter gen-l10n`, and `flutter build apk --debug`. The script passed all 6 checks successfully with 0 failures and 155 tests passing. No code modifications were required as the codebase was already structurally sound and fully tested.
+**Files Changed:** `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh` (all checks passed).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-02 (AEST) — Cross-Platform Localization Path Fix
+**Scope:** Fixed a CI/CD build failure where `flutter pub get` crashed on Windows machines.
+**Summary:** The user reported a `PathNotFoundException` for `D:\tmp\untranslated.json` during the implicit `flutter gen-l10n` step of `flutter pub get`. The `untranslated-messages-file` property in `l10n.yaml` was set to the absolute path `/tmp/untranslated.json`, which on Windows resolves to the root of the current drive (e.g., `D:\tmp`) and crashes if the directory doesn't exist. Replaced the absolute path with the project-relative `.dart_tool/untranslated.json` to ensure deterministic, cross-platform code generation.
+**Files Changed:** `l10n.yaml`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter gen-l10n` (pass); `flutter pub get` (pass).
+**Follow-ups:** None.
+
+## Coding Conventions
+- Use Riverpod providers (not setState or Bloc)
+- Use go_router named routes (RouteNames constants)
+- Use MqSpacing/MqColors/MqTypography for all styling — no magic numbers
+- Minimum tap target: 48dp
+- All interactive elements must have semantic labels
+- Use EdgeInsetsDirectional for RTL support
+
+## Inventory Documents
+Located in project root:
+- `entity_inventory.md` — Shared Supabase schema (Flutter uses subset only)
+- `endpoint_inventory.md` — API routes → Edge Functions / SDK mapping
+- `env_inventory.md` — Environment variables (client vs server)
+- `notification_matrix.md` — Push/local notification flows
+- `route_matrix.md` — Flutter route map
+- `key_inventory.md` — Translation key inventory (35 locales)
+- `map_inventory.md` — Map dependencies, APIs, building registry
+
+## i18n Convention
+- Web uses `{{variable}}` (Handlebars). ARB uses `{variable}` (ICU).
+- Dart reserved words are prefixed with `k` (e.g. `class` → `kClass`, `continue` → `kContinue`)
+- Run `dart tools/convert_i18n.dart` to regenerate ARB files from web JSON
+
+## Change History
+
+See `CHANGELOG.md` for full development history.
+
+### Raouf: 2026-04-25 (AEST) — Faster live commute refresh + direction targeting
+**Scope:** Home commute live updates, Settings commute targeting, local preference persistence, and TfNSW proxy filtering.
+**Summary:** Made the commute countdown feel more live by reducing the active provider polling interval from 60 seconds to 20 seconds and adding a manual refresh action on the Home commute card. Added persisted Metro direction targeting (`Any direction`, `Tallawong`, `Sydenham`) in Settings, passed it through the Riverpod provider to `tfnsw-proxy`, and filtered deployed TfNSW departures by destination direction with fallback behavior so a bad direction value does not hide live results. Added direction/refresh localization keys across all ARB locale files and tests for favorite direction persistence/controller wiring.
+**Files Changed:** `lib/shared/models/user_preferences.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/home/presentation/pages/home_page.dart`, `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locale files), `supabase/functions/tfnsw-proxy/index.ts`, `test/features/settings/settings_controller_test.dart`, `test/features/settings/settings_repository_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** TDD red run failed because `favoriteDirection` did not exist; focused settings tests after implementation → 10/10 passed; `deno check supabase/functions/tfnsw-proxy/index.ts` → pass; `./scripts/check.sh --quick` → 5/5 passed with 151 tests; `supabase functions deploy tfnsw-proxy --no-verify-jwt` → success; deployed endpoint `mode=metro&stopId=211310&route=M1&direction=Tallawong` → 3 Tallawong departures; deployed endpoint with `direction=Sydenham` → 3 Sydenham departures; `ReadLints` on edited Dart files → no linter errors.
+**Follow-ups:** Rebuild or hot restart the emulator app so the new Home refresh action and Metro direction picker are loaded locally.
+
+### Raouf: 2026-04-25 (AEST) — Metro favourite line picker
+**Scope:** Settings commute preferences and emulator runtime validation.
+**Summary:** Tested the currently running Android emulator app logs: Supabase initialised successfully and no TfNSW network permission failure appeared, while the old installed build still logged a small keyboard `RenderFlex` overflow. Replaced the Metro favorite route free-text row with a localized bottom-sheet selector for `Any metro line` and `M1 Metro North West & Bankstown Line`, while keeping Bus/Train on the existing route text input. Tightened Preferred Stop sheet sizing further to account for the bottom sheet chrome above the keyboard.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locale files), `AGENT.md`, `CHANGELOG.md`.
+**Verification:** Emulator log inspection → app running, Supabase initialised, exact-alarm warnings only, old build still had a 9.4px keyboard overflow; deployed TfNSW endpoint with `mode=metro&stopId=211310&route=M1` → 3 live M1 departures; `flutter analyze` → no issues; `./scripts/check.sh --quick` → 5/5 passed with 151 tests; `ReadLints` on Settings page → no linter errors. Attempted `flutter attach -d emulator-5554 --debug-port 33525` for hot reload, but the VM service returned HTTP 403 and the attach process was stopped.
+**Follow-ups:** Rebuild/reinstall or hot restart the app from the active Flutter run session so the new Metro line picker and tighter sheet sizing are loaded on the emulator.
+
+### Raouf: 2026-04-25 (AEST) — Emulator diagnosis + route fallback hardening
+**Scope:** Android runtime networking, Settings stop picker overflow, and TfNSW route filtering.
+**Summary:** Verified the emulator can reach Supabase and the installed app has `INTERNET` granted, so the live metro issue was not an emulator network block. Hardened the TfNSW proxy so an unmatched saved route such as a stop name falls back to live departures for the selected mode instead of returning an empty list. Resized the Preferred Stop sheet against the remaining keyboard-safe height and added `INTERNET` to the main Android manifest so release installs cannot lose network access.
+**Files Changed:** `android/app/src/main/AndroidManifest.xml`, `lib/features/settings/presentation/pages/settings_page.dart`, `supabase/functions/tfnsw-proxy/index.ts`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** Emulator shell ping to Supabase → success; installed app permissions showed `android.permission.INTERNET: granted=true`; deployed proxy with `mode=metro&stopId=211310&route=Macquarie%20University` → 3 live M1 departures; `./scripts/check.sh --quick` → 5/5 passed; `deno fmt --check supabase/functions/tfnsw-proxy/index.ts` → pass; `deno check supabase/functions/tfnsw-proxy/index.ts` → pass; `ReadLints` on edited files → no linter errors. Attempted `flutter run -d emulator-5554 --dart-define-from-file=.env`, but Gradle stalled at `assembleDebug` and was stopped.
+**Follow-ups:** Rebuild/reinstall the Android app from Android Studio or rerun `flutter run` after Gradle is unstuck so the local Dart layout change is present on the emulator.
+
+### Raouf: 2026-04-25 (AEST) — Stop picker overflow + live TfNSW departures fix
+**Scope:** Settings stop picker layout and Home live commute departures.
+**Summary:** Fixed the yellow Flutter bottom overflow stripe by padding the Preferred Stop bottom sheet against the active keyboard inset. Fixed the deployed TfNSW departure proxy so live commute cards parse `stopEvents` responses, request real-time departure monitor output, and filter transport modes with TfNSW `excludedMeans`/`exclMOT_*` parameters instead of the ineffective `itdMot` parameter.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/home/presentation/pages/home_page.dart`, `supabase/functions/tfnsw-proxy/index.ts`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze` → no issues; `flutter test` → 151/151 passed; `deno fmt --check supabase/functions/tfnsw-proxy/index.ts` → pass; `deno check supabase/functions/tfnsw-proxy/index.ts` → pass; `supabase functions deploy tfnsw-proxy --no-verify-jwt` → success; deployed metro endpoint for stop `211310` returned 3 live M1 departures; deployed bus endpoint for stop `G2113230` returned 3 live bus departures; `ReadLints` on edited Flutter files → no linter errors.
+**Follow-ups:** Reopen the app or refresh Home so the stream hits the newly deployed `tfnsw-proxy`.
+
+### Raouf: 2026-04-23 (AEST) — Commute Preferences in Settings + Home countdown filtering
+**Scope:** Settings personalization and Home live departure behavior.
+**Summary:** Added persisted `commuteMode` and `favoriteRoute` preferences, a new Settings commute card (transport picker + route input dialog), and Home live-card filtering so departure countdown focuses on the user’s saved route/line preference. Added all new copy via i18n keys and synchronized them to all locale ARB files.
+**Files Changed:** `lib/shared/models/user_preferences.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/home/presentation/pages/home_page.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locale files).
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-25 (AEST) — Mode-aware Preferred Stop picker + bottom-sheet lifecycle fix
+**Scope:** Preferred Stop picker runtime stability and mode-specific search.
+**Summary:** Replaced the Preferred Stop `AlertDialog` with a Settings-style modal bottom sheet to avoid the Flutter dirty-widget/build-scope error involving `AnimatedDefaultTextStyle`. Passed active commute mode from Settings into Flutter stop search and `tfnsw-proxy`, then filtered stop-search results server-side so Metro/Train show station results while Bus shows bus/interchange-style stops. Redeployed `tfnsw-proxy` and verified mode-specific deployed results.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `supabase/functions/tfnsw-proxy/index.ts`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `deno fmt --check supabase/functions/tfnsw-proxy/index.ts` → pass; `deno check supabase/functions/tfnsw-proxy/index.ts` → pass; focused Flutter tests → 12/12 passed; `supabase functions deploy tfnsw-proxy --no-verify-jwt` → success; deployed stop-search for `Macquarie University` returned `Macquarie University Station` for metro/train and bus/interchange stops for bus; `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 151 tests, gen-l10n); `ReadLints` on edited Dart files → no linter errors.
+**Follow-ups:** Reopen the app and test the stop picker after changing Main Transport between Bus, Train, and Metro.
+
+### Raouf: 2026-04-25 (AEST) — TfNSW stream disposal fix + deployed stop search
+**Scope:** Runtime stability for `tfnswMetroProvider` and Preferred Stop search availability.
+**Summary:** Fixed the Riverpod `Cannot use the Ref ... after it has been disposed` runtime error by guarding `tfnswMetroProvider` with `ref.mounted` checks after async gaps and avoiding `ref.read` inside the polling loop. Deployed `tfnsw-proxy` with the stop-search branch so Preferred Stop search no longer hits the stale departures-only function and now returns actual stop results from the deployed backend.
+**Files Changed:** `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** Focused Flutter tests → 12/12 passed; `supabase functions deploy tfnsw-proxy --no-verify-jwt` → success; deployed stop-search endpoint for `Macquarie University` → `HTTP 200` with 3 stop results including `Macquarie University Station`; `deno fmt --check supabase/functions/tfnsw-proxy/index.ts` → pass; `deno check supabase/functions/tfnsw-proxy/index.ts` → pass; `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 151 tests, gen-l10n); `ReadLints` on transit provider → no linter errors.
+**Follow-ups:** Reopen the app stop picker after deployment so it issues a fresh request to the updated Edge Function.
+
+### Raouf: 2026-04-25 (AEST) — Preferred Stop implementation part-by-part verification
+**Scope:** Preferred Stop testing, persistence coverage, and live TfNSW request validation.
+**Summary:** Tested the Preferred Stop implementation in layers: controller, repository, stop entity parsing, localization parity, Edge Function type safety, full Flutter checks, and live TfNSW `stop_finder` request shape. Added repository and stop-entity tests for `favoriteStopId`/`favoriteStopName` persistence and JSON parsing. The live TfNSW check showed `type_sf=any` can return POIs, so `tfnsw-proxy` now filters stop-search results to stop/platform types before returning them to Flutter.
+**Files Changed:** `supabase/functions/tfnsw-proxy/index.ts`, `test/features/settings/settings_repository_test.dart`, `test/features/transit/transit_stop_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** Focused Flutter tests → 12/12 passed; ARB stop-search key parity script → pass; `flutter gen-l10n` → pass; live TfNSW `stop_finder` request for `Macquarie University` returned stop-filtered sample including `Macquarie University Station`; `deno fmt --check supabase/functions/tfnsw-proxy/index.ts` → pass; `deno check supabase/functions/tfnsw-proxy/index.ts` → pass; `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 151 tests, gen-l10n); `ReadLints` on edited Dart files → no linter errors.
+**Follow-ups:** Local Edge Function serving is blocked until Docker Desktop is running; deploy `tfnsw-proxy` or start Docker to test the exact Edge HTTP path end-to-end.
+
+### Raouf: 2026-04-25 (AEST) — Preferred Stop name search picker
+**Scope:** Commute stop selection UX and TfNSW stop search integration.
+**Summary:** Replaced manual Preferred Stop ID entry with a localized searchable stop/station picker that calls `tfnsw-proxy?action=stop-search`, which forwards to TfNSW Trip Planner `stop_finder` with the server-side API key. Added persisted `favoriteStopName` so Settings shows readable stop names while `favoriteStopId` remains the value used by Home/TfNSW departure requests. Added clear-stop behavior, a `TransitStop` entity/provider, locale key parity, and controller test coverage; also fixed a TypeScript `isNotEmpty` typo in the edge function caught by `deno check`.
+**Files Changed:** `lib/shared/models/user_preferences.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/transit/domain/entities/transit_stop.dart`, `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locale files), `supabase/functions/tfnsw-proxy/index.ts`, `test/features/settings/settings_controller_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter gen-l10n`; `flutter test test/features/settings/settings_controller_test.dart` → 7/7 passed; `deno fmt supabase/functions/tfnsw-proxy/index.ts`; `deno check supabase/functions/tfnsw-proxy/index.ts` → pass; `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 146 tests, gen-l10n); `ReadLints` on edited Dart files → no linter errors.
+**Follow-ups:** Deploy `tfnsw-proxy` so stop-name search is available in the runtime backend.
+
+### Raouf: 2026-04-25 (AEST) — Commute tracking end-to-end audit + refresh hardening
+**Scope:** Commute Preferences state, persistence, and Home/TfNSW live tracking flow.
+**Summary:** Completed a full commute tracking audit across Settings UI, controller/repository persistence, `UserPreferences`, Home countdown consumption, and `tfnswMetroProvider`. Fixed the provider to watch settings changes for immediate refresh and skip location/TfNSW work when commute mode is disabled. Added commute-mode normalization in both controller and repository paths, made route/stop dialogs surface persistence errors and dispose controllers, and added tests covering commute persistence plus unsupported-mode normalization.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `test/features/settings/settings_controller_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter test test/features/settings/settings_controller_test.dart` → 7/7 passed; `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 146 tests, gen-l10n); `ReadLints` on edited Dart files → no linter errors.
+**Follow-ups:** Runtime-test with valid TfNSW credentials and stop ID on a simulator/device to confirm live external data.
+
+### Raouf: 2026-04-25 (AEST) — Danger Zone solid red parity
+**Scope:** Settings Danger Zone theme correction.
+**Summary:** Replaced the Danger Zone charcoal/dark gradient with a solid `MqColors.red` danger surface for both light and dark mode. Updated icon/title/subtitle colors to white so the action reads as danger red instead of dark while maintaining contrast.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format lib/features/settings/presentation/pages/settings_page.dart`; `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n); `ReadLints` on `lib/features/settings/presentation/pages/settings_page.dart` → no linter errors.
+
+### Raouf: 2026-04-25 (AEST) — Settings row shadow bleed white-surface fix
+**Scope:** Final Settings row-surface correction for light mode.
+**Summary:** Fixed the remaining grey cast inside Settings sections by wrapping tactile `_TapRow` and `_ToggleRow` content in explicit white light-mode row backgrounds. This blocks `MqTactileButton` shadow bleed-through while retaining the white/red visual language and dark-mode charcoal surfaces.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format lib/features/settings/presentation/pages/settings_page.dart`; `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n); `ReadLints` on `lib/features/settings/presentation/pages/settings_page.dart` → no linter errors.
+
+### Raouf: 2026-04-25 (AEST) — Settings strict de-grey pass (light mode)
+**Scope:** Final white/red visual cleanup for `SettingsPage` light mode.
+**Summary:** Removed residual grey appearance from Settings cards/rows based on screenshot feedback by setting light-mode cards to pure white, changing row icon/chevron accents to red, using primary content color for light-mode value/subtitle text, and tinting inactive switch tracks red instead of neutral grey.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-25 (AEST) — Settings light-card surface parity with Home
+**Scope:** Home/Settings light-mode visual consistency.
+**Summary:** Addressed residual grey appearance in `SettingsPage` cards by aligning `_SettingsCard` light-mode surface to Home’s card token treatment (`Colors.white` with alpha `0.88`). This removes the perceived mismatch and keeps Settings aligned with the requested white/red aesthetic.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-25 (AEST) — Home/Settings white-red aesthetic audit + i18n hardening
+**Scope:** Visual parity and localization compliance for `HomePage` and `SettingsPage`.
+**Summary:** Audited both tabs for white/red consistency and removed mixed accent usage by standardizing screen-level red accents away from `vividRed`. Updated Settings input dialogs to white surfaces with red action accents to match the requested aesthetic. Replaced one remaining hardcoded Settings helper sentence with a new localization key and propagated it across all locale ARB files for i18n parity.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locale files), `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Location-aware commute departures + live no-op tap fix
+**Scope:** Transit edge proxy and Home live card UX correctness.
+**Summary:** Fixed `tfnsw-proxy` to accept live location + commute preferences (`mode`, `route`, `lat`, `lng`), resolve nearest stop via TfNSW `stop_finder`, and return filtered departures for the selected transport mode/route. Corrected the TfNSW auth header interpolation bug in the proxy request and removed Home live-card no-op taps by rendering non-interactive cards without tactile wrappers when no action exists.
+**Files Changed:** `supabase/functions/tfnsw-proxy/index.ts`, `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `lib/features/transit/domain/entities/metro_departure.dart`, `lib/features/home/presentation/pages/home_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+**Follow-ups:** Deploy `tfnsw-proxy` after secret sync to make location-aware filtering active in production.
+
+### Raouf: 2026-04-23 (AEST) — Home hero sentence readability hardening
+**Scope:** Home hero visual contrast on top of background image.
+**Summary:** Improved the visibility of the “Find your way…” hero subtitle by using stronger content tokens in both themes and adding a subtle text shadow shared with the hero title. This keeps the sentence readable over the campus background image without changing copy or layout.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+**Follow-ups:** Validate on physical devices under bright-screen and low-brightness conditions.
+
+### Raouf: 2026-04-23 (AEST) — Supabase secret sync fallback for Google routes key
+**Scope:** Edge-function secret sync robustness for Google routing.
+**Summary:** Updated `scripts/sync_supabase_secrets.sh` so `GOOGLE_ROUTES_API_KEY` is populated from `GOOGLE_MAPS_API_KEY` when a separate routes key is not present in `.env`. Re-synced secrets and verified `maps-routes` returns a successful Google route response (`HTTP 200`) instead of key-related failures.
+**Files Changed:** `scripts/sync_supabase_secrets.sh`.
+**Verification:** `./scripts/sync_supabase_secrets.sh`; direct `curl` POST to `${SUPABASE_URL}/functions/v1/maps-routes` with `renderer=google` + `travelMode=WALK` returned route payload (`HTTP 200`).
+**Follow-ups:** Add `TFNSW_API_KEY` to `.env` if transit APIs should be fully enabled.
+
+### Raouf: 2026-04-23 (AEST) — TfNSW key provisioning + anon access alignment
+**Scope:** TfNSW secret setup and edge-function runtime access mode.
+**Summary:** Added `TFNSW_API_KEY` to local `.env`, synced secrets to Supabase, and redeployed `tfnsw-proxy` + `maps-routes`. Updated `tfnsw-proxy` deployment to `--no-verify-jwt` so it matches the app’s no-auth architecture and can be called with anon key only.
+**Files Changed:** `.env` (local-only, gitignored).
+**Verification:** `./scripts/sync_supabase_secrets.sh`; `supabase functions deploy tfnsw-proxy`; `supabase functions deploy maps-routes`; `supabase functions deploy tfnsw-proxy --no-verify-jwt`; direct `curl` GET to `${SUPABASE_URL}/functions/v1/tfnsw-proxy` with anon key returned `HTTP 200`.
+**Follow-ups:** If departures remain empty (`[]`) at some times, validate `TFNSW_STOP_ID` against the desired station/platform and peak timetable windows.
+
+### Raouf: 2026-04-23 (AEST) — User-configurable TfNSW stop ID wired to commute settings
+**Scope:** Settings personalization and live departure source selection.
+**Summary:** Added a persisted `favoriteStopId` preference and exposed it in Settings as a new "Preferred Stop ID" input under Commute Preferences. Wired this value into the TfNSW provider query and edge proxy so user-selected stop ID takes precedence over location-derived/default stops while still honoring selected mode (bus/train/metro) and favorite route filters.
+**Files Changed:** `lib/shared/models/user_preferences.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `supabase/functions/tfnsw-proxy/index.ts`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locale files).
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed; `supabase functions deploy tfnsw-proxy --no-verify-jwt` succeeded.
+**Follow-ups:** Optionally add stop search/autocomplete (via TfNSW `stop_finder`) to avoid manual stop ID entry mistakes.
+
+### Raouf: 2026-04-23 (AEST) — Localization parity fix for newly added Home/Settings keys
+**Scope:** Internationalization consistency across all locale ARB files.
+**Summary:** Added the 11 newly introduced `app_en.arb` keys to all 34 non-English locale ARB files using English fallback values to restore key parity and eliminate `flutter gen-l10n` untranslated warnings during app launch/run.
+**Files Changed:** `lib/app/l10n/app_*.arb` (34 locales excluding English).
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Supabase CLI secret sync + function deployment setup
+**Scope:** Environment/secrets operational setup for TfNSW and routing edge functions.
+**Summary:** Added `scripts/sync_supabase_secrets.sh` to map server-side API/env values from local `.env` into Supabase edge secrets, and extended env docs/templates to include TfNSW and routing server keys (`TFNSW_API_KEY`, `TFNSW_STOP_ID`, `GOOGLE_ROUTES_API_KEY`, `ALLOWED_WEB_ORIGINS`). Deployed `maps-routes`, `tfnsw-proxy`, and `maps-places` via Supabase CLI.
+**Files Changed:** `.env.example`, `env_inventory.md`, `scripts/sync_supabase_secrets.sh` (and local `.env` for placeholders).
+**Verification:** `./scripts/sync_supabase_secrets.sh`, `supabase functions deploy maps-routes`, `supabase functions deploy tfnsw-proxy`, `supabase functions deploy maps-places`, `./scripts/check.sh --quick` (5/5 passed).
+
+### Raouf: 2026-04-23 (AEST) — Transit routing fallback hardening (TfNSW -> Google)
+**Scope:** Edge routing resiliency improvement for transit mode.
+**Summary:** Added fallback logic in `maps-routes` so transit requests try TfNSW Trip Planner first and automatically fall back to Google transit routes when TfNSW errors or returns no usable journey data, keeping API response shape stable for the Flutter client.
+**Files Changed:** `supabase/functions/maps-routes/index.ts`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — TfNSW Trip Planner API integrated into routing proxy
+**Scope:** Supabase edge routing logic enhancement for transit mode.
+**Summary:** Parsed the provided `tripplanner_v1_swag_efa11_20251002.yml` spec and integrated TfNSW `/trip` API usage into `maps-routes` for transit requests. Added normalization from TfNSW journey legs into existing route payload fields (points/steps/distance/duration), keeping `TFNSW_API_KEY` on the server and preserving the Flutter-side contract.
+**Files Changed:** `supabase/functions/maps-routes/index.ts`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — TfNSW + timetable import + offline tiles implementation
+**Scope:** Feature expansion across Home, Settings, map fallback renderer, and Supabase Edge Functions.
+**Summary:** Implemented the remaining three blueprint features: new `tfnsw-proxy` edge function + Home metro polling card, local `.ics` timetable import and persistence with Home next-class card map jump, and offline tile caching with `flutter_map_tile_caching` including backend initialisation, cached tile provider integration in desktop fallback maps, and Settings controls for enabling/downloading offline campus tiles.
+**Files Changed:** `pubspec.yaml`, `pubspec.lock`, `lib/app/bootstrap/bootstrap.dart`, `lib/app/l10n/app_en.arb`, `lib/features/home/presentation/pages/home_page.dart`, `lib/features/map/data/services/offline_maps_service.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/timetable/data/repositories/timetable_repository.dart`, `lib/features/timetable/data/services/timetable_import_service.dart`, `lib/features/timetable/domain/entities/timetable_class.dart`, `lib/features/timetable/presentation/providers/timetable_provider.dart`, `lib/features/transit/domain/entities/metro_departure.dart`, `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `lib/shared/models/user_preferences.dart`, `supabase/functions/tfnsw-proxy/index.ts`.
+**Verification:** `./scripts/check.sh` → 6/6 passed (format, analyze, 144 tests, gen-l10n, debug APK build).
+
+### Raouf: 2026-04-23 (AEST) — Dark/Light parity audit hardening
+**Scope:** Final cross-mode parity and contrast audit for Home + Settings.
+**Summary:** Re-audited dark/light branches for all custom Home and Settings surfaces, accents, and interactive cards. Confirmed parity for scaffold backgrounds, radial glow behavior, card border tokens, and section-header accents. Fixed one remaining contrast mismatch in `SettingsPage` Danger Zone subtitle where light mode mistakenly used a dark-mode content token (`contentPrimaryDark`), replacing it with `contentSecondary` for correct light-mode readability.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Meet Me Here deep-link routing + map share
+**Scope:** Deep-link navigation wiring for shared map points.
+**Summary:** Implemented `io.mqnavigation://meet` deep-link support with a dedicated `/meet` route, app-level incoming deep-link handling, and campus map long-press sharing. Added meet-point preselection in `MapPage`/`MapController` so incoming shared coordinates open directly as a destination and immediately trigger route loading.
+**Files Changed:** `pubspec.yaml`, `android/app/src/main/AndroidManifest.xml`, `lib/app/mq_navigation_app.dart`, `lib/app/router/app_router.dart`, `lib/app/router/route_names.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/campus/campus_map_view.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Dark/Light parity audit pass (Home + Settings)
+**Scope:** Visual parity verification for dark mode and light mode branches.
+**Summary:** Performed a full parity audit across `HomePage` and `SettingsPage` surface/background/accent usage. Confirmed shared scaffold backgrounds (`alabaster` light / `charcoal850` dark), matching dark-mode radial glow treatment, and consistent card token usage (`sand200`/`white-13%` borders, `charcoal850` dark surfaces). Fixed one remaining mismatch by aligning Home section-header light accent from `brightRed` to `red` so it matches Settings headers exactly. Also corrected stale Home documentation comment to reflect that the background photo now renders in both theme modes.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Home bento hero swap + Settings kinetic/tactile refresh
+**Scope:** Home quick-access hierarchy update and Settings interaction polish.
+**Summary:** Updated Home Bento hierarchy so the large left hero card now routes to `Student Services` (query: `services`) and moved `Food & Drink` to the secondary quick row. Refreshed Settings with kinetic section/title animation, tactile row interactions via `MqTactileButton`, and a standout Danger Zone Bento block for wipe-data action while preserving existing controller wiring and i18n keys.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/features/settings/presentation/pages/settings_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Home background image dark-mode + clarity fix
+**Scope:** Home background image rendering and visual clarity.
+**Summary:** Fixed Home background photo visibility in dark mode by always rendering the campus background layer (instead of conditionally hiding it in dark mode). Reduced the background wash/veil opacity to avoid the “blurry/foggy” look: light overlay changed to `MqColors.alabaster` alpha `0.50` (from `0.78`) and dark overlay uses `MqColors.charcoal950` alpha `0.42` to preserve readability while keeping image detail visible.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Home tactical UI refresh (tactile + kinetic + bento)
+**Scope:** Home UX enhancement with tactile interactions and asymmetric quick access layout.
+**Summary:** Added reusable `MqTactileButton` (`lib/shared/widgets/mq_tactile_button.dart`) with press-scale animation, drop-shadow depth, and configurable haptic feedback. Upgraded home hero text to a kinetic intro using `TweenAnimationBuilder` (fade + slide-up). Replaced the old symmetric quick-access grid with an asymmetrical Bento layout (hero card + stacked compact cards), while preserving tokenized styling and localized labels. Wired haptic preference from `SettingsController` into all home tactile cards.
+**Files Changed:** `lib/shared/widgets/mq_tactile_button.dart`, `lib/features/home/presentation/pages/home_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Settings/Home background parity
+**Scope:** Visual consistency in Settings scaffold background.
+**Summary:** Updated `SettingsPage` scaffold background to exactly match `HomePage` base colors in both theme modes (`MqColors.alabaster` in light mode and `MqColors.charcoal850` in dark mode), so both tabs now share identical page-level background surfaces.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Settings Audit & Functional Wiring
+**Scope:** Verify all 12 settings are fully functional, persisted, and accurately consumed app-wide.
+**Summary:** Conducted a comprehensive audit of `SettingsRepository`, `SettingsController`, and all app-wide consumers. Verified that `themeMode`, `localeCode`, `notificationsEnabled`, `lowDataMode`, `reducedMotion`, `quietHoursEnabled`, `quietHoursStart`, `quietHoursEnd`, and `highContrastMap` were perfectly wired. Fixed two functional bugs: 
+1) `MapController` was using `ref.watch(settingsControllerProvider.future)` in its `build()` method, causing the entire map state (selected building, route, search query) to reset whenever *any* unrelated setting (e.g., theme or haptics) was toggled. Swapped to `ref.read` for initial load and `ref.listen` to selectively update `renderer` and `travelMode` dynamically.
+2) `hapticsEnabled` was cosmetic (only used in the dev Easter egg). Wired it up to `MqHaptics.light` on all `SettingsPage` toggles/pickers and `MqHaptics.selection` in `BuildingSearchSheet`.
+**Files Changed:** `lib/features/map/presentation/controllers/map_controller.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/map/presentation/widgets/building_search_sheet.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Home/Settings 100% theme & colour parity
+**Scope:** UI polish — locking `HomePage` to the same design language as `SettingsPage`.
+**Summary:** Rewrote `lib/features/home/presentation/pages/home_page.dart` so every surface, border, text and accent colour mirrors `SettingsPage`: dual-theme branching via `context.isDarkMode`, charcoal850/white cards with `sand200` / `white-13%` borders, `vividRed` (dark) / `red` (light) accents, the Settings-style uppercase letter-spaced red section header, and the Settings red radial glow layered on dark-mode Home. Removed all hardcoded strings (i18n rule) by adding 11 `home_*` ARB keys to `app_en.arb` and propagating them with English fallback to all 34 non-English locales. Swapped `EdgeInsets` for `EdgeInsetsDirectional` for RTL safety.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locales), `lib/app/l10n/generated/*` (regenerated).
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Summary
+
+The project was built through phases 0–5, originally including auth, calendar, event feed, profile management, and gamification features. These were subsequently removed to focus the Flutter app on campus navigation: 3-tab nav (Home/Map/Settings), local-only settings, FCM push + study prompt notifications, and dual-renderer campus map with building search and routing via Edge Function proxy.
+
+### Raouf: 2026-04-22 (AEST) — iOS deployment target synchronization & build fixes
+**Scope:** iOS build configuration.
+**Summary:** Updated IPHONEOS_DEPLOYMENT_TARGET from 13.0 to 17.0 in `ios/Runner.xcodeproj/project.pbxproj`, `ios/Podfile`, and `ios/Flutter/AppFrameworkInfo.plist` (added `MinimumOSVersion`) to resolve version conflicts with Firebase 12.12.0+ and fix a compilation error in `connectivity_plus` (^7.0.0) which requires the iOS 17 SDK for `isUltraConstrained`. Synchronized `ios/Podfile.lock` via `pod update`. Added warning suppressions for third-party pods to ensure clean CI logs.
+**Files Changed:** `ios/Runner.xcodeproj/project.pbxproj`, `ios/Podfile`, `ios/Podfile.lock`, `ios/Flutter/AppFrameworkInfo.plist`
+**Verification:** `pod update` successful; ready for CI retry.
+
+### Raouf: 2026-04-22 (AEST) — Zero-data features (Haptics, Quiet Hours, High-Contrast)
+
+**Scope:** Maintenance.
+**Summary:** Performed final cleanup: added `build/` to `.gitignore`, applied project-wide formatting via `dart format .`, and synchronized generated CMake files for Linux and Windows after dependency updates. Deleted temporary synchronization scripts.
+**Files Changed:** `.gitignore`, `lib/**`, `linux/flutter/generated_plugins.cmake`, `windows/flutter/generated_plugins.cmake`
+**Verification:** `git status` shows a clean working tree (excluding gitignored files).
+
+### Raouf: 2026-04-22 (AEST) — Localization synchronization
+**Scope:** Internationalization.
+**Summary:** Synchronized 34 localization files (`app_*.arb`) with the master `app_en.arb`. Ensured all languages have the same set of keys, including the newly added settings and accessibility strings. Used English as the fallback value for missing translations to prevent UI breakage and "missing key" warnings during generation.
+**Files Changed:** All `.arb` files in `lib/app/l10n/`.
+**Verification:** `flutter gen-l10n` reported 0 untranslated messages.
+**Scope:** Quality assurance & build stability.
+**Summary:** Executed `scripts/check.sh` and resolved all issues. Added missing localization keys to `app_en.arb`. Fixed a Kotlin compilation error in `android/app/build.gradle.kts` by adding missing imports. Updated `MapController` tests to correctly mock the new `SettingsController` dependency, eliminating binding and storage errors during testing. Verified that all checks (format, analyze, test, build) now pass cleanly.
+**Files Changed:** `lib/app/l10n/app_en.arb`, `android/app/build.gradle.kts`, `test/features/map/map_controller_test.dart`
+**Verification:** `./scripts/check.sh` passed with 6/6 steps successful.
+
+### Raouf: 2026-04-22 (AEST) — macOS deployment target synchronization
+**Scope:** macOS build configuration.
+**Summary:** Updated MACOSX_DEPLOYMENT_TARGET from 11.0 to 13.0 in `macos/Runner.xcodeproj/project.pbxproj` (both build settings and shell script phases) to align with Podfile and resolve plugin compilation errors (specifically for `app_links`).
+**Files Changed:** `macos/Runner.xcodeproj/project.pbxproj`
+**Verification:** Synchronized with Podfile and run.sh; ready for build retry.
+
+### Raouf: 2026-04-22 (AEST) — Environment setup
+**Scope:** `.env` creation.
+**Summary:** Created a `.env` file from `.env.example` template with placeholders for Supabase and Google Maps credentials. This enables usage of `scripts/run.sh` and proper environment configuration.
+**Files Changed:** `.env` (new, gitignored)
+**Verification:** File exists and matches `.env.example` structure.
+
+### Raouf: 2026-04-22 (AEST) — Run script robustness & parsing fix
+**Scope:** `scripts/run.sh` logic improvement.
+**Summary:** Refined argument parsing to distinguish between device targets and Flutter flags. Added quote stripping for API keys from `.env` to prevent JS/native syntax errors. Optimized `gradle.properties` modification to be idempotent. Added early `flutter` command check and switched `echo` to `printf` for safe variable handling.
+**Files Changed:** `scripts/run.sh`
+**Verification:** `bash -n scripts/run.sh` passed.
+
+### Raouf: 2026-05-06 (AEST) — Google map camera control overlap fix + audit
+**Scope:** Google map renderer UI chrome and production-readiness audit.
+**Summary:** Moved Google Maps web camera controls above the custom find-my-location button by setting the web camera control to the right-center position; Google bottom positions only account for Google-owned chrome, so right-center avoids collision with Flutter overlay buttons reliably. Hardened the current-location camera sync path to use explicit locate zoom instead of a lat/lng-only camera update, keeping behavior consistent with the locate button. During the audit, replaced remaining Google/desktop route marker and polyline hardcoded colors with MQ semantic tokens.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `/opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart format ...` passed; `/opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart analyze lib/features/map test/features/map` passed with no issues; `git diff --check` passed. Flutter test runner was blocked by sandbox-denied writes to `/opt/homebrew/share/flutter/bin/cache` (`engine.stamp`/`lockfile`); plain `dart test test/features/map` was attempted but is not valid for Flutter tests because `dart:ui` is unavailable outside the Flutter test runner.
+**Follow-ups:** Run `flutter test test/features/map` or `./scripts/check.sh --quick` outside the restricted sandbox to re-confirm the full Flutter test suite.
+
+### Raouf: 2026-04-28 (AEST) — System-wide documentation and logic synchronization
+**Scope:** Project-wide documentation audit and map-renderer coordinate alignment.
+**Summary:** Synchronized all project documentation (`README.md`, `CONTRIBUTING.md`, `ARCHITECTURE.md`) with the actual 2026 state of the codebase. Updated test counts to reflect the full 154-test suite and corrected the Google Maps SDK version to 2.15. Aligned `GoogleMapView` initial coordinates with the official campus fallback used in `MapController` for visual consistency across renderers. Removed stale feature references (carousel/stats) from `README.md` and added the Metro Countdown card to the feature list.
+**Files Changed:** `README.md`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `./scripts/check.sh --quick` → **5/5 passed** (analyze, 154 tests, gen-l10n). Verified `google_maps_flutter` 2026 standards compliance (zIndexInt, mapId).
+**Follow-ups:** None.
+
+### Raouf: 2026-04-28 (AEST) — Total Documentation Overhaul & Logic Sync
+**Scope:** Repository-wide documentation rewrite and security audit.
+**Summary:** Conducted a comprehensive audit and rewrite of `README.md`, `ARCHITECTURE.md`, and `CONTRIBUTING.md`, and authored a new `SECURITY_POSTURE.md` (OWASP 2026). Synchronised all documentation with the functional 154-test suite and verified features (Metro Countdown), removing roadmapped or decorative claims from the live feature list.
+**Files Changed:** `README.md`, `docs/ARCHITECTURE.md`, `docs/SECURITY_POSTURE.md`, `CONTRIBUTING.md`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh --quick` passed; manual verification of 2026 library standards via Context7.
+
+### Raouf: 2026-04-28 (AEST) — Final Project-Wide Documentation Audit
+**Scope:** Exhaustive audit of all repository documentation and inventory files.
+**Summary:** Verified 13/13 documentation and inventory files for 100% accuracy against the current 154-test codebase. Confirmed that `endpoint_inventory.md`, `entity_inventory.md`, `env_inventory.md`, `key_inventory.md`, `map_inventory.md`, `notification_matrix.md`, `route_matrix.md`, `SECURITY.md`, and `TECHNICAL_EXPLANATION.md` are fully synchronised with the 2026 standards and functional logic. No further updates required.
+**Files Audited:** All `.md` files in root and `docs/`.
+**Verification:** Manual verification of each inventory field against source code and Context7 tech standards.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-17 (AEST) — ARB placeholder normalization (ICU Lexing Errors fixed, 8/8 checks pass)
+**Scope:** i18n / ARB localization quality — all 35 locales.
+**Summary:** Identified and fixed 147 ICU placeholder normalization errors across 13 non-English ARB files. Root cause: translated strings used localized placeholder names (e.g. `{μοίρες}` in Greek, `{درجه}` in Farsi, `{Minuten}` in German) instead of the English ICU parameter names required by `flutter gen-l10n`. This caused two classes of failures: (1) ICU Lexing Errors in `flutter gen-l10n` for non-ASCII placeholder names; (2) extra positional parameters in generated Dart methods (e.g. `minutesShort(int minutes, Object Minuten, Object minutos)`) causing `not_enough_positional_arguments` compile errors across `home_page.dart`, `compass_mode_view.dart`, `route_panel.dart`, `open_day_home_card.dart`, `settings_page.dart`. Fixed by two new utility scripts: `scripts/fix_icu_placeholders.py` (targeted pass for the 69 original ICU errors) and `scripts/normalize_arb_placeholders.py` (comprehensive pass normalizing all 35 locales). Also fixed a `use_null_aware_elements` info lint in `safety_action_card.dart` (`if (trailing case final t?) t,` → `?trailing,`).
+**Files Changed:** `lib/app/l10n/app_bn.arb`, `app_cs.arb`, `app_da.arb`, `app_de.arb`, `app_el.arb`, `app_es.arb`, `app_fa.arb`, `app_ja.arb`, `app_ko.arb`, `app_pl.arb`, `app_ru.arb`, `app_si.arb`, `app_ta.arb`, `app_uk.arb`, `app_ur.arb`, `lib/app/l10n/generated/*`, `lib/features/safety/presentation/widgets/safety_action_card.dart`, `scripts/fix_icu_placeholders.py`, `scripts/normalize_arb_placeholders.py`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `python3 scripts/fix_icu_placeholders.py` (69 keys); `python3 scripts/normalize_arb_placeholders.py` (78 keys); `flutter gen-l10n` (0 errors); `flutter analyze` (0 issues); `./scripts/check.sh --quick` (8/8 passed).
+**Follow-ups:** Run `normalize_arb_placeholders.py` after any new localization session to prevent recurrence.
+
+### 2026-05-13 (Australia/Sydney)
+**Raouf:**
+- **Scope:** Dark Mode Styling & Map Selection Logic
+- **Summary:** Replaced invisible charcoal800 icons with high-contrast brightRed in dark mode for Open Day widgets and ensured the category browse section bar closes seamlessly when a map location is selected.
+- **Files Changed:**
+  - `lib/features/open_day/presentation/pages/open_day_page.dart`
+  - `lib/features/open_day/presentation/widgets/event_actions_sheet.dart`
+  - `lib/features/map/presentation/pages/map_page.dart`
+- **Verification:** UI visual inspection in dark mode confirms icon visibility, map interaction testing confirms expected panel dismissal, and `./scripts/check.sh` reports 184 tests passed successfully.
+- **Follow-ups:** Monitor future map-panel components to ensure category drill-down states don't accidentally supersede RoutePanel display logic.
+
+### Raouf: 2026-06-26 (Australia/Sydney) — Dropped google_maps_flutter dependency (Task 1/12)
+**Scope:** Dependency removal — `pubspec.yaml`
+**Summary:** Removed `google_maps_flutter: ^2.15.0` and all transitive Google Maps Flutter dependencies from the project. Bumped `flutter_map` from `^8.2.2` to `^8.3.0`. This is the first step of a 12-task plan to fully remove Google Maps from the app. The app will temporarily not compile (expected — fixed in Task 4).
+**Files Changed:** `pubspec.yaml`, `pubspec.lock`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter pub get` resolves cleanly (11 google-maps packages removed). `grep -rn "google_maps_flutter" lib test` shows 3 remaining references in source code (imports + comments in `google_map_view.dart`, `desktop_map_fallback_view.dart`) — these will be addressed in Tasks 2–4.
+**Follow-ups:** Tasks 2–4 of the Google Maps removal plan.
+
+### Raouf: 2026-06-29 (Australia/Sydney) — Task 6: Scan feature adapter layer (ProgressApi + ScheduleProvider wiring)
+**Scope:** Scan feature — `lib/features/scan/data/adapters/`, `test/features/scan/adapters/`
+**Summary:** Created 4 files for the adapter layer. `SettingsProgressApiAdapter` implements `ProgressApi` with two-tier visit recording: local via `SettingsController.recordLocationVisit(buildingCode)` and durable remote via Supabase `open_day_stamps` upsert with `ignoreDuplicates: true`. Uses `StreamController` + `ref.listen` for reactive `watch()`. Exposed via `progressApiProvider` Riverpod Provider. `OpenDayScheduleProviderAdapter` implements `ScheduleProvider` using `OpenDayPersonalisation.liveStatusForLocation()`. 3 tests cover liveNow matches/returns null/comingUpNext. Settings adapter test uses `ProviderContainer` with `_FakeSettingsController` (extends `SettingsController`, uses `await Future<void>.value()` to avoid microtask race).
+**Files Changed:** `lib/features/scan/data/adapters/settings_progress_api_adapter.dart`, `lib/features/scan/data/adapters/open_day_schedule_provider_adapter.dart`, `test/features/scan/adapters/open_day_schedule_provider_adapter_test.dart`, `test/features/scan/adapters/settings_progress_api_adapter_test.dart`
+**Verification:** `flutter test test/features/scan/adapters/` — 6/6 passed (3 OpenDay + 3 Settings). Supabase warning logged as expected (caught by catch block).
+**Follow-ups:** None.

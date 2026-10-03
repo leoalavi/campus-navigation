@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, =1{1 scen · 360°-tur} other{{count} scener · 360°-tur}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Skanna",
+  "buildingsLoadError": "Det gick inte att ladda byggnaderna. Försök igen.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Ingår i appen",
+  "offlineCampusMapsBundledDetail": "Campuskartan, byggnadslistan och inomhusturerna fungerar utan anslutning. Live-tunnelbanetider, gångrutter och andra onlinetjänster kräver anslutning.",
+  "hoursMinutesShort": "{hours} h {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} h",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "Skanna QR-kod",
+  "stampCatalogUnavailable": "Det gick inte att läsa in din stämpelsamling. Försök igen.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Det gick inte att läsa in campusplatserna. Försök igen.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Sök program och intressen",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Inget matchande program eller intresse hittades",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Försök med ett annat sökord",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Visa föreslagna stopp",
+  "openDay_showSuggestedStopsSemantic": "Visa föreslagna stopp på startsidan",
+  "openDay_suggestedStopsForInterest": "Föreslagna stopp för {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Live nu",
+  "openDay_comingUpNextTitle": "Kommer härnäst",
+  "openDay_liveNowForInterest": "Matchar ditt intresse",
+  "openDay_liveNowAcrossDay": "Öppet för alla besökare",
+  "openDay_matchedToYourDegree": "Matchar din utbildning",
+  "openDay_generalOpenToAll": "Allmänt · Öppet för alla",
+  "openDay_allSessionsLabel": "Alla pass",
+  "openDay_yourDayTitle": "Din dag",
+  "openDay_yourDayEmpty": "Spara de pass du gillar för att skapa din egen plan för Öppen dag.",
+  "openDay_yourDayCount": "{count, plural, =1{1 pass sparat} other{{count} pass sparade}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Lägg till i min dag",
+  "openDay_removeFromMyDay": "Ta bort från min dag",
+  "openDay_savedToMyDay": "Tillagt i din dag",
+  "openDay_removedFromMyDay": "Borttaget från din dag",
+  "openDay_clearMyDay": "Rensa min dag",
+  "openDay_clearMyDayConfirm": "Ta bort alla sparade pass och stopp från din dag? Detta kan inte ångras.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Besökte {count} av {total} stopp",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail}-rutten klar",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Ingen inloggning · Privat på din enhet",
+  "scanQrCta": "Skanna",
+  "scanPermissionDenied": "Kameraåtkomst nekad",
+  "scanPermissionDeniedDesc": "Aktivera kameraåtkomst i inställningarna för att skanna QR-koder",
+  "scanOpenSettings": "Öppna inställningar",
+  "scanDecodeError": "Kunde inte läsa QR-koden",
+  "scanNotMqCode": "Detta är inte en Campus Navigation Open Day-kod",
+  "scanUnsupportedCode": "Denna QR-kod stöds inte längre",
+  "scanUnverifiedCode": "Denna QR-kod kunde inte verifieras",
+  "scanAgain": "Skanna igen",
+  "scanVisitSaveFailed": "Besöket kunde inte sparas. Försök igen.",
+  "scanNotOnTrail": "Inte en del av rundturen",
+  "scanNotOnTrailDesc": "Denna QR-kod är inte en del av Open Day-rundturen",
+  "arNoBuildingSelected": "Välj en byggnad för att se insidan",
+  "arComingSoon": "Inomhusförhandsvisning kommer snart",
+  "arExploreEyebrow": "360°-campusturer",
+  "arExploreSubtitle": "Kliv in i campusmiljöer innan du kommer.",
+  "arTourComingSoon": "Turen kommer snart",
+  "arSoonPill": "Snart",
+  "cardViewOnCampusMap": "Visa på campuskarta",
+  "cardViewArMap": "Visa AR-karta",
+  "cardAddToYourDayCta": "Lägg till i din dag",
+  "cardAddToYourDay": "Tillagd i din dag",
+  "cardFullSchedule": "Fullständigt schema",
+  "cardArPreviewTitle": "AR-förhandsvisning",
+  "stopLiveNow": "Live nu: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Näst på tur: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Grattis!",
+  "stampCelebrationCompleteTitle": "Passet är komplett!",
+  "stampCelebrationSubtitle": "Du samlade in stämpeln {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Ditt Open Day-pass har börjat",
+  "stampCelebrationKeepExploring": "Fortsätt utforska",
+  "stampCelebrationViewPassport": "Visa mitt pass",
+  "stampAlreadyCollected": "Redan insamlad — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Grattis. Du samlade in stämpeln {location}. {count} av {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Mina stämplar",
+  "stampsPassportLockedHint": "Skanna för att samla",
+  "settingsMyStampsTile": "Mina stämplar",
+  "settingsMyStampsSubtitle": "Visa ditt Open Day-pass",
+  "arLoadError": "Kunde inte ladda AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Foto {index} av {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Märke intjänat!",
+  "scanBadgeVisited": "Besökt"
 }

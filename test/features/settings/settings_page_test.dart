@@ -6,18 +6,18 @@ import 'package:mocktail/mocktail.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:url_launcher_platform_interface/link.dart';
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
-import 'package:mq_navigation/features/settings/presentation/pages/settings_page.dart';
-import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
-import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
-import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
-import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
-import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
-import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/features/settings/data/repositories/settings_repository.dart';
+import 'package:campus_navigation/features/settings/presentation/pages/settings_page.dart';
+import 'package:campus_navigation/features/map/data/services/offline_maps_service.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:campus_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/fcm_service.dart';
+import 'package:campus_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
+import 'package:campus_navigation/features/transit/domain/entities/transit_stop.dart';
+import 'package:campus_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 class MockSettingsRepository extends Mock implements SettingsRepository {}
 

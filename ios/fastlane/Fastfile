@@ -24,7 +24,7 @@ platform :ios do
   lane :deploy_testflight do
     build_release
     upload_to_testflight(
-      ipa: "../build/ios/ipa/mq_navigation.ipa",
+      ipa: Dir.glob("../build/ios/ipa/*.ipa").first,
       skip_waiting_for_build_processing: true,
     )
   end

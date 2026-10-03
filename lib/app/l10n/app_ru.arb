@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, one{{count} сцена · 360°-тур} few{{count} сцены · 360°-тур} many{{count} сцен · 360°-тур} other{{count} сцены · 360°-тур}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Сканировать",
+  "buildingsLoadError": "Не удалось загрузить здания. Попробуйте ещё раз.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Входит в приложение",
+  "offlineCampusMapsBundledDetail": "Карта кампуса, список зданий и внутренние туры работают без подключения. Для расписания метро в реальном времени, пеших маршрутов и других онлайн-сервисов подключение нужно.",
+  "hoursMinutesShort": "{hours} ч {minutes} мин",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ч",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "Сканировать QR-код",
+  "stampCatalogUnavailable": "Не удалось загрузить вашу коллекцию штампов. Пожалуйста, попробуйте ещё раз.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Не удалось загрузить места кампуса. Пожалуйста, попробуйте ещё раз.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Поиск программ и интересов",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Подходящая программа или интерес не найдены",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Попробуйте другое слово",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Показать рекомендуемые места",
+  "openDay_showSuggestedStopsSemantic": "Показывать рекомендуемые места на главной",
+  "openDay_suggestedStopsForInterest": "Рекомендуемые места для «{interest}»",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Сейчас в эфире",
+  "openDay_comingUpNextTitle": "Далее",
+  "openDay_liveNowForInterest": "Соответствует вашим интересам",
+  "openDay_liveNowAcrossDay": "Открыто для всех посетителей",
+  "openDay_matchedToYourDegree": "Подходит вашей программе",
+  "openDay_generalOpenToAll": "Общее · Открыто для всех",
+  "openDay_allSessionsLabel": "Все сессии",
+  "openDay_yourDayTitle": "Ваш день",
+  "openDay_yourDayEmpty": "Сохраняйте понравившиеся сессии, чтобы составить свой план Дня открытых дверей.",
+  "openDay_yourDayCount": "{count, plural, =1{Сохранена 1 сессия} few{Сохранено {count} сессии} other{Сохранено {count} сессий}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Добавить в мой день",
+  "openDay_removeFromMyDay": "Убрать из моего дня",
+  "openDay_savedToMyDay": "Добавлено в ваш день",
+  "openDay_removedFromMyDay": "Удалено из вашего дня",
+  "openDay_clearMyDay": "Очистить мой день",
+  "openDay_clearMyDayConfirm": "Удалить все сохранённые сессии и остановки из вашего дня? Это действие нельзя отменить.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Посещено {count} из {total} мест",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Маршрут «{trail}» пройден",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Без входа · Приватно на вашем устройстве",
+  "scanQrCta": "Сканировать",
+  "scanPermissionDenied": "Доступ к камере отклонён",
+  "scanPermissionDeniedDesc": "Включите доступ к камере в настройках, чтобы сканировать QR-коды",
+  "scanOpenSettings": "Открыть настройки",
+  "scanDecodeError": "Не удалось считать QR-код",
+  "scanNotMqCode": "Это не код Campus Navigation для дня открытых дверей",
+  "scanUnsupportedCode": "Этот QR-код больше не поддерживается",
+  "scanUnverifiedCode": "Не удалось проверить этот QR-код",
+  "scanAgain": "Сканировать снова",
+  "scanVisitSaveFailed": "Не удалось сохранить посещение. Попробуйте ещё раз.",
+  "scanNotOnTrail": "Не входит в маршрут",
+  "scanNotOnTrailDesc": "Этот QR-код не входит в маршрут Open Day",
+  "arNoBuildingSelected": "Выберите здание, чтобы увидеть интерьер",
+  "arComingSoon": "Просмотр помещения появится скоро",
+  "arExploreEyebrow": "360°-туры по кампусу",
+  "arExploreSubtitle": "Загляните в помещения кампуса ещё до приезда.",
+  "arTourComingSoon": "Тур скоро появится",
+  "arSoonPill": "Скоро",
+  "cardViewOnCampusMap": "Показать на карте кампуса",
+  "cardViewArMap": "Показать AR-карту",
+  "cardAddToYourDayCta": "Добавить в ваш день",
+  "cardAddToYourDay": "Добавлено в ваш день",
+  "cardFullSchedule": "Полное расписание",
+  "cardArPreviewTitle": "Просмотр в AR",
+  "stopLiveNow": "Сейчас идёт: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Далее: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Поздравляем!",
+  "stampCelebrationCompleteTitle": "Паспорт заполнен!",
+  "stampCelebrationSubtitle": "Вы собрали штамп {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Ваш паспорт Open Day начат",
+  "stampCelebrationKeepExploring": "Продолжайте исследовать",
+  "stampCelebrationViewPassport": "Показать мой паспорт",
+  "stampAlreadyCollected": "Уже собрано — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Поздравляем. Вы собрали штамп {location}. {count} из {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Мои штампы",
+  "stampsPassportLockedHint": "Сканируйте, чтобы собрать",
+  "settingsMyStampsTile": "Мои штампы",
+  "settingsMyStampsSubtitle": "Посмотреть ваш паспорт Open Day",
+  "arLoadError": "Не удалось загрузить AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Фото {index} из {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Значок получен!",
+  "scanBadgeVisited": "Посещено"
 }

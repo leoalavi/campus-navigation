@@ -43,7 +43,7 @@ class OpenDayTime {
     return '${formatTimeOfDay(start)} – ${formatTimeOfDay(end)}';
   }
 
-  /// `'Saturday 14 August 2027'` style. Used for date headers.
+  /// `'Saturday 15 August 2026'` style. Used for date headers.
   static String formatLongDate(DateTime instant) {
     final sydney = toSydney(instant);
     return DateFormat('EEEE d MMMM y').format(sydney);

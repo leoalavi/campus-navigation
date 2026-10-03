@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
 
 /// Resolves an inbound deep-link building id to a canonical one.
 ///

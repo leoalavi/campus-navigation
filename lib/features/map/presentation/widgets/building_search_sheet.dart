@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/theme/mq_animations.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/core/utils/haptics.dart';
-import 'package:mq_navigation/features/map/data/datasources/places_search_source.dart';
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/services/building_search.dart';
-import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
-import 'package:mq_navigation/features/favorites/presentation/widgets/favorite_button.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/theme/mq_animations.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/core/utils/haptics.dart';
+import 'package:campus_navigation/features/map/data/datasources/places_search_source.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/services/building_search.dart';
+import 'package:campus_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:campus_navigation/features/favorites/presentation/widgets/favorite_button.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Draggable bottom sheet for finding campus buildings or nearby places.

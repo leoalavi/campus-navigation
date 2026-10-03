@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/core/config/env_config.dart';
+import 'package:campus_navigation/core/config/env_config.dart';
 
 /// Whether this build can actually render Google Maps.
 enum MapsKeyStatus {

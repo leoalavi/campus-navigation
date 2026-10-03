@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mq_navigation/features/map/domain/entities/campus_point.dart';
+import 'package:campus_navigation/features/map/domain/entities/campus_point.dart';
 
 /// A campus building with its metadata and GPS coordinates.
 @immutable
@@ -27,6 +27,7 @@ class Building {
     this.facultyGroup,
     this.studentServicesGroups = const [],
     this.campusHubGroups = const [],
+    this.photo,
   });
 
   final String id;
@@ -78,6 +79,10 @@ class Building {
   /// hosts the Graduation Venue.
   final List<CampusHubGroup> campusHubGroups;
 
+  /// Optional bundled hero photo (an `assets/photos/...` path) shown at the
+  /// top of the building detail sheet. Only a handful of buildings ship one.
+  final String? photo;
+
   factory Building.fromJson(Map<String, dynamic> json) {
     final location = json['location'] as Map<String, dynamic>?;
     final entrance = json['entranceLocation'] as Map<String, dynamic>?;
@@ -128,6 +133,7 @@ class Building {
         json['campusHubGroups'],
         CampusHubGroup.fromJson,
       ),
+      photo: json['photo'] as String?,
     );
   }
 
@@ -171,6 +177,7 @@ class Building {
     'facultyGroup': facultyGroup?.id,
     'studentServicesGroups': studentServicesGroups.map((g) => g.id).toList(),
     'campusHubGroups': campusHubGroups.map((g) => g.id).toList(),
+    'photo': photo,
   };
 
   /// Best coordinate for routing: entrance if available, otherwise building center.

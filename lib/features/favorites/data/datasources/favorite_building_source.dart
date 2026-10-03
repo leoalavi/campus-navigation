@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mq_navigation/features/favorites/domain/entities/favorite_building.dart';
+import 'package:campus_navigation/features/favorites/domain/entities/favorite_building.dart';
 
 /// On-device store for saved buildings.
 ///

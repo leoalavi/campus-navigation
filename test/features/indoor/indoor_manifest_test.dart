@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/indoor/domain/models/indoor_manifest.dart';
+import 'package:campus_navigation/features/indoor/domain/models/indoor_manifest.dart';
 
 void main() {
   group('IndoorManifest', () {

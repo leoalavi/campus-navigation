@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/features/map/data/datasources/building_registry_source.dart';
-import 'package:mq_navigation/features/map/data/datasources/campus_routes_remote_source.dart';
-import 'package:mq_navigation/features/map/data/datasources/google_routes_remote_source.dart';
-import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/data/datasources/building_registry_source.dart';
+import 'package:campus_navigation/features/map/data/datasources/campus_routes_remote_source.dart';
+import 'package:campus_navigation/features/map/data/datasources/google_routes_remote_source.dart';
+import 'package:campus_navigation/features/map/data/datasources/location_source.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
 
 /// Core repository interface for all map-related data operations.
 /// Defines the contract for fetching buildings, handling location permissions,

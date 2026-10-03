@@ -5,16 +5,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/map/data/services/maps_key_resolver.dart';
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
-import 'package:mq_navigation/features/map/presentation/widgets/google/desktop_map_fallback_view.dart';
-import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/map/data/services/maps_key_resolver.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/domain/services/geo_utils.dart';
+import 'package:campus_navigation/features/map/presentation/widgets/google/desktop_map_fallback_view.dart';
+import 'package:campus_navigation/features/map/presentation/widgets/map_view_helpers.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
 
 /// The native `google_maps_flutter` renderer.
 ///

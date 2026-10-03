@@ -5,9 +5,9 @@ import 'package:flutter/foundation.dart'
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/reminder_request.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/reminder_request.dart';
 
 /// Top-level background notification response handler.
 ///
@@ -102,7 +102,7 @@ class LocalNotificationsService {
       body: notification.body,
       notificationDetails: _detailsFor(notification.type),
       payload: jsonEncode(<String, dynamic>{
-        'managedBy': 'mq_navigation',
+        'managedBy': kManagedNotificationTag,
         'link': notification.link,
         'type': notification.type.value,
       }),
@@ -156,7 +156,7 @@ class LocalNotificationsService {
     final pending = await _plugin.pendingNotificationRequests();
     for (final request in pending) {
       final payload = _decodePayload(request.payload);
-      if (payload['managedBy'] == 'mq_navigation' &&
+      if (kOwnedNotificationTags.contains(payload['managedBy']) &&
           !retainedIds.contains(request.id)) {
         await _plugin.cancel(id: request.id);
       }

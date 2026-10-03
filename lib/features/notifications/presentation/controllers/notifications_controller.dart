@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/app/router/app_router.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/core/network/connectivity_service.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_navigation/features/notifications/data/repositories/notification_repository_impl.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
-import 'package:mq_navigation/features/notifications/domain/services/notification_scheduler.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/app/router/app_router.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/core/network/connectivity_service.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/fcm_service.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:campus_navigation/features/notifications/data/repositories/notification_repository_impl.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:campus_navigation/features/notifications/domain/services/notification_scheduler.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 @immutable
 class NotificationsState {

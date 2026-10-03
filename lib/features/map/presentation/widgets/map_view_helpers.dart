@@ -1,6 +1,6 @@
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/map/domain/services/map_polyline_codec.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/domain/services/map_polyline_codec.dart';
 
 /// Decides which buildings the renderer should show as markers.
 ///

@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, =1{1 escena · visita 360°} other{{count} escenas · visita 360°}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Escanear",
+  "buildingsLoadError": "No se pudieron cargar los edificios. Inténtalo de nuevo.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Incluido en la aplicación",
+  "offlineCampusMapsBundledDetail": "El mapa del campus, la lista de edificios y los recorridos interiores funcionan sin conexión. Los horarios del metro en vivo, las rutas a pie y otros servicios en línea sí la necesitan.",
+  "hoursMinutesShort": "{hours} h {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} h",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "Escanear código QR",
+  "stampCatalogUnavailable": "No se pudo cargar tu colección de sellos. Inténtalo de nuevo.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "No se pudieron cargar las ubicaciones del campus. Inténtalo de nuevo.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Busca programas e intereses",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "No se encontró ningún programa o interés coincidente",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Prueba otra palabra clave",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Mostrar paradas sugeridas",
+  "openDay_showSuggestedStopsSemantic": "Mostrar paradas sugeridas en Inicio",
+  "openDay_suggestedStopsForInterest": "Paradas sugeridas para {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "En directo ahora",
+  "openDay_comingUpNextTitle": "A continuación",
+  "openDay_liveNowForInterest": "Coincide con tu interés",
+  "openDay_liveNowAcrossDay": "Abierto a todos los visitantes",
+  "openDay_matchedToYourDegree": "Según tu carrera",
+  "openDay_generalOpenToAll": "General · Abierto a todos",
+  "openDay_allSessionsLabel": "Todas las sesiones",
+  "openDay_yourDayTitle": "Tu día",
+  "openDay_yourDayEmpty": "Guarda las sesiones que te gusten para crear tu propio plan de la Jornada de puertas abiertas.",
+  "openDay_yourDayCount": "{count, plural, =1{1 sesión guardada} other{{count} sesiones guardadas}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Añadir a mi día",
+  "openDay_removeFromMyDay": "Quitar de mi día",
+  "openDay_savedToMyDay": "Añadido a tu día",
+  "openDay_removedFromMyDay": "Eliminado de tu día",
+  "openDay_clearMyDay": "Vaciar mi día",
+  "openDay_clearMyDayConfirm": "¿Quitar todas las sesiones y paradas guardadas de tu día? Esto no se puede deshacer.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Visitadas {count} de {total} paradas",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Ruta {trail} completada",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Sin inicio de sesión · Privado en tu dispositivo",
+  "scanQrCta": "Escanear",
+  "scanPermissionDenied": "Permiso de cámara denegado",
+  "scanPermissionDeniedDesc": "Habilita el acceso a la cámara en configuración para escanear códigos QR",
+  "scanOpenSettings": "Abrir configuración",
+  "scanDecodeError": "No se pudo leer el código QR",
+  "scanNotMqCode": "Este no es un código de Campus Navigation para el Open Day",
+  "scanUnsupportedCode": "Este código QR ya no es compatible",
+  "scanUnverifiedCode": "No se pudo verificar este código QR",
+  "scanAgain": "Escanear de nuevo",
+  "scanVisitSaveFailed": "No se pudo guardar la visita. Inténtalo de nuevo.",
+  "scanNotOnTrail": "No forma parte del recorrido",
+  "scanNotOnTrailDesc": "Este código QR no forma parte del recorrido de Open Day",
+  "arNoBuildingSelected": "Selecciona un edificio para ver el interior",
+  "arComingSoon": "La vista previa interior estará disponible pronto",
+  "arExploreEyebrow": "Visitas al campus en 360°",
+  "arExploreSubtitle": "Entra en los espacios del campus antes de llegar.",
+  "arTourComingSoon": "Visita disponible pronto",
+  "arSoonPill": "Pronto",
+  "cardViewOnCampusMap": "Ver en el mapa del campus",
+  "cardViewArMap": "Ver mapa AR",
+  "cardAddToYourDayCta": "Añadir a tu día",
+  "cardAddToYourDay": "Añadido a tu día",
+  "cardFullSchedule": "Programa completo",
+  "cardArPreviewTitle": "Vista previa AR",
+  "stopLiveNow": "En vivo ahora: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "A continuación: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "¡Enhorabuena!",
+  "stampCelebrationCompleteTitle": "¡Pasaporte completo!",
+  "stampCelebrationSubtitle": "Has recogido el sello de {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Tu pasaporte de Open Day ha comenzado",
+  "stampCelebrationKeepExploring": "Sigue explorando",
+  "stampCelebrationViewPassport": "Ver mi pasaporte",
+  "stampAlreadyCollected": "Ya recogido — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Enhorabuena. Has recogido el sello de {location}. {count} de {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Mis sellos",
+  "stampsPassportLockedHint": "Escanea para recoger",
+  "settingsMyStampsTile": "Mis sellos",
+  "settingsMyStampsSubtitle": "Ver tu pasaporte de Open Day",
+  "arLoadError": "No se pudo cargar la RA: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Foto {index} de {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "¡Insignia obtenida!",
+  "scanBadgeVisited": "Visitado"
 }

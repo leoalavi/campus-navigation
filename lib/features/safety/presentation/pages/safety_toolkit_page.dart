@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/safety/data/datasources/safety_poi_source.dart';
-import 'package:mq_navigation/features/safety/domain/entities/emergency_contact.dart';
-import 'package:mq_navigation/features/safety/domain/entities/safety_poi.dart';
-import 'package:mq_navigation/features/safety/presentation/widgets/safety_action_card.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/safety/data/datasources/safety_poi_source.dart';
+import 'package:campus_navigation/features/safety/domain/entities/emergency_contact.dart';
+import 'package:campus_navigation/features/safety/domain/entities/safety_poi.dart';
+import 'package:campus_navigation/features/safety/presentation/widgets/safety_action_card.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
 
 class SafetyToolkitPage extends StatefulWidget {
   const SafetyToolkitPage({super.key});

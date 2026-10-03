@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, =1{1 scéna · prohlídka 360°} few{{count} scény · prohlídka 360°} other{{count} scén · prohlídka 360°}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Skenovat",
+  "buildingsLoadError": "Budovy se nepodařilo načíst. Zkuste to znovu.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Součást aplikace",
+  "offlineCampusMapsBundledDetail": "Mapa kampusu, seznam budov a vnitřní prohlídky fungují bez připojení. Živé časy metra, pěší trasy a další online služby připojení vyžadují.",
+  "hoursMinutesShort": "{hours} h {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} h",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "Naskenovat QR kód",
+  "stampCatalogUnavailable": "Nepodařilo se načíst vaši sbírku razítek. Zkuste to prosím znovu.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Nepodařilo se načíst místa v kampusu. Zkuste to prosím znovu.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Hledat programy a zájmy",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Žádný odpovídající program ani zájem nenalezen",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Zkuste jiné klíčové slovo",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Zobrazit doporučené zastávky",
+  "openDay_showSuggestedStopsSemantic": "Zobrazit doporučené zastávky na domovské stránce",
+  "openDay_suggestedStopsForInterest": "Doporučené zastávky pro: {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Právě probíhá",
+  "openDay_comingUpNextTitle": "Brzy začíná",
+  "openDay_liveNowForInterest": "Odpovídá vašemu zájmu",
+  "openDay_liveNowAcrossDay": "Otevřeno všem návštěvníkům",
+  "openDay_matchedToYourDegree": "Odpovídá vašemu studiu",
+  "openDay_generalOpenToAll": "Obecné · Otevřeno všem",
+  "openDay_allSessionsLabel": "Všechny přednášky",
+  "openDay_yourDayTitle": "Váš den",
+  "openDay_yourDayEmpty": "Uložte si oblíbené přednášky a sestavte si vlastní plán Dne otevřených dveří.",
+  "openDay_yourDayCount": "{count, plural, =1{1 přednáška uložena} few{{count} přednášky uloženy} other{{count} přednášek uloženo}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Přidat do mého dne",
+  "openDay_removeFromMyDay": "Odebrat z mého dne",
+  "openDay_savedToMyDay": "Přidáno do vašeho dne",
+  "openDay_removedFromMyDay": "Odebráno z vašeho dne",
+  "openDay_clearMyDay": "Vymazat můj den",
+  "openDay_clearMyDayConfirm": "Odebrat všechny uložené programy a zastávky z vašeho dne? Tuto akci nelze vrátit zpět.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Navštíveno {count} z {total} zastávek",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Trasa {trail} dokončena",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Není nutné přihlášení · Soukromé ve vašem zařízení",
+  "scanQrCta": "Skenovat",
+  "scanPermissionDenied": "Přístup ke kameře byl zamítnut",
+  "scanPermissionDeniedDesc": "Povolte přístup ke kameře v nastavení, abyste mohli skenovat QR kódy",
+  "scanOpenSettings": "Otevřít nastavení",
+  "scanDecodeError": "Nepodařilo se přečíst QR kód",
+  "scanNotMqCode": "Toto není kód Campus Navigation pro den otevřených dveří",
+  "scanUnsupportedCode": "Tento QR kód již není podporován",
+  "scanUnverifiedCode": "Tento QR kód se nepodařilo ověřit",
+  "scanAgain": "Skenovat znovu",
+  "scanVisitSaveFailed": "Návštěvu se nepodařilo uložit. Zkuste to znovu.",
+  "scanNotOnTrail": "Není součástí trasy",
+  "scanNotOnTrailDesc": "Tento QR kód není součástí trasy Open Day",
+  "arNoBuildingSelected": "Vyberte budovu pro zobrazení interiéru",
+  "arComingSoon": "Vnitřní náhled již brzy",
+  "arExploreEyebrow": "Prohlídky kampusu ve 360°",
+  "arExploreSubtitle": "Nahlédněte do prostor kampusu ještě před příjezdem.",
+  "arTourComingSoon": "Prohlídka již brzy",
+  "arSoonPill": "Brzy",
+  "cardViewOnCampusMap": "Zobrazit na mapě kampusu",
+  "cardViewArMap": "Zobrazit AR mapu",
+  "cardAddToYourDayCta": "Přidat do Vašeho dne",
+  "cardAddToYourDay": "Přidáno do Vašeho dne",
+  "cardFullSchedule": "Celý program",
+  "cardArPreviewTitle": "Náhled AR",
+  "stopLiveNow": "Právě probíhá: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Další na řadě: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Gratulujeme!",
+  "stampCelebrationCompleteTitle": "Pas dokončen!",
+  "stampCelebrationSubtitle": "Získali jste razítko {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Váš pas Open Day začal",
+  "stampCelebrationKeepExploring": "Pokračujte v objevování",
+  "stampCelebrationViewPassport": "Zobrazit můj pas",
+  "stampAlreadyCollected": "Již vybráno — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Gratulujeme. Získali jste razítko {location}. {count} z {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Moje razítka",
+  "stampsPassportLockedHint": "Naskenováním získáte",
+  "settingsMyStampsTile": "Moje razítka",
+  "settingsMyStampsSubtitle": "Zobrazte svůj pas Open Day",
+  "arLoadError": "AR se nepodařilo načíst: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Fotka {index} z {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Odznak získán!",
+  "scanBadgeVisited": "Navštíveno"
 }

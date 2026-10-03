@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
 
 /// Calculates the shortest distance over the earth's surface between two points.
 ///

@@ -1,0 +1,42 @@
+{
+  "schema": "mqjourney.open-day.qr-payloads.v1",
+  "keyId": "mqj-open-day-2026-02",
+  "payloads": [
+    {
+      "locationId": "hadenfeld-10",
+      "uri": "io.mqjourney://open-day/location/hadenfeld-10?v=1&kid=mqj-open-day-2026-02&sig=PaN-gpKsMAlKKPIzYrr3qJgSFTTKfvftTAeBm68r9qhWVbHT55c8kGyuM6foil-fnqd7YIcnkqOrN6pqZeCBBg"
+    },
+    {
+      "locationId": "wallys-29",
+      "uri": "io.mqjourney://open-day/location/wallys-29?v=1&kid=mqj-open-day-2026-02&sig=WMweW1uQfgtKCvv-I4mFHEaZ4odLT_-aghl8zQvpEYguPzruKIDI-1yJLFayNJ1njCmNDyo45uYyujzTMmFYDQ"
+    },
+    {
+      "locationId": "wallys-27",
+      "uri": "io.mqjourney://open-day/location/wallys-27?v=1&kid=mqj-open-day-2026-02&sig=1oQTaB6w2yOCoGkWYOZ98_F7h6Yh5PMfZCLUEin3qtKUUyq-zDZqTn3JdRhZKAzRq5-nXxb366wLA_AzlZiZCg"
+    },
+    {
+      "locationId": "wallys-23",
+      "uri": "io.mqjourney://open-day/location/wallys-23?v=1&kid=mqj-open-day-2026-02&sig=Rhny8pb4wdIjJNkmBDk_h1u1ia55Hl86i3aZ7ijOpJqa-FO6zvbi4nkEcZ0TDm7YEu2dt9NKQm5psh0iFpHzAw"
+    },
+    {
+      "locationId": "wallys-21",
+      "uri": "io.mqjourney://open-day/location/wallys-21?v=1&kid=mqj-open-day-2026-02&sig=HA2Km8mAdfHqMEsQSs5fTIzpT4XIqMB9JHsiUq3kl_wUCdoyXFI-mE4qWUPPgro-HJL_OiZuOD2q15Idyiz1BQ"
+    },
+    {
+      "locationId": "wallys-17",
+      "uri": "io.mqjourney://open-day/location/wallys-17?v=1&kid=mqj-open-day-2026-02&sig=wZRXt1kRSVxzJk1F9REgt8BnULWmUzUeLtOj2FF9bLICyPi2nwBNXf5Jj5EpiTqESrYow2P5s9fTnd4MqRckDg"
+    },
+    {
+      "locationId": "ondaatje-14",
+      "uri": "io.mqjourney://open-day/location/ondaatje-14?v=1&kid=mqj-open-day-2026-02&sig=-UU9iSfCBSg9i570zYwCckDqLmoe7-INmsZRrOI91Zbq2vmnGw2ztWPcz_PkiyxP97uI38N_pi2aF4Z4vkdHCw"
+    },
+    {
+      "locationId": "wallys-1",
+      "uri": "io.mqjourney://open-day/location/wallys-1?v=1&kid=mqj-open-day-2026-02&sig=g10uApHOaGLdTad_e4hgpT_mleJFQUXL2E1p9kWHDk259FHlYohUECT-m_FncsBF9EcSkw5MvGptgNygmJ5kBg"
+    },
+    {
+      "locationId": "wallys-25",
+      "uri": "io.mqjourney://open-day/location/wallys-25?v=1&kid=mqj-open-day-2026-02&sig=J2QKq5bUqUR29XKylqtVUKQtN4tCGTuEkq-EqJZ4n4OD3ghzUmIiGslkvxcg_pJ3PeiO6u9ioMPJvER4zSF1Aw"
+    }
+  ]
+}

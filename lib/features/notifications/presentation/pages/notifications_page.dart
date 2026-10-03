@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
-import 'package:mq_navigation/features/notifications/presentation/widgets/notification_tile.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
-import 'package:mq_navigation/shared/widgets/mq_app_bar.dart';
-import 'package:mq_navigation/shared/widgets/mq_button.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/shared/widgets/mq_card.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/fcm_service.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
+import 'package:campus_navigation/features/notifications/presentation/widgets/notification_tile.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/shared/widgets/mq_app_bar.dart';
+import 'package:campus_navigation/shared/widgets/mq_button.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/shared/widgets/mq_card.dart';
 
 /// Screen displaying the user's notification inbox and preference toggles.
 ///

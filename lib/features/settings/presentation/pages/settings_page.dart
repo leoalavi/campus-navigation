@@ -3,24 +3,26 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/core/config/product_config.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/core/utils/haptics.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
-import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
-import 'package:mq_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
-import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
-import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
-import 'package:mq_navigation/shared/widgets/mq_input.dart';
-import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
+import 'package:go_router/go_router.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/core/config/product_config.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/core/utils/haptics.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/data/services/offline_maps_service.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:campus_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/features/transit/domain/entities/transit_stop.dart';
+import 'package:campus_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/shared/widgets/mq_bottom_sheet.dart';
+import 'package:campus_navigation/shared/widgets/mq_input.dart';
+import 'package:campus_navigation/shared/widgets/mq_tactile_button.dart';
 
 /// Dark-mode foreground on Settings (replaces [MqColors.contentPrimaryDark] / alabaster).
 ThemeData _settingsDarkReadableTheme(BuildContext context) {
@@ -40,13 +42,39 @@ ThemeData _settingsDarkReadableTheme(BuildContext context) {
 /// rather than standard Material tiles to match the app's design system,
 /// including a red radial gradient background in dark mode.
 class SettingsPage extends ConsumerStatefulWidget {
-  const SettingsPage({super.key});
+  const SettingsPage({super.key, this.initialSection});
+
+  /// Optional deep-link target section (e.g. `'commute'`), used to scroll the
+  /// user straight to the relevant block instead of the top of the page.
+  final String? initialSection;
 
   @override
   ConsumerState<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
+  final GlobalKey _commuteSectionKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialSection == 'commute') {
+      // Wait for the list to build, then bring the Commute Preferences block
+      // into view so the user lands exactly where they need to configure it.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final target = _commuteSectionKey.currentContext;
+        if (target != null) {
+          Scrollable.ensureVisible(
+            target,
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.easeOutCubic,
+            alignment: 0.05,
+          );
+        }
+      });
+    }
+  }
+
   static const _metroDirectionSydenham = 'Sydenham';
   static const _metroDirectionTallawong = 'Tallawong';
   static const _metroDirectionValues = [
@@ -349,7 +377,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   // Placed high on the page because these preferences
                   // are the ones that most directly change what the
                   // user sees on the Home screen (Metro Countdown).
-                  _SectionHeader(title: l10n.commutePreferences),
+                  KeyedSubtree(
+                    key: _commuteSectionKey,
+                    child: _SectionHeader(title: l10n.commutePreferences),
+                  ),
                   _SettingsCard(
                     key: const ValueKey('commute-main-transport-card'),
                     children: [
@@ -1546,37 +1577,71 @@ class _OpenDaySection extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final selected = ref.watch(selectedBachelorProvider);
     final remindersEnabled = preferences.openDayRemindersEnabled;
+    final openDayEnabled = preferences.openDayEnabled;
     return _SettingsCard(
       children: [
-        _TapRow(
-          icon: Icons.school_outlined,
-          label: l10n.openDay_studyInterest,
-          value: selected?.name ?? l10n.openDay_studyInterestNotSet,
-          semanticLabel: l10n.openDay_studyInterestSemantic,
-          hapticsEnabled: preferences.hapticsEnabled,
-          onTap: () => BachelorPickerSheet.show(context, ref),
-        ),
         _ToggleRow(
-          icon: Icons.notifications_active_outlined,
-          label: l10n.openDay_eventReminders,
-          value: remindersEnabled,
-          semanticLabel: l10n.openDay_eventRemindersSemantic,
+          icon: Icons.celebration_outlined,
+          label: l10n.openDay_enable,
+          value: openDayEnabled,
+          semanticLabel: l10n.openDay_enableSemantic,
           hapticsEnabled: preferences.hapticsEnabled,
           onChanged: (v) => ref
               .read(settingsControllerProvider.notifier)
-              .updateOpenDayRemindersEnabled(v),
+              .updateOpenDayEnabled(v),
         ),
-        if (remindersEnabled)
+        if (openDayEnabled) ...[
           _TapRow(
-            icon: Icons.timer_outlined,
-            label: l10n.openDay_remindMeBefore,
-            value: l10n.openDay_minutesValue(
-              preferences.openDayReminderMinutesBefore,
-            ),
-            semanticLabel: l10n.openDay_remindLeadTimeSemantic,
+            icon: Icons.school_outlined,
+            label: l10n.openDay_studyInterest,
+            value: selected?.name ?? l10n.openDay_studyInterestNotSet,
+            semanticLabel: l10n.openDay_studyInterestSemantic,
             hapticsEnabled: preferences.hapticsEnabled,
-            onTap: () => _showLeadTimePicker(context, ref),
+            onTap: () => BachelorPickerSheet.show(context, ref),
           ),
+          _ToggleRow(
+            icon: Icons.notifications_active_outlined,
+            label: l10n.openDay_eventReminders,
+            value: remindersEnabled,
+            semanticLabel: l10n.openDay_eventRemindersSemantic,
+            hapticsEnabled: preferences.hapticsEnabled,
+            onChanged: (v) => ref
+                .read(settingsControllerProvider.notifier)
+                .updateOpenDayRemindersEnabled(v),
+          ),
+          if (remindersEnabled)
+            _TapRow(
+              icon: Icons.timer_outlined,
+              label: l10n.openDay_remindMeBefore,
+              value: l10n.openDay_minutesValue(
+                preferences.openDayReminderMinutesBefore,
+              ),
+              semanticLabel: l10n.openDay_remindLeadTimeSemantic,
+              hapticsEnabled: preferences.hapticsEnabled,
+              onTap: () => _showLeadTimePicker(context, ref),
+            ),
+          // Lets users hide the personalised Suggested Stops block on Home.
+          _ToggleRow(
+            icon: Icons.explore_outlined,
+            label: l10n.openDay_showSuggestedStops,
+            value: preferences.showSuggestedStops,
+            semanticLabel: l10n.openDay_showSuggestedStopsSemantic,
+            hapticsEnabled: preferences.hapticsEnabled,
+            onChanged: (v) => ref
+                .read(settingsControllerProvider.notifier)
+                .updateShowSuggestedStops(v),
+          ),
+          // Collectible passport of buildings visited by scanning Open Day
+          // QR codes.
+          _TapRow(
+            icon: Icons.local_activity_outlined,
+            label: l10n.settingsMyStampsTile,
+            value: l10n.settingsMyStampsSubtitle,
+            semanticLabel: l10n.settingsMyStampsTile,
+            hapticsEnabled: preferences.hapticsEnabled,
+            onTap: () => context.pushNamed(RouteNames.stamps),
+          ),
+        ],
       ],
     );
   }

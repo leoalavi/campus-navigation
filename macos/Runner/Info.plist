@@ -28,6 +28,8 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Campus Navigation uses your camera to scan Open Day QR codes at campus locations.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app uses your location to show your position on the campus map and provide navigation.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -39,7 +41,7 @@
 	  macOS refuses to forward io.mqnavigation://callback redirects
 	  from the system browser and the user lands on the blank Supabase
 	  page. The app_links plugin already handles the incoming URI on
-	  the Dart side via MqNavigationApp._listenForDeepLinks.
+	  the Dart side via CampusNavigationApp._listenForDeepLinks.
 	-->
 	<key>CFBundleURLTypes</key>
 	<array>
@@ -51,6 +53,8 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>io.mqnavigation</string>
+				<!-- Printed Open Day QR codes (io.mqjourney://open-day/...). -->
+				<string>io.mqjourney</string>
 			</array>
 		</dict>
 	</array>

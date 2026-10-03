@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, other{{count} sahne · 360° tur}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Tara",
+  "buildingsLoadError": "Binalar yüklenemedi. Lütfen tekrar deneyin.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Uygulamaya dahil",
+  "offlineCampusMapsBundledDetail": "Kampüs haritası, bina listesi ve iç mekân turları bağlantı olmadan çalışır. Canlı metro saatleri, yürüyüş rotaları ve diğer çevrimiçi hizmetler bağlantı gerektirir.",
+  "hoursMinutesShort": "{hours} sa {minutes} dk",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} sa",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "QR Kodu Tara",
+  "stampCatalogUnavailable": "Damga koleksiyonunuz yüklenemedi. Lütfen tekrar deneyin.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Kampüs konumları yüklenemedi. Lütfen tekrar deneyin.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Programları ve ilgi alanlarını ara",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Eşleşen program veya ilgi alanı bulunamadı",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Başka bir kelime deneyin",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Önerilen durakları göster",
+  "openDay_showSuggestedStopsSemantic": "Ana ekranda önerilen durakları göster",
+  "openDay_suggestedStopsForInterest": "{interest} için önerilen duraklar",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Şimdi canlı",
+  "openDay_comingUpNextTitle": "Sırada",
+  "openDay_liveNowForInterest": "İlgi alanınızla eşleşiyor",
+  "openDay_liveNowAcrossDay": "Tüm ziyaretçilere açık",
+  "openDay_matchedToYourDegree": "Bölümünüze uygun",
+  "openDay_generalOpenToAll": "Genel · Herkese açık",
+  "openDay_allSessionsLabel": "Tüm oturumlar",
+  "openDay_yourDayTitle": "Günün",
+  "openDay_yourDayEmpty": "Beğendiğin oturumları kaydederek kendi Açık Gün planını oluştur.",
+  "openDay_yourDayCount": "{count, plural, other{{count} oturum kaydedildi}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Günüme ekle",
+  "openDay_removeFromMyDay": "Günümden çıkar",
+  "openDay_savedToMyDay": "Gününe eklendi",
+  "openDay_removedFromMyDay": "Gününden çıkarıldı",
+  "openDay_clearMyDay": "Günümü temizle",
+  "openDay_clearMyDayConfirm": "Gününüzden kaydedilen tüm oturumları ve durakları kaldırılsın mı? Bu geri alınamaz.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total} duraktan {count} tanesi gezildi",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} rotası tamamlandı",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Giriş gerekmez · Cihazınızda gizli",
+  "scanQrCta": "Tara",
+  "scanPermissionDenied": "Kamera izni reddedildi",
+  "scanPermissionDeniedDesc": "QR kodlarını taramak için Ayarlar'dan kamera erişimini etkinleştirin",
+  "scanOpenSettings": "Ayarları aç",
+  "scanDecodeError": "QR kodu okunamadı",
+  "scanNotMqCode": "Bu bir Campus Navigation Açık Gün kodu değil",
+  "scanUnsupportedCode": "Bu QR kod artık desteklenmiyor",
+  "scanUnverifiedCode": "Bu QR kod doğrulanamadı",
+  "scanAgain": "Tekrar tara",
+  "scanVisitSaveFailed": "Ziyaret kaydedilemedi. Tekrar deneyin.",
+  "scanNotOnTrail": "Rotanın parçası değil",
+  "scanNotOnTrailDesc": "Bu QR kodu Open Day rotasının bir parçası değil",
+  "arNoBuildingSelected": "İçini görmek için bir bina seçin",
+  "arComingSoon": "İç mekan önizlemesi yakında",
+  "arExploreEyebrow": "360° kampüs turları",
+  "arExploreSubtitle": "Gelmeden önce kampüs alanlarına adım atın.",
+  "arTourComingSoon": "Tur yakında",
+  "arSoonPill": "Yakında",
+  "cardViewOnCampusMap": "Kampüs haritasında görüntüle",
+  "cardViewArMap": "AR haritasını görüntüle",
+  "cardAddToYourDayCta": "Gününüze ekle",
+  "cardAddToYourDay": "Gününüze eklendi",
+  "cardFullSchedule": "Tam program",
+  "cardArPreviewTitle": "AR önizlemesi",
+  "stopLiveNow": "Şu anda canlı: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Sırada: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Tebrikler!",
+  "stampCelebrationCompleteTitle": "Pasaport tamamlandı!",
+  "stampCelebrationSubtitle": "{location} damgasını topladınız",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Open Day pasaportunuz başladı",
+  "stampCelebrationKeepExploring": "Keşfetmeye devam edin",
+  "stampCelebrationViewPassport": "Pasaportumu görüntüle",
+  "stampAlreadyCollected": "Zaten toplandı — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Tebrikler. {location} damgasını topladınız. {total} üzerinden {count}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Damgalarım",
+  "stampsPassportLockedHint": "Toplamak için tarayın",
+  "settingsMyStampsTile": "Damgalarım",
+  "settingsMyStampsSubtitle": "Open Day pasaportunuzu görüntüleyin",
+  "arLoadError": "AR yüklenemedi: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "{total} fotoğraftan {index}. fotoğraf",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Rozet kazanıldı!",
+  "scanBadgeVisited": "Ziyaret edildi"
 }

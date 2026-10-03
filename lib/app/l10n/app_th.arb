@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, other{{count} ฉาก · ทัวร์ 360°}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "สแกน",
+  "buildingsLoadError": "ไม่สามารถโหลดอาคารได้ โปรดลองอีกครั้ง",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "รวมอยู่ในแอป",
+  "offlineCampusMapsBundledDetail": "แผนที่วิทยาเขต รายชื่ออาคาร และทัวร์ภายในใช้งานได้โดยไม่ต้องเชื่อมต่อ ส่วนเวลารถไฟฟ้าแบบเรียลไทม์ เส้นทางเดิน และบริการออนไลน์อื่นยังต้องใช้การเชื่อมต่อ",
+  "hoursMinutesShort": "{hours} ชม. {minutes} นาที",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} ชม.",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "สแกนคิวอาร์โค้ด",
+  "stampCatalogUnavailable": "ไม่สามารถโหลดคอลเลกชันตราประทับของคุณได้ กรุณาลองอีกครั้ง",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "ไม่สามารถโหลดตำแหน่งในวิทยาเขตได้ กรุณาลองอีกครั้ง",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "ค้นหาโปรแกรมและความสนใจ",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "ไม่พบโปรแกรมหรือความสนใจที่ตรงกัน",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "ลองใช้คำอื่น",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "แสดงจุดแวะที่แนะนำ",
+  "openDay_showSuggestedStopsSemantic": "แสดงจุดแวะที่แนะนำบนหน้าแรก",
+  "openDay_suggestedStopsForInterest": "จุดแวะที่แนะนำสำหรับ {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "กำลังถ่ายทอดสด",
+  "openDay_comingUpNextTitle": "ถัดไป",
+  "openDay_liveNowForInterest": "ตรงกับความสนใจของคุณ",
+  "openDay_liveNowAcrossDay": "เปิดสำหรับผู้เข้าชมทุกคน",
+  "openDay_matchedToYourDegree": "ตรงกับหลักสูตรของคุณ",
+  "openDay_generalOpenToAll": "ทั่วไป · เปิดสำหรับทุกคน",
+  "openDay_allSessionsLabel": "ทุกเซสชัน",
+  "openDay_yourDayTitle": "วันของคุณ",
+  "openDay_yourDayEmpty": "บันทึกเซสชันที่คุณชอบเพื่อสร้างแผนวันเปิดเทอมของคุณเอง",
+  "openDay_yourDayCount": "{count, plural, other{บันทึกแล้ว {count} เซสชัน}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "เพิ่มลงในวันของฉัน",
+  "openDay_removeFromMyDay": "นำออกจากวันของฉัน",
+  "openDay_savedToMyDay": "เพิ่มลงในวันของคุณแล้ว",
+  "openDay_removedFromMyDay": "นำออกจากวันของคุณแล้ว",
+  "openDay_clearMyDay": "ล้างวันของฉัน",
+  "openDay_clearMyDayConfirm": "ลบเซสชันและจุดแวะที่บันทึกไว้ทั้งหมดออกจากวันของคุณ? การดำเนินการนี้ไม่สามารถยกเลิกได้",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "เยี่ยมชม {count} จาก {total} จุด",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "เส้นทาง {trail} เสร็จสมบูรณ์",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "ไม่ต้องเข้าสู่ระบบ · เป็นส่วนตัวบนอุปกรณ์ของคุณ",
+  "scanQrCta": "สแกน",
+  "scanPermissionDenied": "การอนุญาตกล้องถูกปฏิเสธ",
+  "scanPermissionDeniedDesc": "เปิดใช้งานการเข้าถึงกล้องในการตั้งค่าเพื่อสแกนรหัส QR",
+  "scanOpenSettings": "เปิดการตั้งค่า",
+  "scanDecodeError": "ไม่สามารถอ่านรหัส QR ได้",
+  "scanNotMqCode": "นี่ไม่ใช่โค้ด Campus Navigation Open Day",
+  "scanUnsupportedCode": "ไม่รองรับคิวอาร์โค้ดนี้อีกต่อไป",
+  "scanUnverifiedCode": "ไม่สามารถยืนยันคิวอาร์โค้ดนี้ได้",
+  "scanAgain": "สแกนอีกครั้ง",
+  "scanVisitSaveFailed": "ไม่สามารถบันทึกการเยี่ยมชมได้ โปรดลองอีกครั้ง",
+  "scanNotOnTrail": "ไม่ใช่ส่วนหนึ่งของเส้นทาง",
+  "scanNotOnTrailDesc": "รหัส QR นี้ไม่ใช่ส่วนหนึ่งของเส้นทาง Open Day",
+  "arNoBuildingSelected": "เลือกอาคารเพื่อดูภายใน",
+  "arComingSoon": "ตัวอย่างภายในเร็ว ๆ นี้",
+  "arExploreEyebrow": "ทัวร์วิทยาเขตแบบ 360°",
+  "arExploreSubtitle": "ก้าวเข้าไปในพื้นที่วิทยาเขตก่อนมาถึง",
+  "arTourComingSoon": "ทัวร์เร็ว ๆ นี้",
+  "arSoonPill": "เร็ว ๆ นี้",
+  "cardViewOnCampusMap": "ดูบนแผนที่วิทยาเขต",
+  "cardViewArMap": "ดูแผนที่ AR",
+  "cardAddToYourDayCta": "เพิ่มลงในวันของคุณ",
+  "cardAddToYourDay": "เพิ่มลงในวันของคุณแล้ว",
+  "cardFullSchedule": "ตารางเต็ม",
+  "cardArPreviewTitle": "ตัวอย่าง AR",
+  "stopLiveNow": "ถ่ายทอดสดตอนนี้: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "ถัดไป: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "ยินดีด้วย!",
+  "stampCelebrationCompleteTitle": "พาสปอร์ตครบสมบูรณ์!",
+  "stampCelebrationSubtitle": "คุณเก็บตราประทับ {location} แล้ว",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "พาสปอร์ต Open Day ของคุณเริ่มต้นแล้ว",
+  "stampCelebrationKeepExploring": "สำรวจต่อไป",
+  "stampCelebrationViewPassport": "ดูพาสปอร์ตของฉัน",
+  "stampAlreadyCollected": "เก็บแล้ว — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "ยินดีด้วย คุณเก็บตราประทับ {location} แล้ว {count} จาก {total}",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "แสตมป์ของฉัน",
+  "stampsPassportLockedHint": "สแกนเพื่อเก็บ",
+  "settingsMyStampsTile": "แสตมป์ของฉัน",
+  "settingsMyStampsSubtitle": "ดูพาสปอร์ต Open Day ของคุณ",
+  "arLoadError": "ไม่สามารถโหลด AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "รูปภาพ {index} จาก {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "ได้รับตราสัญลักษณ์!",
+  "scanBadgeVisited": "เยี่ยมชมแล้ว"
 }

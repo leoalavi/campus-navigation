@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_overlay.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_overlay.dart';
 
 void main() {
   group('MapOverlay', () {

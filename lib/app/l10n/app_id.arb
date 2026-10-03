@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, other{{count} adegan · tur 360°}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Pindai",
+  "buildingsLoadError": "Gedung tidak dapat dimuat. Silakan coba lagi.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Termasuk dalam aplikasi",
+  "offlineCampusMapsBundledDetail": "Peta kampus, daftar gedung, dan tur dalam ruangan berfungsi tanpa koneksi. Waktu metro langsung, rute jalan kaki, dan layanan daring lainnya tetap memerlukannya.",
+  "hoursMinutesShort": "{hours} j {minutes} mnt",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} j",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "Pindai Kode QR",
+  "stampCatalogUnavailable": "Tidak dapat memuat koleksi stempel Anda. Silakan coba lagi.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Tidak dapat memuat lokasi kampus. Silakan coba lagi.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Cari program dan minat",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Tidak ada program atau minat yang cocok",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Coba kata kunci lain",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Tampilkan perhentian yang disarankan",
+  "openDay_showSuggestedStopsSemantic": "Tampilkan perhentian yang disarankan di Beranda",
+  "openDay_suggestedStopsForInterest": "Perhentian yang disarankan untuk {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Berlangsung sekarang",
+  "openDay_comingUpNextTitle": "Berikutnya",
+  "openDay_liveNowForInterest": "Sesuai dengan minat Anda",
+  "openDay_liveNowAcrossDay": "Terbuka untuk semua pengunjung",
+  "openDay_matchedToYourDegree": "Sesuai program Anda",
+  "openDay_generalOpenToAll": "Umum · Terbuka untuk semua",
+  "openDay_allSessionsLabel": "Semua sesi",
+  "openDay_yourDayTitle": "Hari Anda",
+  "openDay_yourDayEmpty": "Simpan sesi yang Anda suka untuk menyusun rencana Hari Terbuka Anda sendiri.",
+  "openDay_yourDayCount": "{count, plural, other{{count} sesi disimpan}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Tambahkan ke hari saya",
+  "openDay_removeFromMyDay": "Hapus dari hari saya",
+  "openDay_savedToMyDay": "Ditambahkan ke hari Anda",
+  "openDay_removedFromMyDay": "Dihapus dari hari Anda",
+  "openDay_clearMyDay": "Bersihkan hari saya",
+  "openDay_clearMyDayConfirm": "Hapus semua sesi dan perhentian tersimpan dari hari Anda? Ini tidak dapat dibatalkan.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Mengunjungi {count} dari {total} perhentian",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Rute {trail} selesai",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Tanpa login · Privat di perangkat Anda",
+  "scanQrCta": "Pindai",
+  "scanPermissionDenied": "Izin kamera ditolak",
+  "scanPermissionDeniedDesc": "Aktifkan akses kamera di Pengaturan untuk memindai kode QR",
+  "scanOpenSettings": "Buka pengaturan",
+  "scanDecodeError": "Tidak dapat membaca kode QR",
+  "scanNotMqCode": "Ini bukan kode Open Day Campus Navigation",
+  "scanUnsupportedCode": "Kode QR ini tidak lagi didukung",
+  "scanUnverifiedCode": "Kode QR ini tidak dapat diverifikasi",
+  "scanAgain": "Pindai lagi",
+  "scanVisitSaveFailed": "Kunjungan tidak dapat disimpan. Coba lagi.",
+  "scanNotOnTrail": "Bukan bagian dari jalur",
+  "scanNotOnTrailDesc": "Kode QR ini bukan bagian dari jalur Open Day",
+  "arNoBuildingSelected": "Pilih gedung untuk melihat bagian dalamnya",
+  "arComingSoon": "Pratinjau dalam ruangan segera hadir",
+  "arExploreEyebrow": "Tur kampus 360°",
+  "arExploreSubtitle": "Masuki ruang kampus sebelum Anda tiba.",
+  "arTourComingSoon": "Tur segera hadir",
+  "arSoonPill": "Segera",
+  "cardViewOnCampusMap": "Lihat di peta kampus",
+  "cardViewArMap": "Lihat peta AR",
+  "cardAddToYourDayCta": "Tambahkan ke Hari Anda",
+  "cardAddToYourDay": "Ditambahkan ke Hari Anda",
+  "cardFullSchedule": "Jadwal lengkap",
+  "cardArPreviewTitle": "Pratinjau AR",
+  "stopLiveNow": "Langsung sekarang: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Selanjutnya: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Selamat!",
+  "stampCelebrationCompleteTitle": "Paspor lengkap!",
+  "stampCelebrationSubtitle": "Anda mengumpulkan stempel {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Paspor Open Day Anda telah dimulai",
+  "stampCelebrationKeepExploring": "Terus jelajahi",
+  "stampCelebrationViewPassport": "Lihat paspor saya",
+  "stampAlreadyCollected": "Sudah dikumpulkan — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Selamat. Anda mengumpulkan stempel {location}. {count} dari {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Stempel Saya",
+  "stampsPassportLockedHint": "Pindai untuk mengumpulkan",
+  "settingsMyStampsTile": "Stempel Saya",
+  "settingsMyStampsSubtitle": "Lihat paspor Open Day Anda",
+  "arLoadError": "Tidak dapat memuat AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Foto {index} dari {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Lencana diperoleh!",
+  "scanBadgeVisited": "Dikunjungi"
 }

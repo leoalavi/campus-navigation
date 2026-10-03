@@ -4,13 +4,29 @@
       "id": "entrance",
       "image": "indoor/MQTH_entrance.jpg",
       "description": "Entrance",
-      "neighbours": []
+      "neighbours": [
+        {
+          "targetId": "foyer",
+          "heading": -30,
+          "label": "Macquarie Theatre"
+        }
+      ],
+      "previewHeading": -30,
+      "previewPitch": 0
     },
     {
       "id": "foyer",
       "image": "indoor/MQTH_foyer.jpg",
       "description": "Theatre foyer",
-      "neighbours": []
+      "neighbours": [
+        {
+          "targetId": "entrance",
+          "heading": 79,
+          "label": "Entrance"
+        }
+      ],
+      "previewHeading": -5,
+      "previewPitch": 0
     }
   ]
 }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/features/favorites/data/repositories/favorite_building_repository.dart';
-import 'package:mq_navigation/features/favorites/domain/entities/favorite_building.dart';
-import 'package:mq_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
-import 'package:mq_navigation/features/favorites/presentation/widgets/favorite_button.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/features/favorites/data/repositories/favorite_building_repository.dart';
+import 'package:campus_navigation/features/favorites/domain/entities/favorite_building.dart';
+import 'package:campus_navigation/features/favorites/presentation/controllers/favorites_controller.dart';
+import 'package:campus_navigation/features/favorites/presentation/widgets/favorite_button.dart';
 
 class MockFavoriteBuildingRepository extends Mock
     implements FavoriteBuildingRepository {}

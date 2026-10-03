@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, other{{count} दृश्य · ३६०° भ्रमण}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "स्क्यान",
+  "buildingsLoadError": "भवनहरू लोड गर्न सकिएन। कृपया पुनः प्रयास गर्नुहोस्।",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "एपमा समावेश",
+  "offlineCampusMapsBundledDetail": "क्याम्पस नक्सा, भवन सूची र इनडोर टुरहरू जडान बिना काम गर्छन्। लाइभ मेट्रो समय, हिँड्ने मार्ग र अन्य अनलाइन सेवाहरूलाई जडान चाहिन्छ।",
+  "hoursMinutesShort": "{hours} घ {minutes} मि",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} घ",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "QR कोड स्क्यान गर्नुहोस्",
+  "stampCatalogUnavailable": "तपाईंको स्ट्याम्प सङ्ग्रह लोड गर्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "क्याम्पसका स्थानहरू लोड गर्न सकिएन। कृपया फेरि प्रयास गर्नुहोस्।",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "कार्यक्रम र रुचिहरू खोज्नुहोस्",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "मिल्दो कार्यक्रम वा रुचि फेला परेन",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "अर्को किवर्ड प्रयास गर्नुहोस्",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "सुझाव गरिएका स्थानहरू देखाउनुहोस्",
+  "openDay_showSuggestedStopsSemantic": "गृहपृष्ठमा सुझाव गरिएका स्थानहरू देखाउनुहोस्",
+  "openDay_suggestedStopsForInterest": "{interest} का लागि सुझाव गरिएका स्थानहरू",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "अहिले प्रत्यक्ष",
+  "openDay_comingUpNextTitle": "अब आउँदै",
+  "openDay_liveNowForInterest": "तपाईंको रुचिसँग मिल्दो",
+  "openDay_liveNowAcrossDay": "सबै आगन्तुकका लागि खुला",
+  "openDay_matchedToYourDegree": "तपाईंको डिग्रीसँग मिल्दो",
+  "openDay_generalOpenToAll": "सामान्य · सबैका लागि खुला",
+  "openDay_allSessionsLabel": "सबै सत्र",
+  "openDay_yourDayTitle": "तपाईंको दिन",
+  "openDay_yourDayEmpty": "मनपर्ने सत्रहरू सुरक्षित गरेर आफ्नै खुल्ला दिन योजना बनाउनुहोस्।",
+  "openDay_yourDayCount": "{count, plural, =1{१ सत्र सुरक्षित गरियो} other{{count} सत्र सुरक्षित गरियो}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "मेरो दिनमा थप्नुहोस्",
+  "openDay_removeFromMyDay": "मेरो दिनबाट हटाउनुहोस्",
+  "openDay_savedToMyDay": "तपाईंको दिनमा थपियो",
+  "openDay_removedFromMyDay": "तपाईंको दिनबाट हटाइयो",
+  "openDay_clearMyDay": "मेरो दिन खाली गर्नुहोस्",
+  "openDay_clearMyDayConfirm": "तपाईंको दिनबाट सबै सुरक्षित सत्र र स्टपहरू हटाउने? यो पूर्ववत गर्न सकिँदैन।",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total} मध्ये {count} स्थान घुमियो",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} ट्रेल पूरा भयो",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "लगइन आवश्यक छैन · तपाईंको यन्त्रमा निजी",
+  "scanQrCta": "स्क्यान गर्नुहोस्",
+  "scanPermissionDenied": "क्यामेरा अनुमति अस्वीकृत भयो",
+  "scanPermissionDeniedDesc": "QR कोड स्क्यान गर्न सेटिङमा क्यामेरा पहुँच सक्षम गर्नुहोस्",
+  "scanOpenSettings": "सेटिङ खोल्नुहोस्",
+  "scanDecodeError": "QR कोड पढ्न सकिएन",
+  "scanNotMqCode": "यो Campus Navigation ओपन डे कोड होइन",
+  "scanUnsupportedCode": "यो QR कोड अब समर्थित छैन",
+  "scanUnverifiedCode": "यो QR कोड प्रमाणित गर्न सकिएन",
+  "scanAgain": "फेरि स्क्यान गर्नुहोस्",
+  "scanVisitSaveFailed": "भ्रमण सुरक्षित गर्न सकिएन। फेरि प्रयास गर्नुहोस्।",
+  "scanNotOnTrail": "ट्रेलको हिस्सा होइन",
+  "scanNotOnTrailDesc": "यो QR कोड ओपन डे ट्रेलको हिस्सा होइन",
+  "arNoBuildingSelected": "भित्र हेर्न भवन छान्नुहोस्",
+  "arComingSoon": "भित्री पूर्वावलोकन चाँडै आउँदैछ",
+  "arExploreEyebrow": "३६०° क्याम्पस भ्रमण",
+  "arExploreSubtitle": "आउनुअघि नै क्याम्पसका ठाउँहरू भित्रबाट हेर्नुहोस्।",
+  "arTourComingSoon": "भ्रमण चाँडै आउँदैछ",
+  "arSoonPill": "चाँडै",
+  "cardViewOnCampusMap": "क्याम्पस नक्सामा हेर्नुहोस्",
+  "cardViewArMap": "AR नक्सा हेर्नुहोस्",
+  "cardAddToYourDayCta": "तपाईंको दिनमा थप्नुहोस्",
+  "cardAddToYourDay": "तपाईंको दिनमा थपियो",
+  "cardFullSchedule": "पूर्ण तालिका",
+  "cardArPreviewTitle": "AR पूर्वावलोकन",
+  "stopLiveNow": "अहिले लाइभ: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "अर्को: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "बधाई छ!",
+  "stampCelebrationCompleteTitle": "पासपोर्ट पूरा भयो!",
+  "stampCelebrationSubtitle": "तपाईंले {location} स्ट्याम्प सङ्कलन गर्नुभयो",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "तपाईंको ओपन डे पासपोर्ट सुरु भएको छ",
+  "stampCelebrationKeepExploring": "अन्वेषण जारी राख्नुहोस्",
+  "stampCelebrationViewPassport": "मेरो पासपोर्ट हेर्नुहोस्",
+  "stampAlreadyCollected": "पहिले नै सङ्कलन गरिएको — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "बधाई छ। तपाईंले {location} स्ट्याम्प सङ्कलन गर्नुभयो। {total} मध्ये {count}।",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "मेरो स्ट्याम्प",
+  "stampsPassportLockedHint": "सङ्कलन गर्न स्क्यान गर्नुहोस्",
+  "settingsMyStampsTile": "मेरो स्ट्याम्प",
+  "settingsMyStampsSubtitle": "तपाईंको ओपन डे पासपोर्ट हेर्नुहोस्",
+  "arLoadError": "AR लोड गर्न सकिएन: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "{total} मध्ये फोटो {index}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "ब्याज प्राप्त भयो!",
+  "scanBadgeVisited": "भ्रमण गरियो"
 }

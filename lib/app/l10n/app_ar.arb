@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, =1{مشهد واحد · جولة 360°} other{{count} مشاهد · جولة 360°}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "مسح",
+  "buildingsLoadError": "تعذر تحميل المباني. يرجى المحاولة مرة أخرى.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "مُضمَّن في التطبيق",
+  "offlineCampusMapsBundledDetail": "تعمل خريطة الحرم الجامعي وقائمة المباني والجولات الداخلية بدون اتصال. أما أوقات المترو المباشرة ومسارات المشي والخدمات الأخرى عبر الإنترنت فتحتاج إلى اتصال.",
+  "hoursMinutesShort": "{hours} س {minutes} د",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} س",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "مسح رمز QR",
+  "stampCatalogUnavailable": "تعذّر تحميل مجموعة الطوابع الخاصة بك. يُرجى المحاولة مرة أخرى.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "تعذّر تحميل مواقع الحرم الجامعي. يُرجى المحاولة مرة أخرى.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "ابحث عن البرامج والاهتمامات",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "لم يتم العثور على برنامج أو اهتمام مطابق",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "جرّب كلمة مختلفة",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "إظهار المحطات المقترحة",
+  "openDay_showSuggestedStopsSemantic": "إظهار المحطات المقترحة في الصفحة الرئيسية",
+  "openDay_suggestedStopsForInterest": "المحطات المقترحة لـ {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "مباشر الآن",
+  "openDay_comingUpNextTitle": "التالي قريبًا",
+  "openDay_liveNowForInterest": "متطابقة مع اهتمامك",
+  "openDay_liveNowAcrossDay": "مفتوح لجميع الزوار",
+  "openDay_matchedToYourDegree": "مطابقة لدرجتك",
+  "openDay_generalOpenToAll": "عام · مفتوح لجميع الزوار",
+  "openDay_allSessionsLabel": "جميع الجلسات",
+  "openDay_yourDayTitle": "يومك",
+  "openDay_yourDayEmpty": "احفظ الجلسات التي تعجبك لإنشاء خطتك الخاصة ليوم الانفتاح.",
+  "openDay_yourDayCount": "{count, plural, =1{تم حفظ جلسة واحدة} other{تم حفظ {count} جلسة}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "أضف إلى يومي",
+  "openDay_removeFromMyDay": "إزالة من يومي",
+  "openDay_savedToMyDay": "تمت الإضافة إلى يومك",
+  "openDay_removedFromMyDay": "تمت الإزالة من يومك",
+  "openDay_clearMyDay": "مسح يومي",
+  "openDay_clearMyDayConfirm": "هل تريد إزالة جميع الجلسات والمحطات المحفوظة من يومك؟ لا يمكن التراجع عن هذا.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "زرت {count} من {total} محطات",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "أكملت مسار {trail}",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "لا حاجة لتسجيل الدخول · خصوصيتك على جهازك",
+  "scanQrCta": "مسح",
+  "scanPermissionDenied": "تم رفض إذن الكاميرا",
+  "scanPermissionDeniedDesc": "فعّل الوصول إلى الكاميرا في الإعدادات لمسح رموز QR",
+  "scanOpenSettings": "فتح الإعدادات",
+  "scanDecodeError": "تعذّرت قراءة رمز QR",
+  "scanNotMqCode": "هذا ليس رمز Campus Navigation ليوم الأبواب المفتوحة",
+  "scanUnsupportedCode": "رمز QR هذا لم يعد مدعومًا",
+  "scanUnverifiedCode": "تعذر التحقق من رمز QR هذا",
+  "scanAgain": "امسح مجددًا",
+  "scanVisitSaveFailed": "تعذر حفظ الزيارة. حاول مرة أخرى.",
+  "scanNotOnTrail": "ليس جزءًا من المسار",
+  "scanNotOnTrailDesc": "رمز QR هذا ليس جزءًا من مسار Open Day",
+  "arNoBuildingSelected": "اختر مبنى لعرضه من الداخل",
+  "arComingSoon": "المعاينة الداخلية قريبًا",
+  "arExploreEyebrow": "جولات الحرم بزاوية 360°",
+  "arExploreSubtitle": "ادخل إلى مساحات الحرم قبل وصولك.",
+  "arTourComingSoon": "الجولة قريباً",
+  "arSoonPill": "قريباً",
+  "cardViewOnCampusMap": "عرض على خريطة الحرم الجامعي",
+  "cardViewArMap": "عرض خريطة الواقع المعزز",
+  "cardAddToYourDayCta": "أضف إلى يومك",
+  "cardAddToYourDay": "أُضيف إلى يومك",
+  "cardFullSchedule": "الجدول الكامل",
+  "cardArPreviewTitle": "معاينة الواقع المعزز",
+  "stopLiveNow": "مباشر الآن: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "التالي: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "تهانينا!",
+  "stampCelebrationCompleteTitle": "اكتمل جواز السفر!",
+  "stampCelebrationSubtitle": "لقد جمعت طابع {location}",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "لقد بدأ جواز سفر Open Day الخاص بك",
+  "stampCelebrationKeepExploring": "واصل الاستكشاف",
+  "stampCelebrationViewPassport": "عرض جواز سفري",
+  "stampAlreadyCollected": "تم جمعها بالفعل — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "تهانينا. لقد جمعت طابع {location}. {count} من {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "طوابعي",
+  "stampsPassportLockedHint": "امسح للجمع",
+  "settingsMyStampsTile": "طوابعي",
+  "settingsMyStampsSubtitle": "اعرض جواز سفر Open Day الخاص بك",
+  "arLoadError": "تعذر تحميل الواقع المعزز: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "الصورة {index} من {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "حصلت على شارة!",
+  "scanBadgeVisited": "تمت الزيارة"
 }

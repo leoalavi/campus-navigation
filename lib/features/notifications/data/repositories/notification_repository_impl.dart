@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/notification_remote_source.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/notification_remote_source.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/notification_preferences.dart';
 
 /// Repository for managing push notifications and local inbox state.
 ///

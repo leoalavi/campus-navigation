@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/app/router/route_names.dart';
+import 'package:campus_navigation/app/router/route_names.dart';
 
 void main() {
   group('RouteNames', () {

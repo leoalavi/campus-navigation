@@ -50,12 +50,25 @@ Deno.serve(async (req) => {
       .delete()
       .lt("created_at", retentionDate);
 
+    // Prune orphaned anonymous users inactive for 30+ days.
+    // Cascades to favorite_buildings, notifications, user_fcm_tokens, etc.
+    let anonymousCount = 0;
+    try {
+      const { data: anonResult } = await supabase.rpc(
+        "cleanup_orphaned_anonymous_users",
+      );
+      anonymousCount = anonResult?.[0]?.deleted_count ?? 0;
+    } catch {
+      // Function may not exist on first deploy after migration — non-fatal
+    }
+
     return new Response(
       JSON.stringify({
         cleaned: {
           rate_limits: rateLimitCount ?? 0,
           edge_response_cache: edgeCacheCount ?? 0,
           audit_logs: auditCount ?? 0,
+          orphaned_anonymous_users: anonymousCount,
         },
         timestamp: now,
       }),

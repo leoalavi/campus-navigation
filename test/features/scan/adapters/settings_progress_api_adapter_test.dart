@@ -1,0 +1,180 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/features/scan/data/adapters/settings_progress_api_adapter.dart';
+import 'package:campus_navigation/features/scan/domain/contracts/visit_event.dart';
+import 'package:campus_navigation/features/scan/domain/contracts/visited_state.dart';
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  group('SettingsProgressApiAdapter', () {
+    test('progressApiProvider is readable from container', () {
+      final container = ProviderContainer(
+        overrides: [
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
+      );
+      addTearDown(() => container.dispose());
+
+      final api = container.read(progressApiProvider);
+      expect(api, isA<SettingsProgressApiAdapter>());
+    });
+
+    test(
+      'recordVisit returns true and updates local state on first visit',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            progressApiProvider.overrideWith((ref) {
+              return SettingsProgressApiAdapter(ref);
+            }),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(() => container.dispose());
+
+        final api = container.read(progressApiProvider);
+        final event = VisitEvent(
+          locationId: 'lib-01',
+          buildingId: 'C3A',
+          scannedAt: DateTime(2026, 6, 29, 10, 0),
+        );
+
+        final isNewVisit = await api.recordVisit(event);
+
+        expect(isNewVisit, isTrue);
+        final prefs = container.read(settingsControllerProvider).value;
+        expect(prefs, isNotNull);
+        expect(prefs!.visitedLocationCodes, contains('C3A'));
+      },
+    );
+
+    test(
+      'recordVisit returns false on a repeat visit to the same building',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            progressApiProvider.overrideWith((ref) {
+              return SettingsProgressApiAdapter(ref);
+            }),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(() => container.dispose());
+
+        final api = container.read(progressApiProvider);
+        final event = VisitEvent(
+          locationId: 'lib-01',
+          buildingId: 'C3A',
+          scannedAt: DateTime(2026, 6, 29, 10, 0),
+        );
+
+        final first = await api.recordVisit(event);
+        final second = await api.recordVisit(event);
+
+        expect(first, isTrue);
+        expect(second, isFalse);
+      },
+    );
+
+    test('watch returns visited state', () async {
+      final container = ProviderContainer(
+        overrides: [
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
+      );
+      addTearDown(() => container.dispose());
+
+      final api = container.read(progressApiProvider);
+      final state = await api.watch('C3A').first;
+      expect(state, isA<VisitedState>());
+      expect(state.visited, isFalse);
+    });
+
+    test(
+      'watch closes its settings listener after the last subscriber',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final stream = container.read(progressApiProvider).watch('C3A');
+        await stream.first;
+
+        final closed = await stream
+            .drain<void>()
+            .then((_) => true)
+            .timeout(const Duration(milliseconds: 100), onTimeout: () => false);
+
+        expect(closed, isTrue);
+      },
+    );
+
+    test(
+      'watch matches lowercase ids against uppercase stored visits',
+      () async {
+        final container = ProviderContainer(
+          overrides: [
+            progressApiProvider.overrideWith((ref) {
+              return SettingsProgressApiAdapter(ref);
+            }),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(() => container.dispose());
+
+        final api = container.read(progressApiProvider);
+        await api.recordVisit(
+          VisitEvent(
+            locationId: 'wallys-1',
+            buildingId: 'wallys-1',
+            scannedAt: DateTime(2026, 7, 9, 10, 0),
+          ),
+        );
+
+        final state = await api.watch('wallys-1').first;
+
+        expect(state.visited, isTrue);
+      },
+    );
+  });
+}
+
+class _FakeSettingsController extends SettingsController {
+  UserPreferences _prefs = const UserPreferences();
+
+  @override
+  Future<UserPreferences> build() async {
+    await Future<void>.value();
+    return _prefs;
+  }
+
+  @override
+  Future<bool> recordLocationVisit(String buildingCode) async {
+    final code = buildingCode.trim().toUpperCase();
+    if (code.isEmpty) return false;
+    if (_prefs.visitedLocationCodes.contains(code)) return false;
+    _prefs = _prefs.copyWith(
+      visitedLocationCodes: [..._prefs.visitedLocationCodes, code],
+    );
+    state = AsyncData(_prefs);
+    return true;
+  }
+}

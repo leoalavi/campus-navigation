@@ -1,10 +1,15 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
-project(mq_navigation LANGUAGES CXX)
+project(campus_navigation LANGUAGES CXX)
+
+# Suppress FetchContent_Populate deprecation (objectbox_flutter_libs uses it)
+if(POLICY CMP0169)
+  cmake_policy(SET CMP0169 OLD)
+endif()
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "mq_navigation")
+set(BINARY_NAME "campus_navigation")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
@@ -31,6 +36,10 @@ set(CMAKE_CXX_FLAGS_PROFILE "${CMAKE_CXX_FLAGS_RELEASE}")
 
 # Use Unicode for all projects.
 add_definitions(-DUNICODE -D_UNICODE)
+
+# Suppress MSVC experimental/coroutine deprecation (flutter_local_notifications_windows
+# and permission_handler_windows use /await which triggers STL1011 on MSVC 2025+).
+add_compile_definitions(_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS)
 
 # Compilation settings that should be applied to most targets.
 #

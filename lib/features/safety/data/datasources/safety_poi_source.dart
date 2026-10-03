@@ -1,5 +1,5 @@
-import 'package:mq_navigation/features/safety/domain/entities/emergency_contact.dart';
-import 'package:mq_navigation/features/safety/domain/entities/safety_poi.dart';
+import 'package:campus_navigation/features/safety/domain/entities/emergency_contact.dart';
+import 'package:campus_navigation/features/safety/domain/entities/safety_poi.dart';
 
 class SafetyPoiSource {
   List<SafetyPoi> get firstAidLocations => const [

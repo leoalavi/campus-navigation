@@ -1,0 +1,32 @@
+{
+  "schema": "mqjourney.qr-card-stamp-pipeline-report.v1",
+  "generatedAt": "2026-07-10T00:00:00Z",
+  "appCommit": "b19262399c202bf0df3b62cb03ee0d7b4fecbcda",
+  "qrManifestDigest": "sha256:e5ff4896927863eb9e97fecfde0d51054454809be54899f8a93b6931880b1c27",
+  "publicKeyFingerprint": "sha256:8ee84c31630532a77b8f7f8015e3a8f13100756bf743c79f973ae0ab274653fd",
+  "lanes": {
+    "domain": "pass",
+    "application": "pass",
+    "persistenceLocalSimulation": "pass",
+    "persistenceIsolatedSupabase": "pending",
+    "androidDeviceCamera": "pending",
+    "iosDeviceCamera": "pending",
+    "physicalPrint": "pending"
+  },
+  "locations": [
+    {"locationId":"hadenfeld-10","verification":"accepted","route":"/location/hadenfeld-10","cardIdentity":"hadenfeld-10","stampIdentity":"hadenfeld-10","firstScan":"awarded_once","repeatScan":"no_duplicate"},
+    {"locationId":"wallys-29","verification":"accepted","route":"/location/wallys-29","cardIdentity":"wallys-29","stampIdentity":"wallys-29","firstScan":"awarded_once","repeatScan":"no_duplicate"},
+    {"locationId":"wallys-27","verification":"accepted","route":"/location/wallys-27","cardIdentity":"wallys-27","stampIdentity":"wallys-27","firstScan":"awarded_once","repeatScan":"no_duplicate"},
+    {"locationId":"wallys-23","verification":"accepted","route":"/location/wallys-23","cardIdentity":"wallys-23","stampIdentity":"wallys-23","firstScan":"awarded_once","repeatScan":"no_duplicate"},
+    {"locationId":"wallys-21","verification":"accepted","route":"/location/wallys-21","cardIdentity":"wallys-21","stampIdentity":"wallys-21","firstScan":"awarded_once","repeatScan":"no_duplicate"},
+    {"locationId":"wallys-17","verification":"accepted","route":"/location/wallys-17","cardIdentity":"wallys-17","stampIdentity":"wallys-17","firstScan":"awarded_once","repeatScan":"no_duplicate"},
+    {"locationId":"ondaatje-14","verification":"accepted","route":"/location/ondaatje-14","cardIdentity":"ondaatje-14","stampIdentity":"ondaatje-14","firstScan":"awarded_once","repeatScan":"no_duplicate"},
+    {"locationId":"wallys-1","verification":"accepted","route":"/location/wallys-1","cardIdentity":"wallys-1","stampIdentity":"wallys-1","firstScan":"awarded_once","repeatScan":"no_duplicate"},
+    {"locationId":"wallys-25","verification":"accepted","route":"/location/wallys-25","cardIdentity":"wallys-25","stampIdentity":"wallys-25","firstScan":"awarded_once","repeatScan":"no_duplicate"}
+  ],
+  "nonClaims": [
+    "Headless application tests do not prove optical decoding.",
+    "Local persistence simulation does not prove Supabase RLS or staging availability.",
+    "No Android, iPhone, or physical-paper scan was executed in this run."
+  ]
+}

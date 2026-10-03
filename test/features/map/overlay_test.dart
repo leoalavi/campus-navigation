@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/map/data/datasources/overlay_registry.dart';
+import 'package:campus_navigation/features/map/data/datasources/overlay_registry.dart';
 
 void main() {
   group('OverlayRegistry', () {

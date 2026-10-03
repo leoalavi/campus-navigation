@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
 
 /// Campus Navigation typography scale.
 ///

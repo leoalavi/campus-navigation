@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
-import 'package:mq_navigation/features/notifications/domain/entities/reminder_request.dart';
-import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
-import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/notifications/data/datasources/local_notifications_service.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:campus_navigation/features/notifications/domain/entities/reminder_request.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_providers.dart';
+import 'package:campus_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 /// Stable-ID prefix used in payloads so the scheduler can identify
 /// reminders it owns when reconciling. The base service's
@@ -57,6 +57,7 @@ class OpenDayReminderScheduler {
     try {
       final shouldSchedule =
           preferences.notificationsEnabled &&
+          preferences.openDayEnabled &&
           preferences.openDayRemindersEnabled &&
           selectedBachelor != null;
 
@@ -105,7 +106,7 @@ class OpenDayReminderScheduler {
       }
 
       // Cancel anything we previously scheduled that isn't in the new set.
-      // The base service filters by `managedBy: mq_navigation` so other
+      // The base service filters by `managedBy` tag (see kOwnedNotificationTags) so other
       // notification surfaces (deadlines, exams, system alerts) are safe.
       await _localNotifications.cancelManagedNotificationsExcept(pendingIds);
 
@@ -163,11 +164,14 @@ final openDayReminderSchedulerProvider = Provider<OpenDayReminderScheduler>((
   // recompute. Returning the record from `select` lets Riverpod
   // do equality-based change detection so we don't reschedule on
   // unrelated preference updates (e.g. theme toggles).
-  ref.listen<({bool master, bool openDay, int minutes, String? bachelorId})>(
+  ref.listen<
+    ({bool master, bool enabled, bool openDay, int minutes, String? bachelorId})
+  >(
     settingsControllerProvider.select((async) {
       final p = async.value ?? const UserPreferences();
       return (
         master: p.notificationsEnabled,
+        enabled: p.openDayEnabled,
         openDay: p.openDayRemindersEnabled,
         minutes: p.openDayReminderMinutesBefore,
         bachelorId: p.selectedBachelorId,

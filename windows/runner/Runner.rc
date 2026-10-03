@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "io.mqnavigation" "\0"
-            VALUE "FileDescription", "mq_navigation" "\0"
+            VALUE "FileDescription", "Campus Navigation" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "mq_navigation" "\0"
+            VALUE "InternalName", "Campus Navigation" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 io.mqnavigation. All rights reserved." "\0"
-            VALUE "OriginalFilename", "mq_navigation.exe" "\0"
-            VALUE "ProductName", "mq_navigation" "\0"
+            VALUE "OriginalFilename", "campus_navigation.exe" "\0"
+            VALUE "ProductName", "Campus Navigation" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

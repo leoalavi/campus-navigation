@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, =1{1 scene · 360°-tur} other{{count} scener · 360°-tur}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Skann",
+  "buildingsLoadError": "Kunne ikke laste bygningene. Prøv igjen.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Inkludert i appen",
+  "offlineCampusMapsBundledDetail": "Campuskartet, bygningslisten og innendørsturene fungerer uten tilkobling. Sanntids metrotider, gåruter og andre nettjenester krever tilkobling.",
+  "hoursMinutesShort": "{hours} t {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} t",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "Skann QR-kode",
+  "stampCatalogUnavailable": "Kunne ikke laste stempelsamlingen din. Prøv igjen.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Kunne ikke laste campusplasseringene. Prøv igjen.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Søk etter programmer og interesser",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Fant ingen samsvarende program eller interesse",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Prøv et annet søkeord",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Vis foreslåtte stopp",
+  "openDay_showSuggestedStopsSemantic": "Vis foreslåtte stopp på Hjem",
+  "openDay_suggestedStopsForInterest": "Foreslåtte stopp for {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Direkte nå",
+  "openDay_comingUpNextTitle": "Kommer nå",
+  "openDay_liveNowForInterest": "Samsvarer med interessen din",
+  "openDay_liveNowAcrossDay": "Åpent for alle besøkende",
+  "openDay_matchedToYourDegree": "Matcher graden din",
+  "openDay_generalOpenToAll": "Generelt · Åpent for alle",
+  "openDay_allSessionsLabel": "Alle økter",
+  "openDay_yourDayTitle": "Din dag",
+  "openDay_yourDayEmpty": "Lagre øktene du liker for å sette sammen din egen Åpen dag-plan.",
+  "openDay_yourDayCount": "{count, plural, =1{1 økt lagret} other{{count} økter lagret}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Legg til i min dag",
+  "openDay_removeFromMyDay": "Fjern fra min dag",
+  "openDay_savedToMyDay": "Lagt til i din dag",
+  "openDay_removedFromMyDay": "Fjernet fra din dag",
+  "openDay_clearMyDay": "Tøm min dag",
+  "openDay_clearMyDayConfirm": "Fjerne alle lagrede økter og stopp fra dagen din? Dette kan ikke angres.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Besøkt {count} av {total} stopp",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail}-rute fullført",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Ingen pålogging · Privat på enheten din",
+  "scanQrCta": "Skann",
+  "scanPermissionDenied": "Kameratilgang nektet",
+  "scanPermissionDeniedDesc": "Aktiver kameratilgang i innstillingene for å skanne QR-koder",
+  "scanOpenSettings": "Åpne innstillinger",
+  "scanDecodeError": "Kunne ikke lese QR-koden",
+  "scanNotMqCode": "Dette er ikke en Campus Navigation Open Day-kode",
+  "scanUnsupportedCode": "Denne QR-koden støttes ikke lenger",
+  "scanUnverifiedCode": "Denne QR-koden kunne ikke verifiseres",
+  "scanAgain": "Skann på nytt",
+  "scanVisitSaveFailed": "Besøket kunne ikke lagres. Prøv igjen.",
+  "scanNotOnTrail": "Ikke en del av ruten",
+  "scanNotOnTrailDesc": "Denne QR-koden er ikke en del av Open Day-ruten",
+  "arNoBuildingSelected": "Velg en bygning for å se innsiden",
+  "arComingSoon": "Innendørs forhåndsvisning kommer snart",
+  "arExploreEyebrow": "360°-campusturer",
+  "arExploreSubtitle": "Gå inn i campusrom før du ankommer.",
+  "arTourComingSoon": "Tur kommer snart",
+  "arSoonPill": "Snart",
+  "cardViewOnCampusMap": "Se på campuskart",
+  "cardViewArMap": "Se AR-kart",
+  "cardAddToYourDayCta": "Legg til i din dag",
+  "cardAddToYourDay": "Lagt til i din dag",
+  "cardFullSchedule": "Full timeplan",
+  "cardArPreviewTitle": "AR-forhåndsvisning",
+  "stopLiveNow": "Direkte nå: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Neste: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Gratulerer!",
+  "stampCelebrationCompleteTitle": "Passet er fullført!",
+  "stampCelebrationSubtitle": "Du samlet {location}-stempelet",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Open Day-passet ditt har begynt",
+  "stampCelebrationKeepExploring": "Fortsett å utforske",
+  "stampCelebrationViewPassport": "Se passet mitt",
+  "stampAlreadyCollected": "Allerede samlet — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Gratulerer. Du samlet {location}-stempelet. {count} av {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Mine stempler",
+  "stampsPassportLockedHint": "Skann for å samle",
+  "settingsMyStampsTile": "Mine stempler",
+  "settingsMyStampsSubtitle": "Se Open Day-passet ditt",
+  "arLoadError": "Kunne ikke laste AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Bilde {index} av {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Merke opptjent!",
+  "scanBadgeVisited": "Besøkt"
 }

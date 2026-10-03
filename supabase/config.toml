@@ -17,6 +17,7 @@ max_rows = 1000
 
 [auth]
 enabled = true
+enable_anonymous_sign_ins = true
 # site_url must be a web URL for the local emulator.
 # The app itself uses the custom scheme io.mqnavigation:// for native deep links.
 site_url = "http://localhost:3000"
@@ -44,9 +45,6 @@ enabled = true
 client_id = "env(GOOGLE_CLIENT_ID)"
 secret = "env(GOOGLE_CLIENT_SECRET)"
 
-
-[functions.maps-places]
-verify_jwt = false
 
 [functions.maps-routes]
 verify_jwt = false

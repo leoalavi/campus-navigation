@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/indoor/domain/models/indoor_manifest.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/indoor/domain/models/indoor_manifest.dart';
 
 /// Loads the bundled 360° tour manifests.
 ///

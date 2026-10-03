@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
 
 /// Campus Navigation animation timing tokens.
 ///

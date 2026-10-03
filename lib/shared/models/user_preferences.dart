@@ -1,6 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
 
 /// Immutable local data model representing a user's app-wide preferences.
 ///
@@ -28,9 +29,14 @@ class UserPreferences {
     this.quietHoursEnd = '08:00',
     this.highContrastMap = false,
     this.offlineCampusMapsEnabled = false,
+    this.openDayEnabled = false,
     this.selectedBachelorId,
     this.openDayRemindersEnabled = true,
     this.openDayReminderMinutesBefore = 15,
+    this.showSuggestedStops = true,
+    this.savedOpenDayEventIds = const <String>[],
+    this.savedStopIds = const <String>[],
+    this.visitedLocationCodes = const <String>[],
   });
 
   final bool hasCompletedOnboarding;
@@ -53,6 +59,12 @@ class UserPreferences {
   final bool highContrastMap;
   final bool offlineCampusMapsEnabled;
 
+  /// Whether the optional Open Day experience is switched on. Campus
+  /// Navigation is wayfinding-first, so Open Day (home cards, Scan tab,
+  /// study-interest picker, session reminders) stays hidden until the user
+  /// opts in.
+  final bool openDayEnabled;
+
   /// Open Day study-interest preference. `null` means the user hasn't
   /// chosen a bachelor yet — the Home screen treats this as the trigger
   /// for the lightweight onboarding card. Stored on-device only.
@@ -67,6 +79,32 @@ class UserPreferences {
   /// stores the raw int so an updated UI can offer extra increments
   /// without a model migration.
   final int openDayReminderMinutesBefore;
+
+  /// When off, the personalised Suggested Stops section is hidden on Home,
+  /// keeping the screen lean for users who only want the schedule.
+  final bool showSuggestedStops;
+
+  /// IDs of Open Day events (sessions) the user has saved to "Your Day".
+  /// Kept as an ordered, immutable list; the itinerary sorts by start time.
+  final List<String> savedOpenDayEventIds;
+
+  /// IDs of suggested stops the user has saved to "Your Day". Sessions and
+  /// stops together form the unified `UserDayItem` list (see
+  /// `userDayItemsProvider`).
+  final List<String> savedStopIds;
+
+  /// Building codes the user has visited (e.g. via a QR scan). A set-like
+  /// list — the gamification layer awards stamps only on first visit, so
+  /// duplicates are ignored. The QR/location feature records visits here.
+  final List<String> visitedLocationCodes;
+
+  bool isOpenDayEventSaved(String eventId) =>
+      savedOpenDayEventIds.contains(eventId);
+
+  bool isStopSaved(String stopId) => savedStopIds.contains(stopId);
+
+  bool hasVisited(String buildingCode) =>
+      visitedLocationCodes.contains(buildingCode);
 
   Locale? get locale => localeCode == null ? null : Locale(localeCode!);
 
@@ -91,10 +129,15 @@ class UserPreferences {
     String? quietHoursEnd,
     bool? highContrastMap,
     bool? offlineCampusMapsEnabled,
+    bool? openDayEnabled,
     String? selectedBachelorId,
     bool clearSelectedBachelor = false,
     bool? openDayRemindersEnabled,
     int? openDayReminderMinutesBefore,
+    bool? showSuggestedStops,
+    List<String>? savedOpenDayEventIds,
+    List<String>? savedStopIds,
+    List<String>? visitedLocationCodes,
   }) {
     return UserPreferences(
       hasCompletedOnboarding:
@@ -118,6 +161,7 @@ class UserPreferences {
       highContrastMap: highContrastMap ?? this.highContrastMap,
       offlineCampusMapsEnabled:
           offlineCampusMapsEnabled ?? this.offlineCampusMapsEnabled,
+      openDayEnabled: openDayEnabled ?? this.openDayEnabled,
       selectedBachelorId: clearSelectedBachelor
           ? null
           : (selectedBachelorId ?? this.selectedBachelorId),
@@ -125,6 +169,10 @@ class UserPreferences {
           openDayRemindersEnabled ?? this.openDayRemindersEnabled,
       openDayReminderMinutesBefore:
           openDayReminderMinutesBefore ?? this.openDayReminderMinutesBefore,
+      showSuggestedStops: showSuggestedStops ?? this.showSuggestedStops,
+      savedOpenDayEventIds: savedOpenDayEventIds ?? this.savedOpenDayEventIds,
+      savedStopIds: savedStopIds ?? this.savedStopIds,
+      visitedLocationCodes: visitedLocationCodes ?? this.visitedLocationCodes,
     );
   }
 
@@ -152,9 +200,14 @@ class UserPreferences {
           quietHoursEnd == other.quietHoursEnd &&
           highContrastMap == other.highContrastMap &&
           offlineCampusMapsEnabled == other.offlineCampusMapsEnabled &&
+          openDayEnabled == other.openDayEnabled &&
           selectedBachelorId == other.selectedBachelorId &&
           openDayRemindersEnabled == other.openDayRemindersEnabled &&
-          openDayReminderMinutesBefore == other.openDayReminderMinutesBefore;
+          openDayReminderMinutesBefore == other.openDayReminderMinutesBefore &&
+          showSuggestedStops == other.showSuggestedStops &&
+          listEquals(savedOpenDayEventIds, other.savedOpenDayEventIds) &&
+          listEquals(savedStopIds, other.savedStopIds) &&
+          listEquals(visitedLocationCodes, other.visitedLocationCodes);
 
   @override
   int get hashCode => Object.hashAll([
@@ -177,8 +230,13 @@ class UserPreferences {
     quietHoursEnd,
     highContrastMap,
     offlineCampusMapsEnabled,
+    openDayEnabled,
     selectedBachelorId,
     openDayRemindersEnabled,
     openDayReminderMinutesBefore,
+    showSuggestedStops,
+    Object.hashAll(savedOpenDayEventIds),
+    Object.hashAll(savedStopIds),
+    Object.hashAll(visitedLocationCodes),
   ]);
 }

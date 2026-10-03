@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/app/router/shell_chrome_provider.dart';
+import 'package:campus_navigation/app/router/shell_chrome_provider.dart';
 
 /// The bottom navigation must retract while a focused surface (Open Day
 /// picker, map category sheet) is up, and come back exactly once — see

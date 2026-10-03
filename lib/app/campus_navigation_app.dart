@@ -4,38 +4,67 @@ import 'dart:ui' as ui;
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mq_navigation/app/bootstrap/app_initialization.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/router/app_router.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_theme.dart';
-import 'package:mq_navigation/core/error/error_boundary.dart';
-import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
-import 'package:mq_navigation/features/open_day/data/open_day_reminder_scheduler.dart';
-import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/features/deep_link/building_id_resolver.dart';
-import 'package:mq_navigation/features/deep_link/deep_link_contract.dart';
+import 'package:campus_navigation/app/bootstrap/app_initialization.dart';
+import 'package:campus_navigation/app/app_link_coordinator.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/app_router.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_theme.dart';
+import 'package:campus_navigation/core/error/error_boundary.dart';
+import 'package:campus_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
+import 'package:campus_navigation/features/open_day/data/open_day_reminder_scheduler.dart';
+import 'package:campus_navigation/features/scan/application/pending_stamp_award_controller.dart';
+import 'package:campus_navigation/features/scan/application/qr_scan_orchestrator.dart';
+import 'package:campus_navigation/features/scan/data/adapters/settings_progress_api_adapter.dart';
+import 'package:campus_navigation/features/scan/providers/scan_providers.dart';
+import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/core/logging/app_logger.dart';
+import 'package:campus_navigation/features/deep_link/building_id_resolver.dart';
+import 'package:campus_navigation/features/deep_link/deep_link_contract.dart';
 
 /// The root Flutter application widget.
 ///
 /// Composes global app state including routing, theme, and localization.
 /// Also observes the notifications controller so that push notification
 /// setup side-effects execute immediately upon app startup.
-class MqNavigationApp extends ConsumerStatefulWidget {
-  const MqNavigationApp({super.key});
+class CampusNavigationApp extends ConsumerStatefulWidget {
+  const CampusNavigationApp({super.key});
 
   @override
-  ConsumerState<MqNavigationApp> createState() => _MqNavigationAppState();
+  ConsumerState<CampusNavigationApp> createState() =>
+      _CampusNavigationAppState();
 }
 
-class _MqNavigationAppState extends ConsumerState<MqNavigationApp> {
+class _CampusNavigationAppState extends ConsumerState<CampusNavigationApp> {
   final AppLinks _appLinks = AppLinks();
   StreamSubscription<Uri>? _linkSubscription;
+  late final QrScanOrchestrator _openDayQrOrchestrator;
+  late final AppLinkCoordinator _appLinkCoordinator;
 
   @override
   void initState() {
     super.initState();
+    final verifier = ref.read(qrSignatureVerifierProvider);
+    _openDayQrOrchestrator = QrScanOrchestrator(
+      validate: (raw, isAllowlisted) =>
+          verifier.validate(raw, isAllowlisted: isAllowlisted),
+      loadTrail: () => ref.read(trailManifestProvider.future),
+      progressApi: ref.read(progressApiProvider),
+      clock: DateTime.now,
+      navigate: (route) => ref.read(appRouterProvider).go(route),
+      onRecorded: (visit) => ref
+          .read(pendingStampAwardProvider.notifier)
+          .setNotice(
+            PendingStampNotice(
+              locationId: visit.locationId,
+              isNewVisit: visit.isNewVisit,
+            ),
+          ),
+    );
+    _appLinkCoordinator = AppLinkCoordinator(
+      handleOpenDayQr: _handleOpenDayQr,
+      navigate: (route) => ref.read(appRouterProvider).go(route),
+    );
     _listenForDeepLinks();
   }
 
@@ -45,18 +74,13 @@ class _MqNavigationAppState extends ConsumerState<MqNavigationApp> {
     super.dispose();
   }
 
-  Future<void> _listenForDeepLinks() async {
-    final initial = await _appLinks.getInitialLink();
-    if (initial != null && mounted) {
-      // Cold start: the link that launched the app. Awaited so a resolved
-      // destination replaces the map root before the user sees it.
-      await _handleDeepLink(initial);
-    }
+  void _listenForDeepLinks() {
+    // app_links 7 delivers both the initial cold-start URI and warm links on
+    // this one stream. Using getInitialLink as well would create two ingresses.
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       if (!mounted) {
         return;
       }
-      // Warm start: fire-and-forget, the stream callback cannot be async.
       unawaited(_handleDeepLink(uri));
     });
   }
@@ -68,18 +92,9 @@ class _MqNavigationAppState extends ConsumerState<MqNavigationApp> {
       await _handleOpenLink(uri);
       return;
     }
-    // Pre-existing "meet here" link on the legacy scheme. Left intact so
-    // links already in the wild keep working.
-    if (uri.scheme == MqNavDeepLink.legacyScheme && uri.host == 'meet') {
-      // Guard: both parameters must be present and parseable. Null values
-      // previously produced '/meet?lat=null&lng=null', which navigated to
-      // MapPage with null coords and silently ignored navigation.
-      final lat = double.tryParse(uri.queryParameters['lat'] ?? '');
-      final lng = double.tryParse(uri.queryParameters['lng'] ?? '');
-      if (lat == null || lng == null) return;
-      ref.read(appRouterProvider).go('/meet?lat=$lat&lng=$lng');
-    }
-    // Anything else (Supabase auth callbacks, unrelated URLs) is not ours.
+    // Signed Open Day QR links (io.mqjourney://open-day/...) printed on
+    // campus signage, plus "meet here" links on either legacy scheme.
+    await _appLinkCoordinator.handle(uri);
   }
 
   /// Routes an `/open` payload, resolving partner building ids first.
@@ -114,17 +129,50 @@ class _MqNavigationAppState extends ConsumerState<MqNavigationApp> {
     );
   }
 
+  Future<void> _handleOpenDayQr(String raw) async {
+    // Scanning a printed Open Day code is an explicit opt-in.
+    unawaited(
+      ref.read(settingsControllerProvider.notifier).updateOpenDayEnabled(true),
+    );
+    final outcome = await _openDayQrOrchestrator.handleCandidate(raw);
+    if (outcome case QrScanSaveFailed(:final locationId)) {
+      ref
+          .read(pendingStampAwardProvider.notifier)
+          .setNotice(
+            PendingStampNotice(
+              locationId: locationId,
+              isNewVisit: false,
+              saveFailed: true,
+            ),
+          );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final initAsync = ref.watch(appInitializationProvider);
 
     return initAsync.when(
       data: (_) {
+        // ── Startup gate ─────────────────────────────────────────────
+        // Never mount the router until persisted preferences (including
+        // hasCompletedOnboarding) have RESOLVED. Without this, the router
+        // defaulted to /home while settings were still loading, Home
+        // painted for a frame or two, and only then did the redirect kick
+        // the user to onboarding — the "Home flashes before onboarding"
+        // bug. States: initialising → (onboarding | home), decided once.
+        // If preference loading itself errors we proceed with defaults
+        // rather than stranding the user on the splash forever.
+        final preferencesAsync = ref.watch(settingsControllerProvider);
+        if (!preferencesAsync.hasValue && !preferencesAsync.hasError) {
+          return const _SplashView(isLoading: true);
+        }
+
         // Watch global navigation state.
         final router = ref.watch(appRouterProvider);
 
         // Watch global preferences (theme, locale) loaded from local storage.
-        final preferences = ref.watch(settingsControllerProvider).value;
+        final preferences = preferencesAsync.value;
 
         // Explicitly watch the notifications controller to keep it alive.
         // This triggers FCM permission requests and token sync side effects

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:mq_navigation/features/map/domain/entities/nav_instruction.dart';
+import 'package:campus_navigation/features/map/domain/entities/nav_instruction.dart';
 
 enum TravelMode {
   walk('WALK', 'walking'),

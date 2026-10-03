@@ -62,7 +62,7 @@ Generic campus maps (Google/Apple Maps) stop at the street kerb and don't know w
 - **Shared backend.** Both apps can point at the same Supabase project, sharing schema and Edge Functions (e.g. `maps-routes`, `tfnsw-proxy`) rather than each running its own backend.
 - **Future direction:** Syllabus Sync handles academic planning, Campus Navigation handles campus routing, and a planned "Sylla" AI assistant layer sits across both to help students plan and navigate their day.
 
-Campus Navigation is a separate project from **MQ Journey**, an Open Day-focused visitor experience. This repository is not MQ Journey — Open Day browsing here is one supported use case among several, not the product's primary identity.
+**MQ Journey**, the Open Day visitor app built from the same codebase, has been merged into Campus Navigation — there is now one app. Its history is preserved in this repository, and its Open Day features (personalised sessions, Your Day, QR scanning, stamps passport, building photos and 360° hotspots) ship here. Navigation stays the primary experience: **Open Day is opt-in** — switch it on in *Settings → Open Day → Show Open Day*, by choosing a study interest during onboarding, or by scanning a printed Open Day QR code. MQ Journey's original docs are archived in [`docs/mq-journey/`](docs/mq-journey/).
 
 <br/>
 
@@ -152,10 +152,12 @@ Fallback: app installed → open destination directly
 ║  🔐  Privacy-aware: no accounts · zero analytics packages            ║
 ║  🌍  35 locales · RTL layout support for ar/fa/he/ur                 ║
 ║  ☁️  Supabase backend: Postgres, Realtime, Edge Functions            ║
+║  🎓  Opt-in Open Day: sessions by degree, Your Day, suggested stops  ║
+║  📷  Open Day QR scan → location card → 360° preview → stamp         ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
 
-Open Day event browsing is one supported use case built on top of this feature set (`lib/features/open_day/`) — it is not the whole product.
+Open Day (`lib/features/open_day/`, `lib/features/scan/`) is an opt-in layer on top of this feature set — hidden until the user switches it on, and never the whole product. Printed Open Day QR codes carry an Ed25519 signature that the app verifies offline before opening a location.
 
 <br/>
 
@@ -289,7 +291,8 @@ lib/
     ├── map/          Dual-renderer, routing, compass mode, search, favourites
     ├── safety/       Safety toolkit, emergency contacts, first aid / AED, torch
     ├── notifications/ FCM push, local reminders, inbox
-    ├── open_day/     Open Day event browsing & reminders (a supported use case)
+    ├── open_day/     Opt-in Open Day: sessions, Your Day, suggested stops, reminders
+    ├── scan/         Open Day QR scanner, signed-QR verification, location cards, stamps
     ├── settings/     Preferences, privacy badge, local data wipe
     ├── transit/      Metro/bus/train search, commute prefs
     ├── timetable/    Unit and class schedule entities/repository (early-stage)
@@ -298,6 +301,9 @@ lib/
 test/                 Widget & unit tests (flutter_test suite)
 supabase/             Edge Functions (maps-routes, maps-places, tfnsw-proxy, notify, cleanup-cron) + SQL migrations
 docs/                 Reference documents (architecture, security, inventories, integration contract)
+docs/mq-journey/      Archived MQ Journey docs (pre-merge README, report, architecture, changelog)
+tool/open_day_qr/     Generator/verifier for the signed Open Day QR print pack
+maestro/              Maestro end-to-end flows (scan → location card → map)
 screenshots/          Screen captures used in this README
 scripts/              run.sh, check.sh (quality gate), sync_supabase_secrets.sh
 tools/                Data & localisation sync utilities (buildings, ARB files)
@@ -389,6 +395,9 @@ flutter run --dart-define-from-file=.env
 | Contributing | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
 | Code of Conduct | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) |
 | Agent Rules & Changelog | [`AGENT.md`](AGENT.md) |
+| QR → Card → Stamp Pipeline | [`docs/qr-card-stamp-pipeline-architecture.md`](docs/qr-card-stamp-pipeline-architecture.md) |
+| Open Day QR Print QA | [`docs/print/open-day-qr-physical-qa.md`](docs/print/open-day-qr-physical-qa.md) |
+| MQ Journey Archive (pre-merge) | [`docs/mq-journey/`](docs/mq-journey/) |
 
 <br/>
 

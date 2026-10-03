@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:mq_navigation/core/security/secure_storage_service.dart';
-import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
-import 'package:mq_navigation/shared/models/user_preferences.dart';
+import 'package:campus_navigation/core/security/secure_storage_service.dart';
+import 'package:campus_navigation/features/settings/data/repositories/settings_repository.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 class MockSecureStorageService extends Mock implements SecureStorageService {}
 
@@ -13,6 +13,7 @@ void main() {
   setUp(() {
     storage = MockSecureStorageService();
     repository = LocalSettingsRepository(storage: storage);
+    when(() => storage.readAll()).thenAnswer((_) async => const {});
     when(() => storage.write(any(), any())).thenAnswer((_) async {});
     when(() => storage.delete(any())).thenAnswer((_) async {});
   });
@@ -45,16 +46,15 @@ void main() {
     });
 
     test('loads favorite stop id and name', () async {
-      when((() => storage.read(any()))).thenAnswer((invocation) async {
-        return switch (invocation.positionalArguments.first as String) {
-          'settings.commute_mode' => 'bus',
-          'settings.favorite_direction' => 'Tallawong',
-          'settings.favorite_route' => '525',
-          'settings.favorite_stop_id' => '10101403',
-          'settings.favorite_stop_name' => 'Macquarie University Station',
-          _ => null,
-        };
-      });
+      when(() => storage.readAll()).thenAnswer(
+        (_) async => const {
+          'settings.commute_mode': 'bus',
+          'settings.favorite_direction': 'Tallawong',
+          'settings.favorite_route': '525',
+          'settings.favorite_stop_id': '10101403',
+          'settings.favorite_stop_name': 'Macquarie University Station',
+        },
+      );
 
       final preferences = await repository.loadPreferences();
 
@@ -63,19 +63,59 @@ void main() {
       expect(preferences.favoriteRoute, '525');
       expect(preferences.favoriteStopId, '10101403');
       expect(preferences.favoriteStopName, 'Macquarie University Station');
+      verify(() => storage.readAll()).called(1);
+      verifyNever(() => storage.read(any()));
     });
 
     test('normalizes invalid stored commute mode to none', () async {
-      when((() => storage.read(any()))).thenAnswer((invocation) async {
-        return switch (invocation.positionalArguments.first as String) {
-          'settings.commute_mode' => 'ferry',
-          _ => null,
-        };
-      });
+      when(
+        () => storage.readAll(),
+      ).thenAnswer((_) async => const {'settings.commute_mode': 'ferry'});
 
       final preferences = await repository.loadPreferences();
 
       expect(preferences.commuteMode, 'none');
+    });
+  });
+
+  group('LocalSettingsRepository Open Day opt-in', () {
+    Future<UserPreferences> loadWith(Map<String, String> stored) {
+      when(() => storage.readAll()).thenAnswer((_) async => stored);
+      return repository.loadPreferences();
+    }
+
+    test('is off by default on a fresh install', () async {
+      final preferences = await loadWith({});
+
+      expect(preferences.openDayEnabled, isFalse);
+    });
+
+    test('stays on after upgrade when a study interest was chosen', () async {
+      final preferences = await loadWith({
+        'settings.open_day.bachelor_id': 'computing',
+      });
+
+      expect(preferences.openDayEnabled, isTrue);
+    });
+
+    test('respects an explicit stored choice', () async {
+      final preferences = await loadWith({
+        'settings.open_day.enabled': 'false',
+        'settings.open_day.bachelor_id': 'computing',
+      });
+
+      expect(preferences.openDayEnabled, isFalse);
+      expect(preferences.selectedBachelorId, 'computing');
+    });
+
+    test('persists the flag', () async {
+      await repository.savePreferences(
+        const UserPreferences(openDayEnabled: true),
+      );
+
+      verify(
+        () => storage.write('settings.open_day.enabled', 'true'),
+      ).called(1);
     });
   });
 }

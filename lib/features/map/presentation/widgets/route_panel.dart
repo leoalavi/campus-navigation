@@ -2,14 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/theme/mq_animations.dart';
-import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/map/domain/entities/building.dart';
-import 'package:mq_navigation/features/map/domain/entities/nav_instruction.dart';
-import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/theme/mq_animations.dart';
+import 'package:campus_navigation/app/theme/mq_colors.dart';
+import 'package:campus_navigation/app/theme/mq_spacing.dart';
+import 'package:campus_navigation/features/map/domain/entities/building.dart';
+import 'package:campus_navigation/features/map/domain/entities/nav_instruction.dart';
+import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:campus_navigation/shared/extensions/context_extensions.dart';
 
 /// Floating bottom sheet displaying routing instructions and status.
 ///
@@ -191,6 +191,24 @@ class _RoutePanelState extends State<RoutePanel> {
                   ),
                 ),
                 const SizedBox(height: MqSpacing.space6),
+
+                // Hero photo for the few buildings that bundle one. Hidden
+                // while navigating so the panel stays compact over the map.
+                if (widget.selectedBuilding!.photo != null &&
+                    !widget.isNavigating) ...[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+                    child: Image.asset(
+                      widget.selectedBuilding!.photo!,
+                      height: 132,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      excludeFromSemantics: true,
+                      errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                    ),
+                  ),
+                  const SizedBox(height: MqSpacing.space4),
+                ],
 
                 // Building name + close button
                 Row(

@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, one{1 منظر · 360° ٹور} other{{count} مناظر · 360° ٹور}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "اسکین",
+  "buildingsLoadError": "عمارتیں لوڈ نہیں ہو سکیں۔ براہ کرم دوبارہ کوشش کریں۔",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "ایپ میں شامل",
+  "offlineCampusMapsBundledDetail": "کیمپس کا نقشہ، عمارتوں کی فہرست اور اندرونی ٹورز بغیر کنکشن کے کام کرتے ہیں۔ لائیو میٹرو اوقات، پیدل راستے اور دیگر آن لائن خدمات کے لیے کنکشن درکار ہے۔",
+  "hoursMinutesShort": "{hours} گھنٹے {minutes} منٹ",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} گھنٹے",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "QR کوڈ اسکین کریں",
+  "stampCatalogUnavailable": "آپ کا اسٹیمپ مجموعہ لوڈ نہیں ہو سکا۔ براہِ کرم دوبارہ کوشش کریں۔",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "کیمپس کے مقامات لوڈ نہیں ہو سکے۔ براہِ کرم دوبارہ کوشش کریں۔",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "پروگرام اور دلچسپیاں تلاش کریں",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "کوئی مماثل پروگرام یا دلچسپی نہیں ملی",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "کوئی اور لفظ آزمائیں",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "تجویز کردہ مقامات دکھائیں",
+  "openDay_showSuggestedStopsSemantic": "ہوم پر تجویز کردہ مقامات دکھائیں",
+  "openDay_suggestedStopsForInterest": "{interest} کے لیے تجویز کردہ مقامات",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "ابھی لائیو",
+  "openDay_comingUpNextTitle": "آگے آنے والا",
+  "openDay_liveNowForInterest": "آپ کی دلچسپی سے مطابقت",
+  "openDay_liveNowAcrossDay": "تمام مہمانوں کے لیے کھلا",
+  "openDay_matchedToYourDegree": "آپ کی ڈگری سے مطابقت",
+  "openDay_generalOpenToAll": "عام · سب کے لیے کھلا",
+  "openDay_allSessionsLabel": "تمام سیشنز",
+  "openDay_yourDayTitle": "آپ کا دن",
+  "openDay_yourDayEmpty": "اپنی پسند کے سیشن محفوظ کریں اور اپنا ذاتی کھلے دن کا منصوبہ بنائیں۔",
+  "openDay_yourDayCount": "{count, plural, =1{1 سیشن محفوظ ہوگیا} other{{count} سیشن محفوظ ہوگئے}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "میرے دن میں شامل کریں",
+  "openDay_removeFromMyDay": "میرے دن سے ہٹائیں",
+  "openDay_savedToMyDay": "آپ کے دن میں شامل کر دیا گیا",
+  "openDay_removedFromMyDay": "آپ کے دن سے ہٹا دیا گیا",
+  "openDay_clearMyDay": "میرا دن صاف کریں",
+  "openDay_clearMyDayConfirm": "اپنے دن سے تمام محفوظ سیشنز اور اسٹاپس ہٹا دیں؟ اسے واپس نہیں کیا جا سکتا۔",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{total} میں سے {count} مقامات دیکھے",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "{trail} ٹریل مکمل ہوا",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "لاگ ان کی ضرورت نہیں · آپ کے آلے پر نجی",
+  "scanQrCta": "اسکین کریں",
+  "scanPermissionDenied": "کیمرے کی اجازت مسترد کر دی گئی",
+  "scanPermissionDeniedDesc": "QR کوڈز اسکین کرنے کے لیے ترتیبات میں کیمرے تک رسائی فعال کریں",
+  "scanOpenSettings": "ترتیبات کھولیں",
+  "scanDecodeError": "QR کوڈ نہیں پڑھا جا سکا",
+  "scanNotMqCode": "یہ Campus Navigation اوپن ڈے کوڈ نہیں ہے",
+  "scanUnsupportedCode": "یہ QR کوڈ اب معاون نہیں ہے",
+  "scanUnverifiedCode": "اس QR کوڈ کی تصدیق نہیں ہو سکی",
+  "scanAgain": "دوبارہ اسکین کریں",
+  "scanVisitSaveFailed": "وزٹ محفوظ نہیں ہو سکی۔ دوبارہ کوشش کریں۔",
+  "scanNotOnTrail": "ٹریل کا حصہ نہیں",
+  "scanNotOnTrailDesc": "یہ QR کوڈ اوپن ڈے ٹریل کا حصہ نہیں ہے",
+  "arNoBuildingSelected": "اندر دیکھنے کے لیے ایک عمارت منتخب کریں",
+  "arComingSoon": "اندرونی پیش منظر جلد آ رہا ہے",
+  "arExploreEyebrow": "360° کیمپس ٹورز",
+  "arExploreSubtitle": "پہنچنے سے پہلے کیمپس کی جگہیں اندر سے دیکھیں۔",
+  "arTourComingSoon": "ٹور جلد آ رہا ہے",
+  "arSoonPill": "جلد",
+  "cardViewOnCampusMap": "کیمپس نقشے پر دیکھیں",
+  "cardViewArMap": "AR نقشہ دیکھیں",
+  "cardAddToYourDayCta": "اپنے دن میں شامل کریں",
+  "cardAddToYourDay": "آپ کے دن میں شامل کر دیا گیا",
+  "cardFullSchedule": "مکمل شیڈول",
+  "cardArPreviewTitle": "AR پیش منظر",
+  "stopLiveNow": "ابھی لائیو: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "اگلا: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "مبارک ہو!",
+  "stampCelebrationCompleteTitle": "پاسپورٹ مکمل ہو گیا!",
+  "stampCelebrationSubtitle": "آپ نے {location} اسٹیمپ جمع کیا",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "آپ کا اوپن ڈے پاسپورٹ شروع ہو گیا ہے",
+  "stampCelebrationKeepExploring": "تلاش جاری رکھیں",
+  "stampCelebrationViewPassport": "میرا پاسپورٹ دیکھیں",
+  "stampAlreadyCollected": "پہلے ہی جمع ہو چکا — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "مبارک ہو۔ آپ نے {location} اسٹیمپ جمع کیا۔ {total} میں سے {count}۔",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "میرے اسٹیمپ",
+  "stampsPassportLockedHint": "جمع کرنے کے لیے اسکین کریں",
+  "settingsMyStampsTile": "میرے اسٹیمپ",
+  "settingsMyStampsSubtitle": "اپنا اوپن ڈے پاسپورٹ دیکھیں",
+  "arLoadError": "AR لوڈ نہیں ہو سکا: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "{total} میں سے تصویر {index}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "بیج حاصل کیا!",
+  "scanBadgeVisited": "دیکھا گیا"
 }

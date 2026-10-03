@@ -2447,5 +2447,234 @@
     "description": "Label for the copyright row in Settings → About."
   },
   "about_contactSupport": "Contact support",
-  "about_emailUnavailable": "No email app is available on this device."
+  "about_emailUnavailable": "No email app is available on this device.",
+  "scanTab": "Scan",
+  "buildingsLoadError": "Couldn't load buildings. Please try again.",
+  "@buildingsLoadError": {
+    "description": "Shown in the building search sheet when the campus building registry failed to load."
+  },
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Included in the app",
+  "@offlineCampusMapsBundled": {
+    "description": "Status for Offline Campus Map: the campus map image ships with the app, so there is nothing to download."
+  },
+  "offlineCampusMapsBundledDetail": "The campus map, building list and indoor tours work without a connection. Live metro times, walking routes and other online services still need one.",
+  "@offlineCampusMapsBundledDetail": {
+    "description": "Explains what does and does not work offline, shown under the Offline Campus Map status row."
+  },
+  "hoursMinutesShort": "{hours}h {minutes}m",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours}h",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "Scan QR Code",
+  "stampCatalogUnavailable": "Couldn't load your stamp collection. Please try again.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Couldn't load campus locations. Please try again.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Search programs and interests",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "No matching program or interest found",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Try a different keyword",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Show suggested stops",
+  "openDay_showSuggestedStopsSemantic": "Show suggested stops on Home",
+  "openDay_suggestedStopsForInterest": "Suggested stops for {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Live now",
+  "openDay_comingUpNextTitle": "Coming up next",
+  "openDay_liveNowForInterest": "Matched to your interest",
+  "openDay_liveNowAcrossDay": "Open to all visitors",
+  "openDay_matchedToYourDegree": "Matched to your degree",
+  "openDay_generalOpenToAll": "General · Open to all visitors",
+  "openDay_allSessionsLabel": "All sessions",
+  "openDay_yourDayTitle": "Your day",
+  "openDay_yourDayEmpty": "Save sessions and places you like to build your personal Open Day plan.",
+  "openDay_yourDayCount": "{count, plural, =1{1 session saved} other{{count} sessions saved}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Add to my day",
+  "openDay_removeFromMyDay": "Remove from my day",
+  "openDay_savedToMyDay": "Added to your day",
+  "openDay_removedFromMyDay": "Removed from your day",
+  "openDay_clearMyDay": "Clear my day",
+  "openDay_clearMyDayConfirm": "Remove all saved sessions and stops from Your Day? This can't be undone.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "Visited {count} of {total} stops",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Completed {trail} trail",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "No login needed · Private on your device",
+  "scanQrCta": "Scan",
+  "scanPermissionDenied": "Camera permission denied",
+  "scanPermissionDeniedDesc": "Enable camera access in Settings to scan QR codes",
+  "scanOpenSettings": "Open Settings",
+  "scanDecodeError": "Could not read QR code",
+  "scanNotMqCode": "This is not a Campus Navigation Open Day code",
+  "scanUnsupportedCode": "This QR code is no longer supported",
+  "scanUnverifiedCode": "This QR code could not be verified",
+  "scanAgain": "Scan again",
+  "scanVisitSaveFailed": "Visit could not be saved. Please try again.",
+  "scanNotOnTrail": "Not part of the trail",
+  "scanNotOnTrailDesc": "This QR code is not part of the Open Day trail",
+  "arNoBuildingSelected": "Select a building to view indoors",
+  "arComingSoon": "Indoor preview coming soon",
+  "arExploreEyebrow": "360° campus tours",
+  "@arExploreEyebrow": {
+    "description": "Eyebrow above the AR picker title (not literally augmented reality — it is a 360° panorama tour)"
+  },
+  "arExploreSubtitle": "Step inside campus spaces before you arrive.",
+  "@arExploreSubtitle": {
+    "description": "One-line subtitle under the AR picker title"
+  },
+  "arTourComingSoon": "Tour coming soon",
+  "@arTourComingSoon": {
+    "description": "Sub-label on a locked AR building card"
+  },
+  "arSoonPill": "Soon",
+  "@arSoonPill": {
+    "description": "Pill on a locked AR building card"
+  },
+  "cardViewOnCampusMap": "View on Campus Map",
+  "cardViewArMap": "View AR map",
+  "cardAddToYourDayCta": "Add to Your Day",
+  "cardAddToYourDay": "Added to Your Day",
+  "cardFullSchedule": "Full schedule",
+  "cardArPreviewTitle": "AR preview",
+  "stopLiveNow": "Live now: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Up next: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Congratulations!",
+  "stampCelebrationCompleteTitle": "Passport complete!",
+  "stampCelebrationSubtitle": "You collected the {location} stamp",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Your Open Day passport has begun",
+  "stampCelebrationKeepExploring": "Keep exploring",
+  "stampCelebrationViewPassport": "View my passport",
+  "stampAlreadyCollected": "Already collected — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Congratulations. You collected the {location} stamp. {count} of {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "My Stamps",
+  "stampsPassportLockedHint": "Scan to collect",
+  "settingsMyStampsTile": "My Stamps",
+  "settingsMyStampsSubtitle": "View your Open Day passport",
+  "arLoadError": "Could not load AR: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Photo {index} of {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Badge earned!",
+  "scanBadgeVisited": "Visited",
+  "openDay_enable": "Show Open Day",
+  "@openDay_enable": {
+    "description": "Settings toggle that opts in to the optional Open Day experience (home cards, Scan tab, sessions, reminders)."
+  },
+  "openDay_enableSemantic": "Show the Open Day schedule, Scan tab and reminders"
 }

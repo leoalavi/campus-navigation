@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
-import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
+import 'package:campus_navigation/features/transit/domain/entities/transit_stop.dart';
+import 'package:campus_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
 
 void main() {
   group('TfNSW request contract', () {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as latlong;
-import 'package:mq_navigation/features/map/data/datasources/overlay_registry.dart';
-import 'package:mq_navigation/features/map/domain/entities/campus_overlay_meta.dart';
+import 'package:campus_navigation/features/map/data/datasources/overlay_registry.dart';
+import 'package:campus_navigation/features/map/domain/entities/campus_overlay_meta.dart';
 
 /// Renders additional overlay image layers (parking, water, etc.)
 /// on top of the campus base image. Each active overlay uses the same

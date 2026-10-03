@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/indoor/data/repositories/indoor_repository.dart';
+import 'package:campus_navigation/features/indoor/data/repositories/indoor_repository.dart';
 
 /// Integrity guards for the migrated 360° catalogue.
 ///
-/// These assert the *outcome* of the MQ Journey / Astronomy Open Night
+/// These assert the *outcome* of the former MQ Journey / Astronomy Open Night
 /// migration rather than any one file, so a future edit that reintroduces an
 /// event slug, a duplicate location or a dangling panorama fails loudly.
 void main() {

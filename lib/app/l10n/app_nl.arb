@@ -2409,5 +2409,208 @@
   "arSceneCount": "{count, plural, =1{1 scène · 360°-tour} other{{count} scènes · 360°-tour}}",
   "about_developedBy": "Developed by",
   "about_independentNotice": "An independent app. Not affiliated with, endorsed by, or published by any university.",
-  "about_copyrightLabel": "Copyright"
+  "about_copyrightLabel": "Copyright",
+  "scanTab": "Scannen",
+  "buildingsLoadError": "Kan gebouwen niet laden. Probeer het opnieuw.",
+  "@dismiss": {
+    "description": "Closes the map location status message without opening Settings."
+  },
+  "offlineCampusMapsBundled": "Inbegrepen in de app",
+  "offlineCampusMapsBundledDetail": "De campuskaart, gebouwenlijst en binnentours werken zonder verbinding. Live metrotijden, wandelroutes en andere onlinediensten hebben er wel een nodig.",
+  "hoursMinutesShort": "{hours} u {minutes} min",
+  "@hoursMinutesShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursShort": "{hours} u",
+  "@hoursShort": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "home_scanQrCta": "QR-code scannen",
+  "stampCatalogUnavailable": "Kan je stempelverzameling niet laden. Probeer het opnieuw.",
+  "@stampCatalogUnavailable": {
+    "description": "Error shown when the bundled stamp catalog fails or times out while showing a scan reward. Paired with a Retry action; the pending award is kept."
+  },
+  "openDay_venueLookupFailed": "Kan campuslocaties niet laden. Probeer het opnieuw.",
+  "@openDay_venueLookupFailed": {
+    "description": "Error shown when the building registry fails or times out while opening an Open Day venue on the map. Paired with a Retry action."
+  },
+  "openDay_searchBachelorHint": "Zoek programma's en interesses",
+  "@openDay_searchBachelorHint": {
+    "description": "Placeholder text in the bachelor-picker search field."
+  },
+  "openDay_noBachelorMatch": "Geen overeenkomend programma of interesse gevonden",
+  "@openDay_noBachelorMatch": {
+    "description": "Empty state title shown when the bachelor-picker search has no results."
+  },
+  "openDay_noBachelorMatchHint": "Probeer een ander zoekwoord",
+  "@openDay_noBachelorMatchHint": {
+    "description": "Empty state hint shown under the no-match title in the bachelor picker."
+  },
+  "openDay_showSuggestedStops": "Voorgestelde stops tonen",
+  "openDay_showSuggestedStopsSemantic": "Voorgestelde stops tonen op Home",
+  "openDay_suggestedStopsForInterest": "Voorgestelde stops voor {interest}",
+  "@openDay_suggestedStopsForInterest": {
+    "placeholders": {
+      "interest": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_liveNowTitle": "Nu live",
+  "openDay_comingUpNextTitle": "Hierna",
+  "openDay_liveNowForInterest": "Past bij jouw interesse",
+  "openDay_liveNowAcrossDay": "Open voor alle bezoekers",
+  "openDay_matchedToYourDegree": "Past bij je opleiding",
+  "openDay_generalOpenToAll": "Algemeen · Voor iedereen",
+  "openDay_allSessionsLabel": "Alle sessies",
+  "openDay_yourDayTitle": "Jouw dag",
+  "openDay_yourDayEmpty": "Bewaar de sessies die je leuk vindt en stel je eigen Open dag-plan samen.",
+  "openDay_yourDayCount": "{count, plural, =1{1 sessie opgeslagen} other{{count} sessies opgeslagen}}",
+  "@openDay_yourDayCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_addToMyDay": "Toevoegen aan mijn dag",
+  "openDay_removeFromMyDay": "Verwijderen uit mijn dag",
+  "openDay_savedToMyDay": "Toegevoegd aan jouw dag",
+  "openDay_removedFromMyDay": "Verwijderd uit jouw dag",
+  "openDay_clearMyDay": "Mijn dag wissen",
+  "openDay_clearMyDayConfirm": "Alle opgeslagen sessies en stops uit je dag verwijderen? Dit kan niet ongedaan worden gemaakt.",
+  "@openDay_clearMyDayConfirm": {
+    "description": "Confirmation dialog message shown before wiping the user's entire saved Open Day plan."
+  },
+  "openDay_progressVisited": "{count} van {total} stops bezocht",
+  "@openDay_progressVisited": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "openDay_trailCompleted": "Route {trail} voltooid",
+  "@openDay_trailCompleted": {
+    "placeholders": {
+      "trail": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_privacyStrip": "Geen login nodig · Privé op je apparaat",
+  "scanQrCta": "Scannen",
+  "scanPermissionDenied": "Cameratoegang geweigerd",
+  "scanPermissionDeniedDesc": "Schakel camera-toegang in via Instellingen om QR-codes te scannen",
+  "scanOpenSettings": "Instellingen openen",
+  "scanDecodeError": "Kan QR-code niet lezen",
+  "scanNotMqCode": "Dit is geen Campus Navigation Open Day-code",
+  "scanUnsupportedCode": "Deze QR-code wordt niet meer ondersteund",
+  "scanUnverifiedCode": "Deze QR-code kon niet worden geverifieerd",
+  "scanAgain": "Opnieuw scannen",
+  "scanVisitSaveFailed": "Bezoek kon niet worden opgeslagen. Probeer opnieuw.",
+  "scanNotOnTrail": "Geen onderdeel van de route",
+  "scanNotOnTrailDesc": "Deze QR-code maakt geen deel uit van de Open Day-route",
+  "arNoBuildingSelected": "Selecteer een gebouw om het interieur te bekijken",
+  "arComingSoon": "Binnenpreview komt binnenkort",
+  "arExploreEyebrow": "360°-campustours",
+  "arExploreSubtitle": "Stap binnen in campusruimtes voordat je aankomt.",
+  "arTourComingSoon": "Tour binnenkort",
+  "arSoonPill": "Binnenkort",
+  "cardViewOnCampusMap": "Bekijken op campuskaart",
+  "cardViewArMap": "AR-kaart bekijken",
+  "cardAddToYourDayCta": "Toevoegen aan jouw dag",
+  "cardAddToYourDay": "Toegevoegd aan jouw dag",
+  "cardFullSchedule": "Volledig schema",
+  "cardArPreviewTitle": "AR-preview",
+  "stopLiveNow": "Nu live: {title}",
+  "@stopLiveNow": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stopUpNext": "Zo dadelijk: {title}",
+  "@stopUpNext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationTitle": "Gefeliciteerd!",
+  "stampCelebrationCompleteTitle": "Paspoort compleet!",
+  "stampCelebrationSubtitle": "Je hebt de stempel {location} verzameld",
+  "@stampCelebrationSubtitle": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampCelebrationFirstNote": "Je Open Day-paspoort is begonnen",
+  "stampCelebrationKeepExploring": "Blijf ontdekken",
+  "stampCelebrationViewPassport": "Mijn paspoort bekijken",
+  "stampAlreadyCollected": "Al verzameld — {location}",
+  "@stampAlreadyCollected": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "stampAnnouncementCongrats": "Gefeliciteerd. Je hebt de stempel {location} verzameld. {count} van {total}.",
+  "@stampAnnouncementCongrats": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stampsPassportTitle": "Mijn stempels",
+  "stampsPassportLockedHint": "Scan om te verzamelen",
+  "settingsMyStampsTile": "Mijn stempels",
+  "settingsMyStampsSubtitle": "Bekijk je Open Day-paspoort",
+  "arLoadError": "Kan AR niet laden: {error}",
+  "@arLoadError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "photoGallerySemantics": "Foto {index} van {total}",
+  "@photoGallerySemantics": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "scanBadgeEarned": "Badge verdiend!",
+  "scanBadgeVisited": "Bezocht"
 }

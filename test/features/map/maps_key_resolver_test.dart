@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/map/data/services/maps_key_resolver.dart';
+import 'package:campus_navigation/features/map/data/services/maps_key_resolver.dart';
 
 /// The Google Maps tab rendered OpenStreetMap on correctly-keyed builds
 /// because the gate only consulted a compile-time `--dart-define`. These lock
@@ -28,7 +28,7 @@ void main() {
 
   test('a key from the platform manifest counts as configured', () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    stubChannel('AIza-native-key-from-manifest');
+    stubChannel('fake-native-maps-key');
 
     expect(await MapsKeyResolver().resolve(), MapsKeyStatus.configured);
   });
@@ -65,7 +65,7 @@ void main() {
 
   test('desktop reports unsupported, not misconfigured', () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
-    stubChannel('AIza-should-not-be-consulted');
+    stubChannel('fake-unused-maps-key');
 
     expect(
       await MapsKeyResolver().resolve(),

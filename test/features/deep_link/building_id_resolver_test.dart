@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/features/deep_link/building_id_resolver.dart';
+import 'package:campus_navigation/features/deep_link/building_id_resolver.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

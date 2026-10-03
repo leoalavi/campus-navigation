@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mq_navigation/core/error/error_boundary.dart';
+import 'package:campus_navigation/core/error/error_boundary.dart';
 
 void main() {
   testWidgets('ErrorBoundary transparently renders its child', (tester) async {
