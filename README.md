@@ -120,9 +120,9 @@ Fallback: app installed → open destination directly
 
 <div align="center">
 
-| Home | Campus Map | Safety |
+| Campus Map | Safety |
 |:---:|:---:|:---:|
-| <img width="240" alt="Home / campus dashboard" src="screenshots/02_home_page.png"/> | <img width="240" alt="Campus map" src="screenshots/03_map_page.png"/> | <img width="240" alt="Safety resources" src="screenshots/04_safety_page.png"/> |
+ img width="240" alt="Campus map" src="screenshots/03_map_page.png"/> | <img width="240" alt="Safety resources" src="screenshots/04_safety_page.png"/> |
 
 | Favourites | Notifications | Settings |
 |:---:|:---:|:---:|
