@@ -60,7 +60,7 @@ Generic campus maps (Google/Apple Maps) stop at the street kerb and don't know w
 - **Independent app.** Campus Navigation can be launched and used entirely on its own — no Syllabus Sync account or session is required.
 - **Deep-link handoff.** Syllabus Sync can hand off a destination (a class location, Open Day item, or building) to Campus Navigation via a deep link. See the dedicated section below for the current implementation status.
 - **Shared backend.** Both apps can point at the same Supabase project, sharing schema and Edge Functions (e.g. `maps-routes`, `tfnsw-proxy`) rather than each running its own backend.
-- **Future direction:** Syllabus Sync handles academic planning, Campus Navigation handles campus routing, and a planned "Sylla" AI assistant layer sits across both to help students plan and navigate their day.
+- **Future direction:** Syllabus Sync handles academic planning and Campus Navigation handles campus routing. Sylla is a separate AI-assisted study layer under active development, connected to the broader Syllabus Sync ecosystem.
 
 **MQ Journey**, the Open Day visitor app built from the same codebase, has been merged into Campus Navigation — there is now one app. Its history is preserved in this repository, and its Open Day features (personalised sessions, Your Day, QR scanning, stamps passport, building photos and 360° hotspots) ship here. Navigation stays the primary experience: **Open Day is opt-in** — switch it on in *Settings → Open Day → Show Open Day* or by scanning a printed Open Day QR code. First-run onboarding never asks Open Day questions; the study interest is set inside Open Day once it is on. MQ Journey's original docs are archived in [`docs/mq-journey/`](docs/mq-journey/).
 
@@ -121,8 +121,8 @@ Fallback: app installed → open destination directly
 <div align="center">
 
 | Campus Map | Safety |
-|:---:|:---:|:---:|
- img width="240" alt="Campus map" src="screenshots/03_map_page.png"/> | <img width="240" alt="Safety resources" src="screenshots/04_safety_page.png"/> |
+|:---:|:---:|
+| <img width="240" alt="Campus map" src="screenshots/03_map_page.png"/> | <img width="240" alt="Safety resources" src="screenshots/04_safety_page.png"/> |
 
 | Favourites | Notifications | Settings |
 |:---:|:---:|:---:|
@@ -229,7 +229,7 @@ Privacy is treated as an architectural concern, not a feature flag.
 |-----------|---------------|
 | No accounts | There is no sign-in. The app opens straight to `/home`, and favourites are stored on the device only. |
 | No analytics packages | No analytics, telemetry, or crash reporting packages included. A CI guard blocks them at build time. |
-| Ephemeral location use | GPS is used for active navigation only — not persisted, not transmitted to any external service. |
+| Ephemeral location use | GPS is not persisted by the app. Location may be sent to third-party mapping or routing services only when the user explicitly uses those features (route requests, nearby transit stops, or handing off to Google Maps). |
 | Local-only preferences | Theme, locale, commute mode, and quiet hours are stored via `SharedPreferences` + `FlutterSecureStorage`. |
 | Safety privacy | Emergency contacts use tap-to-dial — location is **never automatically shared**. |
 | On-device compass | All heading calculation happens on-device. No data leaves the phone. |
@@ -436,8 +436,8 @@ Released under the **MIT License**. See [`LICENSE`](LICENSE).
 
 | Name | Role |
 |------|------|
-| Leo Alavi | Lead — architecture, mapping engine, infrastructure |
-| Raouf Abedini | Co-maintainer — security, backend, Supabase Edge Functions |
+| Leo Alavi | Co-maintainer — Flutter, mapping, navigation & integration |
+| Raouf Abedini | Co-maintainer — backend, security & Supabase Edge Functions |
 
 <br/>
 
@@ -461,7 +461,7 @@ Built with the support of the open-source community. This project benefits from:
 ### `> ping --authors`
 
 ```text
-> Authors    : Leo Alavi — Software Engineer | Raouf Abedini — Back-End Developer
+> Authors    : Leo Alavi — Flutter & Navigation | Raouf Abedini — Backend & Security
 > Origin     : COMP3130 Mobile App Development major project, Macquarie University
 > Now        : Mobile campus wayfinding layer for the Syllabus Sync ecosystem
 ```
@@ -480,7 +480,8 @@ Built with the support of the open-source community. This project benefits from:
 
 © 2026 Leo Alavi and Raouf Abedini. Not affiliated with, endorsed by, or published by any university.
 
-Android and iOS are the released products. A web release target is maintained
-and tested in CI, but is not currently deployed.
+Android is the primary, device-verified mobile platform. iOS is configured and
+supported but not yet fully device-verified. The web target is maintained and
+tested in CI but is not currently deployed.
 
 </div>
