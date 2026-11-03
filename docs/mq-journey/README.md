@@ -2,11 +2,19 @@
 > MQ Journey's README as it stood at the merge (commit `c47e9d5`). Paths,
 > branding and the package name (`mq_journey`) below are historical — see the
 > [Campus Navigation README](../../README.md) for the current app.
+>
+> **Wording note.** An earlier version of this README described MQ Journey as
+> the "official" Open Day companion app and referred to the Open Day campaign
+> styling. That was inaccurate: MQ Journey was an independent,
+> student-developed app built for Open Day 2026. It was never an official
+> Macquarie University product and was not endorsed or published by the
+> University. The wording below has been corrected accordingly; the rest of
+> the document is unchanged.
 
 <div align="center">
 
 <!-- Typing animation -->
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=20&duration=2800&pause=700&color=C6007E&center=true&vCenter=true&width=860&lines=Your+Personal+Guide+to+Macquarie+Open+Day+2026;Scan+a+QR+%E2%80%A2+Pick+Your+Interest+%E2%80%A2+Plan+Your+Day;Flutter+3.41+%E2%80%A2+Riverpod+3+%E2%80%A2+Supabase+%E2%80%A2+35+Languages;Privacy+by+Design+%E2%80%A2+535+Tests+%E2%80%A2+No+Login+Required)](https://readme-typing-svg.demolab.com)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=20&duration=2800&pause=700&color=C6007E&center=true&vCenter=true&width=860&lines=A+Student-Built+Guide+for+Open+Day+2026;Scan+a+QR+%E2%80%A2+Pick+Your+Interest+%E2%80%A2+Plan+Your+Day;Flutter+3.41+%E2%80%A2+Riverpod+3+%E2%80%A2+Supabase+%E2%80%A2+35+Languages;Privacy+by+Design+%E2%80%A2+535+Tests+%E2%80%A2+No+Login+Required)](https://readme-typing-svg.demolab.com)
 
 <!-- Badges -->
 ![License: MIT](https://img.shields.io/badge/License-MIT-C6007E?style=for-the-badge)
@@ -23,13 +31,13 @@
 
 <br/>
 
-# MQ Journey — Macquarie University Open Day 2026 Companion
+# MQ Journey — Student-Developed Open Day 2026 Companion
 
-> **Scan. Discover. Plan your day at Macquarie.**
+> **Scan. Discover. Plan your day on campus.**
 
-MQ Journey is the official companion app for **Macquarie University Open Day 2026**. Visitors scan a QR code at any building, pick their study interest, and instantly get a personalised view of relevant sessions, suggested stops, an illustrated campus map, and AR/indoor previews — all without creating an account.
+MQ Journey is an independent, student-developed companion app built for visitors to **Open Day 2026** on the Macquarie University campus. It is not an official Macquarie University app and is not affiliated with, endorsed by, or published by the University. Visitors scan a QR code at any building, pick their study interest, and instantly get a personalised view of relevant sessions, suggested stops, an illustrated campus map, and AR/indoor previews — all without creating an account.
 
-Themed around the **Open Day "(OPEN DAY)us" magenta/plum campaign identity**, it shares a Supabase backend with a companion Next.js web app (two frontends, one backend).
+It used its own magenta/plum colour palette and shares a Supabase backend with a companion Next.js web app (two frontends, one backend).
 
 **[📖 Project Report](PROJECT_REPORT.md)** &nbsp;·&nbsp; **[📸 Screenshots](screenshots/)** &nbsp;·&nbsp; **[🏗️ Architecture](docs/ARCHITECTURE.md)** &nbsp;·&nbsp; **[🔐 Security Posture](docs/SECURITY_POSTURE.md)**
 
@@ -349,8 +357,8 @@ Released under the **MIT License**. See [`LICENSE`](LICENSE).
 
 ```text
 > Authors    : Pouya Alavi Naeini — Software Engineer | Raouf Abedini — Back-End Developer
-> University : Macquarie University, Sydney, NSW
-> Product    : Macquarie University Open Day 2026 companion
+> Context    : Student-developed; independent of Macquarie University
+> Product    : Unofficial Open Day 2026 companion app
 > Status     : [●] 535 tests passing · 0 blocking analyzer issues
 ```
 

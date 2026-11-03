@@ -6,7 +6,7 @@ This file is the fast orientation map for the MQ Journey Flutter repository. It 
 
 ## 1. Executive Summary
 
-MQ Journey is a Flutter campus companion for Macquarie University. The app combines an illustrated campus map, routing, QR scanning, Open Day schedules, indoor 360-degree previews, collectible stamps, favorites, notifications, safety tools, timetable parsing, transit departures, and 35-locale localization.
+MQ Journey is an independent, student-developed Flutter campus companion for the Macquarie University campus (not an official University app). The app combines an illustrated campus map, routing, QR scanning, Open Day schedules, indoor 360-degree previews, collectible stamps, favorites, notifications, safety tools, timetable parsing, transit departures, and 35-locale localization.
 
 Core architectural facts:
 
