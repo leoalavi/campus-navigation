@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "සජීවී ගමන්",
   "onboardingTransitBody": "මුල් තිරයෙන් සිඩ්නි මෙට්‍රෝ, දුම්රිය සහ බස් රථ පිටත්වීම් සජීවීව ලුහුබැඳෙන්න.",
   "onboardingTransitDataAttribution": "සජීවී පිටත්වීම් Transport for NSW (TfNSW) හි විවෘත දත්ත භාවිතා කරයි.",

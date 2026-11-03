@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "நேரடி பயணம்",
   "onboardingTransitBody": "முகப்புத் திரையில் சிட்னி மெட்ரோ, இரயில்கள் மற்றும் பேருந்துகளின் நிகழ்நேர புறப்பாடுகளைக் கண்காணிக்கவும்.",
   "onboardingTransitDataAttribution": "நிகழ்நேர புறப்பாடுகள் Transport for NSW (TfNSW) இன் திறந்த தரவைப் பயன்படுத்துகின்றன.",

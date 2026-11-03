@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "Дорога в реальному часі",
   "onboardingTransitBody": "Відстежуйте відправлення Sydney Metro, потягів і автобусів у реальному часі з головного екрана.",
   "onboardingTransitDataAttribution": "Відправлення в реальному часі використовують відкриті дані Transport for NSW (TfNSW).",

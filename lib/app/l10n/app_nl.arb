@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "Live woon-werkverkeer",
   "onboardingTransitBody": "Volg vertrekken van Sydney Metro, treinen en bussen in realtime vanaf het startscherm.",
   "onboardingTransitDataAttribution": "Realtime vertrekken gebruiken open data van Transport for NSW (TfNSW).",

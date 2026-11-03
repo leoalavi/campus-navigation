@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "Élő ingázás",
   "onboardingTransitBody": "Kövesse élőben a Sydney Metro, a vonatok és a buszok indulását a kezdőképernyőről.",
   "onboardingTransitDataAttribution": "Az élő indulások a Transport for NSW (TfNSW) nyílt adatait használják.",

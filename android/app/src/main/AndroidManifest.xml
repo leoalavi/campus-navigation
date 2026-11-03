@@ -72,6 +72,12 @@
                 <data android:scheme="https" android:host="mqnavigation.app" android:path="/open"/>
             </intent-filter>
         </activity>
+        <!-- Filled from build.gradle.kts (secrets.properties / .env / env var).
+             Empty when no key is supplied; the Dart gate then keeps the
+             Google Maps tab on the OpenStreetMap fallback. -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${googleMapsApiKey}" />
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

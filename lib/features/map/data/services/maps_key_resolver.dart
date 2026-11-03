@@ -53,26 +53,30 @@ class MapsKeyResolver {
     // Desktop has no Google Maps implementation to key.
     if (!kIsWeb && !_isNativeMobile) return MapsKeyStatus.unsupportedPlatform;
 
-    // A compile-time define wins: it is the explicit, per-build answer.
-    if (EnvConfig.hasGoogleMapsApiKey) return MapsKeyStatus.configured;
-
     // Web has no method channel; its key is injected into the page instead,
-    // and that check lives with the web renderer.
-    if (kIsWeb) return MapsKeyStatus.missing;
+    // and that check lives with the web renderer. A compile-time define is
+    // the only signal available there.
+    if (kIsWeb) {
+      return EnvConfig.hasGoogleMapsApiKey
+          ? MapsKeyStatus.configured
+          : MapsKeyStatus.missing;
+    }
 
+    // On Android and iOS the native SDK is what needs the key, and a
+    // --dart-define never reaches it. So the platform's answer is the only
+    // one that matters: trusting the define here let an iOS build with no
+    // Info.plist `GMSApiKey` create a map view and crash with
+    // GMSServicesException.
     try {
       final key = await _channel.invokeMethod<String>('resolveMapsApiKey');
       return (key != null && key.trim().isNotEmpty)
           ? MapsKeyStatus.configured
           : MapsKeyStatus.missing;
     } on MissingPluginException {
-      // The channel isn't registered on this platform (currently iOS, which
-      // keys the SDK natively in AppDelegate from Info.plist `GMSApiKey`).
-      // Falling back to OSM here would reintroduce the exact "Google Maps tab
-      // shows OpenStreetMap" bug on a correctly-keyed build, so defer to the
-      // native SDK — it surfaces its own authorization error if the key is
-      // absent.
-      return MapsKeyStatus.configured;
+      // Both MainActivity and AppDelegate register the channel, so this means
+      // a native build that predates it. Without proof of a key, a map view
+      // can crash the app (iOS) or render grey (Android) — fall back to OSM.
+      return MapsKeyStatus.missing;
     } on PlatformException {
       return MapsKeyStatus.missing;
     }

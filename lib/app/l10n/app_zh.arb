@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "实时通勤",
   "onboardingTransitBody": "在主屏幕实时查看悉尼地铁、火车与巴士发车信息。",
   "onboardingTransitDataAttribution": "实时发车信息使用新南威尔士州交通局（Transport for NSW，TfNSW）的开放数据。",

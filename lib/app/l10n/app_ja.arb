@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "ライブ通勤情報",
   "onboardingTransitBody": "ホーム画面から、シドニー・メトロ、電車、バスのリアルタイム発車情報を確認できます。",
   "onboardingTransitDataAttribution": "リアルタイムの発車情報は Transport for NSW（TfNSW）のオープンデータを利用しています。",

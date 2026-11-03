@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "การเดินทางสด",
   "onboardingTransitBody": "ติดตามเวลาออกของรถไฟใต้ดินซิดนีย์ รถไฟ และรถโดยสารแบบเรียลไทม์จากหน้าจอหลัก",
   "onboardingTransitDataAttribution": "เวลาออกแบบเรียลไทม์ใช้ข้อมูลเปิดจาก Transport for NSW (TfNSW)",

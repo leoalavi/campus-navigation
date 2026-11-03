@@ -47,13 +47,28 @@ void main() {
     expect(await MapsKeyResolver().resolve(), MapsKeyStatus.missing);
   });
 
-  // iOS keys its SDK natively in AppDelegate from Info.plist and registers no
-  // channel. Falling back to OSM there would be the original bug again.
-  test('a missing channel defers to the native SDK rather than OSM', () async {
+  // iOS now answers over the same channel as Android, from Info.plist.
+  test('an iOS key from Info.plist counts as configured', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    stubChannel('fake-info-plist-maps-key');
+
+    expect(await MapsKeyResolver().resolve(), MapsKeyStatus.configured);
+  });
+
+  // An unkeyed iOS build used to be reported "configured" here, so the Google
+  // Maps tab created a map view and crashed with GMSServicesException.
+  test('an iOS build without a key falls back instead of crashing', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    stubChannel('');
+
+    expect(await MapsKeyResolver().resolve(), MapsKeyStatus.missing);
+  });
+
+  test('a missing channel falls back to OSM rather than guessing', () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     stubChannel(null, throwError: MissingPluginException('no channel'));
 
-    expect(await MapsKeyResolver().resolve(), MapsKeyStatus.configured);
+    expect(await MapsKeyResolver().resolve(), MapsKeyStatus.missing);
   });
 
   test('a platform error degrades to the OSM renderer', () async {

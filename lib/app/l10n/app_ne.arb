@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "प्रत्यक्ष यात्रा",
   "onboardingTransitBody": "गृह स्क्रिनबाट सिड्नी मेट्रो, रेल र बसका प्रस्थान समय वास्तविक समयमा ट्र्याक गर्नुहोस्।",
   "onboardingTransitDataAttribution": "वास्तविक-समय प्रस्थानहरूले Transport for NSW (TfNSW) को खुला डाटा प्रयोग गर्छन्।",

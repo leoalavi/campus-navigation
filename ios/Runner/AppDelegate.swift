@@ -45,12 +45,38 @@ import UIKit
     }
 
     // ── Google Maps ───────────────────────────────────────────────────────
-    if let mapsApiKey = Bundle.main.object(forInfoDictionaryKey: "GMSApiKey") as? String,
-      !mapsApiKey.isEmpty
-    {
+    let mapsApiKey = Self.infoPlistMapsKey()
+    if !mapsApiKey.isEmpty {
       GMSServices.provideAPIKey(mapsApiKey)
     }
 
+    // Lets Dart ask which key the SDK was actually given (mirrors Android's
+    // MainActivity). Without it the Dart gate cannot tell a keyed build from
+    // an unkeyed one, and an unkeyed build crashes with GMSServicesException
+    // as soon as the Google Maps tab creates a map view.
+    if let registrar = registrar(forPlugin: "CampusNavigationMapsConfig") {
+      FlutterMethodChannel(
+        name: "campus_navigation/maps_config",
+        binaryMessenger: registrar.messenger()
+      ).setMethodCallHandler { call, result in
+        switch call.method {
+        case "resolveMapsApiKey":
+          result(mapsApiKey)
+        default:
+          result(FlutterMethodNotImplemented)
+        }
+      }
+    }
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+  /// `GMSApiKey` from Info.plist, filled from `$(GOOGLE_MAPS_API_KEY)` in the
+  /// gitignored `ios/Flutter/Secrets.xcconfig` (written by `scripts/run.sh`).
+  /// An unexpanded `$(...)` placeholder means no key was supplied.
+  private static func infoPlistMapsKey() -> String {
+    let raw = (Bundle.main.object(forInfoDictionaryKey: "GMSApiKey") as? String ?? "")
+      .trimmingCharacters(in: .whitespacesAndNewlines)
+    return raw.hasPrefix("$(") ? "" : raw
   }
 }

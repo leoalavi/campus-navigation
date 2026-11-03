@@ -2123,7 +2123,7 @@
   "@onboardingMapTitle": {
     "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
-  "onboardingMapBody": "Navigate campus with real-world Google Maps or our detailed illustrated campus view.",
+  "onboardingMapBody": "Navigate campus with real-world Google Maps or the illustrated campus map.",
   "onboardingTransitTitle": "লাইভ কমিউট",
   "onboardingTransitBody": "হোম স্ক্রিন থেকে সিডনি মেট্রো, ট্রেন ও বাসের রিয়েল-টাইম ছাড়ার সময় ট্র্যাক করুন।",
   "onboardingTransitDataAttribution": "রিয়েল-টাইম ছাড়ার তথ্য নিউ সাউথ ওয়েলস পরিবহন কর্তৃপক্ষের (Transport for NSW, TfNSW) উন্মুক্ত ডেটা ব্যবহার করে।",

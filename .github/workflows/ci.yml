@@ -120,6 +120,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get --enforce-lockfile
 
+      # Podfile.lock spec checksums depend on the CocoaPods version that wrote
+      # them (1.16 and 1.17 serialise `swift_version` differently), so the
+      # runner's preinstalled CocoaPods fails `--deployment`. Install exactly
+      # the version recorded in the lockfile.
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+
+      - name: Install the CocoaPods version that wrote Podfile.lock
+        run: |
+          version="$(awk '/^COCOAPODS:/ {print $2}' ios/Podfile.lock)"
+          gem install cocoapods -v "$version" --no-document
+          test "$(pod --version)" = "$version"
+
       - name: Install locked CocoaPods dependencies
         working-directory: ios
         run: pod install --deployment
@@ -214,6 +228,17 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get --enforce-lockfile
+
+      # See build-ios: match the CocoaPods version recorded in the lockfile.
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+
+      - name: Install the CocoaPods version that wrote Podfile.lock
+        run: |
+          version="$(awk '/^COCOAPODS:/ {print $2}' macos/Podfile.lock)"
+          gem install cocoapods -v "$version" --no-document
+          test "$(pod --version)" = "$version"
 
       - name: Install locked CocoaPods dependencies
         working-directory: macos
