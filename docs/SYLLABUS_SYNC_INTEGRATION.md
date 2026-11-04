@@ -1,9 +1,10 @@
 # Syllabus Sync ↔ Campus Navigation integration contract
 
-Campus Navigation is the **Android + iOS** navigation app in the Syllabus Sync
-ecosystem. It has **no web build**. Syllabus Sync (web) can *initiate* a
-navigation request, but it either hands off to the installed app or offers the
-store listings — never a browser fallback.
+Campus Navigation is primarily the **Android + iOS** navigation app in the Syllabus Sync
+ecosystem. This repository also has a web build target, tested in CI but not
+deployed. The deep-link contract below is implemented in this Flutter repository;
+the Syllabus Sync handoff and store fallback are integration intentions that
+must be checked in the sibling repository and on devices before release claims.
 
 ## 1. Direction of truth
 
@@ -23,7 +24,7 @@ the id it already holds; Campus Navigation resolves it.
 One public entry path, two transports carrying the identical payload:
 
 ```
-mqnav://open?destination=<buildingId>          # primary — always works once installed
+mqnav://open?destination=<buildingId>          # custom scheme; test on installed devices
 https://mqnavigation.app/open?destination=<id> # enhancement — needs well-known files
 ```
 
@@ -60,11 +61,11 @@ from dead-ending against an older installed app.
 | aliased destination | resolved to canonical, then selected |
 | unknown / future id | map opens searching for that id |
 | missing / malformed payload | map root |
-| app not installed | Syllabus Sync shows the store chooser (§4) |
+| app not installed | Intended Syllabus Sync store chooser (§4); verify in the web app |
 
 ## 4. Not-installed fallback
 
-Syllabus Sync attempts `mqnav://open?...` and races the OS switch against a
+The documented Syllabus Sync design attempts `mqnav://open?...` and races the OS switch against a
 timer (`lib/campus-navigation/handoff.ts`). If the page is still foregrounded
 when the timer expires, nothing handled the scheme, and
 `CampusNavInstallDialog` offers exactly two destinations:

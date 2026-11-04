@@ -1,47 +1,27 @@
 # Route Matrix — Flutter Routes
 
-All routes in the Campus Navigation Flutter app.
+Checked against `lib/app/router/app_router.dart` and `route_names.dart` on 4 November 2026. Route registration does not by itself prove that external links work on a device.
 
-## Page Routes
+| Flutter path | Route name | Purpose |
+|---|---|---|
+| `/open` | redirect | Deep-link contract; resolves a building, search query or coordinate to `/map` |
+| `/meet` | `meet` | Redirects a shared coordinate to `/map` |
+| `/home` | `home` | Home shell branch, index 0 |
+| `/map` | `map` | Map shell branch, index 1 |
+| `/map/building/:buildingId` | `building-detail` | Select a building; `?preview=route` starts a route preview |
+| `/map/building/:buildingId/360` | `indoor-preview` | Building panorama; optional `?scene=` |
+| `/scan` | `scan` | QR scanner shell branch, index 2 |
+| `/settings` | `settings` | Settings shell branch, index 3 |
+| `/notifications` | `notifications` | Notification inbox outside the shell |
+| `/open-day` | `open-day` | Opt-in event screen outside the shell |
+| `/your-day` | `your-day` | Event schedule outside the shell |
+| `/onboarding` | `onboarding` | First-run setup |
+| `/safety` | `safety` | Safety toolkit |
+| `/favorites` | `favorites` | Saved buildings; standalone route, not a bottom tab |
+| `/stamps` | `stamps` | Open Day passport |
+| `/location/:locationId` | `location-detail` | Scanned location card |
+| `/location/:locationId/ar` | `location-ar` | AR view for a scanned location |
 
-| Flutter Route | go_router Name | Description |
-|---------------|----------------|-------------|
-| `/home` | `home` | Welcome hub (shell tab 0) |
-| `/map` | `map` | Campus map with dual renderer and search (shell tab 1) |
-| `/map/building/:buildingId` | `building-detail` | Deep link to a specific building on the map |
-| `/favorites` | `favorites` | List of favorited buildings (shell tab 2) |
-| `/settings` | `settings` | Theme, language, account, data prefs (shell tab 3) |
-| `/auth/login` | `login` | Email/password sign in page |
-| `/auth/signup` | `signup` | New account creation page |
-| `/safety` | `safety` | Safety toolkit (standalone page) |
-| `/notifications` | `notifications` | Notification inbox (covers shell) |
-| `/open-day` | `open-day` | Open Day event browsing and scheduling |
-| `/onboarding` | `onboarding` | First-launch welcome and setup flow |
-| `/meet` | `meet` | Map view focused on a shared point (lat/lng) |
+The three visible bottom tabs are Home, Navigation and Settings. The scanner branch exists in the router and is presented when Open Day mode makes it available. The old `/auth/login` and `/auth/signup` routes are not registered in the current router.
 
-## Shell Navigation (bottom nav)
-
-| Tab | Index | Route | Icon |
-|-----|-------|-------|------|
-| Home | 0 | `/home` | home |
-| Map | 1 | `/map` | map |
-| Favorites | 2 | `/favorites` | favorite |
-| Settings | 3 | `/settings` | settings |
-
-## Shared Contract Routes
-
-| Route Prefix | Feature | Contract Description |
-|--------------|---------|----------------------|
-| `/open/*` | Syllabus Sync | Deep link entry point for external unit schedules |
-| `/map/meet/*` | Meet-at-Point | Temporary location sharing coordinate payload |
-
-## Routes NOT Migrated from Web
-
-| Web Route | Reason |
-|-----------|--------|
-| `/calendar` | Personal calendar features remain web-only for now |
-| `/feed` | Event feed replaced by Home dashboard and Open Day module |
-| `/manage-profiles` | Multi-profile management is a web-only admin feature |
-| `/map/position-editor` | Admin-only building coordinate calibration tool |
-| `/offline` | Flutter uses local-first caching and connectivity banners |
-| `/api/*` | Handled via direct SDK calls or serverless Edge Functions |
+`mqnav://open` is the custom-scheme handoff. `https://mqnavigation.app/open` needs the domain association files before it can work as an App Link or Universal Link. External deep-link behavior was not manually retested in the 4 November simulator review.

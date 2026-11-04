@@ -1,3 +1,10 @@
+### Codex: 2026-11-04 (Australia/Sydney) — Current repository documentation audit
+**Scope:** README and active architecture, route, security, privacy, integration, inventory and store-draft documentation.
+**Summary:** Reconciled active docs with the current router, CI run `41801652455`, and production `maps-routes` version 21. Removed current-screenshot and physical-device overclaims and corrected location-sharing, rate-limit and permission statements. No app code or production service changed.
+**Files Changed:** `README.md`, `AGENT.md`, `CHANGELOG.md`, and selected active `docs/*.md` files.
+**Verification:** Reviewed app source and workflow; checked tracked Markdown links and `git diff --check`.
+**Follow-ups:** University map permission and full device/route-mode verification remain separate work.
+
 ### Raouf: 2026-05-24 (Australia/Sydney) — Showcase Screenshots and Release APK Build
 **Scope:** Showcase Presentation & Release Packaging — `build/app/outputs/flutter-apk/app-release.apk`, `screenshots/` (7 images)
 **Summary:** (1) Built the release APK target for MQ Navigation at `build/app/outputs/flutter-apk/app-release.apk` with debug key fallback signing, and cleaned up debug and sha1 build outputs. (2) Compiled the web target (`build/web`) and automated Playwright to log in via the demo credentials (`marker@mq-navigation.test` / `OpenDay2026!`). (3) Automated bypassing the onboarding flow and captured 7 distinctive high-resolution showcase screenshots of the Login, Home Dashboard, Map, Safety Toolkit, Favorites, Notifications, and Settings screens.

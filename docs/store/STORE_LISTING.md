@@ -1,5 +1,7 @@
 # Campus Navigation — store listing drafts
 
+> **Draft only; not approved for submission.** Public distribution is on hold until the University responds about its illustrated map assets and branding. This copy has not undergone a final claims, privacy, accessibility, or store-policy review. The University campus map shown in the app cannot be treated as cleared promotional material.
+
 Shared metadata for both stores. No university is named anywhere in this copy,
 no affiliation is implied, and no web version is advertised.
 
@@ -23,47 +25,44 @@ no affiliation is implied, and no web version is advertised.
 **Subtitle (30):** `Find your way around campus`
 
 **Promotional text (170):**
-> Step-by-step walking directions, an illustrated campus map that works
-> offline, and 360° tours that show you the room before you get there.
+> Building search, an interactive campus map, Google Maps, walking guidance,
+> and selected 360° previews.
 
 **Description:**
-> Campus Navigation helps you find any building, lecture theatre, service or
-> café on campus — and get walking directions straight to the right entrance.
+> Campus Navigation helps you search campus locations and request route guidance.
 >
 > **Find anything**
-> Search hundreds of buildings, rooms, food outlets, parking areas, bike racks
-> and student services by name, code or nickname.
+> Search the bundled campus location directory, including buildings and services,
+> by name or code.
 >
 > **Two ways to see campus**
 > Switch between a detailed illustrated campus map and real-world Google Maps,
 > whichever suits what you are doing.
 >
 > **Look inside before you arrive**
-> 360° panoramic tours of entrances, lobbies and lecture theatres, so you know
-> which door to walk through.
+> Selected 360° panoramas are available for some locations.
 >
 > **Works without signal**
 > The campus map, building directory and tours are bundled with the app, so
-> they keep working in a basement lecture theatre.
+> they can be browsed without a live route request; online services need a connection.
 >
 > **Getting there**
-> Live public-transport departures for nearby stops, accessibility and parking
-> overlays, and walking routes that use step-free entrances.
+> Public-transport departures for supported stops, map overlays and route
+> requests. Accessibility information is not a guarantee of step-free routing.
 >
 > **No account, no ads, no tracking**
 > Open the app and use it. There is nothing to sign up for, nothing to
-> dismiss, and your location never leaves your device.
+> dismiss. Your coordinates are sent to routing or nearby-transport providers
+> when you request those services; the app does not keep a location history.
 >
 > Campus Navigation is an independent app developed by Leo Alavi and Mohammad
 > Raouf Abedini. It is not affiliated with, endorsed by, or published by any
 > university.
 
 **Keywords (100):**
-`campus,map,navigation,university,wayfinding,directions,walking,360,offline,building,student,indoor`
+`campus,map,navigation,university,wayfinding,directions,walking,360,building,student,indoor`
 
-**What's New (first release):**
-> First release. Campus map, building search, walking directions, 360° indoor
-> tours, offline support and live transport times.
+**What's New:** Pending an approved release. Do not submit first-release copy yet.
 
 ---
 
@@ -72,7 +71,7 @@ no affiliation is implied, and no web version is advertised.
 **Title (30):** `Campus Navigation`
 
 **Short description (80):**
-> Campus maps, walking directions and 360° tours. No account. Works offline.
+> Campus map, building search and walking guidance. No account required.
 
 **Full description:** as above.
 
@@ -81,13 +80,13 @@ no affiliation is implied, and no web version is advertised.
 | Question | Answer |
 |---|---|
 | Does your app collect or share user data? | **Yes — location only, processed ephemerally** (see next row) |
-| Location (precise) | Sent to our backend only when the user asks for directions (origin coordinates, forwarded to the routing provider) or for nearby transit stops (forwarded to TfNSW). Used solely to compute that result; **not stored, not logged against a user, not shared for advertising**. Declare as *collected*, *processed ephemerally*, purpose *App functionality*, not required (the campus map works without it). |
+| Location (precise) | Sent to the routing or nearby-transport service for requested features. The app has no location-history feature. Validate server and provider retention before completing the store declaration. |
 | Camera | Used on-device to read Open Day QR codes; no images leave the device — not collected |
 | Personal info / identifiers | None — the app has no accounts |
 | Analytics / crash logs | None bundled |
 | Ads | None |
 | Data encrypted in transit | Yes (HTTPS) |
-| Users can request data deletion | Not applicable — no server-side user data |
+| Users can request data deletion | Needs a final backend and store-policy review before submission |
 
 ---
 

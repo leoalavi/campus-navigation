@@ -25,7 +25,9 @@
 
 Campus Navigation is a Flutter-based campus wayfinding companion for the [Syllabus Sync](https://github.com/leoalavi/syllabus-sync) ecosystem. It helps students and visitors discover campus buildings, services, transport, safety resources, and points of interest through a mobile-first navigation experience — with dual-renderer maps, Supabase-backed routing, a compass mode, a safety toolkit, live metro countdowns, and multi-language support.
 
-Campus Navigation is an **independent product developed and maintained by Leo Alavi and Raouf Abedini**. It is **not affiliated with, endorsed by, or published by any university** — it displays real-world campus place names the way any map app does. The illustrated base map and its overlays are Macquarie University's published campus maps, used pending the University's guidance; the app's code, location data and map calibration, routing display and 360° imagery are the developers' own work. It is the mobile campus-wayfinding layer for the broader Syllabus Sync student platform — supporting everyday campus discovery, student onboarding, and Open Day-style visitor use cases along the way.
+Campus Navigation is an **independent product developed and maintained by Leo Alavi and Raouf Abedini**. It is **not affiliated with, endorsed by, or published by any university** — it displays real-world campus place names the way any map app does. The illustrated base map and its overlays are Macquarie University's published campus maps, used pending the University's guidance. Leo and Raouf developed the app, map calibration, search and route presentation; the provenance and use permissions for individual photographs and some source data require separate review. It is intended as a mobile campus-wayfinding companion for the broader Syllabus Sync student platform — supporting everyday campus discovery, student onboarding, and Open Day-style visitor use cases along the way.
+
+**Status, 4 November 2026:** [CI run 41801652455](https://github.com/leoalavi/campus-navigation/actions/runs/41801652455) passed all six jobs. Fresh iOS and Android simulator/emulator builds were partially exercised; full feature and physical-device verification remains outstanding. The production `maps-routes` function remains at version 21 (`verify_jwt=false`); a proposed rate-limit revision was held pending verification of client-IP headers. No public app release or University map permission is claimed.
 
 **[📖 Project Origin & Academic Context](#-project-origin--academic-context)** &nbsp;·&nbsp; **[📸 Screenshots](#screenshots)** &nbsp;·&nbsp; **[🏗️ Architecture](docs/ARCHITECTURE.md)** &nbsp;·&nbsp; **[🔐 Security Posture](docs/SECURITY_POSTURE.md)**
 
@@ -40,7 +42,7 @@ Campus Navigation is an **independent product developed and maintained by Leo Al
 Generic campus maps (Google/Apple Maps) stop at the street kerb and don't know which door is *18 Wally's Walk*. Existing university portals often require sign-on and offer a poor mobile experience. Campus Navigation addresses this by providing:
 
 - **Mobile-first campus wayfinding** — Building and key location discovery optimised for phone-sized screens.
-- **Building and location discovery** — 161+ named campus buildings, services, and points of interest pinpointed at the correct entrance.
+- **Building and location discovery** — 161 named campus buildings, services, and points of interest; entrance coordinates are available for some locations.
 - **Syllabus Sync deep-link handoff** — Syllabus Sync can hand a destination (a class, event, or building) straight to Campus Navigation for the wayfinding step. See [Deep linking from Syllabus Sync](#-deep-linking-from-syllabus-sync).
 - **Favourites and saved places** — Heart-toggle, edit-note, and swipe-to-delete for personalised place saving, stored on the device.
 - **Safety and support information** — One-tap access to emergency contacts, AEDs, first aid, campus shuttle, and torch.
@@ -90,7 +92,7 @@ The intended integration point between the two products is a deep link handoff:
   - `mqnav://open?...` — the primary handoff; works as soon as the app is installed.
   - `https://mqnavigation.app/open?...` — an App Link / Universal Link that only routes to the app once `assetlinks.json` and `apple-app-site-association` are served from that domain. Until then it opens in the browser.
 - Unknown building ids are resolved through partner aliases, and anything still unrecognised opens the map as a search rather than failing silently.
-- The legacy `io.mqnavigation://meet?lat=...&lng=...` "meet here" link is still handled in [`lib/app/mq_navigation_app.dart`](lib/app/mq_navigation_app.dart) so links already shared keep working.
+- The legacy `io.mqnavigation://meet?lat=...&lng=...` "meet here" link is still handled in [`lib/app/campus_navigation_app.dart`](lib/app/campus_navigation_app.dart) so links already shared keep working.
 
 **Still to do:** serving the well-known verification files on `mqnavigation.app` so the `https://` links open the app directly. The "app not installed" fallback (offering the store listings) lives on the Syllabus Sync side. Full details: [`docs/SYLLABUS_SYNC_INTEGRATION.md`](docs/SYLLABUS_SYNC_INTEGRATION.md).
 
@@ -116,21 +118,7 @@ Fallback: app installed → open destination directly
 
 ## Screenshots
 
-> Screenshots below reflect the current app screens. If you update a flow, please refresh the matching screenshot.
-
-<div align="center">
-
-| Campus Map | Safety |
-|:---:|:---:|
-| <img width="240" alt="Campus map" src="screenshots/03_map_page.png"/> | <img width="240" alt="Safety resources" src="screenshots/04_safety_page.png"/> |
-
-| Favourites | Notifications | Settings |
-|:---:|:---:|:---:|
-| <img width="240" alt="Favourites / saved places" src="screenshots/05_favorites_page.png"/> | <img width="240" alt="Notifications" src="screenshots/06_notifications_page.png"/> | <img width="240" alt="Settings" src="screenshots/07_settings_page.png"/> |
-
-</div>
-
-<!-- TODO: capture screenshots for building detail, search/location discovery, transit/metro countdown, and the Syllabus Sync deep-link handoff flow once demonstrable. -->
+The tracked `screenshots/` directory contains historical May 2026 captures and does not represent the current interface. Current app screenshots are not tracked in this repository. The University-owned map assets visible in the app have not been cleared for independent public promotion.
 
 <br/>
 
@@ -144,7 +132,7 @@ Fallback: app installed → open destination directly
 ╔══════════════════════════════════════════════════════════════════════╗
 ║  📍  Campus location discovery: 161+ named buildings & services      ║
 ║  🗺  Mobile-first map experience: Google Maps + illustrated campus   ║
-║  🔍  Building and service search with entrance-accurate results      ║
+║  🔍  Building and service search with selected entrance coordinates ║
 ║  🔗  Syllabus Sync deep-link handoff (destination / search / pin)    ║
 ║  ❤️  Favourites / saved places: heart-toggle, note, swipe-to-delete  ║
 ║  🚆  Metro countdown via TfNSW Open Data proxy                       ║
@@ -196,7 +184,7 @@ graph TD
 |-------|-----------|
 | **Framework** | Flutter 3.44 (pinned in CI) · Dart 3.11+ |
 | **State** | Riverpod 3.2 (Notifier / AsyncNotifier) |
-| **Routing** | GoRouter 17.1 (StatefulShellRoute, 4 tabs + standalone routes + `/open` deep-link route) |
+| **Routing** | GoRouter 17.1 (three visible tabs, optional Scan branch, standalone routes and `/open` deep-link route) |
 | **Maps** | google_maps_flutter 2.15 / flutter_map 8.2 (dual renderer) |
 | **Backend** | Supabase (Postgres, RLS, Realtime, Deno Edge Functions) |
 | **Location** | geolocator 14 (raw GPS + last-known fallback, emulator mock rejection) |
@@ -211,7 +199,7 @@ graph TD
 - **Defensive bootstrap with timeouts:** `Firebase.initializeApp()` and `Supabase.initialize()` are both wrapped in `.timeout()` calls so the app cannot hang on a stalled network during cold start.
 - **Renderer-aware Building actions:** `BuildingActionsSheet` distinguishes "View in Campus Map" (marker only) from "Navigate with Google Maps" (route preview auto-loaded) via a `?preview=route` query parameter.
 - **Deep-link contract as the integration boundary:** `lib/features/deep_link/deep_link_contract.dart` is the single source of truth for how sibling apps (Syllabus Sync) should construct links — internal GoRouter paths can change freely, this contract should not.
-- **CI privacy guard:** `scripts/check.sh` refuses to compile if any analytics package (`firebase_analytics`, `google_analytics`, `appsflyer`, `amplitude`, `mixpanel`, `segment`, `sentry_flutter`, `facebook_app_events`) is added to `pubspec.yaml`.
+- **Local privacy guard:** `scripts/check.sh` rejects listed analytics packages in `pubspec.yaml`. The GitHub workflow runs its own analysis, tests, Deno checks and platform builds; it does not currently invoke this guard.
 
 > **Deep Dive:** [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · [`docs/SECURITY_POSTURE.md`](docs/SECURITY_POSTURE.md) · [`docs/route_matrix.md`](docs/route_matrix.md)
 
@@ -228,13 +216,13 @@ Privacy is treated as an architectural concern, not a feature flag.
 | Principle | Implementation |
 |-----------|---------------|
 | No accounts | There is no sign-in. The app opens straight to `/home`, and favourites are stored on the device only. |
-| No analytics packages | No analytics, telemetry, or crash reporting packages included. A CI guard blocks them at build time. |
+| No analytics packages | No analytics, telemetry, or crash reporting packages included. The local `scripts/check.sh` guard checks for listed packages; the current GitHub workflow does not run that guard. |
 | Ephemeral location use | GPS is not persisted by the app. Location may be sent to third-party mapping or routing services only when the user explicitly uses those features (route requests, nearby transit stops, or handing off to Google Maps). |
 | Local-only preferences | Theme, locale, commute mode, and quiet hours are stored via `SharedPreferences` + `FlutterSecureStorage`. |
 | Safety privacy | Emergency contacts use tap-to-dial — location is **never automatically shared**. |
 | On-device compass | All heading calculation happens on-device. No data leaves the phone. |
 
-> **Defence-in-depth model:** [`docs/SECURITY_POSTURE.md`](docs/SECURITY_POSTURE.md) · [`docs/key_inventory.md`](docs/key_inventory.md)
+> **Defence-in-depth model:** [`docs/SECURITY_POSTURE.md`](docs/SECURITY_POSTURE.md) · [`docs/env_inventory.md`](docs/env_inventory.md)
 
 <br/>
 
@@ -263,10 +251,11 @@ Privacy is treated as an architectural concern, not a feature flag.
 
 | Platform | Status | Notes |
 |----------|--------|-------|
-| **Android emulator** (API 33+) | ✅ Verified | All features verified. |
-| **Android physical device** | ✅ Verified | Compass, flashlight, GPS, push notifications all functional. |
+| **Android emulator** (API 36) | ✅ Partially verified | Fresh 4 November 2026 build showed illustrated map, Google tiles, and location marker. Other flows were not manually retested. |
+| **Android physical device** | ⚠️ Historical reports only | No current physical-device verification in the 4 November review. |
 | **Chrome (web)** | 🧪 Build/test target | Release-mode bundles and 360° imagery are tested in CI. The web target is prepared for a future release but is not deployed. Compass mode and flashlight gracefully degrade. |
-| **iOS device** | ⚠️ Expected / not fully verified | Native build configured for iPhone (iOS 15+ — the minimum set by Firebase and Google Maps). Custom URL schemes `mqnav://` and `io.mqnavigation://` registered. Full device testing not guaranteed. |
+| **iOS simulator** | ✅ Partially verified | Fresh iPhone 17 Pro build showed both maps, building discovery, location, and walking guidance. Deep links and all route modes were not manually retested. |
+| **iOS physical device** | ⚠️ Not verified in this review | CI build passed; physical-device behaviour needs a separate check. |
 | **macOS desktop** | ⚠️ Expected / not fully verified | Location and dual-renderer configured. Google Maps falls back to OSM (plugin limitation). Full device testing not guaranteed. |
 
 If a platform-specific issue surfaces, the relevant feature renders a typed `MapStateError` fallback rather than crashing.
@@ -290,7 +279,7 @@ lib/
     ├── indoor/       360° indoor tours (bundled Pannellum viewer)
     ├── map/          Dual-renderer, routing, compass mode, search, favourites
     ├── safety/       Safety toolkit, emergency contacts, first aid / AED, torch
-    ├── notifications/ FCM push, local reminders, inbox
+    ├── notifications/ Local reminders, inbox, optional FCM support code
     ├── open_day/     Opt-in Open Day: sessions, Your Day, suggested stops, reminders
     ├── scan/         Open Day QR scanner, signed-QR verification, location cards, stamps
     ├── settings/     Preferences, privacy badge, local data wipe
@@ -383,7 +372,7 @@ flutter run --dart-define-from-file=.env
 | Endpoint Inventory | [`docs/endpoint_inventory.md`](docs/endpoint_inventory.md) |
 | Entity Inventory | [`docs/entity_inventory.md`](docs/entity_inventory.md) |
 | Environment Variables | [`docs/env_inventory.md`](docs/env_inventory.md) |
-| API Keys & Service Accounts | [`docs/key_inventory.md`](docs/key_inventory.md) |
+| Localisation Keys | [`docs/key_inventory.md`](docs/key_inventory.md) |
 | Map Inventory | [`docs/map_inventory.md`](docs/map_inventory.md) |
 | Notification Matrix | [`docs/notification_matrix.md`](docs/notification_matrix.md) |
 | Route Matrix (incl. deep-link routes) | [`docs/route_matrix.md`](docs/route_matrix.md) |
@@ -420,7 +409,7 @@ The original project report — written to satisfy the unit's assignment brief (
 ## 🎯 Project Governance
 
 ### License
-Released under the **MIT License**. See [`LICENSE`](LICENSE).
+The developers' original source code is provided under the **MIT License**; see [`LICENSE`](LICENSE). The illustrated campus map and overlays are University material and are not ours to license. Permission for their independent public distribution remains pending.
 
 ### Roadmap
 - Serve `assetlinks.json` and `apple-app-site-association` on `mqnavigation.app` so `https://mqnavigation.app/open` links open the app directly.
@@ -480,8 +469,8 @@ Built with the support of the open-source community. This project benefits from:
 
 © 2026 Leo Alavi and Raouf Abedini. Not affiliated with, endorsed by, or published by any university.
 
-Android is the primary, device-verified mobile platform. iOS is configured and
-supported but not yet fully device-verified. The web target is maintained and
-tested in CI but is not currently deployed.
+Fresh iOS and Android simulator/emulator builds were partially exercised on
+4 November 2026. Physical-device and full feature checks remain outstanding.
+The web target is maintained and tested in CI but is not currently deployed.
 
 </div>

@@ -1,7 +1,7 @@
 # Campus Navigation: Technical Architecture (2026)
 
 ## Overview
-Feature-First Clean Architecture for high-concurrency campus navigation, transit data, compass mode, and safety toolkit. Privacy by design: optional anonymous account, zero tracking, zero location history.
+Feature-first Flutter architecture for campus navigation, transit data, compass mode, and safety features. The current router has no login UI. Location is sent for requested routing and nearby transport; the app does not offer location-history tracking.
 
 ## Directory Structure
 
@@ -10,7 +10,7 @@ lib/
 ├── app/
 │   ├── bootstrap/          → App init, Supabase + Firebase setup
 │   ├── l10n/               → ARB files (35 locales) + generated localisations
-│   ├── router/             → GoRouter config (StatefulShellRoute, 4 tabs)
+│   ├── router/             → GoRouter config (3 visible tabs; optional Scan branch)
 │   └── theme/              → MQ design tokens (MqColors, MqTypography, MqSpacing)
 ├── core/
 │   ├── config/             → Env vars via --dart-define
@@ -24,12 +24,12 @@ lib/
 │   ├── models/             → UserPreferences
 │   └── widgets/            → MqButton, MqCard, MqInput, MqBottomSheet, GlassPane
 └── features/
-    ├── auth/               → Supabase Auth (login, signup, session persistence, auth gate)
+    ├── auth/               → Legacy/auth support code; no current login route
     ├── favorites/          → Building favorites CRUD (controller, repository, datasource, UI)
     ├── deep_link/          → Syllabus Sync deep link contract
     ├── home/               → Welcome dashboard, onboarding, metro countdown
     ├── map/                → Campus map (161 buildings, dual renderer, routing, compass)
-    ├── notifications/      → FCM push + local study prompts
+    ├── notifications/      → Local study prompts and optional FCM support code
     ├── open_day/           → Open Day event browsing & reminders
     ├── safety/             → Campus Safety Toolkit (flashlight, contacts, first aid, AED)
     ├── settings/           → Theme, locale, commute, notifications, data, privacy badge
@@ -40,7 +40,7 @@ lib/
 ## Layering Strategy
 
 ### Presentation Layer (Riverpod)
-- **Controllers**: `MapController`, `SettingsController`, `NotificationsController`, `AuthController`, `FavoritesController`
+- **Controllers**: Map, settings, notifications and favourites controllers
 - **Widgets**: Atomic design (`MqButton`, `MqCard`, `SafetyActionCard`) + feature-specific views
 - **Compass**: `CompassModeView` — real-time heading via `flutter_compass`, `AnimatedRotation`, heading accuracy bar
 
@@ -49,20 +49,19 @@ lib/
 - **Services**: `GeoUtils`, `MapPolylineCodec`, `OfflineMapsService`
 
 ### Data Layer
-- **Repositories**: `MapRepositoryImpl`, `SettingsRepository`, `AuthRepository`, `FavoriteBuildingRepository`
+- **Repositories**: Map, settings and favourite-building repositories; auth support code remains in the tree
 - **Data Sources**: `MapsRoutesRemoteSource` (Supabase Edge Functions), `SafetyPoiSource` (curated campus data), `SecureStorageService`, `FavoriteBuildingRemoteSource`
 - **Location**: `LocationSource` (GPS + last-known fallback, Android emulator mock rejection)
 
 ## Navigation & Routing (GoRouter 17.x)
 
 ```
-StatefulShellRoute.indexedStack (4 tabs + standalone routes)
+StatefulShellRoute.indexedStack (Home, Map, Scan branch, Settings; Scan is opt-in)
 ├── /home                  → HomePage (dashboard)
 ├── /map                   → MapPage (dual renderer, building search, route panel)
-├── /favorites             → FavoritesPage (list of bookmarks)
+├── /scan                  → ScanPage (Open Day branch)
 ├── /settings              → SettingsPage (privacy badge, commute, data, danger zone)
-├── /auth/login            → LoginPage (account entry)
-├── /auth/signup           → SignupPage (account creation)
+├── /favorites             → FavoritesPage (standalone bookmarks page)
 ├── /safety                → SafetyToolkitPage (standalone, no auto location)
 ├── /notifications         → NotificationsPage (covers shell)
 ├── /open-day              → OpenDayPage (temporal feature)
@@ -87,19 +86,19 @@ StatefulShellRoute.indexedStack (4 tabs + standalone routes)
 - **Zero automatic location sharing** — user manually calls or navigates
 
 ### Privacy by Design
-- **Optional account** (Email/Password via Supabase Auth)
-- No analytics/tracking packages (enforced by `check.sh` privacy guard)
+- **No login UI in the current router** (legacy auth code remains in the repository)
+- No analytics/tracking packages currently bundled; the local `check.sh` script has a privacy guard, but CI does not invoke it
 - Preferences stored locally via `SharedPreferences` + `FlutterSecureStorage`
-- No location history, no telemetry, no crash reporting
-- Settings page shows permanent **Privacy Badge**: "Private by design: optional account, no tracking, no location history"
+- No app location-history feature or analytics package; coordinates leave the device for requested routes and nearby transport
+- Settings page describes the current no-account privacy model
 
-## CI / Validation (`scripts/check.sh`)
+## Local validation (`scripts/check.sh`)
 ```
 9 steps:
   1. flutter pub get
   2. dart format (--fix available)
   3. flutter analyze (single-pass, --no-fatal-infos)
-  4. flutter test (297 tests)
+  4. flutter test (765 passing locally on 4 November 2026)
   5. flutter gen-l10n
   6. untranslated l10n check (non-blocking)
   7. privacy guard (blocks analytics packages)
@@ -107,6 +106,8 @@ StatefulShellRoute.indexedStack (4 tabs + standalone routes)
   9. flutter build apk --debug (skipped with --quick)
 ```
 Supports `--quick`, `--fix`, `--verbose` flags. Structured logs under `.dart_tool/check_logs/`.
+
+GitHub Actions uses `.github/workflows/ci.yml` instead of invoking this script. It checks formatting, analysis, tests and Edge Function types, then builds Android, iOS, macOS, Windows and web on `main` pushes. The local privacy and secret-scan steps above are not currently CI gates.
 
 ## Dependencies (Key)
 - **State**: `flutter_riverpod` 3.2 | **Router**: `go_router` 17
@@ -125,7 +126,7 @@ Detailed inventories live alongside this file in `docs/`:
 | `endpoint_inventory.md` | API routes, Edge Functions, and web-only endpoints |
 | `entity_inventory.md` | Shared Supabase schema (profiles, units, events, notifications, RPCs) |
 | `env_inventory.md` | All `--dart-define` variables and Supabase Edge Function secrets |
-| `key_inventory.md` | API keys, service accounts, and where they're used |
+| `key_inventory.md` | Localisation key inventory |
 | `map_inventory.md` | Building registry, overlay layers, and map renderer specifics |
 | `notification_matrix.md` | Notification types, triggers, and delivery channels |
 | `route_matrix.md` | GoRouter route table and deep link mapping |

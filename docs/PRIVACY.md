@@ -1,14 +1,16 @@
 # Campus Navigation — Privacy Policy
 
-**Last updated:** 22 September 2026
+**Last reviewed:** 4 November 2026
 **Developers:** Leo Alavi and Mohammad Raouf Abedini
+
+**Publication status:** Draft for review before public release. Backend and provider retention practices, including service logs, need a final verification.
 
 Campus Navigation is an independent mobile app for finding your way around a
 university campus. It is not affiliated with, endorsed by, or published by any
 university.
 
-This policy describes what the app actually does. If a practice is not listed
-here, the app does not do it.
+This draft summarises the app's current data flows. Review SDK and provider
+behaviour before publishing it as a complete policy.
 
 ## The short version
 
@@ -16,10 +18,9 @@ here, the app does not do it.
 * **No advertising.** The app contains no ads and no ad SDKs.
 * **No tracking or analytics.** No analytics, attribution or crash-reporting
   SDK is bundled.
-* **No sale or sharing of personal information.** Ever, to anyone.
-* **Your location is never stored or tracked.** It is sent only for the moment
-  it takes to answer a request you make (directions, nearby stops) — see
-  [Location](#location).
+* **No sale of personal information.** Requested directions and nearby-transport lookups send coordinates to the relevant service and provider as described below.
+* **No in-app location-history feature.** Coordinates leave the device for
+  requested directions or nearby-stop lookups — see [Location](#location).
 
 ## What the app stores on your device
 
@@ -42,18 +43,20 @@ feature that needs it, and it works without it — you can browse the map, searc
 buildings, open 360° tours and read directions with location switched off.
 
 When you grant it, your coordinates are used on your device to show where you
-are and to orient walking directions. They leave your device in only two cases,
-both started by you:
+are and to orient walking directions. Requested features can also transmit
+location-related information:
 
 * **Directions** — when you ask for a route, your starting point is sent to our
   routing service, which passes it to the routing provider to calculate the
   route and returns the result.
 * **Nearby stops** — when you look up transport near you, your position is sent
   to our transport service, which queries Transport for NSW Open Data.
+* **Google Maps renderer** — map tile and viewport requests are handled by the
+  Google Maps SDK. This review did not verify every field sent by that SDK.
 
-In both cases the coordinates are used only to answer that request. They are
-**not stored**, not linked to any identity (there is no account), and not used
-for tracking or advertising. You can revoke the permission at any time in your
+The app does not save a location history. The external services' own retention
+and privacy practices apply to the requests they receive; this review did not
+verify a zero-retention guarantee for them. You can revoke permission in your
 device settings; the map, search and 360° tours still work without it.
 
 ## Camera
@@ -63,12 +66,12 @@ video is captured, stored or sent anywhere.
 
 ## Network requests the app makes
 
-The app has no account, so these requests carry no identity. They are:
+The current app has no login UI, but network services can receive normal request
+metadata such as IP address. Main request categories include:
 
 * **Campus data and map tiles** — to load building information and map imagery.
-* **Walking directions** — when you ask for a route, the start and end points
-  are sent to a routing service to calculate it. These points are used to
-  answer the request and are not linked to you.
+* **Route directions** — when you ask for a route, start and end points are
+  sent to a routing service and its provider for the selected mode.
 * **Public transport times** — timetable lookups for nearby stops.
 
 Opening "Navigate with Google Maps" hands off to the Google Maps app or
@@ -82,9 +85,9 @@ You can turn notifications off in your device settings.
 
 ## 360° imagery
 
-The panoramic tours are photographs taken by the developers and bundled with
-the app. They are shown from local files — viewing one sends no request and is
-not recorded.
+The panoramic tours are bundled with the app and shown from local files.
+Authorship and reuse permissions for each image require a separate provenance
+check before public distribution.
 
 ## Children
 
@@ -97,13 +100,14 @@ personal information from anyone, including children.
 * Clear saved buildings and preferences from within the app's Settings screen.
 * Uninstall the app to remove all locally stored data.
 
-Because the app holds no personal information on a server, there is no account
-to access, correct or delete.
+There is no user account or server-side profile in the current app flow. Service
+logs and provider retention still require a final review before this policy is
+published.
 
 ## Changes
 
-If this policy changes, the updated version will be published at the policy URL
-listed on the store listing, with a new "last updated" date.
+The public policy URL is pending. A reviewed version should be published before
+any store submission and revised when practices change.
 
 ## Contact
 

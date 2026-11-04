@@ -1,8 +1,9 @@
 # Brand independence — what was removed, what intentionally stays
 
-Campus Navigation is published independently by **Leo Alavi and Mohammad Raouf
-Abedini**. It must never present itself as a university-owned, university-
-published or officially endorsed app.
+Campus Navigation is developed independently by **Leo Alavi and Mohammad Raouf
+Abedini**. Public app distribution is pending permission for the underlying
+Macquarie University map assets. It must never present itself as a university-owned,
+university-published or officially endorsed app.
 
 `test/product/brand_independence_test.dart` enforces this automatically. The
 exceptions below are why that test has an allow-list rather than a blanket ban.

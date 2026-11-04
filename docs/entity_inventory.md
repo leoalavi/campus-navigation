@@ -1,8 +1,10 @@
 # Entity Inventory — Supabase Schema (Shared Backend)
 
+> **Schema snapshot, not a live database audit.** This table inventory was compiled from the web app's generated types. The current Flutter router has no login UI; favourites are stored locally. Production table structure, RLS, and retention require a separate live check before external claims are made.
+
 This documents the **shared Supabase backend schema** used by both the web app and the Flutter app.
 
-> **Flutter app scope:** The Flutter app interacts with Supabase Auth for optional accounts, `favorite_buildings` (user bookmarks), `user_fcm_tokens` (push tokens), `notifications` (inbox), and `rate_limits` (map routing throttle). The building registry is loaded from a bundled JSON asset, not from Supabase. All other tables below are primarily used by the web app.
+> **Flutter app scope:** The building registry is loaded from bundled JSON and favourites are local in the current no-login flow. Notification and legacy auth code may reference backend tables. `rate_limits` is used by the `maps-routes` Edge Function; its client-IP trust boundary remains unverified. Do not treat all tables below as active app dependencies.
 
 Source: `lib/supabase/database.types.ts` in the web app.
 

@@ -1,7 +1,9 @@
-# MQ Navigation Flutter — Agent Rules
+# Campus Navigation Flutter — Agent Rules and History
+
+> **Current status (4 November 2026):** This file includes a long historical work log. The current app is independently developed by Leo Alavi and Mohammad Raouf Abedini; it is not an official University product. The underlying illustrated University map assets are awaiting permission for independent public distribution. Current routing, privacy and release details live in `README.md`, `docs/route_matrix.md` and `docs/SECURITY_POSTURE.md`. Historical entries below should not be read as current app or release claims.
 
 ## Project Overview
-Flutter mobile client for MQ Navigation (Macquarie University campus navigation platform).
+Flutter mobile client for the independent Campus Navigation project.
 Two frontends, one backend architecture: Flutter + Next.js sharing a Supabase backend.
 
 ## Architecture
@@ -11,13 +13,13 @@ Two frontends, one backend architecture: Flutter + Next.js sharing a Supabase ba
 - **Backend**: Supabase (Postgres, RLS, Realtime, Edge Functions)
 - **Theme**: MQ design tokens (MqColors, MqTypography, MqSpacing) mapped from web app
 - **i18n**: Flutter ARB files with 35 locales, RTL support for ar/fa/he/ur
-- **No auth**: App starts directly at `/home` — no login, signup, or profile management
+- **No login UI**: The current router has no login or signup route; legacy auth code remains in the repository
 
 ## Non-Negotiable Constraints
-1. Supabase is the system of record — no parallel backend
+1. Use the existing Supabase backend for server-backed features; some user data such as favourites is local
 2. Web app stays alive — no feature freeze on the web product
 3. Flutter is a presentation layer only — no server logic in app binary
-4. No server secrets in Flutter — API keys stay in Edge Functions
+4. Keep server secrets in Edge Functions; restricted platform Maps SDK keys are client configuration
 5. Security is non-negotiable — encrypted storage, RLS enforcement
 6. Accessibility from day one — 48x48dp tap targets, semantic labels, RTL
 
@@ -38,11 +40,18 @@ lib/
   shared/models/    → UserPreferences
   shared/extensions/→ BuildContext extensions
   features/home/    → Welcome hub
-  features/map/     → Campus map (153 buildings, search, routing)
-  features/notifications/ → FCM push + local study prompts
+  features/map/     → Campus map (161 bundled locations, search, routing)
+  features/notifications/ → Local prompts and optional FCM support code
   features/settings/ → Theme, locale, notification preferences (local storage)
 ```
 
+
+### Codex: 2026-11-04 (Australia/Sydney) — Current repository documentation audit
+**Scope:** README, active architecture, route, security, privacy, integration, inventory and store-draft documentation.
+**Summary:** Reconciled active documentation with the current router, CI run `41801652455`, and production `maps-routes` version 21. Corrected stale screenshot, platform, privacy, rate-limit and permission statements. Historical work-log entries below remain records of the earlier state.
+**Files Changed:** `README.md`, `AGENT.md`, `CHANGELOG.md`, and selected active `docs/*.md` files.
+**Verification:** Source and link review plus `git diff --check`.
+**Follow-ups:** University map permission and full device/route-mode verification remain separate work.
 
 ### Raouf: 2026-05-24 (Australia/Sydney) — Showcase Screenshots and Release APK Build
 **Scope:** Showcase Presentation & Release Packaging — `build/app/outputs/flutter-apk/app-release.apk`, `screenshots/` (7 images)

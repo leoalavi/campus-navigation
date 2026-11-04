@@ -1,5 +1,7 @@
 # Endpoint Inventory — API Routes → Flutter Mapping
 
+Reviewed 4 November 2026. This inventory includes code and historical web mappings; a listed endpoint is not proof that the current mobile UI exposes it.
+
 Maps web API routes to their Flutter equivalents.
 
 **Legend:**
@@ -7,13 +9,13 @@ Maps web API routes to their Flutter equivalents.
 - **EF** = Requires a Supabase Edge Function (server-side logic or secret keys)
 - **N/A** = Not used by the Flutter app (web-only)
 
-## Auth (Used by Flutter)
+## Auth (legacy support code; no current login UI)
 
 | Web Route | Method | Flutter Approach | Notes |
 |-----------|--------|-----------------|-------|
-| `/api/auth/signin` | POST | **SDK: `supabase.auth.signInWithPassword()`** | Handled by `supabase_flutter` |
-| `/api/auth/signup` | POST | **SDK: `supabase.auth.signUp()`** | Handled by `supabase_flutter` |
-| `/api/auth/signout` | POST | **SDK: `supabase.auth.signOut()`** | Handled by `supabase_flutter` |
+| `/api/auth/signin` | POST | `supabase.auth.signInWithPassword()` in legacy repository code | `/auth/login` is not registered in the current Flutter router |
+| `/api/auth/signup` | POST | `supabase.auth.signUp()` in legacy repository code | `/auth/signup` is not registered in the current Flutter router |
+| `/api/auth/signout` | POST | `supabase.auth.signOut()` in legacy repository code | No current sign-out screen established by this inventory |
 
 ## Maps & Navigation (Used by Flutter)
 

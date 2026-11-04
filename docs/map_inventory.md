@@ -15,7 +15,7 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 | Service | Web Usage | Flutter Usage |
 |---------|-----------|---------------|
 | Google Maps JavaScript API | Leaflet + GM JS API | `google_maps_flutter` renderer for Google mode |
-| Google Routes API | Via Next.js API proxy | `maps-routes` Supabase Edge Function for Google mode |
+| Google Routes API | Web backend integration | `maps-routes` Supabase Edge Function for Google mode |
 | OpenRouteService | Campus walking routing | `maps-routes` Supabase Edge Function for campus mode |
 | Raster campus overlay | Leaflet `L.CRS.Simple` image overlay | `flutter_map` + `OverlayImageLayer` + `CrsSimple` |
 
@@ -72,3 +72,7 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 | Route request contract split by renderer | repository + `maps-routes` remote source |
 | Route polyline rendering | google_maps_flutter + flutter_map |
 | Travel mode switching (walk/drive/bike/transit) | shared `TravelMode` routed through `maps-routes` |
+
+## Verification status (4 November 2026)
+
+The iPhone simulator showed both renderers, Google tiles, a location marker and walking guidance. The Android emulator showed both renderers, Google tiles and a location marker. The production `maps-routes` function remained at version 21 with `verify_jwt=false`; its signed-out smoke requests succeeded for walking, driving, cycling and transit. The client-IP trust boundary for the rate limiter remains unverified, and the local function changes were not deployed. These checks do not establish that every travel-mode screen, route error case or physical-device flow works.

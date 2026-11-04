@@ -1,35 +1,37 @@
-# Security Posture (OWASP 2026 Standards)
+# Security Posture
 
-## Privacy by Design (Zero Data Collection)
+Reviewed against the current client and Edge Function source on 4 November 2026. This is a design inventory, not a certification or a claim that every production control has been penetration tested.
+
+## Privacy by Design
 - **No account system**: The app starts directly at `/home` — no login, no signup, no email, no password.
 - **No tracking**: No analytics, telemetry, or crash reporting packages (enforced by `check.sh` privacy guard).
-- **No location history**: GPS data is used ephemerally for routing — never stored, never transmitted.
+- **Location**: The app does not maintain a location-history feature. Route and nearby-transport requests transmit coordinates to the relevant service and provider; see `docs/PRIVACY.md`.
 - **Settings Privacy Badge**: Permanent "Private by design: no account, no tracking, no location history." card in Settings.
 - **Safety Toolkit**: Emergency contacts use tap-to-dial (`url_launcher`) — location is never shared automatically.
 - **Compass Mode**: All heading calculation is on-device via `FlutterCompass.events` — no data leaves the device.
 
 ## Authentication & Authorization
-- **No auth in app binary**: The Flutter app has zero authentication code. Login/signup flows exist only on the web app.
-- **Supabase Auth** (GoTrue) with PKCE is used by the web frontend — mobile never holds user credentials.
-- **Row-Level Security (RLS)** is enforced at the database layer for any Edge Function queries.
+- **No login UI in the current router**: `/auth/login` and `/auth/signup` are not registered. Some legacy auth code remains in the repository, so "zero authentication code" would be inaccurate.
+- **Public routing**: Production `maps-routes` version 21 has `verify_jwt=false` for signed-out callers. The function must validate requests and protect its server-side key without treating an anonymous caller as authenticated.
+- **RLS**: Database access should be reviewed per table and function; an Edge Function's service-role access does not inherit caller RLS automatically.
 
 ## Data Security
-- **At Rest**: Sensitive keys (Supabase tokens) are stored in the hardware-backed **iOS Keychain** or **Android Keystore** via `flutter_secure_storage`.
-- **In Transit**: TLS 1.3 enforced for all Supabase and TfNSW API traffic.
+- **At Rest**: The app uses `flutter_secure_storage` where secure local storage is needed. Public Supabase and platform Maps keys are build configuration, not secrets.
+- **In Transit**: Network calls use HTTPS; this review did not independently establish a TLS 1.3-only policy for every endpoint.
 - **Local Only**: User preferences, commute settings, and Open Day lead times are stored in `SharedPreferences` — never sent to a server.
 
 ## API & Edge Security
-- **Proxy Pattern**: All third-party SDK keys (Google Maps, OpenRouteService) are stored as secrets in **Supabase Edge Functions**. The mobile client never holds server-side keys.
-- **Secret Scan**: `scripts/check.sh` scans `lib/` `test/` `scripts/` for hardcoded API key patterns (`sk-*`, `AIza*`) on every CI run.
-- **Throttling**: Rate limiting applied per IP at the Edge to prevent scrapers or DDoS on the routing proxy.
-- **Input Validation**: All coordinate and route requests are validated against MQ campus bounding boxes.
+- **Proxy Pattern**: Server-side routing keys stay in Supabase Edge Function secrets. The mobile client does carry restricted, platform-specific Google Maps SDK keys needed to render map tiles.
+- **Secret Scan**: Local `scripts/check.sh` scans source and scripts for selected hardcoded API-key patterns. `.github/workflows/ci.yml` does not currently run this script, so this is not a CI-enforced control.
+- **Throttling**: A rate limiter exists in `maps-routes`, but the deployed function's client-IP header trust boundary has not been verified. Do not treat its per-IP limit as a proven security control; the proposed local revision was not deployed.
+- **Input Validation**: Route inputs are validated by the Edge Function. Check current source before claiming that every mode is restricted to one campus bounding box.
 
-## CI/CD Security
-- **Privacy Guard**: `check.sh` fails if analytics/tracking packages (`firebase_analytics`, `google_analytics`, `appsflyer`, `amplitude`, `mixpanel`, `segment`, `sentry_flutter`, `facebook_app_events`) are added to `pubspec.yaml`.
+## CI and local quality checks
+- **Privacy Guard**: Local `check.sh` fails if listed analytics/tracking packages are added to `pubspec.yaml`; this guard is not in the current GitHub workflow.
 - **Secret Scan**: grep-based detection of hardcoded API keys — excludes `supabase/` Edge Functions (which use `Deno.env.get()` for runtime env vars).
-- **Dependency Check**: `flutter pub get` validates all transitive dependencies — no unvetted packages.
+- **CI permissions**: `.github/workflows/ci.yml` grants `contents: read` and pins third-party actions to full commit SHAs. CI passed all six jobs on 4 November 2026 (run `41801652455`).
 
 ## 2026 Offensive Security Mitigation
-- **Deep Link Protection**: Intent filters restricted to verified `mq.edu.au` domains via App Links (Android) and Universal Links (iOS).
+- **Deep Links**: The app registers `mqnav://open`; `https://mqnavigation.app/open` still needs domain association files for verified App Links and Universal Links. It is not an `mq.edu.au` link.
 - **Script Injection**: All HTML-rich routing instructions sanitized via `NavInstruction` normalization to prevent XSS.
 - **Android Emulator Guard**: `LocationSource` rejects the default mocked Googleplex coordinate (`37.4219983, -122.084`) to prevent locate-me jumping to a US location on emulators.
