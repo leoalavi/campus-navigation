@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:campus_navigation/core/logging/app_logger.dart';
 import 'package:campus_navigation/features/map/data/datasources/location_source.dart';
+import 'package:campus_navigation/features/map/data/datasources/maps_routes_remote_source.dart';
 import 'package:campus_navigation/features/map/data/repositories/map_repository_impl.dart';
 import 'package:campus_navigation/features/map/domain/entities/building.dart';
 import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
@@ -15,7 +16,17 @@ import 'package:campus_navigation/features/settings/presentation/controllers/set
 import 'package:url_launcher/url_launcher.dart';
 
 enum MapStateError {
+  /// No route exists for this destination and travel mode.
   routeUnavailable,
+
+  /// The routing backend's provider key is missing, expired or restricted.
+  routeConfiguration,
+
+  /// The routing backend or its provider failed.
+  routeServiceUnavailable,
+
+  /// The routing backend could not be reached in time.
+  routeNetwork,
   locationServicesDisabled,
   locationPermissionBlocked,
   locationPermissionRequired,
@@ -612,10 +623,23 @@ class MapController extends AsyncNotifier<MapState> {
           currentLocation: location,
           permissionState: permissionState,
           isLoadingRoute: false,
-          error: MapStateError.routeUnavailable,
+          error: _errorForRouteFailure(error),
         ),
       );
     }
+  }
+
+  /// Anything that is not a classified [RouteFailure] (a malformed or empty
+  /// response, a destination without coordinates) means no usable route.
+  MapStateError _errorForRouteFailure(Object error) {
+    if (error is! RouteFailure) return MapStateError.routeUnavailable;
+    return switch (error.kind) {
+      RouteFailureKind.noRoute => MapStateError.routeUnavailable,
+      RouteFailureKind.configuration => MapStateError.routeConfiguration,
+      RouteFailureKind.serviceUnavailable =>
+        MapStateError.routeServiceUnavailable,
+      RouteFailureKind.network => MapStateError.routeNetwork,
+    };
   }
 
   /// Centers the map on the user's current GPS location.

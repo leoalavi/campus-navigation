@@ -40,7 +40,9 @@ class MapRoute {
     required this.encodedPolyline,
     this.points = const [],
     required this.instructions,
-  }) : arrivalAt = DateTime.now().add(Duration(seconds: durationSeconds));
+    TravelMode? servedTravelMode,
+  }) : servedTravelMode = servedTravelMode ?? travelMode,
+       arrivalAt = DateTime.now().add(Duration(seconds: durationSeconds));
 
   final TravelMode travelMode;
   final int distanceMeters;
@@ -49,6 +51,15 @@ class MapRoute {
   final List<LocationSample> points;
   final List<NavInstruction> instructions;
   final DateTime arrivalAt;
+
+  /// The mode the backend actually routed with. Differs from [travelMode]
+  /// when no route exists for the requested mode and a walking route is
+  /// returned instead (TfNSW footpath-only journeys, Google's WALK fallback).
+  final TravelMode servedTravelMode;
+
+  /// True when the user asked for another mode but got a walking route.
+  bool get isWalkingFallback =>
+      travelMode != TravelMode.walk && servedTravelMode == TravelMode.walk;
 
   factory MapRoute.fromJson(Map<String, dynamic> json, TravelMode travelMode) {
     if (json.containsKey('points')) {
@@ -94,6 +105,9 @@ class MapRoute {
               .map(NavInstruction.fromJson)
               .where((instruction) => instruction.text.isNotEmpty)
               .toList(),
+      servedTravelMode: TravelMode.values
+          .where((mode) => mode.apiValue == json['mode'])
+          .firstOrNull,
     );
   }
 

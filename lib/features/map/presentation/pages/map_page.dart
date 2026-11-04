@@ -714,7 +714,10 @@ class _MapPageState extends ConsumerState<MapPage> {
 
   String _errorTitle(AppLocalizations l10n, MapStateError error) {
     return switch (error) {
-      MapStateError.routeUnavailable => l10n.routeUnavailable,
+      MapStateError.routeUnavailable ||
+      MapStateError.routeConfiguration ||
+      MapStateError.routeServiceUnavailable ||
+      MapStateError.routeNetwork => l10n.routeUnavailable,
       MapStateError.locationServicesDisabled ||
       MapStateError.locationPermissionBlocked ||
       MapStateError.locationPermissionRequired ||
@@ -726,6 +729,9 @@ class _MapPageState extends ConsumerState<MapPage> {
   String _errorMessage(AppLocalizations l10n, MapStateError error) {
     return switch (error) {
       MapStateError.routeUnavailable => l10n.noRouteAvailable,
+      MapStateError.routeConfiguration => l10n.routeConfigurationError,
+      MapStateError.routeServiceUnavailable => l10n.routeServiceUnavailable,
+      MapStateError.routeNetwork => l10n.routeNetworkError,
       MapStateError.locationServicesDisabled => l10n.locationServicesDisabled,
       MapStateError.locationPermissionBlocked => l10n.locationPermissionBlocked,
       MapStateError.locationPermissionRequired =>

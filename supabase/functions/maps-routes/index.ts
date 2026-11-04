@@ -7,7 +7,7 @@ import {
   createClient,
   type User,
 } from "https://esm.sh/@supabase/supabase-js@2";
-import { corsHeaders, handleCors, jsonCorsHeaders } from "../_shared/cors.ts";
+import { handleCors, jsonCorsHeaders } from "../_shared/cors.ts";
 
 const GOOGLE_ROUTES_URL =
   "https://routes.googleapis.com/directions/v2:computeRoutes";
@@ -58,20 +58,54 @@ type NormalizedRoute = {
 
 class RequestValidationError extends Error {
   status: number;
+  code: string;
 
-  constructor(message: string, status = 400) {
+  constructor(message: string, status = 400, code = "INVALID_REQUEST") {
     super(message);
     this.name = "RequestValidationError";
     this.status = status;
+    this.code = code;
   }
 }
+
+// Failure codes the app maps to distinct messages: NO_ROUTE, MODE_UNSUPPORTED,
+// INVALID_REQUEST, ROUTING_NOT_CONFIGURED, ROUTING_AUTH, ROUTING_UPSTREAM and
+// ROUTING_TIMEOUT. Messages never include credentials.
+function routingError(
+  message: string,
+  status: number,
+  code: string,
+): Error & { status: number; code: string } {
+  const error = new Error(message) as Error & { status: number; code: string };
+  error.status = status;
+  error.code = code;
+  return error;
+}
+
+const UPSTREAM_TIMEOUT_MS = 10_000;
 
 function requireEnv(name: string): string {
   const value = Deno.env.get(name);
   if (!value) {
-    throw new Error(`${name} is not configured`);
+    throw routingError(
+      `${name} is not configured`,
+      503,
+      "ROUTING_NOT_CONFIGURED",
+    );
   }
   return value;
+}
+
+// Google reports a missing, invalid, expired or wrongly restricted key as
+// 400/401/403 with an API_KEY_* reason or PERMISSION_DENIED status.
+function isGoogleCredentialError(
+  status: number,
+  error: Record<string, unknown> | undefined,
+): boolean {
+  if (status === 401 || status === 403) return true;
+  const details = JSON.stringify(error?.details ?? "");
+  return error?.status === "PERMISSION_DENIED" ||
+    /API_KEY_|SERVICE_DISABLED|BILLING_DISABLED/.test(details);
 }
 
 function getAllowedWebOrigins(): string[] {
@@ -88,15 +122,20 @@ function getAdminClient() {
   );
 }
 
+// Rate-limit identity for signed-out callers. The *first* X-Forwarded-For
+// entry (and X-Real-IP) can be set by the client, so rotating it would give
+// every request a fresh bucket. cf-connecting-ip is written by the Cloudflare
+// edge in front of Supabase and replaces any client-sent value; failing that,
+// the last X-Forwarded-For hop is the one the nearest proxy appended.
 function getClientIp(req: Request): string {
-  const forwardedFor = req.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    return forwardedFor.split(",")[0].trim();
-  }
+  const edgeIp = req.headers.get("cf-connecting-ip")?.trim();
+  if (edgeIp) return edgeIp;
 
-  return req.headers.get("cf-connecting-ip") ??
-    req.headers.get("x-real-ip") ??
-    "unknown";
+  const hops = (req.headers.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((hop) => hop.trim())
+    .filter((hop) => hop.length > 0);
+  return hops.at(-1) ?? "unknown";
 }
 
 async function maybeUser(
@@ -126,7 +165,7 @@ function parseRenderer(value: unknown): RouteRenderer {
 
 function parseCoordinate(value: unknown, label: string): CoordinatePayload {
   if (!value || typeof value !== "object") {
-    throw new Error(`${label} is required`);
+    throw new RequestValidationError(`${label} is required`);
   }
 
   const record = value as Record<string, unknown>;
@@ -134,10 +173,10 @@ function parseCoordinate(value: unknown, label: string): CoordinatePayload {
   const longitude = Number(record.longitude ?? record.lng);
 
   if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90) {
-    throw new Error(`${label}.latitude is invalid`);
+    throw new RequestValidationError(`${label}.latitude is invalid`);
   }
   if (!Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
-    throw new Error(`${label}.longitude is invalid`);
+    throw new RequestValidationError(`${label}.longitude is invalid`);
   }
 
   return { latitude, longitude };
@@ -158,6 +197,8 @@ function assertCampusTravelModeSupported(travelMode: string): void {
   if (travelMode !== "WALK") {
     throw new RequestValidationError(
       "Campus routing currently supports WALK only. Switch to the Google renderer for drive, bicycle, or transit routes.",
+      400,
+      "MODE_UNSUPPORTED",
     );
   }
 }
@@ -442,9 +483,20 @@ function normaliseTfnswTransitRoute(
     );
   }
 
+  // TfNSW returns a footpath-only "journey" when walking beats any service
+  // (product class 99/100). Label it WALK so the app doesn't present it as a
+  // transit trip.
+  const isWalkingLeg = (leg: Record<string, unknown>) => {
+    const transportation = leg.transportation as
+      | { product?: { class?: number } }
+      | undefined;
+    const productClass = Number(transportation?.product?.class);
+    return productClass === 99 || productClass === 100;
+  };
+
   return {
     renderer: "google",
-    mode: "TRANSIT",
+    mode: legs.every(isWalkingLeg) ? "WALK" : "TRANSIT",
     distanceMeters,
     durationSeconds,
     encodedPolyline: "",
@@ -564,6 +616,7 @@ async function fetchGoogleRoute(
       "X-Goog-FieldMask": GOOGLE_ROUTES_FIELD_MASK,
     },
     body: JSON.stringify(body),
+    signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
   });
 
   const upstreamText = await upstream.text();
@@ -575,10 +628,14 @@ async function fetchGoogleRoute(
   }
 
   if (!upstream.ok) {
-    throw new Error(
-      (upstreamJson?.error as { message?: string } | undefined)?.message ??
-        "Google Routes API error",
-    );
+    const upstreamError = upstreamJson?.error as
+      | Record<string, unknown>
+      | undefined;
+    const message = (upstreamError?.message as string | undefined) ??
+      "Google Routes API error";
+    throw isGoogleCredentialError(upstream.status, upstreamError)
+      ? routingError(message, 502, "ROUTING_AUTH")
+      : routingError(message, 502, "ROUTING_UPSTREAM");
   }
 
   const routes = (upstreamJson?.routes as Array<Record<string, unknown>>) ?? [];
@@ -655,8 +712,29 @@ async function fetchCampusRoute(
     upstreamJson = null;
   }
 
+  if (upstream.status === 401 || upstream.status === 403) {
+    throw routingError(
+      "Campus routing provider rejected its API key",
+      502,
+      "ROUTING_AUTH",
+    );
+  }
+  // ORS error codes 2004 (route too long), 2009 (route not found) and 2010
+  // (point not routable) mean no route exists, not that the service failed.
+  const orsCode = (upstreamJson?.error as { code?: number } | undefined)?.code;
+  if (orsCode === 2004 || orsCode === 2009 || orsCode === 2010) {
+    throw routingError(
+      "No route exists between origin and destination",
+      404,
+      "NO_ROUTE",
+    );
+  }
   if (!upstream.ok || upstreamJson == null) {
-    throw new Error("Campus routing service error");
+    throw routingError(
+      "Campus routing service error",
+      502,
+      "ROUTING_UPSTREAM",
+    );
   }
 
   return normaliseCampusRoute(travelMode, upstreamJson);
@@ -728,6 +806,11 @@ Deno.serve(async (req) => {
     });
   } catch (err) {
     const error = err as Error & { status?: number; code?: string };
+    if (error.name === "TimeoutError") {
+      error.status = 504;
+      error.code = "ROUTING_TIMEOUT";
+      error.message = "Routing provider timed out";
+    }
     const payload: Record<string, unknown> = { error: error.message };
     if (error.code) payload.code = error.code;
     return new Response(JSON.stringify(payload), {

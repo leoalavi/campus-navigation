@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,60 @@ import 'package:campus_navigation/features/map/domain/entities/building.dart';
 import 'package:campus_navigation/features/map/domain/entities/map_renderer_type.dart';
 import 'package:campus_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+/// Why a route request failed. Distinguishes "there is no route" from "the
+/// routing service could not answer", which the UI used to report identically.
+enum RouteFailureKind {
+  /// The request was valid but no route exists for this destination and mode.
+  noRoute,
+
+  /// The backend's routing provider rejected its credentials or is not set up
+  /// (missing, expired or wrongly restricted server-side key).
+  configuration,
+
+  /// The backend or its upstream provider failed or is rate limiting.
+  serviceUnavailable,
+
+  /// The backend could not be reached in time.
+  network,
+}
+
+/// A classified route failure. Extends [StateError] so existing callers that
+/// catch `StateError` keep working.
+class RouteFailure extends StateError {
+  RouteFailure(this.kind, super.message);
+
+  final RouteFailureKind kind;
+
+  /// Classifies a `maps-routes` error response. Prefers the function's `code`;
+  /// falls back to status and message for deployments that predate the codes.
+  @visibleForTesting
+  static RouteFailureKind classify(int status, String? code, String message) {
+    switch (code) {
+      case 'NO_ROUTE':
+      case 'MODE_UNSUPPORTED':
+      case 'INVALID_REQUEST':
+        return RouteFailureKind.noRoute;
+      case 'ROUTING_NOT_CONFIGURED':
+      case 'ROUTING_AUTH':
+        return RouteFailureKind.configuration;
+      case 'ROUTING_TIMEOUT':
+        return RouteFailureKind.network;
+      case 'ROUTING_UPSTREAM':
+        return RouteFailureKind.serviceUnavailable;
+    }
+    final lower = message.toLowerCase();
+    if (status == 401 ||
+        status == 403 ||
+        lower.contains('api key') ||
+        lower.contains('not configured')) {
+      return RouteFailureKind.configuration;
+    }
+    if (status == 408 || status == 504) return RouteFailureKind.network;
+    if (status == 400 || status == 404) return RouteFailureKind.noRoute;
+    return RouteFailureKind.serviceUnavailable;
+  }
+}
 
 /// Calls the `maps-routes` Supabase Edge Function to compute a route.
 ///
@@ -75,9 +130,23 @@ class MapsRoutesRemoteSource {
 
     final client = _httpClient ?? http.Client();
     try {
-      final response = await client
-          .post(Uri.parse(_routesUrl), headers: headers, body: jsonEncode(body))
-          .timeout(const Duration(seconds: 15));
+      final http.Response response;
+      try {
+        response = await client
+            .post(
+              Uri.parse(_routesUrl),
+              headers: headers,
+              body: jsonEncode(body),
+            )
+            .timeout(const Duration(seconds: 15));
+      } on TimeoutException {
+        throw RouteFailure(
+          RouteFailureKind.network,
+          'maps-routes timed out after 15 s',
+        );
+      } on http.ClientException catch (e) {
+        throw RouteFailure(RouteFailureKind.network, e.message);
+      }
 
       if (response.statusCode >= 400) {
         if (kDebugMode) {
@@ -94,7 +163,14 @@ class MapsRoutesRemoteSource {
         final message =
             errorPayload?['error'] as String? ??
             'maps-routes returned ${response.statusCode}';
-        throw StateError(message);
+        throw RouteFailure(
+          RouteFailure.classify(
+            response.statusCode,
+            errorPayload?['code'] as String?,
+            message,
+          ),
+          message,
+        );
       }
 
       final Map<String, dynamic> json;

@@ -328,6 +328,19 @@ class _RoutePanelState extends State<RoutePanel> {
                   ),
                 ],
 
+                if (widget.route?.isWalkingFallback ?? false) ...[
+                  const SizedBox(height: MqSpacing.space2),
+                  Text(
+                    l10n.routeWalkingOnly,
+                    key: const ValueKey('route-walking-fallback-note'),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.7)
+                          : MqColors.contentTertiary,
+                    ),
+                  ),
+                ],
+
                 // Travel mode selector (hidden during navigation)
                 if (!widget.isNavigating) ...[
                   const SizedBox(height: MqSpacing.space4),

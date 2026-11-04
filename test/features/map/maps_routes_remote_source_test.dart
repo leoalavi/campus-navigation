@@ -204,6 +204,85 @@ void main() {
       ).called(1);
     });
   });
+
+  // Every failure used to surface as "No route available", hiding an expired
+  // server-side Google Routes key behind the same message as a real no-route.
+  group('route failure classification', () {
+    void stubResponse(int status, Map<String, dynamic> body) {
+      when(
+        () => mockHttpClient.post(
+          any(),
+          headers: any(named: 'headers'),
+          body: any(named: 'body'),
+        ),
+      ).thenAnswer((_) async => http.Response(jsonEncode(body), status));
+    }
+
+    Future<RouteFailureKind> failureKind() async {
+      try {
+        await remoteSource.getRoute(
+          renderer: MapRendererType.google,
+          origin: origin,
+          destination: building,
+          travelMode: TravelMode.drive,
+        );
+      } on RouteFailure catch (e) {
+        return e.kind;
+      }
+      fail('expected a RouteFailure');
+    }
+
+    test(
+      'an expired server key from a pre-code deployment is configuration',
+      () async {
+        stubResponse(500, {
+          'error': 'API key expired. Please renew the API key.',
+        });
+        expect(await failureKind(), RouteFailureKind.configuration);
+      },
+    );
+
+    test('ROUTING_AUTH is configuration', () async {
+      stubResponse(502, {'error': 'denied', 'code': 'ROUTING_AUTH'});
+      expect(await failureKind(), RouteFailureKind.configuration);
+    });
+
+    test('NO_ROUTE is a genuine no-route', () async {
+      stubResponse(404, {'error': 'No route', 'code': 'NO_ROUTE'});
+      expect(await failureKind(), RouteFailureKind.noRoute);
+    });
+
+    test('an unsupported campus mode is a no-route', () async {
+      stubResponse(400, {'error': 'WALK only', 'code': 'MODE_UNSUPPORTED'});
+      expect(await failureKind(), RouteFailureKind.noRoute);
+    });
+
+    test('an upstream failure is service unavailable', () async {
+      stubResponse(502, {'error': 'boom', 'code': 'ROUTING_UPSTREAM'});
+      expect(await failureKind(), RouteFailureKind.serviceUnavailable);
+    });
+
+    test('a generic 500 is service unavailable', () async {
+      stubResponse(500, {'error': 'Campus routing service error'});
+      expect(await failureKind(), RouteFailureKind.serviceUnavailable);
+    });
+
+    test('a server-side timeout is a network failure', () async {
+      stubResponse(504, {'error': 'timed out', 'code': 'ROUTING_TIMEOUT'});
+      expect(await failureKind(), RouteFailureKind.network);
+    });
+
+    test('an unreachable backend is a network failure', () async {
+      when(
+        () => mockHttpClient.post(
+          any(),
+          headers: any(named: 'headers'),
+          body: any(named: 'body'),
+        ),
+      ).thenThrow(http.ClientException('Connection refused'));
+      expect(await failureKind(), RouteFailureKind.network);
+    });
+  });
 }
 
 class MockSession extends Mock implements Session {}

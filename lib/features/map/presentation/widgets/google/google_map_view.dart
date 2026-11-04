@@ -95,7 +95,12 @@ class _GoogleMapViewState extends ConsumerState<GoogleMapView> {
     final verticalBottom =
         pad.bottom + _bottomControlsReservedHeight + _routePanelEstimateHeight;
     final horizontal = max(pad.left, pad.right) + 20;
-    return max(80.0, max(horizontal, max(verticalTop, verticalBottom)));
+    final wanted = max(80.0, max(horizontal, max(verticalTop, verticalBottom)));
+    // newLatLngBounds applies one padding to all four sides. When twice that
+    // exceeds the map's width the iOS SDK cannot fit the bounds and zooms out
+    // to the whole world, so leave at least a 48 pt strip for the route.
+    final cap = max(0.0, mq.size.shortestSide / 2 - 24);
+    return min(wanted, cap);
   }
 
   Set<Marker> _buildingMarkers() {

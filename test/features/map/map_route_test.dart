@@ -107,5 +107,45 @@ void main() {
         ),
       );
     });
+
+    // A transit request TfNSW answers with a footpath-only journey used to be
+    // shown as a transit trip with transit turn-by-turn.
+    test('flags a walking route served for a transit request', () {
+      final route = MapRoute.fromJson({
+        'mode': 'WALK',
+        'distanceMeters': 313,
+        'durationSeconds': 281,
+        'points': const <Map<String, double>>[],
+        'steps': const <Map<String, Object>>[],
+      }, TravelMode.transit);
+
+      expect(route.travelMode, TravelMode.transit);
+      expect(route.servedTravelMode, TravelMode.walk);
+      expect(route.isWalkingFallback, isTrue);
+    });
+
+    test('a route served in the requested mode is not a fallback', () {
+      final route = MapRoute.fromJson({
+        'mode': 'TRANSIT',
+        'distanceMeters': 4200,
+        'durationSeconds': 900,
+        'points': const <Map<String, double>>[],
+        'steps': const <Map<String, Object>>[],
+      }, TravelMode.transit);
+
+      expect(route.servedTravelMode, TravelMode.transit);
+      expect(route.isWalkingFallback, isFalse);
+    });
+
+    test('a response without a mode keeps the requested mode', () {
+      final route = MapRoute.fromJson({
+        'distanceMeters': 250,
+        'durationSeconds': 180,
+        'points': const <Map<String, double>>[],
+      }, TravelMode.drive);
+
+      expect(route.servedTravelMode, TravelMode.drive);
+      expect(route.isWalkingFallback, isFalse);
+    });
   });
 }
