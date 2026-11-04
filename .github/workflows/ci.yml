@@ -120,13 +120,14 @@ jobs:
       - name: Install dependencies
         run: flutter pub get --enforce-lockfile
 
-      # Podfile.lock spec checksums depend on the CocoaPods version that wrote
-      # them (1.16 and 1.17 serialise `swift_version` differently), so the
-      # runner's preinstalled CocoaPods fails `--deployment`. Install exactly
-      # the version recorded in the lockfile.
+      # Podfile.lock spec checksums hash each podspec's JSON, which depends on
+      # both the CocoaPods version (1.16 and 1.17 serialise `swift_version`
+      # differently) and the Ruby JSON library (Ruby 3.3 writes `[]` across
+      # three lines, Ruby 4.0 on one). Match the Ruby and CocoaPods versions
+      # that wrote the lockfile, or `--deployment` rejects every checksum.
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: '4.0'
 
       - name: Install the CocoaPods version that wrote Podfile.lock
         run: |
@@ -232,7 +233,7 @@ jobs:
       # See build-ios: match the CocoaPods version recorded in the lockfile.
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'
+          ruby-version: '4.0'
 
       - name: Install the CocoaPods version that wrote Podfile.lock
         run: |
