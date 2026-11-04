@@ -4,7 +4,7 @@ Device-level UI flows for the Open Day scan → card → map journey, authored w
 the `maestro-mobile-testing` skill patterns (iOS post-launch swipe,
 `extendedWaitUntil`, screenshots, explicit camera permission).
 
-**iOS bundle id:** `com.pouya.mqnavigation`
+**iOS bundle id:** `dev.leoalavi.campusnavigation`
 
 ## Flows
 
@@ -34,7 +34,7 @@ because that chain is **not automatable on a simulator**:
 1. **QR scan needs a real camera feed.** A simulator has no camera and cannot be
    shown a physical QR, so the decode step can't be triggered by Maestro.
 2. **No deep-link shortcut to a card.** `FlutterDeepLinkingEnabled` is `false`
-   in `ios/Runner/Info.plist`, so `openLink com.pouya.mqnavigation://location/<id>`
+   in `ios/Runner/Info.plist`, so `openLink dev.leoalavi.campusnavigation://location/<id>`
    won't route. The only in-app entry to `/location/:id` is the scanner or the
    stamps passport (which itself needs a prior scan).
 3. **Local iOS-sim build is currently blocked** in this environment — the Runner

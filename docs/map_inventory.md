@@ -6,7 +6,7 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 
 | Key | Location | Usage | Flutter Approach |
 |-----|----------|-------|-----------------|
-| `GOOGLE_MAPS_API_KEY` (client) | `--dart-define` / local `.env` | Google Maps renderer SDK | Restricted to app bundle ID in production |
+| `GOOGLE_MAPS_IOS_API_KEY` / `GOOGLE_MAPS_ANDROID_API_KEY` (client) | local `.env` → `scripts/run.sh` → native config | Google Maps renderer SDK | One key per platform, restricted to its bundle ID / package + SHA-1 |
 | `GOOGLE_ROUTES_API_KEY` (server) | Supabase Edge Function secret | Google route computation | Never exposed to Flutter |
 | `ORS_API_KEY` (server, optional) | Supabase Edge Function secret | Campus walking route computation | Never exposed to Flutter |
 

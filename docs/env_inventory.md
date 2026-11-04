@@ -8,7 +8,9 @@ All environment variables used by Campus Navigation, categorised by client/serve
 |----------|----------|---------|-------|
 | `SUPABASE_URL` | Release only | Hardcoded dev fallback | Supabase project URL |
 | `SUPABASE_ANON_KEY` | Release only | Hardcoded dev fallback | Public anon key (RLS enforced) |
-| `GOOGLE_MAPS_API_KEY` | No | None | Client-side Google Maps renderer key |
+| `GOOGLE_MAPS_IOS_API_KEY` | No | `GOOGLE_MAPS_API_KEY` | iOS Maps SDK key, restricted to bundle ID `dev.leoalavi.campusnavigation` |
+| `GOOGLE_MAPS_ANDROID_API_KEY` | No | `GOOGLE_MAPS_API_KEY` | Android Maps SDK key, restricted to `io.mqnavigation.mq_navigation` + SHA-1 |
+| `GOOGLE_MAPS_API_KEY` | No | None | Web Maps key; fallback for the platform keys |
 | `APP_ENV` | No | `development` | development / staging / production |
 
 > In **debug mode** a bare `flutter run` works for Supabase without

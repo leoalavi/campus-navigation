@@ -6,8 +6,8 @@
 # on a simulator). Search a real venue → tap the result → the map centres on it.
 #
 # Prerequisites:
-# - App installed on the target device (iOS bundle id: com.pouya.mqnavigation).
-appId: com.pouya.mqnavigation
+# - App installed on the target device (iOS bundle id: dev.leoalavi.campusnavigation).
+appId: dev.leoalavi.campusnavigation
 name: "Campus Navigation — campus map building focus"
 tags:
   - map

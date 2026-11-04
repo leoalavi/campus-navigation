@@ -9,8 +9,8 @@
 #
 # Prerequisites:
 # - A simulator/emulator (or Maestro Cloud device) with the app installed.
-# - iOS bundle id: com.pouya.mqnavigation
-appId: com.pouya.mqnavigation
+# - iOS bundle id: dev.leoalavi.campusnavigation
+appId: dev.leoalavi.campusnavigation
 name: "Campus Navigation — scan-entry + campus-map smoke"
 tags:
   - smoke

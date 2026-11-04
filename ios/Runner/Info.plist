@@ -46,7 +46,7 @@
 	<key>FlutterDeepLinkingEnabled</key>
 	<false/>
 	<key>GMSApiKey</key>
-	<string>$(GOOGLE_MAPS_API_KEY)</string>
+	<string>$(GOOGLE_MAPS_IOS_API_KEY)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>

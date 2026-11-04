@@ -71,7 +71,7 @@ import UIKit
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  /// `GMSApiKey` from Info.plist, filled from `$(GOOGLE_MAPS_API_KEY)` in the
+  /// `GMSApiKey` from Info.plist, filled from `$(GOOGLE_MAPS_IOS_API_KEY)` in the
   /// gitignored `ios/Flutter/Secrets.xcconfig` (written by `scripts/run.sh`).
   /// An unexpanded `$(...)` placeholder means no key was supplied.
   private static func infoPlistMapsKey() -> String {

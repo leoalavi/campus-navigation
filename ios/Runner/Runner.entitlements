@@ -5,7 +5,7 @@
 	<!-- Universal Links for the public navigation contract.
 	     Requires https://mqnavigation.app/.well-known/apple-app-site-association
 	     to be served (application/json, no redirect) listing
-	     <TEAM_ID>.com.pouya.mqnavigation with the /open path.
+	     <TEAM_ID>.dev.leoalavi.campusnavigation (94273WB4G3.dev.leoalavi.campusnavigation) with the /open path.
 	     Until that file is live, iOS falls back to opening the URL in Safari -
 	     which is why mqnav:// is the primary transport. -->
 	<key>com.apple.developer.associated-domains</key>

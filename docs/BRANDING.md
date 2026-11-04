@@ -49,7 +49,7 @@ rename now), **B** (must remain for compatibility) or **C** (support both).
 |---|---|---|---|
 | Dart package | `campus_navigation` (was `mq_navigation`; MQ Journey used `mq_journey`) | **A — done** | Renamed when MQ Journey was merged in, so the codebase carries one name. Local-notification payloads still recognise the old `mq_navigation` / `mq_journey` tags so reminders from earlier installs are cleaned up. |
 | Android `applicationId` | `io.mqnavigation.mq_navigation` | **B** | Immutable once published. Changing it orphans every existing install and breaks Play upgrades. Never user-visible. |
-| iOS bundle ID | `com.pouya.mqnavigation` | **B** | Same constraint. Must be fixed *before* first submission if it is to change at all — see §5 below. |
+| iOS bundle ID | `dev.leoalavi.campusnavigation` (was `com.pouya.mqnavigation`) | **A — done** | Changed before any App Store Connect record, TestFlight build or device install existed, so nothing was orphaned. From the first submission on it is permanent. |
 | Custom URL scheme | `mqnav://open` | **B** | The live Syllabus Sync handoff. Renaming breaks every link already emitted. |
 | Legacy URL scheme | `io.mqnavigation://` | **B** | Pre-existing auth/"meet here" links still in the wild. |
 | Open Day QR scheme | `io.mqjourney://open-day/…` | **B** | Inherited from MQ Journey. Signed codes are already printed on campus signage, so the scheme must stay registered. |
@@ -91,10 +91,6 @@ This is deliberate: brand-safe and grammatical beats localised and wrong.
 
 ## 5. Still needing a human decision
 
-* **iOS bundle ID `com.pouya.mqnavigation`** carries a personal prefix and the
-  old product name. It is the last moment to change it — after the first App
-  Store submission it is permanent. A neutral `app.campusnavigation.ios` (or
-  similar) would match the product identity.
 * **`assets/images/campus_background.jpg`** is the Home screen hero: an
   original photograph, but it shows campus signage including small university
   logos on the signpost. It is our own photo of a public place, which is

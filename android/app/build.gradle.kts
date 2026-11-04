@@ -40,13 +40,20 @@ if (dotEnvFile.exists()) {
         }
 }
 
+// First non-blank value of [name] across the key sources, in priority order.
+fun mapsKey(name: String): String? =
+    listOf(
+        secrets.getProperty(name),
+        localProps.getProperty(name),
+        dotEnv.getProperty(name),
+        project.findProperty(name) as String?,
+        System.getenv(name),
+    ).firstOrNull { !it.isNullOrBlank() }
+
+// Android has its own package/SHA-1-restricted key; the shared
+// GOOGLE_MAPS_API_KEY remains a fallback for older .env files.
 val googleMapsApiKey: String =
-    (secrets.getProperty("GOOGLE_MAPS_API_KEY"))
-        ?: (localProps.getProperty("GOOGLE_MAPS_API_KEY"))
-        ?: (dotEnv.getProperty("GOOGLE_MAPS_API_KEY"))
-        ?: (project.findProperty("GOOGLE_MAPS_API_KEY") as String?).takeIf { !it.isNullOrEmpty() }
-        ?: System.getenv("GOOGLE_MAPS_API_KEY").orEmpty().ifEmpty { null }
-        ?: ""
+    mapsKey("GOOGLE_MAPS_ANDROID_API_KEY") ?: mapsKey("GOOGLE_MAPS_API_KEY") ?: ""
 
 if (hasGoogleServicesJson) {
     apply(plugin = "com.google.gms.google-services")
