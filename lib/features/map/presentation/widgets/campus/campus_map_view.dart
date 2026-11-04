@@ -59,6 +59,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
   final MapController _controller = MapController();
   late final Future<CampusOverlayMeta> _metaFuture;
   CampusProjection? _projection;
+  bool _isMapReady = false;
   static const double _mapMinZoom = -4.0;
   static const double _mapHardMaxZoom = -2.2;
   @override
@@ -77,7 +78,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
   void didUpdateWidget(covariant CampusMapView oldWidget) {
     super.didUpdateWidget(oldWidget);
     final projection = _projection;
-    if (projection == null) {
+    if (projection == null || !_isMapReady) {
       return;
     }
 
@@ -323,6 +324,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
   }
 
   void _handleMapReady(CampusOverlayMeta meta, CampusProjection projection) {
+    _isMapReady = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
