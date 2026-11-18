@@ -41,6 +41,12 @@
     type="application/javascript"
     src="assets/packages/flutter_inappwebview_web/assets/web/web_support.js"
     defer></script>
+
+  <!-- Sets window.GOOGLE_MAPS_API_KEY for the Google Maps tab. The file is
+       gitignored and written by scripts/run.sh from GOOGLE_MAPS_API_KEY in
+       .env; when it is missing the app uses the OpenStreetMap map.
+       flutter_bootstrap.js loads and checks the Maps JavaScript API. -->
+  <script src="google_maps_config.js"></script>
 </head>
 <body>
   <!--

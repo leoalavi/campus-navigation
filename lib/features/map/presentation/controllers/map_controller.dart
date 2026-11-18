@@ -220,6 +220,11 @@ class MapController extends AsyncNotifier<MapState> {
   static const _arrivalThresholdMetres = 30.0;
   static const _offRouteThresholdMetres = 50.0;
 
+  /// How long [build] waits for the startup permission check + GPS fix
+  /// before showing the map without one.
+  @visibleForTesting
+  static Duration startupLocationBudget = const Duration(seconds: 6);
+
   TravelMode _normalizeTravelModeForRenderer(
     MapRendererType renderer,
     TravelMode mode,
@@ -298,23 +303,22 @@ class MapController extends AsyncNotifier<MapState> {
     // Fetch the user's current location on startup so the Google Maps blue dot
     // and location-based features work immediately — no need to wait for a
     // route request or a manual locate-tap.
+    //
+    // The wait is bounded: a slow GPS lock (up to 15 s in LocationSource) or
+    // an unanswered OS permission prompt must not hold the whole map behind
+    // the loading spinner. If the budget runs out the map opens without a
+    // fix and the result is applied as soon as it arrives.
     var initialPermission = LocationPermissionState.denied;
     LocationSample? initialLocation;
-    try {
-      initialPermission = await ref
-          .read(mapRepositoryProvider)
-          .ensureLocationPermission();
-      if (initialPermission == LocationPermissionState.granted) {
-        initialLocation = await ref
-            .read(mapRepositoryProvider)
-            .getCurrentLocation();
-        if (initialLocation != null) {
-          await _startLocationTracking();
-        }
-      }
-    } catch (_) {
-      // Non-fatal — the map still works without GPS; location can be
-      // fetched later via centerOnCurrentLocation or loadRoute.
+    final initialFix = _acquireInitialLocation();
+    final initialResult = await initialFix
+        .then<_InitialLocation?>((result) => result)
+        .timeout(startupLocationBudget, onTimeout: () => null);
+    if (initialResult != null) {
+      initialPermission = initialResult.permission;
+      initialLocation = initialResult.location;
+    } else {
+      unawaited(initialFix.then(_applyLateInitialLocation));
     }
 
     return MapState(
@@ -1099,6 +1103,43 @@ class MapController extends AsyncNotifier<MapState> {
     });
   }
 
+  /// Startup permission check + first fix. Never throws: GPS problems are
+  /// non-fatal because the map works without a location, and the user can
+  /// retry later via centerOnCurrentLocation or loadRoute.
+  Future<_InitialLocation> _acquireInitialLocation() async {
+    final repository = ref.read(mapRepositoryProvider);
+    var permission = LocationPermissionState.denied;
+    try {
+      permission = await repository.ensureLocationPermission();
+      if (permission != LocationPermissionState.granted) {
+        return (permission: permission, location: null);
+      }
+      final location = await repository.getCurrentLocation();
+      if (location != null) {
+        await _startLocationTracking();
+      }
+      return (permission: permission, location: location);
+    } catch (error, stackTrace) {
+      AppLogger.warning('Startup location lookup failed', error, stackTrace);
+      return (permission: permission, location: null);
+    }
+  }
+
+  /// Applies a startup fix that arrived after [build] stopped waiting.
+  /// Never overwrites a newer location from tracking, locate-me or a route.
+  void _applyLateInitialLocation(_InitialLocation result) {
+    if (!ref.mounted) return;
+    final current = state.value;
+    if (current == null) return;
+    state = AsyncData(
+      current.copyWith(
+        permissionState: result.permission,
+        // Tracking may already have delivered a newer fix; keep it.
+        currentLocation: current.currentLocation ?? result.location,
+      ),
+    );
+  }
+
   int _beginRouteRequest() {
     _routeRequestVersion += 1;
     return _routeRequestVersion;
@@ -1135,3 +1176,8 @@ class MapController extends AsyncNotifier<MapState> {
     };
   }
 }
+
+typedef _InitialLocation = ({
+  LocationPermissionState permission,
+  LocationSample? location,
+});

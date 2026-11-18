@@ -34,24 +34,40 @@ class LocationSource {
   static const double _googleplexLongitude = -122.084;
   static const double _googleplexTolerance = 0.0025;
 
-  // We explicitly disable native location services on platforms where the
-  // geolocator plugin cannot bind to a real native location service (Web,
-  // Linux, Windows). macOS IS supported: the geolocator package ships a
+  // We explicitly disable location services on platforms where the
+  // geolocator plugin cannot bind to a real location service (Linux,
+  // Windows). macOS IS supported: the geolocator package ships a
   // CoreLocation-backed plugin, and the macOS Runner already declares
   // both the `NSLocationWhenInUseUsageDescription` Info.plist key AND the
   // `com.apple.security.personal-information.location` entitlement in
   // both DebugProfile.entitlements and Release.entitlements. The only
   // thing blocking macOS until now was this `_isSupported` check
   // excluding it.
+  //
+  // Web IS supported too: `geolocator_web` wraps the browser Geolocation
+  // API. Browsers only expose it in a secure context (https or localhost)
+  // and ask the user first; a refusal surfaces as `denied`, and an
+  // unanswered prompt or a failed fix as `null`, like any other platform.
   bool get _isSupported =>
-      !kIsWeb &&
-      (defaultTargetPlatform == TargetPlatform.android ||
-          defaultTargetPlatform == TargetPlatform.iOS ||
-          defaultTargetPlatform == TargetPlatform.macOS);
+      kIsWeb ||
+      defaultTargetPlatform == TargetPlatform.android ||
+      defaultTargetPlatform == TargetPlatform.iOS ||
+      defaultTargetPlatform == TargetPlatform.macOS;
+
+  // On web `defaultTargetPlatform` reports the host OS, so the platform
+  // branches below would hand the browser Android/Apple-only settings.
+  static const _webFixSettings = LocationSettings(
+    accuracy: LocationAccuracy.high,
+    timeLimit: Duration(seconds: 15),
+  );
+  static const _webStreamSettings = LocationSettings(
+    accuracy: LocationAccuracy.high,
+    distanceFilter: 5,
+  );
 
   Future<LocationPermissionState> ensurePermission() async {
     if (!_isSupported) {
-      // On web/desktop there is no platform location service to ask.
+      // On Linux/Windows there is no platform location service to ask.
       // Report `unsupported` so the controller can show the appropriate
       // banner — we no longer pretend permission is granted just to keep
       // a synthetic fallback alive.
@@ -99,8 +115,9 @@ class LocationSource {
     // Location Provider (which often returns Wi-Fi-triangulated estimates
     // that can be hundreds of metres off the true position) and uses the raw
     // OS LocationManager + GPS provider directly.
-    final LocationSettings locationSettings =
-        defaultTargetPlatform == TargetPlatform.android
+    final LocationSettings locationSettings = kIsWeb
+        ? _webFixSettings
+        : defaultTargetPlatform == TargetPlatform.android
         ? AndroidSettings(
             accuracy: LocationAccuracy.bestForNavigation,
             distanceFilter: 0,
@@ -175,7 +192,7 @@ class LocationSource {
 
   Stream<LocationSample> watch() async* {
     if (!_isSupported) {
-      // Web / desktop: no real-time location updates available.
+      // Linux / Windows: no real-time location updates available.
       return;
     }
 
@@ -187,8 +204,9 @@ class LocationSource {
     // Same platform-specific tuning as `getCurrentLocation` — raw GPS on
     // Android avoids Wi-Fi-triangulation jitter that can pull the
     // navigation dot tens of metres off the route polyline.
-    final LocationSettings locationSettings =
-        defaultTargetPlatform == TargetPlatform.android
+    final LocationSettings locationSettings = kIsWeb
+        ? _webStreamSettings
+        : defaultTargetPlatform == TargetPlatform.android
         ? AndroidSettings(
             accuracy: LocationAccuracy.bestForNavigation,
             distanceFilter: 5,
@@ -214,12 +232,14 @@ class LocationSource {
   }
 
   Future<void> openLocationSettings() async {
-    if (!_isSupported) return;
+    // Browsers expose no API to open their location settings.
+    if (!_isSupported || kIsWeb) return;
     await Geolocator.openLocationSettings();
   }
 
   Future<void> openAppSettings() async {
-    if (!_isSupported) return;
+    // Browsers expose no API to open their location settings.
+    if (!_isSupported || kIsWeb) return;
     await Geolocator.openAppSettings();
   }
 }

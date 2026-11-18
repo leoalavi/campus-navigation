@@ -56,6 +56,49 @@ void main() {
       },
     );
 
+    test(
+      'opens the map without waiting for a slow startup fix, then applies it',
+      () async {
+        final previousBudget = MapController.startupLocationBudget;
+        MapController.startupLocationBudget = const Duration(milliseconds: 20);
+        addTearDown(() => MapController.startupLocationBudget = previousBudget);
+
+        final repository = _FakeMapRepository(buildings: [building]);
+        final permissionCompleter = Completer<LocationPermissionState>();
+        final locationCompleter = Completer<LocationSample?>();
+        repository.pendingPermissionCompleter = permissionCompleter;
+        repository.pendingLocationCompleter = locationCompleter;
+        final container = ProviderContainer(
+          overrides: [
+            mapRepositoryProvider.overrideWithValue(repository),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        // The OS permission prompt is still open: the map must load anyway.
+        final initial = await container.read(mapControllerProvider.future);
+        expect(initial.buildings, [building]);
+        expect(initial.currentLocation, isNull);
+
+        permissionCompleter.complete(LocationPermissionState.granted);
+        locationCompleter.complete(
+          const LocationSample(
+            latitude: -33.7752,
+            longitude: 151.1156,
+            accuracy: 12,
+          ),
+        );
+        await pumpEventQueue();
+
+        final updated = container.read(mapControllerProvider).value!;
+        expect(updated.permissionState, LocationPermissionState.granted);
+        expect(updated.currentLocation?.latitude, -33.7752);
+      },
+    );
+
     test('passes active renderer through route loading', () async {
       final repository = _FakeMapRepository(buildings: [building]);
       final container = ProviderContainer(

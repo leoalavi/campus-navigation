@@ -55,6 +55,10 @@
 				<string>io.mqnavigation</string>
 				<!-- Printed Open Day QR codes (io.mqjourney://open-day/...). -->
 				<string>io.mqjourney</string>
+				<!-- Public navigation contract used by Syllabus Sync:
+				     mqnav://open?destination=<buildingId>
+				     See lib/features/deep_link/deep_link_contract.dart -->
+				<string>mqnav</string>
 			</array>
 		</dict>
 	</array>

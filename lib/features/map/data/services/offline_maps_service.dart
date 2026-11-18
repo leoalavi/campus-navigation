@@ -75,16 +75,20 @@ class OfflineMapsService {
       // the entire bootstrap sequence before the first frame is drawn. iOS's
       // watchdog kills the process after ~20 s of startup work; 8 s here leaves
       // plenty of headroom for the rest of the bootstrap.
+      var initialised = true;
       await FMTCObjectBoxBackend().initialise().timeout(
         const Duration(seconds: 8),
         onTimeout: () {
+          initialised = false;
           AppLogger.warning(
             'Offline map backend init timed out after 8 s — '
             'continuing with network-only tiles.',
           );
         },
       );
-      _fmtcObjectBoxBackendReady = true;
+      // A timed-out init must not be reported as ready, or the tile layer
+      // would be handed an FMTC provider whose backend never started.
+      _fmtcObjectBoxBackendReady = initialised;
     } catch (error, stackTrace) {
       // ObjectBox can throw platform exceptions on first launch, after a
       // crash-corrupted database, or in certain iOS sandbox configurations.

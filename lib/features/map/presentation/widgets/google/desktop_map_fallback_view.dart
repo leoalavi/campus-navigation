@@ -176,15 +176,15 @@ class _DesktopMapFallbackViewState
         onMapReady: _syncCameraToState,
       ),
       children: [
-        // OpenStreetMap tile layer
+        // OpenStreetMap tile layer, in both themes. Dark mode darkens the same
+        // OSM tiles on the client: CARTO's dark_all basemap now requires an
+        // API key and serves an "API KEY REQUIRED" image instead of a map.
         TileLayer(
-          urlTemplate: isDark
-              ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-              : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          subdomains: isDark ? ['a', 'b', 'c', 'd'] : [],
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'io.mqnavigation.mq_navigation',
           retinaMode: true,
           tileProvider: _tileProvider,
+          tileBuilder: isDark ? darkModeTileBuilder : null,
         ),
         // Route polylines
         if (widget.route != null) _buildRouteLayer(),

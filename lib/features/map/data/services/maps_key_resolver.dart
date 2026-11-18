@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:campus_navigation/core/config/env_config.dart';
+import 'package:campus_navigation/features/map/presentation/widgets/google/web_maps_key_stub.dart'
+    if (dart.library.js_interop) 'package:campus_navigation/features/map/presentation/widgets/google/web_maps_key.dart';
 
 /// Whether this build can actually render Google Maps.
 enum MapsKeyStatus {
@@ -53,11 +54,13 @@ class MapsKeyResolver {
     // Desktop has no Google Maps implementation to key.
     if (!kIsWeb && !_isNativeMobile) return MapsKeyStatus.unsupportedPlatform;
 
-    // Web has no method channel; its key is injected into the page instead,
-    // and that check lives with the web renderer. A compile-time define is
-    // the only signal available there.
+    // Web has no method channel; the key is injected into the page and
+    // web/flutter_bootstrap.js loads the Maps JavaScript API and checks that
+    // Google accepts it before Flutter starts. Only that runtime answer
+    // counts: a --dart-define key with no loaded (or a refused) Maps script
+    // would render Google's grey error box instead of a map.
     if (kIsWeb) {
-      return EnvConfig.hasGoogleMapsApiKey
+      return isWebGoogleMapsReady()
           ? MapsKeyStatus.configured
           : MapsKeyStatus.missing;
     }
