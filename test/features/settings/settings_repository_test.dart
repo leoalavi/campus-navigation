@@ -18,6 +18,28 @@ void main() {
     when(() => storage.delete(any())).thenAnswer((_) async {});
   });
 
+  group('LocalSettingsRepository preview mode persistence', () {
+    test('saves and reloads the Preview mode toggle', () async {
+      await repository.savePreferences(
+        const UserPreferences(previewLocationEnabled: true),
+      );
+      verify(
+        () => storage.write('settings.preview_location_enabled', 'true'),
+      ).called(1);
+
+      when(() => storage.readAll()).thenAnswer(
+        (_) async => const {'settings.preview_location_enabled': 'true'},
+      );
+      final reloaded = await repository.loadPreferences();
+      expect(reloaded.previewLocationEnabled, isTrue);
+    });
+
+    test('Preview mode is off when never saved', () async {
+      final preferences = await repository.loadPreferences();
+      expect(preferences.previewLocationEnabled, isFalse);
+    });
+  });
+
   group('LocalSettingsRepository commute persistence', () {
     test('saves favorite stop id and name', () async {
       const preferences = UserPreferences(

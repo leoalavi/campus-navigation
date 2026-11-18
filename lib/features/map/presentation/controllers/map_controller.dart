@@ -13,6 +13,7 @@ import 'package:campus_navigation/features/map/domain/services/building_search.d
 import 'package:campus_navigation/features/map/domain/services/geo_utils.dart';
 import 'package:campus_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:campus_navigation/shared/models/user_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum MapStateError {
@@ -225,6 +226,14 @@ class MapController extends AsyncNotifier<MapState> {
   @visibleForTesting
   static Duration startupLocationBudget = const Duration(seconds: 6);
 
+  /// Preview mode stands in 1 Central Courtyard for an unavailable fix.
+  static const previewBuildingId = '1CC';
+
+  /// 1 Central Courtyard entrance, as in assets/data/buildings.json. Used
+  /// only if the building registry somehow lacks the 1CC entry.
+  static const _previewFallbackLatitude = -33.77395;
+  static const _previewFallbackLongitude = 151.11365;
+
   TravelMode _normalizeTravelModeForRenderer(
     MapRendererType renderer,
     TravelMode mode,
@@ -291,6 +300,24 @@ class MapController extends AsyncNotifier<MapState> {
         changed = true;
       }
 
+      if (currentMapState.currentLocation == null &&
+          nextPrefs.previewLocationEnabled) {
+        // Turned on with no fix: show the preview origin straight away.
+        final preview = _previewLocation(updatedState.buildings, nextPrefs);
+        if (preview != null) {
+          updatedState = updatedState.copyWith(
+            currentLocation: preview,
+            clearError: true,
+          );
+          changed = true;
+        }
+      } else if (currentMapState.currentLocation?.isPreview == true &&
+          !nextPrefs.previewLocationEnabled) {
+        // Turned off: drop the stand-in so nothing looks like a real fix.
+        updatedState = updatedState.copyWith(clearCurrentLocation: true);
+        changed = true;
+      }
+
       if (changed) {
         state = AsyncData(updatedState);
         if (updatedState.selectedBuilding != null &&
@@ -320,6 +347,9 @@ class MapController extends AsyncNotifier<MapState> {
     } else {
       unawaited(initialFix.then(_applyLateInitialLocation));
     }
+    // Preview mode: no real fix (yet) → start from 1 Central Courtyard.
+    // A late real fix or the tracking stream replaces it.
+    initialLocation ??= _previewLocation(buildings, prefs);
 
     return MapState(
       renderer: prefs.defaultRenderer,
@@ -549,10 +579,12 @@ class MapController extends AsyncNotifier<MapState> {
         .read(mapRepositoryProvider)
         .ensureLocationPermission();
 
-    // Get the user's real GPS fix. `LocationSource` no longer fakes a
-    // campus-centre point when GPS is unavailable, so a `null` here is
-    // a true signal that we cannot route — surfaced via the banner.
-    final location = await ref.read(mapRepositoryProvider).getCurrentLocation();
+    // Get the user's real GPS fix. `LocationSource` never fakes a point, so
+    // `null` means no real fix. Only the opt-in Preview mode may then route
+    // from 1 Central Courtyard, and that origin is labelled on the map.
+    final location =
+        await ref.read(mapRepositoryProvider).getCurrentLocation() ??
+        _previewLocation(state.value?.buildings ?? current.buildings);
     if (!_isRouteRequestCurrent(
       requestId,
       selectedBuildingId: selectedBuildingId,
@@ -660,11 +692,13 @@ class MapController extends AsyncNotifier<MapState> {
     final permissionState = await ref
         .read(mapRepositoryProvider)
         .ensureLocationPermission();
-    final location = await ref.read(mapRepositoryProvider).getCurrentLocation();
+    final realFix = await ref.read(mapRepositoryProvider).getCurrentLocation();
     final latest = state.value;
     if (latest == null) {
       return;
     }
+    // Preview mode stands in 1 Central Courtyard when there is no real fix.
+    final location = realFix ?? _previewLocation(latest.buildings);
     if (location == null) {
       // No real fix available — show a banner so the user understands why
       // the dot didn't move, and offer the existing settings/permission
@@ -1134,9 +1168,30 @@ class MapController extends AsyncNotifier<MapState> {
     state = AsyncData(
       current.copyWith(
         permissionState: result.permission,
-        // Tracking may already have delivered a newer fix; keep it.
-        currentLocation: current.currentLocation ?? result.location,
+        // Tracking may already have delivered a newer real fix; keep it.
+        // A preview stand-in always gives way to a real fix.
+        currentLocation: current.currentLocation?.isPreview ?? true
+            ? result.location ?? current.currentLocation
+            : current.currentLocation,
       ),
+    );
+  }
+
+  /// The Preview mode origin (1 Central Courtyard), or `null` when Preview
+  /// mode is off. Never used while a real fix is available.
+  LocationSample? _previewLocation(
+    List<Building> buildings, [
+    UserPreferences? preferences,
+  ]) {
+    final prefs = preferences ?? ref.read(settingsControllerProvider).value;
+    if (prefs == null || !prefs.previewLocationEnabled) return null;
+    final courtyard = buildings
+        .where((b) => b.id.toUpperCase() == previewBuildingId)
+        .firstOrNull;
+    return LocationSample(
+      latitude: courtyard?.routingLatitude ?? _previewFallbackLatitude,
+      longitude: courtyard?.routingLongitude ?? _previewFallbackLongitude,
+      isPreview: true,
     );
   }
 

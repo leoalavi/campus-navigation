@@ -29,11 +29,16 @@ class MapBottomSheet extends StatefulWidget {
     required this.child,
     this.onHeightChanged,
     this.isDark = false,
+    this.showDragHandle = true,
   });
 
   final Widget child;
   final ValueChanged<double>? onHeightChanged;
   final bool isDark;
+
+  /// Whether to show the sheet's drag band and handle. A child with its own
+  /// visible handle (such as [RoutePanel]) can disable the band entirely.
+  final bool showDragHandle;
 
   /// Fraction of the available height the sheet opens at.
   static const double collapsedFraction = 0.38;
@@ -171,36 +176,38 @@ class _MapBottomSheetState extends State<MapBottomSheet>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Drag band. Owns the vertical gesture so the list below
-                    // keeps its own scrolling intact.
-                    GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onVerticalDragStart: (d) => _onDragStart(d, available),
-                      onVerticalDragUpdate: (d) => _onDragUpdate(d, available),
-                      onVerticalDragEnd: (d) => _onDragEnd(d, available),
-                      child: Semantics(
-                        label: 'Drag to resize',
-                        child: SizedBox(
-                          height: 28,
-                          width: double.infinity,
-                          child: Center(
-                            child: Container(
-                              key: const ValueKey('map-sheet-drag-handle'),
-                              width: 36,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: widget.isDark
-                                    ? Colors.white.withAlpha(45)
-                                    : MqColors.charcoal800.withAlpha(35),
-                                borderRadius: BorderRadius.circular(
-                                  MqSpacing.radiusFull,
+                    if (widget.showDragHandle)
+                      // Drag band. Owns the vertical gesture so the list below
+                      // keeps its own scrolling intact.
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onVerticalDragStart: (d) => _onDragStart(d, available),
+                        onVerticalDragUpdate: (d) =>
+                            _onDragUpdate(d, available),
+                        onVerticalDragEnd: (d) => _onDragEnd(d, available),
+                        child: Semantics(
+                          label: 'Drag to resize',
+                          child: SizedBox(
+                            height: 28,
+                            width: double.infinity,
+                            child: Center(
+                              child: Container(
+                                key: const ValueKey('map-sheet-drag-handle'),
+                                width: 36,
+                                height: 4,
+                                decoration: BoxDecoration(
+                                  color: widget.isDark
+                                      ? Colors.white.withAlpha(45)
+                                      : MqColors.charcoal800.withAlpha(35),
+                                  borderRadius: BorderRadius.circular(
+                                    MqSpacing.radiusFull,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
                     // Loose: the panel may be shorter than the cap.
                     Flexible(
                       child: MediaQuery.removePadding(

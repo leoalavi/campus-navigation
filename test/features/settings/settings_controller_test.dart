@@ -74,6 +74,35 @@ void main() {
       ).called(1);
     });
 
+    test('updatePreviewLocationEnabled updates state and repository', () async {
+      final container = createContainer();
+      final controller = container.read(settingsControllerProvider.notifier);
+
+      expect(
+        container
+            .read(settingsControllerProvider)
+            .value
+            ?.previewLocationEnabled,
+        anyOf(isNull, isFalse),
+        reason: 'Preview mode must be off by default',
+      );
+      await controller.updatePreviewLocationEnabled(true);
+
+      final state = container.read(settingsControllerProvider).value;
+      expect(state?.previewLocationEnabled, isTrue);
+      verify(
+        () => repository.savePreferences(
+          any(
+            that: isA<UserPreferences>().having(
+              (p) => p.previewLocationEnabled,
+              'previewLocationEnabled',
+              isTrue,
+            ),
+          ),
+        ),
+      ).called(1);
+    });
+
     test('updateCommutePreferences updates state and repository', () async {
       final container = createContainer();
       final controller = container.read(settingsControllerProvider.notifier);

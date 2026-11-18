@@ -23,12 +23,17 @@ class LocationSample {
     required this.longitude,
     this.accuracy,
     this.timestamp,
+    this.isPreview = false,
   });
 
   final double latitude;
   final double longitude;
   final double? accuracy;
   final DateTime? timestamp;
+
+  /// True for the Preview mode stand-in (1 Central Courtyard), never for a
+  /// real device fix. The map labels it so it is never mistaken for GPS.
+  final bool isPreview;
 }
 
 @immutable

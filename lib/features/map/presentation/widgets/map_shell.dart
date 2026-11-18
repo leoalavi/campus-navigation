@@ -28,6 +28,7 @@ class MapShell extends ConsumerStatefulWidget {
     this.banner,
     this.footer,
     this.filterChips,
+    this.showFooterDragHandle = true,
   });
 
   final Widget mapView;
@@ -39,6 +40,7 @@ class MapShell extends ConsumerStatefulWidget {
   final Widget? banner;
   final Widget? footer;
   final Widget? filterChips;
+  final bool showFooterDragHandle;
 
   @override
   ConsumerState<MapShell> createState() => _MapShellState();
@@ -200,6 +202,7 @@ class _MapShellState extends ConsumerState<MapShell> {
             bottom: 0,
             child: MapBottomSheet(
               isDark: isDark,
+              showDragHandle: widget.showFooterDragHandle,
               onHeightChanged: (height) {
                 if (!mounted || height == _sheetHeight) return;
                 setState(() => _sheetHeight = height);

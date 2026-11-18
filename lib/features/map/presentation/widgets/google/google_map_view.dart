@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,49 @@ class _GoogleMapViewState extends ConsumerState<GoogleMapView> {
 
   bool _trafficEnabled = false;
   MapType _mapType = MapType.normal;
+
+  /// Web-only "you are here" dot for the route origin. The web plugin
+  /// ignores marker hues, so the green origin pin rendered as a red pin
+  /// indistinguishable from the destination. `null` until drawn.
+  BitmapDescriptor? _webOriginIcon;
+
+  @override
+  void initState() {
+    super.initState();
+    if (kIsWeb) {
+      unawaited(_drawWebOriginIcon());
+    }
+  }
+
+  /// Draws a blue location dot with a white ring (3x for crisp scaling).
+  Future<void> _drawWebOriginIcon() async {
+    const logical = 22.0;
+    const scale = 3.0;
+    const size = logical * scale;
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    const centre = Offset(size / 2, size / 2);
+    canvas.drawCircle(centre, size / 2, Paint()..color = Colors.white);
+    canvas.drawCircle(
+      centre,
+      size / 2 - 3 * scale,
+      Paint()..color = const Color(0xFF1A73E8),
+    );
+    final image = await recorder.endRecording().toImage(
+      size.toInt(),
+      size.toInt(),
+    );
+    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+    image.dispose();
+    if (!mounted || bytes == null) return;
+    setState(() {
+      _webOriginIcon = BitmapDescriptor.bytes(
+        bytes.buffer.asUint8List(),
+        width: logical,
+        height: logical,
+      );
+    });
+  }
 
   /// Camera zoom used when the user presses the "locate me" button.
   /// Must be high enough that pressing the button while already centred
@@ -140,16 +184,26 @@ class _GoogleMapViewState extends ConsumerState<GoogleMapView> {
     }
     final origin = points.first;
     final destination = points.last;
+    final webOriginIcon = _webOriginIcon;
     final markers = <Marker>{
       Marker(
         markerId: const MarkerId('route_origin'),
         position: LatLng(origin.latitude, origin.longitude),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        alpha: 0.85,
+        icon:
+            webOriginIcon ??
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        anchor: webOriginIcon == null
+            ? const Offset(0.5, 1)
+            : const Offset(0.5, 0.5),
+        alpha: webOriginIcon == null ? 0.85 : 1,
         zIndexInt: 0,
       ),
     };
-    if (points.length > 1 &&
+    // The selected building already has its own pin (see _buildingMarkers),
+    // so a second pin at the route's end drew two destination markers a few
+    // metres apart. Only mark the route end when no building is selected.
+    if (widget.selectedBuilding == null &&
+        points.length > 1 &&
         (origin.latitude != destination.latitude ||
             origin.longitude != destination.longitude)) {
       markers.add(

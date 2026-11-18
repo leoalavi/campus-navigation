@@ -577,6 +577,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                             .updateHighContrastMap(v),
                       ),
                       _ToggleRow(
+                        key: const ValueKey('settings-preview-mode-toggle'),
+                        icon: Icons.place_outlined,
+                        label: l10n.previewMode,
+                        subtitle: l10n.previewModeDescription,
+                        value: preferences.previewLocationEnabled,
+                        semanticLabel: l10n.previewMode,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onChanged: (v) => ref
+                            .read(settingsControllerProvider.notifier)
+                            .updatePreviewLocationEnabled(v),
+                      ),
+                      _ToggleRow(
                         icon: Icons.data_usage_outlined,
                         label: l10n.lowDataMode,
                         value: preferences.lowDataMode,
@@ -1866,12 +1878,14 @@ class _TapRow extends StatelessWidget {
 /// Entire row is tappable to toggle.
 class _ToggleRow extends StatelessWidget {
   const _ToggleRow({
+    super.key,
     required this.icon,
     required this.label,
     required this.value,
     required this.onChanged,
     this.semanticLabel,
     this.hapticsEnabled = true,
+    this.subtitle,
   });
 
   final IconData icon;
@@ -1880,6 +1894,9 @@ class _ToggleRow extends StatelessWidget {
   final void Function(bool) onChanged;
   final String? semanticLabel;
   final bool hapticsEnabled;
+
+  /// Optional one-line explanation under [label].
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -1915,12 +1932,29 @@ class _ToggleRow extends StatelessWidget {
                 ),
                 const SizedBox(width: MqSpacing.space3),
                 Expanded(
-                  child: Text(
-                    label,
-                    style: context.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: dark ? Colors.white : MqColors.contentPrimary,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        label,
+                        style: context.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: dark ? Colors.white : MqColors.contentPrimary,
+                        ),
+                      ),
+                      if (subtitle case final subtitle?) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle,
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: dark
+                                ? Colors.white.withValues(alpha: 0.7)
+                                : MqColors.contentSecondary,
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
                 SizedBox(

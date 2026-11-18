@@ -35,7 +35,7 @@ Nothing has been committed or pushed.
 | `dart format --set-exit-if-changed` (all tracked Dart files) | PASS: 315 files, 0 changed |
 | `dart analyze lib`, `test`, `tools` (as in CI) | PASS: no issues |
 | `flutter test`: before changes | PASS: 765 / 765 |
-| `flutter test`: after changes | PASS: **768 / 768** (3 new regression tests) |
+| `flutter test`: after changes | PASS: **778 / 778** (13 new tests, incl. 10 for Preview Mode) |
 | Coverage gate (≥ 50%, generated code excluded) | PASS: 60.31% |
 | Secret scan (`lib`, `test`, `scripts`) | PASS: no keys in source. `.env`, `android/secrets.properties`, `ios/Flutter/Secrets.xcconfig` are gitignored. |
 | `flutter build macos --debug` | PASS |
@@ -70,6 +70,7 @@ browser), or **macOS** (the real macOS app).
 | End-to-end Syllabus Sync → Campus Navigation handoff | NOT TESTED | `docs/SYLLABUS_SYNC_INTEGRATION.md` calls the Syllabus Sync side an "integration intention" still to be checked in the other repo. |
 | Google Maps tab on macOS | PASS (by design) | Desktop has no Google Maps SDK, so this tab shows **OpenStreetMap** tiles. It needs internet. Tiles are not cached on macOS (sandbox blocks the cache database). |
 | Google Maps tab in **dark mode** (macOS, web) | PASS (after fix) | Used to show "API KEY REQUIRED" tiles: the dark map came from CARTO, which now needs a key. It now uses darkened OpenStreetMap tiles. Checked in the browser. |
+| Preview Mode (1 Central Courtyard) | PASS (web, with real location unavailable) | Settings toggle shown with its explanation. Off: no dot and no banner. On: dot at 1 Central Courtyard, a readable "Preview location" banner, survives a reload, and Navigate with Google Maps drew a route from 1CC to Waranara Library (5 min, 330 m). Not run in the macOS app. |
 | Directions in Chrome (web) | PASS with a stubbed position | Location used to be switched off on web. With browser location on, a route to Waranara Library drew correctly (5 min, 331 m) from the real backend. The position was stubbed in the test browser, so **real browser location is NEEDS MANUAL CHECK**. Chrome asks for permission on first use. |
 | Real Google map + directions on web | **PASS** (stubbed position) | With a separate browser-only key (website restriction `http://localhost/*`, `http://127.0.0.1/*`; Maps JavaScript API enabled), the startup check reports `ready`. The Google Maps tab shows Google's map, and a walking route to Waranara Library draws on it (5 min, 331 m). The position was stubbed in the test browser, so **real browser location is NEEDS MANUAL CHECK**. If Google ever refuses the key, the tab falls back to the OpenStreetMap map (also checked). |
 | Maps keys in `.env` | FIXED | `.env` had been replaced with another project's template. Its key names (`MAPS_API_KEY`, `…_ROUTES_KEY`) are not read by this app, and Google rejects those keys for this app's bundle ID and package. This app's original iOS and Android keys were appended under the right names. Only iOS and Android phones use them. |
@@ -126,6 +127,9 @@ None. No confirmed errors were found in the demo buildings, and nothing was chan
 | `web/flutter_bootstrap.js` (new), `web/index.html` | Load the Maps JavaScript API before the app starts, using the key in the gitignored `web/google_maps_config.js`, after a hidden test map confirms Google accepts it. Otherwise clear the key and use OpenStreetMap. | The Google Maps tab on web could never show Google's map: the loader was removed in `95d649c`. The test stops a refused key from showing Google's grey error box during the demo. |
 | `lib/features/map/data/services/maps_key_resolver.dart`, `web_maps_key.dart`, `web_maps_key_stub.dart` | On web, the Google tab is used only when the test map passed (`window.CAMPUS_NAV_WEB_MAPS == 'ready'`). | It used to trust a compile-time define, which an IDE or `flutter run -d chrome` launch never passes, and which says nothing about whether Google accepted the key. |
 | `.env`, `web/google_maps_config.js` (both gitignored) | `GOOGLE_MAPS_API_KEY` is now a **separate browser-only key** you created (the iOS and Android keys are unchanged and still accepted for their apps). The web config file was regenerated from it. | The web build reads the key from here. `scripts/run.sh` rewrites the web file from `.env` on each run. |
+| `UserPreferences`, `settings_repository.dart`, `settings_controller.dart`, `settings_page.dart`, `app_en.arb` | New **Preview Mode** setting (off by default, saved on the device) with a toggle and a one-line explanation in Settings → Map. | Requested: a test fallback for when location services fail or are unavailable. |
+| `map_controller.dart`, `route_leg.dart` (`LocationSample.isPreview`), `map_page.dart` | With Preview Mode on and **no real fix**, the map uses the 1 Central Courtyard entrance (from `buildings.json`) as the location: at startup, for the locate button and as the route origin. A real fix always replaces it. Turning the setting off removes it. A blue **"Preview location"** banner is shown whenever it's in use. | The preview origin is labelled so it is never presented as the user's real position. |
+| Tests: `map_controller_test.dart` (+6), `settings_controller_test.dart` (+1), `settings_repository_test.dart` (+2), `settings_page_test.dart` (+1) | Cover default-off, start/locate/route from 1CC, real fix wins, error still shown when off, live toggle on and off, and saving. | |
 | `presentation/*.md` | This report and the demo script. | Requested deliverables. |
 
 Not changed: production data, Supabase, keys, CI, dependencies, iOS/Android config.
@@ -186,6 +190,7 @@ Leave the terminal open. `r` = hot reload, `q` = quit. The first build takes a f
 5. Do one full practice run: search → View in Campus Map → search again → Navigate with Google Maps → route line appears.
 6. Optional: on the Home "Next Metro" card, tap the settings icon and choose **Macquarie University** station, so it shows live times instead of "Not Set".
 7. Close any building panels and go back to **Home**.
+8. Decide on **Preview Mode** (Settings → Map section). Leave it **off** if your real location works. Turn it **on** if location is unavailable or unreliable: the map then starts from 1 Central Courtyard and says so in a banner.
 
 ### Choosing a destination
 
@@ -209,7 +214,7 @@ The script with exact words is in `Campus_Navigation_Demo_Script.md`.
 
 | Problem | What to do |
 |---|---|
-| No blue dot after ~10 s | Say location is slow indoors. Continue with search and details. Try the locate button once more. Step near a window or outside. |
+| No blue dot after ~10 s | **Settings → Preview Mode → on**, then go back to Navigation. The dot moves to 1 Central Courtyard with a "Preview location" banner, and routes work from there. Say it's a preview starting point. (Or continue with search and details only.) |
 | Route shows an error | Show the destination on the Campus Map (works offline). Explain that routes need internet and location. |
 | No internet at all | Campus map, search and building details still work. Skip the route and "Next Metro". You could use a phone hotspot for the laptop. |
 | App freezes or closes | In the terminal press `q`, run `./scripts/run.sh macos` again (~30–60 s once built). Keep talking meanwhile. |

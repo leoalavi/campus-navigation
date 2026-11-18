@@ -110,8 +110,14 @@ See `Campus_Navigation_Demo_Readiness.md` → "Before the audience arrives".
 ## Backup lines (use only if needed)
 
 **GPS does not work:**
-> Location is not available right now. The search and the campus map
-> still work, so let me show you those.
+
+[Open **Settings**. Turn on **Preview Mode**. Go back to **Navigation**.]
+
+> Location is not available here right now. So I am using preview mode.
+> The app starts from 1 Central Courtyard, and it says so at the top.
+> Everything else works the same.
+
+[Continue with step 4, the search. Waranara Library is a good destination from 1 Central Courtyard.]
 
 **Internet does not work:**
 > The internet is slow here. The campus map and building search work

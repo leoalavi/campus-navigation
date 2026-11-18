@@ -178,6 +178,7 @@ class _RoutePanelState extends State<RoutePanel> {
                         vertical: MqSpacing.space2,
                       ),
                       child: Container(
+                        key: const ValueKey('route-panel-drag-handle'),
                         width: 48,
                         height: 5,
                         decoration: BoxDecoration(

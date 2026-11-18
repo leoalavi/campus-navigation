@@ -56,9 +56,16 @@ class MapPage extends ConsumerStatefulWidget {
 }
 
 class _MapPageState extends ConsumerState<MapPage> {
+  /// Set when the user closes the Preview location banner. Cleared as soon as
+  /// the map stops using the preview location, so the banner returns the
+  /// next time Preview mode stands in for an unavailable fix.
+  bool _previewBannerDismissed = false;
+  bool _searchSheetOpen = false;
+
   Future<void> _openSearchSheet() async {
     final shellChrome = ref.read(shellChromeProvider.notifier);
     shellChrome.acquire();
+    setState(() => _searchSheetOpen = true);
     try {
       final building = await showModalBottomSheet<Building>(
         context: context,
@@ -84,6 +91,7 @@ class _MapPageState extends ConsumerState<MapPage> {
       if (mounted) {
         // Also covers barrier taps, back gestures and exceptional dismissal.
         ref.read(mapControllerProvider.notifier).clearSearchSession();
+        setState(() => _searchSheetOpen = false);
       }
       shellChrome.release();
     }
@@ -266,6 +274,12 @@ class _MapPageState extends ConsumerState<MapPage> {
         data: (mapState) {
           final controller = ref.read(mapControllerProvider.notifier);
           final permissionState = mapState.permissionState;
+          final isPreviewLocation =
+              mapState.currentLocation?.isPreview ?? false;
+          if (!isPreviewLocation) {
+            // A real fix (or no location) ends the preview session.
+            _previewBannerDismissed = false;
+          }
           final isPermissionBlocked =
               permissionState == LocationPermissionState.denied ||
               permissionState == LocationPermissionState.deniedForever ||
@@ -389,8 +403,16 @@ class _MapPageState extends ConsumerState<MapPage> {
               activeQuery: mapState.searchQuery,
               onSelect: controller.updateSearchQuery,
             ),
+            showFooterDragHandle:
+                mapState.renderer != MapRendererType.google ||
+                mapState.selectedBuilding == null,
             banner: mapState.error == null
-                ? null
+                ? isPreviewLocation && !_previewBannerDismissed
+                      ? _PreviewLocationBanner(
+                          onClose: () =>
+                              setState(() => _previewBannerDismissed = true),
+                        )
+                      : null
                 : _MapErrorBanner(
                     title: _errorTitle(l10n, mapState.error!),
                     message: _errorMessage(l10n, mapState.error!),
@@ -402,7 +424,9 @@ class _MapPageState extends ConsumerState<MapPage> {
                         ? controller.openLocationSettings
                         : controller.openAppSettings,
                   ),
-            footer: mapState.selectedBuilding != null
+            footer: _searchSheetOpen
+                ? null
+                : mapState.selectedBuilding != null
                 ? (mapState.renderer == MapRendererType.campus
                       ? _CampusBuildingInfoPanel(
                           selectedBuilding: mapState.selectedBuilding!,
@@ -739,6 +763,113 @@ class _MapPageState extends ConsumerState<MapPage> {
       MapStateError.locationUnsupported => l10n.locationUnsupported,
       MapStateError.locationUnavailable => l10n.locationUnavailable,
     };
+  }
+}
+
+/// Shown while Preview mode stands in 1 Central Courtyard for an unavailable
+/// location, so the preview origin is never mistaken for a real GPS fix.
+class _PreviewLocationBanner extends StatelessWidget {
+  const _PreviewLocationBanner({required this.onClose});
+
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = context.isDarkMode;
+    final l10n = AppLocalizations.of(context)!;
+    const accent = Color(0xFF1A73E8);
+
+    return Semantics(
+      key: const ValueKey('map-preview-location-banner'),
+      container: true,
+      liveRegion: true,
+      child: Container(
+        // Small end/top padding: the close button's own 48 px tap target
+        // supplies the spacing and keeps it in the top-right corner.
+        padding: const EdgeInsetsDirectional.fromSTEB(
+          MqSpacing.space4,
+          MqSpacing.space3,
+          MqSpacing.space1,
+          MqSpacing.space3,
+        ),
+        decoration: BoxDecoration(
+          // Near-opaque in both themes: the banner sits over the bright
+          // illustrated campus map, where a tinted see-through fill left the
+          // white dark-mode text unreadable.
+          color: isDark
+              ? MqColors.charcoal800.withValues(alpha: 0.94)
+              : Colors.white.withValues(alpha: 0.96),
+          borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+          border: Border.all(
+            color: accent.withValues(alpha: isDark ? 0.70 : 0.35),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: MqColors.charcoal800.withValues(
+                alpha: isDark ? 0.30 : 0.10,
+              ),
+              blurRadius: 18,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.place_outlined,
+              size: 20,
+              color: isDark ? Colors.white : accent,
+            ),
+            const SizedBox(width: MqSpacing.space2),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.previewLocationTitle,
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : MqColors.contentPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.previewLocationMessage,
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.85)
+                          : MqColors.contentSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Top-right close button. Sized down visually but keeps the
+            // 48 px minimum tap target.
+            IconButton(
+              key: const ValueKey('map-preview-location-banner-close'),
+              onPressed: onClose,
+              tooltip: l10n.close,
+              icon: Icon(
+                Icons.close_rounded,
+                size: 20,
+                color: isDark ? Colors.white : MqColors.contentSecondary,
+              ),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(
+                minWidth: MqSpacing.minTapTarget,
+                minHeight: MqSpacing.minTapTarget,
+              ),
+              style: IconButton.styleFrom(
+                tapTargetSize: MaterialTapTargetSize.padded,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

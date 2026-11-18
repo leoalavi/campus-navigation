@@ -114,6 +114,11 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     return _save(currentPreferences.copyWith(highContrastMap: enabled));
   }
 
+  Future<String?> updatePreviewLocationEnabled(bool enabled) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(currentPreferences.copyWith(previewLocationEnabled: enabled));
+  }
+
   Future<String?> updateCommutePreferences({
     String? commuteMode,
     String? favoriteDirection,

@@ -344,6 +344,51 @@ void main() {
       expect(find.text(l10n.notSignedInLabel), findsNothing);
     });
 
+    testWidgets(
+      'Preview Mode toggle explains itself and saves when turned on',
+      (tester) async {
+        setupLargeViewport(tester);
+        await tester.pumpWidget(buildTestApp());
+        await tester.pumpAndSettle();
+
+        final BuildContext context = tester.element(find.byType(SettingsPage));
+        final l10n = AppLocalizations.of(context)!;
+
+        final toggle = find.byKey(
+          const ValueKey('settings-preview-mode-toggle'),
+        );
+        await tester.scrollUntilVisible(toggle, 300);
+        expect(
+          find.descendant(of: toggle, matching: find.text(l10n.previewMode)),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: toggle,
+            matching: find.text(l10n.previewModeDescription),
+          ),
+          findsOneWidget,
+        );
+
+        await tester.tap(
+          find.descendant(of: toggle, matching: find.byType(Switch)),
+        );
+        await tester.pumpAndSettle();
+
+        verify(
+          () => mockSettingsRepository.savePreferences(
+            any(
+              that: isA<UserPreferences>().having(
+                (p) => p.previewLocationEnabled,
+                'previewLocationEnabled',
+                isTrue,
+              ),
+            ),
+          ),
+        ).called(1);
+      },
+    );
+
     testWidgets('toggling haptics switch invokes repository savePreferences', (
       tester,
     ) async {

@@ -20,15 +20,28 @@ import 'package:campus_navigation/features/map/presentation/widgets/building_sea
 import 'package:campus_navigation/shared/models/user_preferences.dart';
 
 class _FakeSettingsController extends SettingsController {
+  _FakeSettingsController({
+    this.previewLocationEnabled = false,
+    this.defaultRenderer = MapRendererType.campus,
+  });
+
+  final bool previewLocationEnabled;
+  final MapRendererType defaultRenderer;
+
   @override
-  Future<UserPreferences> build() async =>
-      const UserPreferences(defaultRenderer: MapRendererType.campus);
+  Future<UserPreferences> build() async => UserPreferences(
+    defaultRenderer: defaultRenderer,
+    previewLocationEnabled: previewLocationEnabled,
+  );
 }
 
 class _FakeMapRepository implements MapRepository {
-  _FakeMapRepository({required this.buildings});
+  _FakeMapRepository({required this.buildings, this.hasFix = true});
 
   final List<Building> buildings;
+
+  /// When false the device has no location, as with location services off.
+  final bool hasFix;
 
   @override
   Future<void> openAppSettings() async {}
@@ -48,6 +61,7 @@ class _FakeMapRepository implements MapRepository {
 
   @override
   Future<LocationSample?> getCurrentLocation() async {
+    if (!hasFix) return null;
     return const LocationSample(latitude: -33.77388, longitude: 151.11275);
   }
 
@@ -94,12 +108,19 @@ void main() {
     fakeRepository = _FakeMapRepository(buildings: [buildingA, buildingB]);
   });
 
-  Widget buildTestApp({required GoRouter router}) {
+  Widget buildTestApp({
+    required GoRouter router,
+    bool previewLocationEnabled = false,
+    MapRendererType defaultRenderer = MapRendererType.campus,
+  }) {
     return ProviderScope(
       overrides: [
         mapRepositoryProvider.overrideWithValue(fakeRepository),
         settingsControllerProvider.overrideWith(
-          () => _FakeSettingsController(),
+          () => _FakeSettingsController(
+            previewLocationEnabled: previewLocationEnabled,
+            defaultRenderer: defaultRenderer,
+          ),
         ),
       ],
       child: MaterialApp.router(
@@ -109,6 +130,78 @@ void main() {
       ),
     );
   }
+
+  testWidgets('Preview location banner shows, and its close button hides it', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1400, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final courtyard = Building.fromJson({
+      'id': '1CC',
+      'name': '1 Central Courtyard',
+      'location': {'lat': -33.7738842, 'lng': 151.1135164},
+      'entranceLocation': {'lat': -33.77395, 'lng': 151.11365},
+      'category': 'services',
+    });
+    fakeRepository = _FakeMapRepository(
+      buildings: [courtyard, buildingA],
+      hasFix: false,
+    );
+    final router = GoRouter(
+      initialLocation: '/map',
+      routes: [
+        GoRoute(
+          path: '/map',
+          name: RouteNames.map,
+          builder: (context, state) => const MapPage(),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      buildTestApp(router: router, previewLocationEnabled: true),
+    );
+    await tester.pumpAndSettle();
+
+    final banner = find.byKey(const ValueKey('map-preview-location-banner'));
+    final close = find.byKey(
+      const ValueKey('map-preview-location-banner-close'),
+    );
+    expect(banner, findsOneWidget);
+    expect(close, findsOneWidget);
+    expect(tester.getSize(close).width, greaterThanOrEqualTo(48));
+
+    await tester.tap(close);
+    await tester.pumpAndSettle();
+    expect(banner, findsNothing);
+  });
+
+  testWidgets('no Preview location banner while Preview mode is off', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1400, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    fakeRepository = _FakeMapRepository(buildings: [buildingA], hasFix: false);
+    final router = GoRouter(
+      initialLocation: '/map',
+      routes: [
+        GoRoute(
+          path: '/map',
+          name: RouteNames.map,
+          builder: (context, state) => const MapPage(),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(buildTestApp(router: router));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(
+      find.byKey(const ValueKey('map-preview-location-banner')),
+      findsNothing,
+    );
+  });
 
   testWidgets(
     'MapPage parses meet coordinates, selects meet point, keeps path as /map, and preserves selection',
@@ -283,6 +376,48 @@ void main() {
     },
   );
 
+  testWidgets('Google route panel shows only its own lower drag handle', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1400, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final router = GoRouter(
+      initialLocation: '/map?building=BLD-A&preview=route',
+      routes: [
+        GoRoute(
+          path: '/map',
+          name: RouteNames.map,
+          builder: (context, state) => MapPage(
+            initialBuildingId: state.uri.queryParameters['building'],
+            autoPreviewRoute: state.uri.queryParameters['preview'] == 'route',
+          ),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      buildTestApp(router: router, defaultRenderer: MapRendererType.google),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(
+      find.byKey(const ValueKey('map-sheet-drag-handle')),
+      findsNothing,
+      reason: 'the upper sheet handle duplicates the route panel handle',
+    );
+    expect(
+      find.bySemanticsLabel('Drag to resize'),
+      findsNothing,
+      reason: 'the hidden upper drag band must not leave a blank strip',
+    );
+    expect(
+      find.byKey(const ValueKey('route-panel-drag-handle')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets(
     'MapPage loads route preview on building already selected when preview=route is set',
     (tester) async {
@@ -392,6 +527,42 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     expect(container.read(bottomNavVisibleProvider), isTrue);
     expect(container.read(shellChromeProvider), 0);
+  });
+
+  testWidgets('typing in search shows only the foreground results list', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1400, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final router = GoRouter(
+      initialLocation: '/map',
+      routes: [
+        GoRoute(
+          path: '/map',
+          name: RouteNames.map,
+          builder: (context, state) => const MapPage(),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(buildTestApp(router: router));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.text('Search buildings...').first);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    await tester.enterText(find.byType(TextField), 'Building');
+    await tester.pump();
+
+    expect(find.byType(BuildingSearchSheet), findsOneWidget);
+    expect(
+      find.text(buildingA.name),
+      findsOneWidget,
+      reason: 'the map underneath must not open a second results list',
+    );
+    expect(find.text(buildingB.name), findsOneWidget);
   });
 
   testWidgets('selecting a search result stays temporary until confirmed', (

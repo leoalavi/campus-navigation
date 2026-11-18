@@ -28,6 +28,7 @@ class UserPreferences {
     this.quietHoursStart = '23:00',
     this.quietHoursEnd = '08:00',
     this.highContrastMap = false,
+    this.previewLocationEnabled = false,
     this.offlineCampusMapsEnabled = false,
     this.openDayEnabled = false,
     this.selectedBachelorId,
@@ -57,6 +58,12 @@ class UserPreferences {
   final String quietHoursStart;
   final String quietHoursEnd;
   final bool highContrastMap;
+
+  /// Preview mode: when the device cannot provide a real location (permission
+  /// denied, location services off, unsupported, or no fix), the map uses
+  /// 1 Central Courtyard as the starting point instead, and labels it as a
+  /// preview. Off by default — a real fix always wins when one is available.
+  final bool previewLocationEnabled;
   final bool offlineCampusMapsEnabled;
 
   /// Whether the optional Open Day experience is switched on. Campus
@@ -128,6 +135,7 @@ class UserPreferences {
     String? quietHoursStart,
     String? quietHoursEnd,
     bool? highContrastMap,
+    bool? previewLocationEnabled,
     bool? offlineCampusMapsEnabled,
     bool? openDayEnabled,
     String? selectedBachelorId,
@@ -159,6 +167,8 @@ class UserPreferences {
       quietHoursStart: quietHoursStart ?? this.quietHoursStart,
       quietHoursEnd: quietHoursEnd ?? this.quietHoursEnd,
       highContrastMap: highContrastMap ?? this.highContrastMap,
+      previewLocationEnabled:
+          previewLocationEnabled ?? this.previewLocationEnabled,
       offlineCampusMapsEnabled:
           offlineCampusMapsEnabled ?? this.offlineCampusMapsEnabled,
       openDayEnabled: openDayEnabled ?? this.openDayEnabled,
@@ -199,6 +209,7 @@ class UserPreferences {
           quietHoursStart == other.quietHoursStart &&
           quietHoursEnd == other.quietHoursEnd &&
           highContrastMap == other.highContrastMap &&
+          previewLocationEnabled == other.previewLocationEnabled &&
           offlineCampusMapsEnabled == other.offlineCampusMapsEnabled &&
           openDayEnabled == other.openDayEnabled &&
           selectedBachelorId == other.selectedBachelorId &&
@@ -229,6 +240,7 @@ class UserPreferences {
     quietHoursStart,
     quietHoursEnd,
     highContrastMap,
+    previewLocationEnabled,
     offlineCampusMapsEnabled,
     openDayEnabled,
     selectedBachelorId,

@@ -571,6 +571,181 @@ void main() {
     );
   });
 
+  group('Preview mode (1 Central Courtyard)', () {
+    final courtyard = Building.fromJson({
+      'id': '1CC',
+      'name': '1 Central Courtyard (The Hub / Student Life)',
+      'location': {'lat': -33.7738842, 'lng': 151.1135164},
+      'entranceLocation': {'lat': -33.77395, 'lng': 151.11365},
+      'category': 'services',
+    });
+    final library = Building.fromJson({
+      'id': 'LIB',
+      'name': 'Waranara Library',
+      'location': {'lat': -33.7756994, 'lng': 151.1131306},
+      'entranceLocation': {'lat': -33.7754, 'lng': 151.11325},
+      'category': 'academic',
+    });
+    const previewOn = UserPreferences(previewLocationEnabled: true);
+    const realFix = LocationSample(
+      latitude: -33.7752,
+      longitude: 151.1156,
+      accuracy: 10,
+    );
+
+    ProviderContainer containerFor(
+      _FakeMapRepository repository,
+      _FakeSettingsController settings,
+    ) {
+      final container = ProviderContainer(
+        overrides: [
+          mapRepositoryProvider.overrideWithValue(repository),
+          settingsControllerProvider.overrideWith(() => settings),
+        ],
+      );
+      addTearDown(container.dispose);
+      return container;
+    }
+
+    test('starts from 1 Central Courtyard when location is denied', () async {
+      final repository = _FakeMapRepository(
+        buildings: [courtyard, library],
+        permissionState: LocationPermissionState.denied,
+        currentLocation: null,
+      );
+      final container = containerFor(
+        repository,
+        _FakeSettingsController(previewOn),
+      );
+
+      final state = await container.read(mapControllerProvider.future);
+
+      expect(state.currentLocation?.isPreview, isTrue);
+      expect(state.currentLocation?.latitude, -33.77395);
+      expect(state.currentLocation?.longitude, 151.11365);
+    });
+
+    test(
+      'routes from 1 Central Courtyard with no error when GPS fails',
+      () async {
+        final repository = _FakeMapRepository(
+          buildings: [courtyard, library],
+          currentLocation: null,
+        );
+        final container = containerFor(
+          repository,
+          _FakeSettingsController(previewOn),
+        );
+        await container.read(mapControllerProvider.future);
+        final notifier = container.read(mapControllerProvider.notifier);
+
+        notifier.selectBuilding(library);
+        await notifier.loadRoute();
+
+        final state = container.read(mapControllerProvider).value!;
+        expect(state.error, isNull);
+        expect(state.route, isNotNull);
+        expect(repository.lastOrigin?.isPreview, isTrue);
+        expect(repository.lastOrigin?.latitude, -33.77395);
+      },
+    );
+
+    test('a real fix always wins over the preview location', () async {
+      final repository = _FakeMapRepository(
+        buildings: [courtyard, library],
+        currentLocation: realFix,
+      );
+      final container = containerFor(
+        repository,
+        _FakeSettingsController(previewOn),
+      );
+      final initial = await container.read(mapControllerProvider.future);
+      expect(initial.currentLocation?.isPreview, isFalse);
+
+      final notifier = container.read(mapControllerProvider.notifier);
+      notifier.selectBuilding(library);
+      await notifier.loadRoute();
+      expect(repository.lastOrigin?.isPreview, isFalse);
+      expect(repository.lastOrigin?.latitude, realFix.latitude);
+    });
+
+    test('with Preview mode off, no location still means an error', () async {
+      final repository = _FakeMapRepository(
+        buildings: [courtyard, library],
+        permissionState: LocationPermissionState.denied,
+        currentLocation: null,
+      );
+      final container = containerFor(repository, _FakeSettingsController());
+      final initial = await container.read(mapControllerProvider.future);
+      expect(initial.currentLocation, isNull);
+
+      final notifier = container.read(mapControllerProvider.notifier);
+      notifier.selectBuilding(library);
+      await notifier.loadRoute();
+
+      final state = container.read(mapControllerProvider).value!;
+      expect(state.error, MapStateError.locationPermissionRequired);
+      expect(repository.routeCallCount, 0);
+    });
+
+    test('locate-me centres on the preview location', () async {
+      final repository = _FakeMapRepository(
+        buildings: [courtyard, library],
+        currentLocation: null,
+      );
+      final container = containerFor(
+        repository,
+        _FakeSettingsController(previewOn),
+      );
+      final before = await container.read(mapControllerProvider.future);
+
+      await container
+          .read(mapControllerProvider.notifier)
+          .centerOnCurrentLocation();
+
+      final state = container.read(mapControllerProvider).value!;
+      expect(state.error, isNull);
+      expect(state.currentLocation?.isPreview, isTrue);
+      expect(
+        state.locationCenterRequestToken,
+        before.locationCenterRequestToken + 1,
+      );
+    });
+
+    test(
+      'turning Preview mode on and off in Settings updates the map',
+      () async {
+        final repository = _FakeMapRepository(
+          buildings: [courtyard, library],
+          permissionState: LocationPermissionState.denied,
+          currentLocation: null,
+        );
+        final settings = _FakeSettingsController();
+        final container = containerFor(repository, settings);
+        final initial = await container.read(mapControllerProvider.future);
+        expect(initial.currentLocation, isNull);
+
+        settings.setPreferences(previewOn);
+        await pumpEventQueue();
+        expect(
+          container
+              .read(mapControllerProvider)
+              .value!
+              .currentLocation
+              ?.isPreview,
+          isTrue,
+        );
+
+        settings.setPreferences(const UserPreferences());
+        await pumpEventQueue();
+        expect(
+          container.read(mapControllerProvider).value!.currentLocation,
+          isNull,
+        );
+      },
+    );
+  });
+
   group('MapState', () {
     test('default activeOverlayIds is empty', () {
       const state = MapState(buildings: [], searchResults: []);
@@ -596,8 +771,17 @@ void main() {
 }
 
 class _FakeSettingsController extends SettingsController {
+  _FakeSettingsController([this.initial = const UserPreferences()]);
+
+  final UserPreferences initial;
+
   @override
-  Future<UserPreferences> build() async => const UserPreferences();
+  Future<UserPreferences> build() async => initial;
+
+  /// Simulates the user flipping a Settings toggle (no storage involved).
+  void setPreferences(UserPreferences preferences) {
+    state = AsyncData(preferences);
+  }
 }
 
 class _FakeMapRepository implements MapRepository {
@@ -621,6 +805,7 @@ class _FakeMapRepository implements MapRepository {
   Completer<LocationPermissionState>? pendingPermissionCompleter;
   Completer<LocationSample?>? pendingLocationCompleter;
   int routeCallCount = 0;
+  LocationSample? lastOrigin;
 
   @override
   Future<void> openAppSettings() async {}
@@ -662,6 +847,7 @@ class _FakeMapRepository implements MapRepository {
   }) async {
     routeCallCount += 1;
     lastRenderer = renderer;
+    lastOrigin = origin;
     final pending = pendingRouteCompleter;
     if (pending != null) {
       pendingRouteCompleter = null;
