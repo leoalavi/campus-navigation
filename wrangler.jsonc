@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Campus Navigation web app: the Flutter web build served as static assets
+  // on Cloudflare Workers. Build and deploy with scripts/deploy_web.sh.
+  "name": "campus-navigation-web",
+  "compatibility_date": "2026-07-22",
+
+  "assets": {
+    "directory": "build/web",
+    // Flutter uses hash URLs (/#/open?destination=…), so every route is
+    // index.html; this also covers anything requested by path.
+    "not_found_handling": "single-page-application",
+  },
+
+  // NOT APPROVED FOR PUBLIC RELEASE. Do not deploy until the University has
+  // clarified map, branding and data permissions (meeting 30 Nov 2026).
+  // Intended production domain: navigation.syllabus-sync.app.
+  // workers.dev stays off so a deploy can never create a public URL by accident.
+  "workers_dev": false,
+  "preview_urls": false,
+}
