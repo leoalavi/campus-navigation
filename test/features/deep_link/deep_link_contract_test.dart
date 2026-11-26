@@ -86,4 +86,26 @@ void main() {
       );
     });
   });
+
+  group('mqNavOpenRedirect', () {
+    test('opens the building marker by default', () {
+      expect(mqNavOpenRedirect({'destination': 'C5C'}), '/map/building/C5C');
+    });
+
+    test('action=directions opens the walking-route preview', () {
+      expect(
+        mqNavOpenRedirect({'destination': 'C5C', 'action': 'directions'}),
+        '/map/building/C5C?preview=route',
+      );
+    });
+
+    test('ignores unknown actions and keeps the other payloads', () {
+      expect(
+        mqNavOpenRedirect({'destination': 'C5C', 'action': 'x'}),
+        '/map/building/C5C',
+      );
+      expect(mqNavOpenRedirect({'q': 'library'}), '/map?q=library');
+      expect(mqNavOpenRedirect({}), '/map');
+    });
+  });
 }

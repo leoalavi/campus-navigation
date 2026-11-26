@@ -16,6 +16,10 @@
 ///   `/open?q=<search>`                 — filter the map by a free-text query
 ///   `/open?lat=<double>&lng=<double>`  — drop a "meet here" pin at coords
 ///
+/// Optional, with `destination` only: `&action=directions` opens the building
+/// with a walking-route preview from the user's location instead of just the
+/// marker. Unknown `action` values are ignored (the building still opens).
+///
 /// The first matching parameter wins, in the order above. Anything else
 /// falls back to the map root.
 ///
@@ -54,6 +58,10 @@ library;
 /// change for any integrating app.
 abstract final class MqNavDeepLinkParams {
   static const destination = 'destination';
+  static const action = 'action';
+
+  /// `action` value that opens a route preview to the destination.
+  static const directionsAction = 'directions';
   static const query = 'q';
   static const latitude = 'lat';
   static const longitude = 'lng';
@@ -152,4 +160,19 @@ Uri buildCampusNavBuildingLink(String buildingId, {bool https = false}) {
   return https
       ? Uri.https(MqNavDeepLink.host, MqNavDeepLink.path, query)
       : Uri(scheme: MqNavDeepLink.scheme, host: 'open', queryParameters: query);
+}
+
+/// Internal route for an `/open` link's query parameters. Pure, so the public
+/// contract can be tested without a router.
+String mqNavOpenRedirect(Map<String, String> params) {
+  final target = parseMqNavDeepLink(params);
+  return switch (target) {
+    DeepLinkBuilding(:final buildingId) =>
+      '/map/building/${Uri.encodeComponent(buildingId)}'
+          '${params[MqNavDeepLinkParams.action] == MqNavDeepLinkParams.directionsAction ? '?preview=route' : ''}',
+    DeepLinkSearch(:final query) => '/map?q=${Uri.encodeQueryComponent(query)}',
+    DeepLinkMeetAt(:final latitude, :final longitude) =>
+      '/map?lat=$latitude&lng=$longitude',
+    DeepLinkFallback() => '/map',
+  };
 }

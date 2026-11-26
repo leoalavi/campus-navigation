@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:campus_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:campus_navigation/app/router/app_router.dart';
 import 'package:campus_navigation/app/router/route_names.dart';
 import 'package:campus_navigation/app/theme/mq_colors.dart';
 import 'package:campus_navigation/app/theme/mq_spacing.dart';
@@ -67,9 +68,18 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   /// onboarding because the persisted flag never made it past the
   /// in-memory optimistic update.
   Future<void> _finishOnboarding() async {
+    final next = safeOnboardingNext(
+      GoRouterState.of(context).uri.queryParameters['next'],
+    );
     await ref.read(settingsControllerProvider.notifier).completeOnboarding();
     if (!mounted) return;
-    context.goNamed(RouteNames.home);
+    // Continue to the link that brought the visitor here (e.g. a building or
+    // walking directions from Syllabus Sync), otherwise home.
+    if (next != null) {
+      context.go(next);
+    } else {
+      context.goNamed(RouteNames.home);
+    }
   }
 
   @override

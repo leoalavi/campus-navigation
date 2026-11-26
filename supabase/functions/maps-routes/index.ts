@@ -12,8 +12,10 @@ import { handleCors, jsonCorsHeaders } from "../_shared/cors.ts";
 const GOOGLE_ROUTES_URL =
   "https://routes.googleapis.com/directions/v2:computeRoutes";
 const TFNSW_TRIP_PLANNER_URL = "https://api.transport.nsw.gov.au/v1/tp/trip";
+// api.openrouteservice.org was retired on 2026-11-24 (410 Gone); HeiGIT now
+// serves openrouteservice from api.heigit.org with the same API keys.
 const ORS_BASE_URL = Deno.env.get("ORS_BASE_URL") ??
-  "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
+  "https://api.heigit.org/openrouteservice/v2/directions/foot-walking/geojson";
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 60;
 const GOOGLE_ROUTES_FIELD_MASK = [

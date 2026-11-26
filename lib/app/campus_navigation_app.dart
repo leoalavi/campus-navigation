@@ -17,8 +17,6 @@ import 'package:campus_navigation/features/scan/application/qr_scan_orchestrator
 import 'package:campus_navigation/features/scan/data/adapters/settings_progress_api_adapter.dart';
 import 'package:campus_navigation/features/scan/providers/scan_providers.dart';
 import 'package:campus_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:campus_navigation/core/logging/app_logger.dart';
-import 'package:campus_navigation/features/deep_link/building_id_resolver.dart';
 import 'package:campus_navigation/features/deep_link/deep_link_contract.dart';
 
 /// The root Flutter application widget.
@@ -96,36 +94,15 @@ class _CampusNavigationAppState extends ConsumerState<CampusNavigationApp> {
     await _appLinkCoordinator.handle(uri);
   }
 
-  /// Routes an `/open` payload, resolving partner building ids first.
-  ///
-  /// A destination that names nothing we know does NOT silently become the map
-  /// root: the user tapped "Navigate" expecting a place, so the map is opened
-  /// with the id as a search term instead, which either finds it by name or
-  /// shows an honest empty result. That also keeps ids minted by a future
-  /// Syllabus Sync release from dead-ending.
+  /// Routes an `/open` payload through the router, whose `/open` redirect
+  /// resolves partner building ids (and keeps `action=directions`), so native
+  /// links and web URLs share one implementation.
   Future<void> _handleOpenLink(Uri uri) async {
-    final target = parseMqNavDeepLink(uri.queryParameters);
-    final router = ref.read(appRouterProvider);
-    if (target is DeepLinkBuilding) {
-      final canonical = await ref
-          .read(buildingIdResolverProvider)
-          .resolve(target.buildingId);
-      if (!mounted) return;
-      if (canonical == null) {
-        AppLogger.warning(
-          'Deep link named an unknown building: ${target.buildingId}',
+    ref
+        .read(appRouterProvider)
+        .go(
+          Uri(path: '/open', queryParameters: uri.queryParameters).toString(),
         );
-        router.go('/map?q=${Uri.encodeQueryComponent(target.buildingId)}');
-        return;
-      }
-      router.go('/map/building/${Uri.encodeComponent(canonical)}');
-      return;
-    }
-    // Search / meet-at / fallback need no resolution — reuse the router's
-    // own contract mapping so there is one place that decides this.
-    router.go(
-      Uri(path: '/open', queryParameters: uri.queryParameters).toString(),
-    );
   }
 
   Future<void> _handleOpenDayQr(String raw) async {

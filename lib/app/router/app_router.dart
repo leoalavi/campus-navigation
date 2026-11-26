@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:campus_navigation/app/router/app_shell.dart';
 import 'package:campus_navigation/app/router/route_names.dart';
 import 'package:campus_navigation/core/config/env_config.dart';
+import 'package:campus_navigation/features/deep_link/building_id_resolver.dart';
 import 'package:campus_navigation/features/deep_link/deep_link_contract.dart';
 import 'package:campus_navigation/features/home/presentation/pages/home_page.dart';
 import 'package:campus_navigation/features/home/presentation/pages/onboarding_page.dart';
@@ -52,7 +53,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final settingsAsync = ref.read(settingsControllerProvider);
       if (settingsAsync.isLoading) return null;
       if (!(settingsAsync.value?.hasCompletedOnboarding ?? false)) {
-        return '/onboarding';
+        // Remember where a first-time visitor was going (e.g. a Syllabus Sync
+        // "Get directions" link) so onboarding can continue there.
+        return onboardingLocationFor(state.uri);
       }
       return null;
     },
@@ -65,17 +68,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // NOT change without a compatibility plan for Syllabus Sync clients.
       GoRoute(
         path: '/open',
-        redirect: (context, state) {
-          final target = parseMqNavDeepLink(state.uri.queryParameters);
-          return switch (target) {
-            DeepLinkBuilding(:final buildingId) =>
-              '/map/building/${Uri.encodeComponent(buildingId)}',
-            DeepLinkSearch(:final query) =>
-              '/map?q=${Uri.encodeQueryComponent(query)}',
-            DeepLinkMeetAt(:final latitude, :final longitude) =>
-              '/map?lat=$latitude&lng=$longitude',
-            DeepLinkFallback() => '/map',
-          };
+        // Partner ids (e.g. Syllabus Sync's) are resolved to canonical ids
+        // here, so browser URLs on the web app and native links (which also
+        // route through /open) behave the same. An unknown building opens a
+        // search for it instead of an empty map.
+        redirect: (context, state) async {
+          final params = state.uri.queryParameters;
+          final target = parseMqNavDeepLink(params);
+          if (target is! DeepLinkBuilding) return mqNavOpenRedirect(params);
+          final canonical = await ref
+              .read(buildingIdResolverProvider)
+              .resolve(target.buildingId);
+          if (canonical == null) {
+            return '/map?q=${Uri.encodeQueryComponent(target.buildingId)}';
+          }
+          return mqNavOpenRedirect({
+            ...params,
+            MqNavDeepLinkParams.destination: canonical,
+          });
         },
       ),
       // Notifications sits outside the shell so it covers the bottom nav bar.
@@ -267,4 +277,27 @@ class _OnboardingFlagListenable extends ChangeNotifier {
   }
 
   ProviderSubscription<({bool isLoading, bool hasCompleted})>? _settingsSub;
+}
+
+/// `/onboarding`, carrying the originally requested location as `next` when it
+/// is anything other than the home screen.
+String onboardingLocationFor(Uri requested) {
+  final target = requested.toString();
+  if (target.isEmpty || target == '/' || target == '/home') {
+    return '/onboarding';
+  }
+  return Uri(path: '/onboarding', queryParameters: {'next': target}).toString();
+}
+
+/// The in-app location to open after onboarding: `next` when it is a safe
+/// internal path, otherwise null (go home). Rejects absolute and
+/// protocol-relative URLs so a crafted link cannot redirect elsewhere.
+String? safeOnboardingNext(String? next) {
+  if (next == null || next.isEmpty) return null;
+  if (!next.startsWith('/') ||
+      next.startsWith('//') ||
+      next.startsWith('/onboarding')) {
+    return null;
+  }
+  return Uri.tryParse(next) == null ? null : next;
 }
